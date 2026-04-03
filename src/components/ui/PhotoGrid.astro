@@ -1,0 +1,31 @@
+---
+interface Props {
+  images: readonly string[];
+  alt: string;
+  class?: string;
+  /** Border / surface treatment */
+  surface?: 'dark' | 'light';
+}
+
+const { images, alt, class: className = '', surface = 'dark' } = Astro.props;
+
+const cellSurface =
+  surface === 'light'
+    ? 'border-line bg-ink/[0.04]'
+    : 'border-white/10 bg-black/20';
+---
+
+<div
+  class:list={[
+    'grid grid-cols-[repeat(auto-fill,minmax(10rem,1fr))] gap-sm',
+    className,
+  ]}
+>
+  {
+    images.map((src, i) => (
+      <figure class:list={['m-0 aspect-square overflow-hidden rounded-md border', cellSurface]}>
+        <img src={src} alt={`${alt} ${i + 1}`} class="h-full w-full object-cover" loading="lazy" decoding="async" />
+      </figure>
+    ))
+  }
+</div>

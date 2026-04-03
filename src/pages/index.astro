@@ -1,0 +1,520 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/ui/Section.astro";
+import WhoScrollArch from "../components/sections/WhoScrollArch.astro";
+import Button from "../components/ui/Button.astro";
+import MarqueeStrip from "../components/ui/MarqueeStrip.astro";
+import WordRotator from "../components/ui/WordRotator.astro";
+import { getCollection } from "astro:content";
+import { LINKS, SITE } from "../lib/links";
+import { img } from "../lib/site-images";
+
+const programs = (await getCollection("programs")).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99),
+);
+
+/** Shown in the card stack above; keep collection data single-source elsewhere. */
+const programsWhatWeDoLinks = programs.filter(
+  (p) => p.id !== "storytelling-knights",
+);
+
+const programHref: Record<string, string> = {
+  "maker-collective": "/programs/maker-collective",
+  "brick-city-glam": "/programs/brick-city-glam",
+  "storytelling-knights": "/programs/storytelling-knights",
+};
+---
+
+<BaseLayout
+  title="Home"
+  description="Enhancing everyday experiences through art and exploration in Ocala and Marion County."
+>
+  <section
+    class="border-b-[3px] border-ink bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))]"
+  >
+    <div class="site-container">
+      {
+        /*
+        lg: two flex columns (not a 2×2 grid) so the right column stacks aside →
+        hiring with no “dead” space under the card when the hero is taller than
+        the aside. Below lg, wrappers use display:contents so four blocks interleave
+        via order: hero → aside → collage → makers.
+      */
+      }
+      <div
+        class="flex flex-col gap-y-xl lg:flex-row lg:items-start lg:gap-x-xl lg:gap-y-0"
+      >
+        <div
+          class="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
+        >
+          <div
+            class="flex min-w-0 flex-col gap-y-5 max-lg:order-1 md:gap-y-6 lg:min-w-0"
+          >
+            <a
+              href="/"
+              class="group relative z-[1] block w-[min(44vw,9.75rem)] max-w-full shrink-0 self-start outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist sm:w-[10.25rem] md:w-[11rem] lg:-mb-1 lg:w-[11.25rem]"
+              aria-label="Artify Ocala — Home"
+            >
+              <img
+                src={img.logoOnLightHollow}
+                alt=""
+                width={1600}
+                height={1260}
+                decoding="async"
+                fetchpriority="high"
+                class="h-auto w-full object-contain object-left"
+                aria-hidden="true"
+              />
+            </a>
+            <div>
+              <p class="type-section-yell">
+                Marion County · nonprofit · volunteers
+              </p>
+              <h1 class="type-display-xl">Art & exploration for everyone.</h1>
+              <p
+                class="mb-md text-[clamp(1.35rem,4vw,2.35rem)] uppercase leading-none text-accent [text-shadow:2px_2px_0_var(--color-ink),-1px_-1px_0_var(--color-club)]"
+              >
+                <WordRotator
+                  words={[
+                    "Stage time",
+                    "Tabletop",
+                    "Power tools",
+                    "Marion County",
+                    "Since 2017",
+                  ]}
+                />
+              </p>
+              <p class="type-lede">
+                {SITE.tagline} Since 2017 we have partnered with artists and local
+                organizations to make space for performance, tabletop storytelling,
+                and hands-on making.
+              </p>
+              <div class="flex flex-wrap gap-sm">
+                <Button href="/volunteer" tone="surge">Volunteer</Button>
+                <Button href="/donate" tone="outline">Donate</Button>
+              </div>
+            </div>
+          </div>
+          <img
+            src={img.homeMakerCollage}
+            alt="Marion County Maker Collective graphic"
+            width={940}
+            height={788}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="w-full min-w-0 max-lg:order-3 rotate-[0.6deg] rounded-xl border-[3px] bg-twilight border-buzz shadow-[8px_8px_0_0_var(--color-ink)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
+          />
+        </div>
+        <div
+          class="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
+        >
+          <aside
+            class="min-w-0 max-lg:order-2 rotate-[-0.35deg] rounded-xl border-[3px] border-ink bg-mist p-lg shadow-[10px_10px_0_0_var(--color-buzz)] lg:min-w-0"
+          >
+            <p
+              class="mb-sm inline-block rounded border-2 border-surge bg-surge/10 px-2 py-1 font-display text-[0.7rem] font-extrabold uppercase tracking-[0.2em] text-surge"
+            >
+              Now open for members
+            </p>
+            <h2
+              class="font-display text-[1.75rem] font-bold leading-tight tracking-tight"
+            >
+              Marion County Maker Collective
+            </h2>
+            <p class="type-muted mb-md mt-0">
+              Community makerspace launching January 2026 — tools, classes, and
+              collaboration in Ocala.
+            </p>
+            <div class="flex flex-col gap-sm">
+              <Button href="/programs/maker-collective">Learn more</Button>
+              <Button
+                href="/programs/maker-collective/equipment"
+                tone="outline"
+              >
+                View equipment wish list
+              </Button>
+              <Button href={LINKS.boloMembershipApply} tone="surge" external>
+                Apply for membership
+              </Button>
+            </div>
+          </aside>
+          <img
+            src={img.makersHiring}
+            alt="Join the Marion County Maker Collective"
+            width={1080}
+            height={1350}
+            loading="eager"
+            decoding="async"
+            class="h-auto w-full min-w-0 max-lg:order-4 -rotate-[0.5deg] rounded-xl border-[3px] border-ink object-contain shadow-[6px_6px_0_0_var(--color-surge)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <MarqueeStrip
+    text="Ocala · Marion County · Stage · Tabletop · Makerspace · Volunteers · Since 2017 · Brick City Glam · Storytelling Knights · Maker Collective · Donate · Get involved ·"
+  />
+
+  <WhoScrollArch />
+
+  <Section variant="dark" id="programs">
+    <p
+      class="mb-0 text-buzz font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em]"
+    >
+      Programs
+    </p>
+    <h2 class="type-display-lg">What we do</h2>
+    <p class="type-lede text-mist/70">
+      Three core programs — performance, tabletop storytelling, and community
+      outreach — plus the makerspace.
+    </p>
+    <div
+      class="artify-program-card-grid mt-lg grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-lg md:gap-xl [perspective:1200px]"
+    >
+      <article
+        data-artify-program-tilt
+        data-tilt-base-z="-1"
+        data-tilt-theme="buzz"
+        class="artify-program-card-tilt flex min-h-[18rem] flex-col overflow-hidden rounded-xl border-[3px] border-buzz/55 bg-panel p-0 shadow-[8px_8px_0_0_rgba(176,184,255,0.28)] transform-gpu transition-[box-shadow] duration-300 ease-out [transform-style:preserve-3d] will-change-transform"
+      >
+        <div class="aspect-[16/10] overflow-hidden">
+          <img
+            src={img.programGlam}
+            alt=""
+            width={1125}
+            height={1138}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <h3 class="mx-lg mb-sm mt-md font-display text-xl">
+          Performing art events
+        </h3>
+        <p class="mx-lg mb-md text-[0.98rem] text-mist/80">
+          Through Brick City Glam we create space for performance artists to
+          develop, grow, and share self-expression.
+        </p>
+        <div class="mx-lg mb-lg mt-auto flex flex-col gap-sm">
+          <Button href={LINKS.jotformCasting} external>Casting</Button>
+          <Button href="/programs/brick-city-glam" tone="outline"
+            >Program page</Button
+          >
+        </div>
+      </article>
+      <article
+        data-artify-program-tilt
+        data-tilt-base-z="1"
+        data-tilt-theme="club"
+        class="artify-program-card-tilt flex min-h-[18rem] flex-col overflow-hidden rounded-xl border-[3px] border-club/50 bg-panel p-0 shadow-[8px_8px_0_0_rgba(165,158,255,0.3)] transform-gpu transition-[box-shadow] duration-300 ease-out [transform-style:preserve-3d] will-change-transform"
+      >
+        <div class="aspect-[16/10] overflow-hidden">
+          <img
+            src={img.programStory}
+            alt=""
+            width={1125}
+            height={1138}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <h3 class="mx-lg mb-sm mt-md font-display text-xl">
+          Storytelling Knights
+        </h3>
+        <p class="mx-lg mb-md text-[0.98rem] text-mist/80">
+          Tabletop role-playing for all ages and experience levels —
+          collaborative storytelling in a welcoming, high-energy environment.
+        </p>
+        <div class="mx-lg mb-lg mt-auto flex flex-col gap-sm">
+          <Button href={LINKS.zeffyStorytellingSignup} external>Sign up</Button>
+          <Button href="/programs/storytelling-knights" tone="outline"
+            >Program page</Button
+          >
+        </div>
+      </article>
+      <article
+        data-artify-program-tilt
+        data-tilt-base-z="-0.5"
+        data-tilt-theme="surge"
+        class="artify-program-card-tilt flex min-h-[18rem] flex-col overflow-hidden rounded-xl border-[3px] border-surge/45 bg-panel p-0 shadow-[8px_8px_0_0_rgba(107,100,201,0.28)] transform-gpu transition-[box-shadow] duration-300 ease-out [transform-style:preserve-3d] will-change-transform"
+      >
+        <div class="aspect-[16/10] overflow-hidden">
+          <img
+            src={img.programOutreach}
+            alt=""
+            width={580}
+            height={760}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <h3 class="mx-lg mb-sm mt-md font-display text-xl">
+          Community art outreach
+        </h3>
+        <p class="mx-lg mb-md text-[0.98rem] text-mist/80">
+          We support artistic events that enrich Ocala and greater Marion County
+          for creators and audiences alike.
+        </p>
+        <div class="mx-lg mb-lg mt-auto flex flex-col gap-sm">
+          <Button href={LINKS.zeffyGetInvolved} external>Get involved</Button>
+          <Button href={LINKS.facebookMeetupGroup} tone="outline" external
+            >Meet up</Button
+          >
+        </div>
+      </article>
+    </div>
+    <div class="mt-xl grid grid-cols-1 gap-md xl:grid-cols-2">
+      {
+        programsWhatWeDoLinks.map((prog, idx) => (
+          <a
+            class:list={[
+              "grid grid-cols-1 gap-sm rounded-xl border-[3px] border-mist/20 bg-white/[0.03] p-lg text-inherit no-underline shadow-[4px_4px_0_0_rgba(176,184,255,0.14)] transition-all duration-200 hover:-translate-y-0.5 hover:border-buzz/40 hover:bg-white/[0.06] hover:shadow-[6px_6px_0_0_rgba(176,184,255,0.22)] md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto] md:items-center",
+              idx % 2 === 0 ? "-rotate-[0.25deg]" : "rotate-[0.25deg]",
+            ]}
+            href={programHref[prog.id] ?? `/programs/${prog.id}`}
+          >
+            <span class="min-w-0 font-display text-[1.1rem] font-bold">
+              {prog.data.title}
+            </span>
+            <span class="min-w-0 text-[0.95rem] text-mist/70">
+              {prog.data.description}
+            </span>
+            <span class="font-extrabold uppercase tracking-wide text-buzz md:text-right">
+              View →
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section id="meetups">
+    <p class="type-section-yell">2nd & 4th Wednesdays</p>
+    <h2 class="type-display-lg">Maker meetups</h2>
+    <p class="type-lede">
+      In person on the <strong>2nd and 4th Wednesday</strong> of each month, <strong
+        >7pm–9pm</strong
+      >, at the Marion County Maker Collective, <strong
+        >3650 NE 25th Street (1A)</strong
+      >. Bring a project, share what you are making, and collaborate.
+    </p>
+    <div
+      class="my-lg grid grid-cols-1 items-start gap-md md:grid-cols-[1.4fr_1fr]"
+    >
+      <figure
+        class="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-buzz)]"
+      >
+        <img
+          src={img.meetupPhoto}
+          alt="Makers collaborating at a meetup"
+          width={2048}
+          height={1365}
+          loading="lazy"
+          decoding="async"
+          class="block w-full"
+        />
+      </figure>
+      <figure
+        class="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-surge)]"
+      >
+        <img
+          src={img.meetupMonthlyGraphic}
+          alt="Monthly meetup schedule graphic"
+          width={1080}
+          height={1350}
+          loading="lazy"
+          decoding="async"
+          class="w-full bg-mist object-contain"
+        />
+      </figure>
+    </div>
+    <Button href={LINKS.facebookMeetupGroup} external>Join the meetup</Button>
+  </Section>
+
+  <Section variant="dark" id="support">
+    <div class="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_1.1fr]">
+      <figure
+        class="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-buzz/40 shadow-[8px_8px_0_0_rgba(176,184,255,0.18)]"
+      >
+        <img
+          src={img.createArtCommunity}
+          alt="Community art and creativity in Ocala"
+          width={1080}
+          height={1080}
+          loading="lazy"
+          decoding="async"
+          class="block w-full"
+        />
+      </figure>
+      <div class="min-w-0">
+        <p
+          class="mb-0 text-buzz font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em]"
+        >
+          501(c)(3)
+        </p>
+        <h2 class="type-display-lg">Why support us</h2>
+        <p class="type-lede text-mist/75">
+          Artify Ocala is a 501(c)(3) nonprofit, run entirely by volunteers.
+          Donations and volunteer time sustain free and low-cost programs for
+          the community.
+        </p>
+        <Button href="/donate" tone="surge">Donate</Button>
+      </div>
+    </div>
+  </Section>
+
+  <Section id="more">
+    <p class="type-section-yell">Around town</p>
+    <h2 class="type-display-lg">Create art. Cultivate community.</h2>
+    <p class="type-lede">More ways to experience art in Marion County.</p>
+    <div
+      class="mt-md grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-md"
+    >
+      <article
+        class="flex flex-col overflow-hidden rounded-xl border-[3px] border-ink bg-white/40 p-0 shadow-[6px_6px_0_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1"
+      >
+        <div class="aspect-[4/3] overflow-hidden">
+          <img
+            src={img.galleryTours}
+            alt=""
+            width={1440}
+            height={1440}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <h3 class="mx-lg mb-xs mt-md font-display text-[1.15rem]">
+          First Saturday studio & gallery tours
+        </h3>
+        <p class="type-muted mx-lg mb-md">
+          Self-guided free tour of local galleries and studios every first
+          Saturday.
+        </p>
+        <Button
+          class="mb-lg ml-lg self-start"
+          href={LINKS.mcaGalleryTours}
+          tone="outline"
+          external>Join us</Button
+        >
+      </article>
+      <article
+        class="flex flex-col overflow-hidden rounded-xl border-[3px] border-ink bg-white/40 p-0 shadow-[6px_6px_0_0_var(--color-club)] transition-transform duration-300 hover:-translate-y-1"
+      >
+        <div class="aspect-[4/3] overflow-hidden">
+          <img
+            src={img.metroArtsCalendar}
+            alt=""
+            width={458}
+            height={660}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <h3 class="mx-lg mb-xs mt-md font-display text-[1.15rem]">
+          Ocala Metro Arts Scene
+        </h3>
+        <p class="type-muted mx-lg mb-md">
+          See what partners are doing on the community arts calendar.
+        </p>
+        <Button
+          class="mb-lg ml-lg self-start"
+          href={LINKS.ocalametroArtsCalendar}
+          tone="outline"
+          external
+        >
+          Learn more
+        </Button>
+      </article>
+      <article
+        class="flex flex-col overflow-hidden rounded-xl border-[3px] border-ink bg-white/40 p-0 shadow-[6px_6px_0_0_var(--color-surge)] transition-transform duration-300 hover:-translate-y-1"
+      >
+        <div class="aspect-[4/3] overflow-hidden">
+          <img
+            src={img.programStoryAlt}
+            alt=""
+            width={1125}
+            height={1138}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <h3 class="mx-lg mb-xs mt-md font-display text-[1.15rem]">Volunteer</h3>
+        <p class="type-muted mx-lg mb-md">
+          Sign up for opportunity updates and share your time.
+        </p>
+        <Button
+          class="mb-lg ml-lg self-start"
+          href={LINKS.zeffyVolunteerEn}
+          tone="outline"
+          external
+        >
+          Volunteer
+        </Button>
+      </article>
+    </div>
+  </Section>
+
+  <section
+    class="dark-surface border-y border-buzz/30 bg-[linear-gradient(120deg,#1c1c33_0%,#0e0e1a_48%,#25244a_100%)] py-2xl text-mist"
+    aria-labelledby="cta-band-title"
+  >
+    <div
+      class="site-container grid grid-cols-1 items-center gap-xl lg:grid-cols-[0.9fr_1.1fr]"
+    >
+      <img
+        src={img.getCreative}
+        alt="Creative expression with Artify Ocala"
+        width={1125}
+        height={1128}
+        loading="lazy"
+        decoding="async"
+        class="max-h-[22rem] w-full min-w-0 rotate-[0.4deg] rounded-xl border-[3px] border-buzz/35 object-cover shadow-[8px_8px_0_0_rgba(176,184,255,0.16)]"
+      />
+      <div class="min-w-0">
+        <p
+          class="mb-0 text-buzz font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em]"
+        >
+          Let’s go
+        </p>
+        <h2 id="cta-band-title" class="type-display-lg text-mist">
+          Get involved. Get creative.
+        </h2>
+        <p
+          class="mb-md max-w-[40rem] text-[1.2rem] leading-[1.55] text-mist/75"
+        >
+          Volunteer, donate, or join a program — help us keep the arts
+          accessible in Marion County.
+        </p>
+        <div class="flex flex-wrap gap-sm">
+          <Button href="/volunteer" tone="surge">Volunteer</Button>
+          <Button href="/donate" tone="outline">Donate</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import {
+      mountProgramCardsTilt,
+      type ProgramCardsTiltHandle,
+    } from "../scripts/program-cards-tilt";
+
+    let programTilt: ProgramCardsTiltHandle | null = null;
+
+    function refreshProgramCardsTilt() {
+      programTilt?.destroy();
+      programTilt = null;
+      programTilt = mountProgramCardsTilt();
+    }
+
+    refreshProgramCardsTilt();
+    document.addEventListener("astro:page-load", refreshProgramCardsTilt);
+  </script>
+</BaseLayout>

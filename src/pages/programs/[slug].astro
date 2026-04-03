@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Prose from '../../components/ui/Prose.astro';
+import Section from '../../components/ui/Section.astro';
+import Button from '../../components/ui/Button.astro';
+import PhotoGrid from '../../components/ui/PhotoGrid.astro';
+import { getCollection, render } from 'astro:content';
+import {
+  LINKS,
+  mailtoTourMakerCollective,
+} from '../../lib/links';
+import { brickGlamGallery, img } from '../../lib/site-images';
+
+export async function getStaticPaths() {
+  const programs = await getCollection('programs');
+  return programs.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const isMaker = entry.id === 'maker-collective';
+const isBrick = entry.id === 'brick-city-glam';
+const isStory = entry.id === 'storytelling-knights';
+
+const makerStrip = [
+  img.makerspaceA,
+  img.makerspaceB,
+  img.makerspaceC,
+  img.makerspaceD,
+  img.makerspaceE,
+] as const;
+
+const heroGridCols = isBrick
+  ? 'lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]'
+  : 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]';
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <Section>
+    <div class:list={['grid grid-cols-1 items-start gap-xl', heroGridCols]}>
+      {
+        isMaker ? (
+          <img
+            src={img.makerspaceBanner}
+            alt="Marion County Maker Collective"
+            width={940}
+            height={788}
+            class="w-full min-w-0 rounded-lg border border-line"
+            loading="eager"
+            decoding="async"
+          />
+        ) : null
+      }
+      {
+        isBrick ? (
+          <img
+            src={img.programGlam}
+            alt="Brick City Glam performance"
+            width={1125}
+            height={1138}
+            class="max-h-[28rem] w-full min-w-0 rounded-lg border border-line object-cover"
+            loading="eager"
+            decoding="async"
+          />
+        ) : null
+      }
+      {
+        isStory ? (
+          <div
+            class="grid w-full min-w-0 grid-cols-1 items-stretch gap-sm sm:grid-cols-[2fr_0.55fr]"
+          >
+            <img
+              src={img.storytellingA}
+              alt="Storytelling Knights tabletop session"
+              width={2048}
+              height={1365}
+              class="w-full min-w-0 rounded-lg border border-line"
+              loading="eager"
+              decoding="async"
+            />
+            <img
+              src={img.storytellingB}
+              alt="Storytelling Knights community"
+              width={303}
+              height={479}
+              class="max-h-80 w-full min-w-0 rounded-lg border border-line object-cover"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+        ) : null
+      }
+      <div class="min-w-0">
+        <h1 class="type-display-xl">{entry.data.title}</h1>
+        <p class="type-lede">{entry.data.description}</p>
+        {
+          isMaker ? (
+            <div class="flex flex-wrap gap-sm">
+              <Button href={mailtoTourMakerCollective()}>Schedule a tour</Button>
+              <Button href={LINKS.boloMembershipApply} tone="outline" external>
+                Apply for membership
+              </Button>
+              <Button href={LINKS.zeffyMakerspaceDonation} tone="ghost" external>
+                View sponsorship / donate
+              </Button>
+              <Button href="/programs/maker-collective/equipment" tone="ghost">
+                Equipment wish list
+              </Button>
+            </div>
+          ) : null
+        }
+        {
+          isBrick ? (
+            <div class="flex flex-wrap gap-sm">
+              <Button href={LINKS.mcaApplaudTheArts} external>Upcoming performances</Button>
+              <Button href={LINKS.jotformCasting} tone="outline" external>
+                Casting form
+              </Button>
+            </div>
+          ) : null
+        }
+        {
+          isStory ? (
+            <div class="mt-md">
+              <Button href={LINKS.zeffyStorytellingSignup} external>Sign up for events</Button>
+            </div>
+          ) : null
+        }
+      </div>
+    </div>
+  </Section>
+
+  <Section variant="dark">
+    <Prose>
+      <Content />
+    </Prose>
+  </Section>
+
+  {
+    isMaker ? (
+      <Section>
+        <h2 class="type-display-lg mb-md">Makerspace & community</h2>
+        <PhotoGrid images={makerStrip} alt="Marion County Maker Collective" surface="light" />
+      </Section>
+    ) : null
+  }
+
+  {
+    isBrick ? (
+      <Section variant="dark">
+        <h2 class="type-display-lg mb-md">Photo gallery</h2>
+        <p class="type-muted mb-lg text-mist/70">
+          Moments from performances, collaborations, and community events.
+        </p>
+        <PhotoGrid images={brickGlamGallery} alt="Brick City Glam" />
+      </Section>
+    ) : null
+  }
+
+  {
+    isStory ? (
+      <Section>
+        <h2 class="type-display-lg mb-md">At the table</h2>
+        <div class="grid grid-cols-1 gap-md md:grid-cols-2">
+          <img
+            src={img.programStory}
+            alt=""
+            width={1365}
+            height={1365}
+            class="max-h-[28rem] w-full rounded-lg border border-line object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <img
+            src={img.programStoryAlt}
+            alt=""
+            width={1070}
+            height={1279}
+            class="max-h-[28rem] w-full rounded-lg border border-line object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </Section>
+    ) : null
+  }
+</BaseLayout>

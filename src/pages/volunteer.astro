@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/ui/Section.astro';
+import Button from '../components/ui/Button.astro';
+import {
+  mailtoVolunteerBrickCityGlam,
+  mailtoVolunteerStorytellingKnights,
+  mailtoVolunteerMakerCollective,
+} from '../lib/links';
+import { img } from '../lib/site-images';
+---
+
+<BaseLayout
+  title="Volunteer"
+  description="Volunteer with Brick City Glam, Storytelling Knights, or the Marion County Maker Collective."
+>
+  <Section>
+    <h1 class="type-display-xl">Volunteer</h1>
+    <p class="type-lede">
+      Show your support for the arts with your time. Below are ways to plug in across our programs.
+    </p>
+  </Section>
+
+  <Section variant="dark">
+    <div class="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_0.9fr]">
+      <div class="min-w-0">
+        <h2 class="type-display-lg">Brick City Glam</h2>
+        <p class="mb-md max-w-[40rem] text-mist/80">
+          Onstage or behind the scenes — audio and lighting technicians, merch, marketing (digital and street
+          team), stage management, and production assistant roles.
+        </p>
+        <Button href={mailtoVolunteerBrickCityGlam()}>Email to sign up</Button>
+      </div>
+      <figure class="m-0 max-h-[22rem] min-w-0 overflow-hidden rounded-lg border border-white/[0.12]">
+        <img
+          src={img.volunteerGlam}
+          alt="Brick City Glam volunteers and performance"
+          width={1152}
+          height={2048}
+          loading="lazy"
+          decoding="async"
+          class="block h-[22rem] w-full object-cover"
+        />
+      </figure>
+    </div>
+  </Section>
+
+  <Section>
+    <div class="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_0.9fr]">
+      <div class="min-w-0 lg:order-2">
+        <h2 class="type-display-lg">Storytelling Knights</h2>
+        <p class="type-muted mb-md max-w-[40rem]">
+          Marketing, event assistants (setup, strike, check-in), program development (help shape the next
+          adventure), and a training path for official storytellers.
+        </p>
+        <Button href={mailtoVolunteerStorytellingKnights()}>Email to sign up</Button>
+      </div>
+      <figure class="m-0 max-h-[22rem] min-w-0 overflow-hidden rounded-lg border border-line lg:order-1">
+        <img
+          src={img.volunteerStory}
+          alt="Storytelling Knights community event"
+          width={1440}
+          height={1440}
+          loading="lazy"
+          decoding="async"
+          class="block h-[22rem] w-full object-cover"
+        />
+      </figure>
+    </div>
+  </Section>
+
+  <Section variant="dark">
+    <div class="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_0.9fr]">
+      <div class="min-w-0">
+        <h2 class="type-display-lg">Marion County Maker Collective</h2>
+        <p class="mb-md max-w-[40rem] text-mist/80">
+          Lead maker meetups, instruct classes and workshops, assist with team builds, marketing (digital and
+          in-person events), and check-in / gift shop.
+        </p>
+        <Button href={mailtoVolunteerMakerCollective()}>Email to sign up</Button>
+      </div>
+      <figure class="m-0 max-h-[22rem] min-w-0 overflow-hidden rounded-lg border border-white/[0.12]">
+        <img
+          src={img.volunteerMakers}
+          alt="Makers and tools at the collective"
+          width={918}
+          height={974}
+          loading="lazy"
+          decoding="async"
+          class="block h-[22rem] w-full object-cover"
+        />
+      </figure>
+    </div>
+  </Section>
+
+  <Section>
+    <div class="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1.1fr_0.9fr]">
+      <figure class="m-0 max-h-80 min-w-0 overflow-hidden rounded-lg border border-line">
+        <img
+          src={img.volunteerCommunity}
+          alt="Community gathered for arts programming"
+          width={1366}
+          height={2048}
+          loading="lazy"
+          decoding="async"
+          class="block h-80 w-full object-cover"
+        />
+      </figure>
+      <div class="min-w-0">
+        <h2 class="type-display-lg">Why it matters</h2>
+        <p class="type-muted max-w-[36rem]">
+          Volunteers keep performances on stage, tables set for storytelling, and the makerspace welcoming.
+          Every hour you give helps neighbors access creative programs across Marion County.
+        </p>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

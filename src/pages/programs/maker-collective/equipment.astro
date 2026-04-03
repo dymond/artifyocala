@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Section from '../../../components/ui/Section.astro';
+import Button from '../../../components/ui/Button.astro';
+import PhotoGrid from '../../../components/ui/PhotoGrid.astro';
+import { getCollection } from 'astro:content';
+import { LINKS } from '../../../lib/links';
+import { img } from '../../../lib/site-images';
+
+const makerspaceStrip = [img.makerspaceA, img.makerspaceB, img.makerspaceC, img.makerspaceD] as const;
+
+const sections = await getCollection('equipment');
+const sectionOrder = [
+  'workshop',
+  'hand-tools',
+  'other-essentials',
+  'fibershop',
+  'fiber-materials',
+  'fiber-tools',
+  'tech-station',
+  'laser',
+  'vinyl',
+  'jewelry',
+  'performing-arts',
+];
+const sorted = sections.sort(
+  (a, b) => sectionOrder.indexOf(a.id) - sectionOrder.indexOf(b.id),
+);
+---
+
+<BaseLayout
+  title="Equipment wish list"
+  description="Equipment and supplies needed for the Marion County Maker Collective makerspace in Ocala, Florida."
+>
+  <Section>
+    <h1 class="type-display-xl">Equipment wish list</h1>
+    <p class="type-lede">
+      Help equip the Marion County Maker Collective. Below is the community wish list, organized by area.
+    </p>
+    <div class="flex flex-wrap gap-sm">
+      <Button href={LINKS.zeffyMakerspaceDonation} external>Sponsor / donate</Button>
+      <Button href="/programs/maker-collective" tone="outline">Back to Maker Collective</Button>
+    </div>
+    <figure class="mt-xl overflow-hidden rounded-lg border border-line">
+      <img
+        src={img.makerspaceBanner}
+        alt="Marion County Maker Collective makerspace"
+        width={940}
+        height={788}
+        loading="eager"
+        decoding="async"
+        class="block w-full"
+      />
+    </figure>
+  </Section>
+
+  <Section>
+    <h2 class="type-display-lg mb-md">The space you are helping build</h2>
+    <PhotoGrid images={makerspaceStrip} alt="Makerspace" surface="light" />
+  </Section>
+
+  <Section variant="dark">
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-lg">
+      {
+        sorted.map((s) => (
+          <section class="rounded-lg border border-white/10 bg-panel p-lg">
+            <h2 class="mb-md font-display text-[1.15rem]">{s.data.title}</h2>
+            <ul class="my-0 list-disc pl-[1.1rem] text-[0.92rem] leading-[1.55] text-mist/80">
+              {s.data.items.map((item) => (
+                <li class="mb-[0.35rem]">{item}</li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </Section>
+</BaseLayout>

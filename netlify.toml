@@ -1,0 +1,28 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/about-us"
+  to = "/about"
+  status = 301
+
+[[redirects]]
+  from = "/maker-collective"
+  to = "/programs/maker-collective"
+  status = 301
+
+[[redirects]]
+  from = "/maker-collective/equipment"
+  to = "/programs/maker-collective/equipment"
+  status = 301
+
+[[redirects]]
+  from = "/brick-city-glam"
+  to = "/programs/brick-city-glam"
+  status = 301
+
+[[redirects]]
+  from = "/storytelling-knights"
+  to = "/programs/storytelling-knights"
+  status = 301

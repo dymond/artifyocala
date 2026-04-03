@@ -1,0 +1,77 @@
+---
+import { LINKS, SITE } from '../../lib/links';
+import { img } from '../../lib/site-images';
+import IconFacebook from '../ui/icons/IconFacebook.astro';
+import IconInstagram from '../ui/icons/IconInstagram.astro';
+---
+
+<footer
+  class="border-line bg-panel pt-xl text-[0.92rem] text-mist/85 pb-[max(5rem,calc(var(--spacing-xl)+env(safe-area-inset-bottom,0px)))] md:pb-[max(5.5rem,calc(var(--spacing-xl)+env(safe-area-inset-bottom,0px)))]"
+>
+  <div class="site-container grid grid-cols-1 gap-lg sm:grid-cols-2 lg:grid-cols-3">
+    <div>
+      <a
+        href="/"
+        class="mb-sm inline-block max-w-[min(100%,9rem)] outline-none transition-opacity hover:opacity-90 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-panel"
+        aria-label="Artify Ocala — Home"
+      >
+        <img
+          src={img.logoOnDarkFull}
+          alt="Artify Ocala"
+          width={1600}
+          height={1259}
+          decoding="async"
+          class="h-auto w-full object-contain object-left"
+        />
+      </a>
+      <p class="m-0 leading-normal">{SITE.tagline}</p>
+    </div>
+    <div>
+      <p class="mb-sm font-display text-[0.85rem] font-bold uppercase tracking-widest text-buzz">Connect</p>
+      <p class="mb-2 mt-0">
+        <a class="text-mist no-underline hover:underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </p>
+      <p class="m-0 flex flex-wrap items-center gap-x-2 gap-y-1">
+        <a
+          class="inline-flex items-center gap-1.5 text-mist no-underline hover:underline"
+          href={LINKS.instagram}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Instagram
+          <IconInstagram class="h-4 w-4 text-mist" />
+        </a>
+        <span aria-hidden="true" class="text-mist/40">·</span>
+        <a
+          class="inline-flex items-center gap-1.5 text-mist no-underline hover:underline"
+          href={LINKS.facebook}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Facebook
+          <IconFacebook class="h-4 w-4 text-mist" />
+        </a>
+      </p>
+    </div>
+    <div>
+      <p class="mb-sm font-display text-[0.85rem] font-bold uppercase tracking-widest text-buzz">Community</p>
+      <p class="m-0">
+        <a
+          class="inline-flex items-center gap-2 text-mist no-underline hover:underline"
+          href={LINKS.facebookMeetupGroup}
+          rel="noopener noreferrer"
+          target="_blank"
+          aria-label="Maker meetups on Facebook"
+        >
+          Maker meetups
+          <IconFacebook class="h-4 w-4 text-mist" />
+        </a>
+      </p>
+    </div>
+  </div>
+  <div class="site-container mt-xl border-t-2 border-buzz/25 pt-md">
+    <p class="m-0 text-[0.85rem] opacity-65">
+      © {new Date().getFullYear()} Artify Ocala. 501(c)(3) nonprofit.
+    </p>
+  </div>
+</footer>

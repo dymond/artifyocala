@@ -1,0 +1,19 @@
+---
+interface Props {
+  words: readonly string[];
+  class?: string;
+}
+
+const { words, class: className = '' } = Astro.props;
+const wordsJson = JSON.stringify([...words]);
+---
+
+<span
+  class:list={['font-whimsy font-normal tracking-wide', className]}
+  x-data={`{ words: ${wordsJson}, i: 0 }`}
+  x-init="if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setInterval(() => { i = (i + 1) % words.length }, 2200) }"
+  x-text="words[i]"
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+></span>

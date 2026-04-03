@@ -1,0 +1,36 @@
+---
+interface Props {
+  /** Single line of text; duplicated internally for seamless loop. */
+  text: string;
+  class?: string;
+}
+
+const { text, class: className = '' } = Astro.props;
+---
+
+<div
+  class:list={[
+    /* w-screen / 100vw is wider than the layout by ~scrollbar width and causes horizontal scroll */
+    'w-full min-w-0 overflow-x-clip',
+    'border-y-[3px] border-ink bg-buzz text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]',
+    className,
+  ]}
+  role="presentation"
+  aria-hidden="true"
+>
+  <div class="overflow-hidden">
+    <div class="artify-marquee-track">
+      <div
+        class="flex shrink-0 items-center whitespace-nowrap px-8 py-3 font-display text-[clamp(0.68rem,1.8vw,0.95rem)] font-extrabold uppercase tracking-[0.22em]"
+      >
+        {text}
+      </div>
+      <div
+        class="flex shrink-0 items-center whitespace-nowrap px-8 py-3 font-display text-[clamp(0.68rem,1.8vw,0.95rem)] font-extrabold uppercase tracking-[0.22em]"
+        aria-hidden="true"
+      >
+        {text}
+      </div>
+    </div>
+  </div>
+</div>

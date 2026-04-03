@@ -1,0 +1,22 @@
+---
+interface Props {
+  id?: string;
+  variant?: 'light' | 'dark';
+  class?: string;
+}
+
+const { id, variant = 'light', class: className = '' } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={[
+    'py-2xl',
+    variant === 'dark' ? 'dark-surface bg-void text-mist' : 'bg-mist text-ink',
+    className,
+  ]}
+>
+  <div class="site-container">
+    <slot />
+  </div>
+</section>

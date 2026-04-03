@@ -1,0 +1,84 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { img } from '../lib/site-images';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Artify Ocala — art, performance, and making in Marion County, Florida.' } =
+  Astro.props;
+
+const fullTitle = title === 'Home' ? 'Artify Ocala' : `${title} · Artify Ocala`;
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+const shareImageUrl = new URL(img.getCreative, Astro.site).href;
+
+/*
+  Partytown (@astrojs/partytown) runs third-party scripts in a web worker.
+  Do NOT move Alpine or site UI scripts into Partytown.
+
+  When you add GA4 / GTM, use type="text/partytown" on those script tags only.
+  astro.config.mjs already forwards dataLayer.push for common GTM setups.
+*/
+const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Syne:wght@500;600;700;800&family=Shrikhand&display=swap"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href={img.socialMetaA} />
+    <link rel="icon" type="image/png" sizes="201x201" href={img.socialMetaB} />
+    <title>{fullTitle}</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl.href} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={shareImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImageUrl} />
+    <ClientRouter />
+    {
+      analyticsId ? (
+        <>
+          <script
+            type="text/partytown"
+            src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}
+          />
+          <script type="text/partytown" define:vars={{ analyticsId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', analyticsId);
+          </script>
+        </>
+      ) : null
+    }
+  </head>
+  <body class="flex min-h-screen flex-col">
+    <Header />
+    <main class="w-full min-w-0 flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

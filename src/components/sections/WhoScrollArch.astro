@@ -1,0 +1,75 @@
+---
+import Button from '../ui/Button.astro';
+import { img } from '../../lib/site-images';
+---
+
+<section
+  id="who"
+  class="overflow-x-clip bg-mist text-ink"
+  aria-labelledby="who-heading"
+>
+  {/*
+    Mirrors Webflow structure: .sticky-arc-wrap (tall) > .sticky-arc (sticky, flex-end) >
+    .sticky-arc-element (overflow hidden, top radii = arch, grows w/h). Copy centered like .our-menu-wrapper.
+  */}
+  <div class="artify-who-driver w-full max-w-none min-h-[280vh]">
+    <div class="artify-who-sticky sticky top-0 z-0 flex h-dvh min-h-[26rem] w-full items-end justify-center overflow-hidden bg-mist" >
+      <div class="artify-who-webgl-wrap pointer-events-none absolute inset-0 z-[1] opacity-[0.92]" aria-hidden="true" >
+        <canvas
+          id="artify-who-canvas"
+          class="min-h-0 min-w-0 bg-[#f4f5fc]"
+        ></canvas>
+      </div>
+      <div class="artify-who-arch-frame relative z-[2] bg-ink">
+        <img
+          src={img.communityFeatured}
+          alt="Community members at an Artify Ocala event"
+          width={1317}
+          height={1756}
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 z-0 h-full max-h-none w-full object-cover object-[center_30%]"
+        />
+        <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-ink/45 via-ink/15 via-35% to-ink/82" aria-hidden="true" />
+        <div class="artify-who-copy-layer dark-surface absolute inset-0 z-[2] flex w-full flex-col items-center justify-center gap-0 px-[max(var(--spacing-md),env(safe-area-inset-left))] py-xl text-center sm:px-lg" >
+          <div class="flex w-full max-w-[46rem] flex-col items-center">
+            <p
+              class="mb-2 font-display text-[0.82rem] font-extrabold uppercase tracking-[0.24em] text-accent-soft"
+            >
+              The crew
+            </p>
+            <h2
+              id="who-heading"
+              class="mb-sm font-display text-[clamp(2rem,4.5vw,3.35rem)] font-bold leading-[1.06] tracking-[-0.02em] text-mist"
+            >
+              Who we are
+            </h2>
+            <p
+              class="mb-lg max-w-none text-balance text-[1.22rem] font-medium leading-[1.58] text-mist/94 sm:text-[1.32rem] md:text-[1.38rem]"
+            >
+              Since 2017 Artify Ocala has served Marion County alongside visual and
+              performing artists from many disciplines. We connect people to
+              opportunities to showcase work and weave artistry into everyday
+              community life.
+            </p>
+            <div>
+              <Button href="/about" tone="surge">About us</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { mountWhoArchBackdrop, unmountWhoArchBackdrop } from '../../scripts/who-arch-backdrop';
+
+  function refreshWhoBackdrop() {
+    unmountWhoArchBackdrop();
+    mountWhoArchBackdrop();
+  }
+
+  refreshWhoBackdrop();
+  document.addEventListener('astro:page-load', refreshWhoBackdrop);
+</script>
