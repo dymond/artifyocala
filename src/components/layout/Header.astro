@@ -30,10 +30,17 @@ const menuArcItems = [
   },
 ] as const;
 
-/** Large enough that adjacent pills (~5.75rem wide) do not overlap on the arc. */
-const arcRadius = 280;
+/**
+ * Elliptical arc (md+): wider than tall so neighbors get more horizontal gap without
+ * needing a huge radius that pushes pills off narrow screens. Values tuned for ~5rem pills.
+ */
+const arcRx = 158;
+const arcRy = 80;
 
-/** Upper semicircle only: from left (-180°) through top (-90°) to right (0°), y ≤ 0 in screen space. */
+/** Index of the top-of-arc item (highest on screen) — used for z-stacking. */
+const arcPeakIndex = Math.round((menuArcItems.length - 1) / 2);
+
+/** Upper semicircle only: from left through top to right, y ≤ 0 in screen space. */
 function arcOffset(index: number, total: number) {
   const startDeg = -178;
   const endDeg = -2;
@@ -41,10 +48,17 @@ function arcOffset(index: number, total: number) {
   const angleDeg = startDeg + (endDeg - startDeg) * t;
   const rad = (angleDeg * Math.PI) / 180;
   return {
-    x: Math.round(arcRadius * Math.cos(rad)),
-    y: Math.round(arcRadius * Math.sin(rad)),
+    x: Math.round(arcRx * Math.cos(rad)),
+    y: Math.round(arcRy * Math.sin(rad)),
   };
 }
+
+/** Vertical reach of arc (ellipse) + half pill — sets desktop panel height. */
+const arcPanelHeightPx = arcRy + 42;
+
+const navStaggerEnter = (i: number) => String(i * 48);
+/** Same order as enter: left / list-top first, right / list-bottom last. */
+const navStaggerLeave = (i: number) => String(i * 32);
 
 function current(href: string): boolean {
   if (href === '/') return pathname === '/';
@@ -52,6 +66,10 @@ function current(href: string): boolean {
 }
 
 const homeActive = pathname === '/';
+
+/** Alpine x-data: keep panel layout open until item leave transitions finish (max stagger + desktop duration). */
+const wheelNavAlpineData =
+  '{ menuOpen:false,navShellOpen:false,shellHoldMs:780,openWheelNav(){if(this.shellTimer)clearTimeout(this.shellTimer);this.navShellOpen=true;this.$nextTick(()=>{this.menuOpen=true})},closeWheelNav(){if(!this.navShellOpen)return;this.menuOpen=false;if(this.shellTimer)clearTimeout(this.shellTimer);this.shellTimer=setTimeout(()=>{this.navShellOpen=false;this.shellTimer=null},this.shellHoldMs)},toggleWheelNav(){this.menuOpen?this.closeWheelNav():this.openWheelNav()} }';
 ---
 
 <script is:inline>
@@ -95,14 +113,14 @@ const homeActive = pathname === '/';
 <div
   class="pointer-events-none fixed inset-x-0 bottom-0 z-[100] flex justify-center"
   style="padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));"
-  x-data="{ menuOpen: false }"
-  @artify:close-floating-nav.window="menuOpen = false"
-  @keydown.escape.window="menuOpen = false"
+  x-data={wheelNavAlpineData}
+  @artify:close-floating-nav.window="closeWheelNav()"
+  @keydown.escape.window="navShellOpen && closeWheelNav()"
 >
   <div class="pointer-events-auto relative flex flex-col items-center">
     <div
       class="pointer-events-auto fixed inset-0 z-[90] bg-void/55 backdrop-blur-[2px] transition-opacity duration-300"
-      x-show="menuOpen"
+      x-show="navShellOpen"
       x-transition:enter="ease-out duration-300"
       x-transition:enter-start="opacity-0"
       x-transition:enter-end="opacity-100"
@@ -110,42 +128,100 @@ const homeActive = pathname === '/';
       x-transition:leave-start="opacity-100"
       x-transition:leave-end="opacity-0"
       x-cloak
-      @click="menuOpen = false"
+      @click="closeWheelNav()"
       role="presentation"
     >
     </div>
 
     <nav
       id="wheel-nav-panel"
-      class="relative z-[100] flex w-[min(96vw,420px)] items-end justify-center transition-[height,margin] duration-200"
-      x-bind:class="menuOpen ? 'mb-3 h-[min(52vh,360px)] overflow-visible' : 'mb-0 h-0 overflow-hidden'"
+      class="relative z-[100] w-[min(92vw,20rem)] transition-[margin,max-height] duration-300 ease-out md:w-[min(96vw,408px)]"
+      x-bind:class="navShellOpen ? 'mb-3 max-h-[min(52vh,380px)] overflow-y-auto md:max-h-none md:overflow-visible' : 'mb-0 max-h-0 overflow-hidden'"
       aria-label="Site menu"
     >
-      <div class="relative h-full min-h-0 w-full">
+      <!-- Small screens: flow layout + staggered “swoop” from bottom-left. -->
+      <ul class="relative m-0 flex list-none flex-col items-stretch gap-2.5 px-1 py-1 md:hidden">
+        {
+          menuArcItems.map((item, i) => {
+            const isActive = current(item.href);
+            const a11y = 'ariaLabel' in item && item.ariaLabel ? item.ariaLabel : item.label;
+            const zMobile = 20 - Math.abs(i - arcPeakIndex);
+            return (
+              <li
+                class="relative m-0 block p-0"
+                style={`z-index: ${zMobile}`}
+                x-show="menuOpen"
+                x-transition:enter="transition duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                x-transition:enter-start="opacity-0 -translate-x-5 translate-y-4 scale-[0.92] -rotate-2"
+                x-transition:enter-end="opacity-100 translate-x-0 translate-y-0 scale-100 rotate-0"
+                x-transition:leave="transition duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                x-transition:leave-start="opacity-100 translate-x-0 translate-y-0 scale-100 rotate-0"
+                x-transition:leave-end="opacity-0 translate-x-5 translate-y-4 scale-[0.92] rotate-2"
+                data-enter-ms={navStaggerEnter(i)}
+                data-leave-ms={navStaggerLeave(i)}
+                x-bind:style="'transition-delay: ' + (menuOpen ? $el.dataset.enterMs : $el.dataset.leaveMs) + 'ms'"
+              >
+                <a
+                  href={item.href}
+                  class:list={[
+                    'flex min-h-[2.75rem] w-full items-center justify-center rounded-full border px-3 py-2 text-center text-[0.78rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                    'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
+                    isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist',
+                  ]}
+                  aria-label={a11y}
+                  @click="closeWheelNav()"
+                >
+                  {item.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <!-- md+: compact ellipse so pills stay on-screen while separating more than a small circle. -->
+      <div
+        class="relative hidden min-h-0 w-full overflow-visible md:block"
+        style={`height: ${arcPanelHeightPx}px`}
+      >
         {
           menuArcItems.map((item, i) => {
             const { x, y } = arcOffset(i, menuArcItems.length);
             const isActive = current(item.href);
             const a11y = 'ariaLabel' in item && item.ariaLabel ? item.ariaLabel : item.label;
+            const zArc = 40 - Math.abs(i - arcPeakIndex);
             return (
               <div
-                class="absolute left-1/2 top-full transition-[transform,opacity] duration-300 ease-out"
-                style={`transform: translate(-50%, -50%) translate(${x}px, ${y}px); transition-delay: ${i * 32}ms;`}
+                class="absolute left-1/2 top-full"
+                style={`transform: translate(-50%, -50%) translate(${x}px, ${y}px); z-index: ${zArc};`}
                 x-bind:class="menuOpen ? 'pointer-events-auto' : 'pointer-events-none'"
               >
-                <a
-                  href={item.href}
-                  class:list={[
-                    'flex min-h-[2.75rem] w-[5.75rem] max-w-[5.75rem] origin-center items-center justify-center rounded-full border px-2 py-2 text-center text-[0.78rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                    'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
-                    isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist',
-                  ]}
-                  x-bind:class="menuOpen ? 'scale-100 opacity-100' : 'scale-[0.35] opacity-0'"
-                  aria-label={a11y}
-                  @click="menuOpen = false"
+                <div
+                  class="origin-bottom-left"
+                  x-show="menuOpen"
+                  x-transition:enter="transition duration-[480ms] ease-[cubic-bezier(0.34,1.15,0.48,1)] will-change-transform"
+                  x-transition:enter-start="opacity-0 -translate-x-8 translate-y-10 scale-[0.35] -rotate-[12deg]"
+                  x-transition:enter-end="opacity-100 translate-x-0 translate-y-0 scale-100 rotate-0"
+                  x-transition:leave="transition duration-[480ms] ease-[cubic-bezier(0.34,1.15,0.48,1)] will-change-transform"
+                  x-transition:leave-start="opacity-100 translate-x-0 translate-y-0 scale-100 rotate-0"
+                  x-transition:leave-end="opacity-0 translate-x-8 translate-y-10 scale-[0.35] rotate-[12deg]"
+                  data-enter-ms={navStaggerEnter(i)}
+                  data-leave-ms={navStaggerLeave(i)}
+                  x-bind:style="'transition-delay: ' + (menuOpen ? $el.dataset.enterMs : $el.dataset.leaveMs) + 'ms'"
                 >
-                  {item.label}
-                </a>
+                  <a
+                    href={item.href}
+                    class:list={[
+                      'flex min-h-[2.75rem] w-[5rem] max-w-[5rem] items-center justify-center rounded-full border px-1.5 py-2 text-center text-[0.75rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[5.35rem] sm:max-w-[5.35rem] sm:text-[0.78rem]',
+                      'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
+                      isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist',
+                    ]}
+                    aria-label={a11y}
+                    @click="closeWheelNav()"
+                  >
+                    {item.label}
+                  </a>
+                </div>
               </div>
             );
           })
@@ -179,8 +255,8 @@ const homeActive = pathname === '/';
       <button
         type="button"
         class="flex h-12 min-w-[5.5rem] shrink-0 items-center justify-center gap-2 rounded-full bg-white/14 px-4 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        @click="menuOpen = !menuOpen"
-        x-bind:aria-expanded="menuOpen"
+        @click="toggleWheelNav()"
+        x-bind:aria-expanded="navShellOpen"
         aria-haspopup="true"
         aria-controls="wheel-nav-panel"
         x-bind:aria-label="menuOpen ? 'Close menu' : 'Open menu'"
