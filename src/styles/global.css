@@ -2,7 +2,6 @@
 @import "@fontsource-variable/instrument-sans/wght.css";
 @import "@fontsource-variable/instrument-sans/wght-italic.css";
 @import "@fontsource-variable/syne/wght.css";
-@import "@fontsource/shrikhand/latin-400.css";
 
 @import "tailwindcss";
 
@@ -11,8 +10,6 @@
     "Instrument Sans Variable", "Instrument Sans", ui-sans-serif, system-ui,
     sans-serif;
   --font-display: "Syne Variable", "Syne", var(--font-sans);
-  /* Word rotator / playful display (Google-style pairing: Shrikhand) */
-  --font-whimsy: "Shrikhand", var(--font-display);
 
   /* Hollow logo on light: navy type + periwinkle strokes (#1c1c33 / #8c92e3 / #b0b8ff) */
   --color-ink: #1c1c33;
@@ -757,6 +754,10 @@
 /* Hero word rotator: ink fill + light periwinkle offset shadow (avoids broken
    Tailwind arbitrary [text-shadow:…,…] parsing with internal commas). */
 @utility artify-hero-word-rotator {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 4.35vw, 2.6rem);
+  letter-spacing: -0.02em;
   color: var(--color-ink);
   text-shadow:
     0.08em 0.08em 0 var(--color-buzz),
