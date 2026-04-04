@@ -71,31 +71,26 @@ import { img } from '../../lib/site-images';
 </section>
 
 <script>
-  import { importWhoArchBackdropModule } from '../../scripts/who-arch-loader';
+  /**
+   * Static import avoids Vite’s `__vitePreload` wrapper on dynamic `import()` / glob, which
+   * Netlify’s build-time esbuild pass fails to parse. Three/WebGL still start only after the
+   * section nears the viewport (IntersectionObserver → mount).
+   */
+  import {
+    mountWhoArchBackdrop,
+    unmountWhoArchBackdrop,
+  } from '../../scripts/who-arch-backdrop';
 
-  type WhoMod = typeof import('../../scripts/who-arch-backdrop');
-
-  let whoMod: WhoMod | null = null;
   let whoIo: IntersectionObserver | null = null;
-  /** Bumps on teardown so in-flight `import()` doesn’t mount after navigation away. */
-  let whoLoadGen = 0;
+  let whoMounted = false;
 
   function teardownWhoArchBackdrop(): void {
-    whoLoadGen += 1;
     whoIo?.disconnect();
     whoIo = null;
-    if (whoMod) {
-      whoMod.unmountWhoArchBackdrop();
+    if (whoMounted) {
+      unmountWhoArchBackdrop();
+      whoMounted = false;
     }
-  }
-
-  async function loadAndMountWhoArchBackdrop(): Promise<void> {
-    const gen = whoLoadGen;
-    if (!whoMod) {
-      whoMod = await importWhoArchBackdropModule();
-    }
-    if (gen !== whoLoadGen) return;
-    whoMod.mountWhoArchBackdrop();
   }
 
   function setupWhoArchBackdrop(): void {
@@ -107,7 +102,9 @@ import { img } from '../../lib/site-images';
     if (!who) return;
 
     const kickoff = (): void => {
-      void loadAndMountWhoArchBackdrop();
+      if (whoMounted) return;
+      mountWhoArchBackdrop();
+      whoMounted = true;
     };
 
     if (!('IntersectionObserver' in window)) {
