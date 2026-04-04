@@ -8,24 +8,24 @@ import alpinejs from '@astrojs/alpinejs';
 import partytown from '@astrojs/partytown';
 import sitemap from '@astrojs/sitemap';
 
-/** Netlify runs esbuild on client chunks; Vite’s `__vitePreload` helper breaks that pass. */
-function stripVitePreloadFromWhoArchLoader() {
+/**
+ * Vite injects `__vitePreload` into the who-arch-loader chunk; Netlify’s build runs esbuild
+ * on that output *before* `generateBundle` completes, so we must rewrite in `renderChunk`
+ * (Rollup output phase), not only in `generateBundle`.
+ */
+function stripVitePreloadWhoArchLoaderOutputPlugin() {
   return {
     name: 'strip-vite-preload-who-arch-loader',
-    apply: 'build',
-    enforce: 'post',
-    generateBundle(_options, bundle) {
-      for (const chunk of Object.values(bundle)) {
-        if (chunk.type !== 'chunk' || !chunk.fileName.includes('who-arch-loader')) continue;
-        let { code } = chunk;
-        code = code.replace(
-          /\(\)\s*=>\s*__vitePreload\s*\(\s*\(\)\s*=>\s*import\s*\(([^)]+)\)\s*,[^)]+\)/g,
-          '() => import($1)',
-        );
-        const start = code.indexOf('const loadWhoArchBackdrop');
-        if (start > 0) code = code.slice(start);
-        chunk.code = code;
-      }
+    renderChunk(code, chunk) {
+      const label = chunk.fileName ?? chunk.name ?? '';
+      if (typeof label !== 'string' || !label.includes('who-arch-loader')) return null;
+      let out = code.replace(
+        /\(\)\s*=>\s*__vitePreload\s*\(\s*\(\)\s*=>\s*import\s*\(([^)]+)\)\s*,[^)]+\)/g,
+        '() => import($1)',
+      );
+      const start = out.indexOf('const loadWhoArchBackdrop');
+      if (start > 0) out = out.slice(start);
+      return { code: out, map: null };
     },
   };
 }
@@ -35,7 +35,7 @@ export default defineConfig({
   site: 'https://artify.diy',
   output: 'static',
   vite: {
-    plugins: [tailwindcss(), stripVitePreloadFromWhoArchLoader()],
+    plugins: [tailwindcss()],
     esbuild: {
       /** Keep `typeof x === "undefined"` form; some CI esbuild passes choke on `typeof x<"u"`. */
       minifyIdentifiers: false,
@@ -48,6 +48,7 @@ export default defineConfig({
       modulePreload: false,
       rollupOptions: {
         output: {
+          plugins: [stripVitePreloadWhoArchLoaderOutputPlugin()],
           manualChunks(id) {
             if (id.includes('who-arch-loader')) {
               return 'who-arch-loader';
