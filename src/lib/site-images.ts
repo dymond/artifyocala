@@ -5,6 +5,8 @@
 const b = '/images';
 
 export const img = {
+  /** Open Graph / Twitter / iMessage-style link preview (2400×1260). */
+  socialShareCard: `${b}/artify-ocala-social-share.png`,
   /** Wordmark for light backgrounds (outlined / hollow treatment). */
   logoOnLightHollow: `${b}/logo-on-light-hollow.png`,
   /** Full wordmark for dark backgrounds (filled). */

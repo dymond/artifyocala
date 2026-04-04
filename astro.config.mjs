@@ -6,10 +6,11 @@ import mdx from '@astrojs/mdx';
 import netlify from '@astrojs/netlify';
 import alpinejs from '@astrojs/alpinejs';
 import partytown from '@astrojs/partytown';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.artifyocala.org',
+  site: 'https://artify.diy',
   output: 'static',
   vite: {
     plugins: [tailwindcss()],
@@ -26,6 +27,7 @@ export default defineConfig({
   },
   integrations: [
     mdx(),
+    sitemap(),
     alpinejs(),
     partytown({
       config: {

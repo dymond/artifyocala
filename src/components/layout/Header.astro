@@ -30,7 +30,8 @@ const menuArcItems = [
   },
 ] as const;
 
-const arcRadius = 128;
+/** Large enough that adjacent pills (~5.75rem wide) do not overlap on the arc. */
+const arcRadius = 280;
 
 /** Upper semicircle only: from left (-180°) through top (-90°) to right (0°), y ≤ 0 in screen space. */
 function arcOffset(index: number, total: number) {
@@ -116,8 +117,8 @@ const homeActive = pathname === '/';
 
     <nav
       id="wheel-nav-panel"
-      class="relative z-[100] flex w-[min(94vw,320px)] items-end justify-center transition-[height,margin] duration-200"
-      x-bind:class="menuOpen ? 'mb-2 h-[min(36vh,200px)] overflow-visible' : 'mb-0 h-0 overflow-hidden'"
+      class="relative z-[100] flex w-[min(96vw,420px)] items-end justify-center transition-[height,margin] duration-200"
+      x-bind:class="menuOpen ? 'mb-3 h-[min(52vh,360px)] overflow-visible' : 'mb-0 h-0 overflow-hidden'"
       aria-label="Site menu"
     >
       <div class="relative h-full min-h-0 w-full">
@@ -135,8 +136,8 @@ const homeActive = pathname === '/';
                 <a
                   href={item.href}
                   class:list={[
-                    'block origin-center rounded-full border px-3 py-2 text-center text-[0.78rem] font-semibold leading-tight transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                    'max-w-[5.75rem] border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
+                    'flex min-h-[2.75rem] w-[5.75rem] max-w-[5.75rem] origin-center items-center justify-center rounded-full border px-2 py-2 text-center text-[0.78rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                    'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
                     isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist',
                   ]}
                   x-bind:class="menuOpen ? 'scale-100 opacity-100' : 'scale-[0.35] opacity-0'"
