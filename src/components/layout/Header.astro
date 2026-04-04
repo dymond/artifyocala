@@ -254,38 +254,6 @@ const wheelNavAlpineData =
 
       <button
         type="button"
-        id="artify-studio-mode-toggle"
-        class="flex h-12 min-w-[5.25rem] shrink-0 items-center justify-center rounded-full bg-white/14 px-3 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        aria-pressed="false"
-        aria-label="Turn on studio mode: paint or cut elements on the page"
-      >
-        Studio
-      </button>
-      <button
-        type="button"
-        id="artify-studio-tool-toggle"
-        class="ml-1 flex h-12 min-w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-white/10 px-2 text-xs font-bold tracking-wide text-mist/90 transition-colors hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        hidden
-        aria-hidden="true"
-        aria-label="Switch to saw (drag across elements to chop)"
-      >
-        Paint
-      </button>
-      <button
-        type="button"
-        id="artify-studio-mode-clear"
-        class="ml-1 flex h-12 min-w-[4.25rem] shrink-0 items-center justify-center rounded-full bg-white/10 px-2 text-xs font-bold tracking-wide text-mist/90 transition-colors hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-        hidden
-        aria-hidden="true"
-        aria-label="Clear studio marks"
-      >
-        Clear
-      </button>
-
-      <div class="mx-1 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></div>
-
-      <button
-        type="button"
         class="flex h-12 min-w-[5.5rem] shrink-0 items-center justify-center gap-2 rounded-full bg-white/14 px-4 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         @click="toggleWheelNav()"
         x-bind:aria-expanded="navShellOpen"

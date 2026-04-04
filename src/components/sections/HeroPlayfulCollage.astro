@@ -48,7 +48,7 @@ function aspectInner(v: CardVariant): string {
 }
 
 /** Tiny sticker crops — slots between card indices so stickers don’t duplicate flip faces. */
-const stickerA = G[1];
+const stickerA = G[14];
 const stickerB = G[3];
 const stickerC = G[5];
 
@@ -157,7 +157,7 @@ const cards: ReadonlyArray<CardConfig> = [
     backStripClass: 'bg-surge font-display text-[0.54rem] font-extrabold uppercase tracking-[0.1em] text-mist',
     bob: 'artify-hero-card-bob-4',
     flip: 'artify-hero-flip-d',
-    box: 'right-[3%] bottom-[7%] w-[min(88%,12.25rem)] sm:right-[6%] sm:bottom-[9%] sm:w-[min(82%,13.75rem)]',
+    box: 'right-[1%] bottom-[3%] w-[min(88%,12.25rem)] sm:right-[3%] sm:bottom-[4%] sm:w-[min(82%,13.75rem)]',
     layerDelaySec: 7.1,
     loading: 'lazy',
     fetchPriority: 'auto',
@@ -634,6 +634,105 @@ const bleedPhotoRound = (c: CardConfig) => photoRoundBleed(c.variant);
             stroke-linejoin="round"
           ></path>
           <circle cx="20" cy="20" r="5" fill="var(--color-buzz)" stroke="var(--color-ink)" stroke-width="1.75"></circle>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Occult all-seeing eye (decorative): pyramid + rays + slit pupil -->
+    <div
+      class="pointer-events-none absolute right-[13%] top-[42%] w-[4.65rem] sm:right-[15%] sm:top-[44%] sm:w-[5.35rem]"
+      style="animation-delay: -15.5s"
+      aria-hidden="true"
+    >
+      <div
+        class="artify-hero-occult-drift h-full w-full drop-shadow-[0_3px_0_var(--color-ink),0_0_14px_color-mix(in_srgb,var(--color-club)_45%,transparent)]"
+      >
+        <svg
+          class="h-full w-full overflow-visible"
+          viewBox="0 0 100 108"
+          fill="none"
+          role="img"
+          aria-label="Decorative all-seeing eye"
+        >
+          <title>Decorative all-seeing eye in a triangle</title>
+          <defs>
+            <radialGradient id="artify-hero-occult-iris" cx="38%" cy="38%" r="68%">
+              <stop offset="0%" stop-color="var(--color-accent-soft)"></stop>
+              <stop offset="45%" stop-color="var(--color-club)"></stop>
+              <stop offset="100%" stop-color="var(--color-ink)"></stop>
+            </radialGradient>
+          </defs>
+          <g
+            class="artify-hero-occult-pulse"
+            stroke="var(--color-club)"
+            stroke-linecap="round"
+            stroke-width="1.65"
+            opacity="0.88"
+          >
+            <line x1="50" y1="54" x2="50" y2="14"></line>
+            <line x1="50" y1="54" x2="82" y2="30"></line>
+            <line x1="50" y1="54" x2="82" y2="78"></line>
+            <line x1="50" y1="54" x2="50" y2="98"></line>
+            <line x1="50" y1="54" x2="18" y2="78"></line>
+            <line x1="50" y1="54" x2="18" y2="30"></line>
+            <line x1="50" y1="54" x2="88" y2="54"></line>
+            <line x1="50" y1="54" x2="12" y2="54"></line>
+            <line x1="50" y1="54" x2="74" y2="22"></line>
+            <line x1="50" y1="54" x2="26" y2="22"></line>
+            <line x1="50" y1="54" x2="74" y2="86"></line>
+            <line x1="50" y1="54" x2="26" y2="86"></line>
+          </g>
+          <path
+            d="M50 9 L91 92 H9 Z"
+            fill="color-mix(in srgb, var(--color-mist) 88%, var(--color-club) 12%)"
+            stroke="var(--color-ink)"
+            stroke-width="2.75"
+            stroke-linejoin="round"
+          ></path>
+          <path
+            d="M50 20 L80 84 H20 Z"
+            fill="none"
+            stroke="var(--color-ink)"
+            stroke-dasharray="3.2 4.5"
+            stroke-width="1.15"
+            stroke-linejoin="round"
+            opacity="0.45"
+          ></path>
+          <circle cx="50" cy="9" r="2.4" fill="var(--color-buzz)" stroke="var(--color-ink)" stroke-width="1.2"></circle>
+          <circle cx="9" cy="92" r="2.2" fill="var(--color-surge)" stroke="var(--color-ink)" stroke-width="1.2"></circle>
+          <circle cx="91" cy="92" r="2.2" fill="var(--color-accent-soft)" stroke="var(--color-ink)" stroke-width="1.2"
+          ></circle>
+          <ellipse
+            cx="50"
+            cy="54"
+            rx="17"
+            ry="10.5"
+            fill="var(--color-mist)"
+            stroke="var(--color-ink)"
+            stroke-width="2.25"
+          ></ellipse>
+          <circle cx="50" cy="54" r="10" fill="url(#artify-hero-occult-iris)" stroke="var(--color-ink)" stroke-width="1.5"
+          ></circle>
+          <ellipse cx="50" cy="54" rx="6.5" ry="7.2" fill="none" stroke="var(--color-ink)" stroke-width="0.85" opacity="0.35"
+          ></ellipse>
+          <rect
+            x="47.85"
+            y="47.5"
+            width="4.3"
+            height="13"
+            rx="1.2"
+            fill="var(--color-ink)"
+          ></rect>
+          <rect x="48.9" y="49.2" width="1.35" height="4.2" rx="0.45" fill="var(--color-mist)" opacity="0.55"></rect>
+          <circle
+            cx="44.2"
+            cy="50.2"
+            r="1.85"
+            fill="var(--color-mist)"
+            stroke="var(--color-ink)"
+            stroke-width="0.65"
+            opacity="0.9"
+          ></circle>
         </svg>
       </div>
     </div>

@@ -33,17 +33,4 @@ test.describe('public pages', () => {
     await expect(wheelNav.getByRole('link', { name: 'Brick City Glam' })).toBeVisible();
   });
 
-  test('studio mode toggle shows canvas overlay', async ({ page }) => {
-    await page.setViewportSize({ width: 480, height: 820 });
-    await page.goto('/');
-    const studioBtn = page.getByRole('button', { name: /Turn on studio mode/i });
-    await expect(studioBtn).toBeVisible();
-    await studioBtn.click();
-    const canvas = page.locator('#artify-messy-canvas');
-    await expect(canvas).toBeVisible();
-    await expect(canvas).toHaveAttribute('data-active', 'true');
-    await expect(page.locator('html')).toHaveAttribute('data-artify-messy-studio', 'on');
-    await expect(page.getByRole('button', { name: 'Clear studio marks' })).toBeVisible();
-    await expect(page.getByRole('button', { name: /Switch to saw/i })).toBeVisible();
-  });
 });

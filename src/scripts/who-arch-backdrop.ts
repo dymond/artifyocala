@@ -426,10 +426,23 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
   let running = true;
   let lastFrameMs = performance.now();
 
-  const resize = () => {
+  /** Skip redundant work when RO/dvh fires repeatedly with the same rounded size (mobile). */
+  let lastAppliedW = 0;
+  let lastAppliedH = 0;
+
+  let resizeRaf = 0;
+  let resizeScheduled = false;
+
+  const applyResize = (force = false) => {
     if (!sizeRoot) return;
     const w = Math.max(1, Math.round(sizeRoot.clientWidth));
     const h = Math.max(1, Math.round(sizeRoot.clientHeight));
+    if (!force && w === lastAppliedW && h === lastAppliedH) {
+      return;
+    }
+    lastAppliedW = w;
+    lastAppliedH = h;
+
     const layout = computeWhoArchBackdropLayout(w, h, amp, {
       overscanPx: tune.overscanPx,
       padMultiplier: tune.padMultiplier,
@@ -480,10 +493,19 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
     }
   };
 
-  const ro = sizeRoot ? new ResizeObserver(resize) : null;
+  const scheduleResize = () => {
+    if (resizeScheduled) return;
+    resizeScheduled = true;
+    resizeRaf = requestAnimationFrame(() => {
+      resizeScheduled = false;
+      resizeRaf = 0;
+      applyResize(false);
+    });
+  };
+
+  const ro = sizeRoot ? new ResizeObserver(() => scheduleResize()) : null;
   ro?.observe(sizeRoot);
-  resize();
-  requestAnimationFrame(resize);
+  applyResize(true);
 
   const tick = () => {
     if (!running) return;
@@ -495,16 +517,34 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
     raf = requestAnimationFrame(tick);
   };
 
+  /** Avoid stop/start thrash when intersection barely crosses thresholds while scrolling. */
+  let pauseAfterHidden: ReturnType<typeof setTimeout> | null = null;
+  const PAUSE_RENDER_MS = 180;
+
   const io = new IntersectionObserver(
     (entries) => {
       const vis = entries.some((e) => e.isIntersecting && e.intersectionRatio > 0);
-      if (vis && !running) {
-        running = true;
-        lastFrameMs = performance.now();
-        raf = requestAnimationFrame(tick);
-      } else if (!vis && running) {
-        running = false;
-        cancelAnimationFrame(raf);
+      if (vis) {
+        if (pauseAfterHidden !== null) {
+          clearTimeout(pauseAfterHidden);
+          pauseAfterHidden = null;
+        }
+        if (!running) {
+          running = true;
+          lastFrameMs = performance.now();
+          raf = requestAnimationFrame(tick);
+        }
+      } else {
+        if (pauseAfterHidden !== null) {
+          clearTimeout(pauseAfterHidden);
+        }
+        pauseAfterHidden = setTimeout(() => {
+          pauseAfterHidden = null;
+          if (running) {
+            running = false;
+            cancelAnimationFrame(raf);
+          }
+        }, PAUSE_RENDER_MS);
       }
     },
     { root: null, rootMargin: '120px', threshold: [0, 0.01, 0.05, 0.15, 0.35] },
@@ -529,7 +569,7 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
         amp,
         freqX,
         freqY,
-        refreshLayout: resize,
+        refreshLayout: () => applyResize(true),
       });
     }
   }
@@ -538,6 +578,12 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
     destroy: () => {
       running = false;
       cancelAnimationFrame(raf);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeScheduled = false;
+      if (pauseAfterHidden !== null) {
+        clearTimeout(pauseAfterHidden);
+        pauseAfterHidden = null;
+      }
       debugGui?.destroy();
       debugGui = null;
       io.disconnect();
