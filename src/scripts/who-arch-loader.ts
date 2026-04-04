@@ -1,7 +1,15 @@
+const loadWhoArchBackdrop = import.meta.glob<typeof import('./who-arch-backdrop')>(
+  './who-arch-backdrop.ts',
+);
+
 /**
- * Isolates `import()` from the Astro island chunk so Vite’s `__vitePreload` runtime
- * lives in this small file only (avoids Netlify’s esbuild choking on the island bundle).
+ * Lazy-load via `import.meta.glob` so Vite emits a real async chunk without wrapping
+ * it in `__vitePreload` (Netlify’s esbuild pass chokes on that helper).
  */
 export function importWhoArchBackdropModule(): Promise<typeof import('./who-arch-backdrop')> {
-  return import(/* @vite-ignore */ './who-arch-backdrop');
+  const load = loadWhoArchBackdrop['./who-arch-backdrop.ts'];
+  if (!load) {
+    return Promise.reject(new Error('who-arch-backdrop module missing from glob map'));
+  }
+  return load();
 }
