@@ -63,13 +63,25 @@ import { img } from '../../lib/site-images';
 </section>
 
 <script>
-  import { mountWhoArchBackdrop, unmountWhoArchBackdrop } from '../../scripts/who-arch-backdrop';
+  /**
+   * Dynamic import keeps `three` out of this entry chunk so CI bundlers (e.g. Netlify’s
+   * pipeline) don’t choke on a single huge script; the heavy module loads as its own chunk.
+   */
+  async function setupWhoArchBackdrop(): Promise<void> {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
-  function refreshWhoBackdrop() {
-    unmountWhoArchBackdrop();
-    mountWhoArchBackdrop();
+    const { mountWhoArchBackdrop, unmountWhoArchBackdrop } = await import(
+      '../../scripts/who-arch-backdrop'
+    );
+
+    function refreshWhoBackdrop(): void {
+      unmountWhoArchBackdrop();
+      mountWhoArchBackdrop();
+    }
+
+    refreshWhoBackdrop();
+    document.addEventListener('astro:page-load', refreshWhoBackdrop);
   }
 
-  refreshWhoBackdrop();
-  document.addEventListener('astro:page-load', refreshWhoBackdrop);
+  void setupWhoArchBackdrop();
 </script>

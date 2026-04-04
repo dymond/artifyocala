@@ -25,6 +25,7 @@
     "three": "^0.183.2"
   },
   "devDependencies": {
+    "typescript": "~5.9.0",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/vite": "^4.2.2",
     "serve": "^14.2.6",
