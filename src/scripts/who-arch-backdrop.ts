@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { attachWhoArchBackdropDebug } from './who-arch-backdrop-debug-gui';
+
 /**
  * Who-section backdrop: Stripe-style animated mesh gradient (whatamesh pattern —
  * see https://whatamesh.vercel.app/ and jordienr’s gist). Subdivided plane,
@@ -519,17 +521,15 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
   if (typeof window !== 'undefined') {
     const sp = new URLSearchParams(window.location.search);
     if (sp.get('whoBackdropDebug') === '1') {
-      void import('./who-arch-backdrop-debug-gui').then(({ attachWhoArchBackdropDebug }) => {
-        debugGui = attachWhoArchBackdropDebug({
-          camera,
-          mesh,
-          uniforms: uniforms as Record<string, THREE.IUniform>,
-          tune,
-          amp,
-          freqX,
-          freqY,
-          refreshLayout: resize,
-        });
+      debugGui = attachWhoArchBackdropDebug({
+        camera,
+        mesh,
+        uniforms: uniforms as Record<string, THREE.IUniform>,
+        tune,
+        amp,
+        freqX,
+        freqY,
+        refreshLayout: resize,
       });
     }
   }

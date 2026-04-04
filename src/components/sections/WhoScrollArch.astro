@@ -64,15 +64,17 @@ import { img } from '../../lib/site-images';
 
 <script>
   /**
-   * Dynamic import keeps `three` out of this entry chunk so CI bundlers (e.g. Netlify’s
-   * pipeline) don’t choke on a single huge script; the heavy module loads as its own chunk.
+   * Static import avoids Vite’s `__vitePreload` helper (top-level `document` / link preloading).
+   * Netlify’s adapter runs a second esbuild pass that mis-parses that helper and fails the build.
+   * Rollup still splits `three` into its own chunk; the entry stays a thin bootstrap.
    */
-  async function setupWhoArchBackdrop(): Promise<void> {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  import {
+    mountWhoArchBackdrop,
+    unmountWhoArchBackdrop,
+  } from '../../scripts/who-arch-backdrop';
 
-    const { mountWhoArchBackdrop, unmountWhoArchBackdrop } = await import(
-      '../../scripts/who-arch-backdrop'
-    );
+  function setupWhoArchBackdrop(): void {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
     function refreshWhoBackdrop(): void {
       unmountWhoArchBackdrop();
