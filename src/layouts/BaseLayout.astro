@@ -143,5 +143,15 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
       <slot />
     </main>
     <Footer />
+    <script>
+      import { initMessyStudioMode } from '../scripts/site-messy-mode';
+
+      function bootMessyStudio(): void {
+        initMessyStudioMode();
+      }
+
+      bootMessyStudio();
+      document.addEventListener('astro:page-load', bootMessyStudio);
+    </script>
   </body>
 </html>

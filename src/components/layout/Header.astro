@@ -81,7 +81,7 @@ const wheelNavAlpineData =
 {
   !homeActive && (
     <header
-      class="relative w-full overflow-hidden border-b border-ink/10 bg-mist"
+      class="relative z-[50] w-full overflow-hidden border-b border-ink/10 bg-mist"
       style="padding-top: max(0.65rem, env(safe-area-inset-top, 0px));"
     >
       <div
@@ -249,6 +249,28 @@ const wheelNavAlpineData =
           <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
         </svg>
       </a>
+
+      <div class="mx-1 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></div>
+
+      <button
+        type="button"
+        id="artify-studio-mode-toggle"
+        class="flex h-12 min-w-[5.25rem] shrink-0 items-center justify-center rounded-full bg-white/14 px-3 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        aria-pressed="false"
+        aria-label="Turn on studio mode: splatter paint on the page with click or drag"
+      >
+        Studio
+      </button>
+      <button
+        type="button"
+        id="artify-studio-mode-clear"
+        class="ml-1 flex h-12 min-w-[4.25rem] shrink-0 items-center justify-center rounded-full bg-white/10 px-2 text-xs font-bold tracking-wide text-mist/90 transition-colors hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        hidden
+        aria-hidden="true"
+        aria-label="Clear studio marks"
+      >
+        Clear
+      </button>
 
       <div class="mx-1 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></div>
 

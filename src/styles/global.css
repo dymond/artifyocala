@@ -334,6 +334,22 @@
   animation-delay: -2.9s;
 }
 
+/* Studio “mess” mode: draw above page, below floating nav (z-100) and chrome (z-50). */
+.artify-messy-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  touch-action: none;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #artify-studio-mode-toggle,
+  #artify-studio-mode-clear {
+    display: none !important;
+  }
+}
+
 .artify-hero-scene-grid {
   isolation: isolate;
   background-color: color-mix(in srgb, var(--color-mist) 92%, white);
