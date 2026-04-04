@@ -9,10 +9,13 @@
     "dev": "astro dev",
     "dev:netlify": "ARTIFY_NETLIFY_DEV=1 astro dev",
     "build": "astro build",
+    "build:netlify": "netlify build --offline",
+    "build:netlify:online": "netlify build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "verify": "npm test && npm run build:netlify"
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.5.0",
@@ -32,6 +35,7 @@
     "@fontsource/shrikhand": "^5.2.8",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/vite": "^4.2.2",
+    "netlify-cli": "^24.9.0",
     "serve": "^14.2.6",
     "tailwindcss": "^4.2.2",
     "typescript": "~5.9.0",
