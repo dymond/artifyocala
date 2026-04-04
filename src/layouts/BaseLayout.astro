@@ -20,7 +20,6 @@ const pageUrl = new URL(canonicalPath, Astro.site);
 const siteRootUrl = new URL('/', Astro.site).href;
 const siteOrigin = pageUrl.origin;
 const shareImageUrl = new URL(img.socialShareCard, Astro.site).href;
-const appleTouchIconUrl = new URL(img.socialMetaA, Astro.site).href;
 const logoUrl = new URL(img.logoOnLightHollow, Astro.site).href;
 
 /** Matches `public/images/artify-ocala-social-share.png` (Open Graph / share preview). */
@@ -88,13 +87,15 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <meta name="theme-color" content="#12122a" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
     <meta name="application-name" content={SITE.name} />
-    <meta name="apple-mobile-web-app-title" content={SITE.name} />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="format-detection" content="telephone=no" />
     <link rel="canonical" href={pageUrl.href} />
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href={appleTouchIconUrl} />
-    <link rel="icon" type="image/png" sizes="201x201" href={img.socialMetaB} />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content={SITE.name} />
+    <link rel="manifest" href="/site.webmanifest" />
     <title>{fullTitle}</title>
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
