@@ -102,7 +102,44 @@
 
 .artify-who-copy-layer {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+}
+
+/**
+ * Final “window” text width (not the animated arch frame width), so copy is revealed by the
+ * growing arch instead of shrinking/reflowing with it.
+ */
+.artify-who-copy-inner {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: min(46rem, calc(100vw - 2.5rem));
+}
+
+/* Legibility on busy photo — no solid panel, just a gentle pool of dark + soft shadows. */
+.artify-who-readability-vignette {
+  background: radial-gradient(
+    ellipse 92% 68% at 50% 44%,
+    color-mix(in srgb, var(--color-ink) 42%, transparent) 0%,
+    color-mix(in srgb, var(--color-ink) 14%, transparent) 48%,
+    transparent 70%
+  );
+}
+
+.artify-who-copy-inner p:first-of-type {
+  text-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-void) 55%, transparent),
+    0 0 20px color-mix(in srgb, var(--color-void) 35%, transparent);
+}
+
+.artify-who-copy-inner #who-heading {
+  text-shadow:
+    0 2px 4px color-mix(in srgb, var(--color-void) 70%, transparent),
+    0 6px 36px color-mix(in srgb, var(--color-void) 45%, transparent);
+}
+
+.artify-who-copy-inner .artify-who-lede {
+  text-shadow:
+    0 1px 3px color-mix(in srgb, var(--color-void) 65%, transparent),
+    0 4px 28px color-mix(in srgb, var(--color-void) 40%, transparent);
 }
 
 @keyframes artify-who-arch-grow {
@@ -123,11 +160,9 @@
 @keyframes artify-who-copy-rise {
   from {
     opacity: 0.2;
-    transform: translate3d(0, 1.25rem, 0);
   }
   to {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -143,12 +178,12 @@
       animation-range: entry 0% cover 72%;
     }
 
+    /* End opacity in sync with arch (`.artify-who-arch-frame` uses `cover 72%`). */
     .artify-who-copy-layer {
       opacity: 0.2;
-      transform: translate3d(0, 1.25rem, 0);
       animation: artify-who-copy-rise linear both;
       animation-timeline: --artify-who-reveal;
-      animation-range: entry 18% cover 85%;
+      animation-range: entry 18% cover 72%;
     }
   }
 }
@@ -172,7 +207,6 @@
 
   .artify-who-copy-layer {
     opacity: 1 !important;
-    transform: none !important;
   }
 }
 
