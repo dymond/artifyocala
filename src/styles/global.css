@@ -293,6 +293,47 @@
   }
 }
 
+/* Hero googly eyes: upper lid + lashes; scaleY closes for blink (origin top). */
+@keyframes artify-hero-eye-blink {
+  0%,
+  86%,
+  100% {
+    transform: scaleY(0.4);
+  }
+  87.5% {
+    transform: scaleY(1);
+  }
+  89.5% {
+    transform: scaleY(1);
+  }
+  91% {
+    transform: scaleY(0.4);
+  }
+}
+
+/* Eyelid fill: sassy purple — reads on white sticker + mist sclera (not flat white). */
+.artify-hero-eye-lid {
+  background-color: color-mix(
+    in srgb,
+    color-mix(in srgb, var(--color-accent-soft) 62%, var(--color-buzz) 38%),
+    var(--color-club) 22%
+  );
+}
+
+.artify-hero-eye-shutter {
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.artify-hero-eye-shutter--blink {
+  animation: artify-hero-eye-blink 5.8s ease-in-out infinite;
+}
+
+.artify-hero-eye-shutter--blink-delay {
+  animation: artify-hero-eye-blink 5.8s ease-in-out infinite;
+  animation-delay: -2.9s;
+}
+
 .artify-hero-scene-grid {
   isolation: isolate;
   background-color: color-mix(in srgb, var(--color-mist) 92%, white);
@@ -428,8 +469,11 @@
   .artify-hero-slide-tilt,
   .artify-hero-jelly-wiggle,
   .artify-hero-bounce-pop,
-  .artify-hero-dash-wave {
+  .artify-hero-dash-wave,
+  .artify-hero-eye-shutter--blink,
+  .artify-hero-eye-shutter--blink-delay {
     animation: none !important;
+    transform: scaleY(0.4) !important;
   }
 
   .artify-hero-flip-inner {
@@ -471,13 +515,27 @@
   max-width: 100%;
   max-height: 100%;
   overflow: hidden;
+  border-width: 0;
+  border-style: solid;
+  border-color: var(--color-ink);
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+  /* Outset only here — inset shadows live on `.artify-who-arch-depth` so they paint above the photo. */
+  box-shadow: 0 24px 64px rgba(28, 28, 51, 0.28);
+}
+
+/*
+ * Inset depth must NOT be on `.artify-who-arch-frame`: full-bleed children paint on top of the
+ * frame’s box-shadow. This layer stacks after gradient + vignette so shadows stay visible.
+ */
+.artify-who-arch-depth {
   box-shadow:
-    0 -1px 0 rgba(255, 255, 255, 0.12) inset,
-    0 24px 64px rgba(28, 28, 51, 0.28);
+    0 2px 0 rgba(255, 255, 255, 0.22) inset,
+    0 48px 120px rgba(18, 18, 42, 0.62) inset,
+    0 20px 64px rgba(18, 18, 42, 0.42) inset,
+    0 0 80px rgba(28, 28, 51, 0.5) inset;
 }
 
 .artify-who-copy-layer {
@@ -528,12 +586,25 @@
     height: 40vw;
     border-top-left-radius: min(50vw, 62rem);
     border-top-right-radius: min(50vw, 62rem);
+    border-width: 4px;
+  }
+  /* Hold thick border through most of the grow. */
+  82% {
+    border-width: 4px;
+  }
+  /*
+   * Drop border before the final timeline endpoint: scroll-driven progress can map slightly
+   * short of keyframe 100%, which left the 97%→100% strip never applied (border looked stuck on).
+   */
+  88% {
+    border-width: 0;
   }
   to {
     width: 100%;
     height: 100%;
     border-top-left-radius: 0.75rem;
     border-top-right-radius: 0.75rem;
+    border-width: 0;
   }
 }
 
@@ -553,6 +624,7 @@
       height: 40vw;
       border-top-left-radius: min(50vw, 62rem);
       border-top-right-radius: min(50vw, 62rem);
+      border-width: 4px;
       animation: artify-who-arch-grow linear both;
       animation-timeline: --artify-who-reveal;
       animation-range: entry 0% cover 72%;
@@ -583,6 +655,7 @@
     height: 100% !important;
     border-top-left-radius: 0.75rem !important;
     border-top-right-radius: 0.75rem !important;
+    border-width: 0 !important;
   }
 
   .artify-who-copy-layer {

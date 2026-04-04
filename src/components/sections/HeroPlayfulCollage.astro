@@ -643,22 +643,94 @@ const bleedPhotoRound = (c: CardConfig) => photoRoundBleed(c.variant);
       aria-hidden="true"
     >
       <div
-        class="inline-flex rotate-[-8deg] items-center gap-2 rounded-full border-[3px] border-ink bg-white px-3 py-1.5 shadow-[4px_4px_0_0_var(--color-ink)]"
+        class="inline-flex rotate-[-8deg] items-center gap-2.5 rounded-full border-[3px] border-ink bg-white px-3.5 py-2 shadow-[4px_4px_0_0_var(--color-ink)]"
         data-artify-hero-eyes
       >
         <span
-          class="relative inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-ink bg-mist"
+          class="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-mist"
         >
           <span
-            class="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
+            class="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 z-[1] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
           ></span>
+          <span
+            class="artify-hero-eye-lid pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[20%] w-[118%] -translate-x-1/2 rounded-t-[9999px] border-x-2 border-b-2 border-ink"
+            aria-hidden="true"
+          >
+            <svg
+              class="pointer-events-none absolute left-1/2 top-0 w-[125%] max-w-none -translate-x-1/2 -translate-y-[15%] text-ink"
+              viewBox="0 0 36 9"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                d="M5 2v4.5M11 1.5l-.5 5M17 2v5M23 1.5l.5 5M29 2v4.5"
+              ></path>
+            </svg>
+          </span>
+          <span
+            class="artify-hero-eye-lid artify-hero-eye-shutter artify-hero-eye-shutter--blink pointer-events-none absolute inset-0 z-[4] origin-top"
+            aria-hidden="true"
+          >
+            <svg
+              class="pointer-events-none absolute bottom-0 left-1/2 w-[135%] max-w-none -translate-x-1/2 text-ink"
+              viewBox="0 0 36 11"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                d="M2 10l1-5.5M7 10V4M12 10l1-6M18 10V3.5M24 10l-1-6M29 10V4M34 10l-1-5.5"
+              ></path>
+            </svg>
+          </span>
         </span>
         <span
-          class="relative inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-ink bg-mist"
+          class="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-mist"
         >
           <span
-            class="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
+            class="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 z-[1] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
           ></span>
+          <span
+            class="artify-hero-eye-lid pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[20%] w-[118%] -translate-x-1/2 rounded-t-[9999px] border-x-2 border-b-2 border-ink"
+            aria-hidden="true"
+          >
+            <svg
+              class="pointer-events-none absolute left-1/2 top-0 w-[125%] max-w-none -translate-x-1/2 -translate-y-[15%] text-ink"
+              viewBox="0 0 36 9"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                d="M5 2v4.5M11 1.5l-.5 5M17 2v5M23 1.5l.5 5M29 2v4.5"
+              ></path>
+            </svg>
+          </span>
+          <span
+            class="artify-hero-eye-lid artify-hero-eye-shutter artify-hero-eye-shutter--blink artify-hero-eye-shutter--blink-delay pointer-events-none absolute inset-0 z-[4] origin-top"
+            aria-hidden="true"
+          >
+            <svg
+              class="pointer-events-none absolute bottom-0 left-1/2 w-[135%] max-w-none -translate-x-1/2 text-ink"
+              viewBox="0 0 36 11"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                d="M2 10l1-5.5M7 10V4M12 10l1-6M18 10V3.5M24 10l-1-6M29 10V4M34 10l-1-5.5"
+              ></path>
+            </svg>
+          </span>
         </span>
       </div>
     </div>
@@ -921,7 +993,11 @@ const bleedPhotoRound = (c: CardConfig) => photoRoundBleed(c.variant);
 </div>
 
 <script>
-  import { offsetTowardPointClamped, HERO_EYE_MAX_OFFSET } from '../../lib/hero-eyes';
+  import {
+    offsetTowardPointClamped,
+    HERO_EYE_CLAMP,
+    HERO_EYE_PUPIL_Y_BIAS_PX,
+  } from '../../lib/hero-eyes';
 
   function bindHeroEyes(): () => void {
     const root = document.querySelector('[data-artify-hero-eyes]');
@@ -932,9 +1008,10 @@ const bleedPhotoRound = (c: CardConfig) => photoRoundBleed(c.variant);
 
     const move = (clientX: number, clientY: number): void => {
       const rect = root.getBoundingClientRect();
-      const { x, y } = offsetTowardPointClamped(clientX, clientY, rect, HERO_EYE_MAX_OFFSET);
+      const { x, y } = offsetTowardPointClamped(clientX, clientY, rect, HERO_EYE_CLAMP);
+      const yb = y + HERO_EYE_PUPIL_Y_BIAS_PX;
       for (const el of pupils) {
-        el.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), 0)`;
+        el.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${yb}px), 0)`;
       }
     };
 
@@ -943,8 +1020,9 @@ const bleedPhotoRound = (c: CardConfig) => photoRoundBleed(c.variant);
     };
 
     const reset = (): void => {
+      const b = HERO_EYE_PUPIL_Y_BIAS_PX;
       for (const el of pupils) {
-        el.style.transform = 'translate3d(-50%, -50%, 0)';
+        el.style.transform = `translate3d(-50%, calc(-50% + ${b}px), 0)`;
       }
     };
 

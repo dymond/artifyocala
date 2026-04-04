@@ -35,6 +35,13 @@ import { img } from '../../lib/site-images';
           Soft radial darkening behind the copy only — no card/box, fades to transparent.
         */}
         <div class="artify-who-readability-vignette pointer-events-none absolute inset-0 z-[1]" aria-hidden="true" />
+        {/*
+          Recess depth: must stack after gradient/vignette or their paints hide inset shadows.
+        */}
+        <div
+          class="artify-who-arch-depth pointer-events-none absolute inset-0 z-[1]"
+          aria-hidden="true"
+        ></div>
         <div class="artify-who-copy-layer dark-surface absolute inset-0 z-[2] flex flex-col items-center justify-center gap-0 py-xl text-center" >
           {/*
             Inner width uses viewport (final) measure so line-length doesn’t reflow as the arch
