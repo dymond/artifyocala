@@ -1,0 +1,967 @@
+---
+/**
+ * Byooooob-style hero scene: 3D-flip cards use only `brickGlamGallery` photography (no logos/schedules).
+ */
+import { brickGlamGallery } from '../../lib/site-images';
+
+const G = brickGlamGallery;
+/** Gallery JPEGs vary; single size hint for layout/LCP. */
+const PHOTO = { width: 1600, height: 1067 } as const;
+const galleryAlt = 'Brick City Glam — live performance photograph';
+
+type BobClass =
+  | 'artify-hero-card-bob-1'
+  | 'artify-hero-card-bob-2'
+  | 'artify-hero-card-bob-3'
+  | 'artify-hero-card-bob-4';
+
+type FlipClass = 'artify-hero-flip-a' | 'artify-hero-flip-b' | 'artify-hero-flip-c' | 'artify-hero-flip-d';
+
+type CardVariant = 'bleed' | 'arch' | 'wide';
+
+type CardConfig = {
+  variant: CardVariant;
+  front: { src: string; alt: string; width: number; height: number };
+  back: { src: string; alt: string; width: number; height: number };
+  frontCaption: string;
+  frontStripClass: string;
+  backCaption: string;
+  backStripClass: string;
+  bob: BobClass;
+  flip: FlipClass;
+  tiltClass: string;
+  box: string;
+  /** Z-index cycle pattern (see global.css `.artify-hero-z-dance-*`). */
+  layerClass:
+    | 'artify-hero-z-dance-0'
+    | 'artify-hero-z-dance-1'
+    | 'artify-hero-z-dance-2'
+    | 'artify-hero-z-dance-3'
+    | 'artify-hero-z-dance-4'
+    | 'artify-hero-z-dance-5';
+  /** Negative offset into the cycle so layers desync. */
+  layerDelaySec: number;
+  loading: 'eager' | 'lazy';
+  fetchPriority: 'high' | 'auto';
+};
+
+function faceRound(v: CardVariant): string {
+  if (v === 'arch') return 'rounded-t-[2.75rem] rounded-b-2xl';
+  if (v === 'wide') return 'rounded-3xl';
+  return 'rounded-2xl';
+}
+
+function aspectInner(v: CardVariant): string {
+  if (v === 'bleed' || v === 'wide') return 'aspect-[5/4]';
+  return 'aspect-[4/5]';
+}
+
+/** Tiny sticker crops — slots between card indices so stickers don’t duplicate flip faces. */
+const stickerA = G[1];
+const stickerB = G[3];
+const stickerC = G[5];
+
+function photoRoundBleed(v: CardVariant): string {
+  if (v === 'wide') return 'rounded-2xl sm:rounded-3xl';
+  return 'rounded-xl';
+}
+
+const cards: ReadonlyArray<CardConfig> = [
+  {
+    variant: 'bleed',
+    front: {
+      src: G[0],
+      alt: `${galleryAlt} (A)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    back: {
+      src: G[10],
+      alt: `${galleryAlt} (B)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    frontCaption: 'Wings & glitter & grit',
+    frontStripClass:
+      'bg-buzz/95 font-display text-[0.58rem] font-extrabold leading-tight text-ink',
+    backCaption: 'Totally different frame',
+    backStripClass: 'bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist',
+    bob: 'artify-hero-card-bob-1',
+    flip: 'artify-hero-flip-a',
+    tiltClass: 'rotate-[-9deg]',
+    box: 'left-[5%] top-[5%] w-[min(94%,13.75rem)] sm:left-[7%] sm:top-[7%] sm:w-[min(88%,15.75rem)]',
+    layerClass: 'artify-hero-z-dance-0',
+    layerDelaySec: 0.8,
+    loading: 'eager',
+    fetchPriority: 'high',
+  },
+  {
+    variant: 'arch',
+    front: {
+      src: G[2],
+      alt: `${galleryAlt} (C)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    back: {
+      src: G[11],
+      alt: `${galleryAlt} (D)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    frontCaption: 'Main character energy',
+    frontStripClass:
+      'bg-surge font-display text-[0.62rem] font-bold leading-tight tracking-tight text-mist sm:text-[0.65rem]',
+    backCaption: 'Back side, different photo',
+    backStripClass: 'bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist',
+    bob: 'artify-hero-card-bob-2',
+    flip: 'artify-hero-flip-b',
+    tiltClass: 'rotate-[8deg]',
+    box: 'right-[-2%] top-[11%] w-[min(94%,14.25rem)] sm:right-[0%] sm:top-[13%] sm:w-[min(88%,16.25rem)]',
+    layerClass: 'artify-hero-z-dance-1',
+    layerDelaySec: 5.5,
+    loading: 'lazy',
+    fetchPriority: 'auto',
+  },
+  {
+    variant: 'bleed',
+    front: {
+      src: G[4],
+      alt: `${galleryAlt} (E)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    back: {
+      src: G[12],
+      alt: `${galleryAlt} (F)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    frontCaption: 'Ok who brought snacks',
+    frontStripClass:
+      'bg-mist font-display text-[0.56rem] font-bold italic leading-tight text-ink',
+    backCaption: 'Another moment entirely',
+    backStripClass: 'bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist',
+    bob: 'artify-hero-card-bob-3',
+    flip: 'artify-hero-flip-c',
+    tiltClass: 'rotate-[-5deg]',
+    box: 'left-[3%] bottom-[2%] w-[min(92%,13.25rem)] sm:left-[5%] sm:bottom-[4%] sm:w-[min(86%,14.75rem)]',
+    layerClass: 'artify-hero-z-dance-2',
+    layerDelaySec: 2.9,
+    loading: 'lazy',
+    fetchPriority: 'auto',
+  },
+  {
+    variant: 'wide',
+    front: {
+      src: G[6],
+      alt: `${galleryAlt} (G)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    back: {
+      src: G[13],
+      alt: `${galleryAlt} (H)`,
+      width: PHOTO.width,
+      height: PHOTO.height,
+    },
+    frontCaption: 'Standing O pending',
+    frontStripClass:
+      'bg-club font-display text-[0.56rem] font-extrabold uppercase tracking-wide text-mist',
+    backCaption: 'Yep — new pic back here',
+    backStripClass: 'bg-surge font-display text-[0.54rem] font-extrabold uppercase tracking-[0.1em] text-mist',
+    bob: 'artify-hero-card-bob-4',
+    flip: 'artify-hero-flip-d',
+    tiltClass: 'rotate-[7deg]',
+    box: 'right-[3%] bottom-[7%] w-[min(88%,12.25rem)] sm:right-[6%] sm:bottom-[9%] sm:w-[min(82%,13.75rem)]',
+    layerClass: 'artify-hero-z-dance-3',
+    layerDelaySec: 7.1,
+    loading: 'lazy',
+    fetchPriority: 'auto',
+  },
+];
+
+const faceRoundClass = (c: CardConfig) => faceRound(c.variant);
+const aspectClass = (c: CardConfig) => aspectInner(c.variant);
+const bleedPhotoRound = (c: CardConfig) => photoRoundBleed(c.variant);
+---
+
+<div
+  class="artify-hero-playful relative flex min-h-0 w-full min-w-0 max-lg:order-3 lg:min-h-0 lg:flex-1 lg:flex-col"
+  aria-label="Collage of Artify programs and community"
+>
+  <div
+    class="artify-hero-scene-grid relative mx-auto min-h-[26.5rem] w-full flex-1 overflow-visible rounded-2xl border-[3px] border-ink p-4 shadow-[8px_8px_0_0_var(--color-ink)] sm:min-h-[31rem] sm:p-5 lg:h-full lg:min-h-0"
+  >
+    <div
+      class="pointer-events-none absolute left-[3%] top-[3%] w-[5.75rem] text-ink artify-hero-z-dance-4 sm:left-[5%] sm:top-[5%] sm:w-[6.5rem]"
+      style="animation-delay: -1.2s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-outline-drift h-full w-full"
+        viewBox="0 0 80 80"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path
+          d="M40 4l4.2 14.5L58 12l-2.8 16.5L76 28 62 40l14 12-20.8-.5L58 68l-14-8.4-14 8.4 2.8-16.5L12 52l14-12-14-12 18.8.5L22 12l13.8 6.5z"
+        ></path>
+      </svg>
+    </div>
+
+    <!-- Curvy “flower burst” sparkle (Byooooob-adjacent), not a 5-point star -->
+    <div
+      class="pointer-events-none absolute right-[3%] top-[3%] artify-hero-z-dance-5 sm:right-[5%] sm:top-[5%]"
+      style="animation-delay: -3.7s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-star-spin h-[3.45rem] w-[3.45rem] text-surge drop-shadow-[3px_3px_0_var(--color-ink)] sm:h-[4rem] sm:w-[4rem]"
+        viewBox="0 0 64 64"
+        fill="currentColor"
+        role="img"
+      >
+        <title>Decorative sparkle</title>
+        <ellipse cx="32" cy="12" rx="8.5" ry="20"></ellipse>
+        <ellipse cx="32" cy="12" rx="8.5" ry="20" transform="rotate(60 32 32)"></ellipse>
+        <ellipse cx="32" cy="12" rx="8.5" ry="20" transform="rotate(120 32 32)"></ellipse>
+        <ellipse cx="32" cy="12" rx="8.5" ry="20" transform="rotate(180 32 32)"></ellipse>
+        <ellipse cx="32" cy="12" rx="8.5" ry="20" transform="rotate(240 32 32)"></ellipse>
+        <ellipse cx="32" cy="12" rx="8.5" ry="20" transform="rotate(300 32 32)"></ellipse>
+        <circle cx="32" cy="32" r="10.5" fill="currentColor"></circle>
+      </svg>
+    </div>
+
+    <!-- Goofy floating shapes -->
+    <div
+      class="pointer-events-none absolute left-[12%] top-[22%] w-[4.6rem] text-ink artify-hero-z-dance-0 sm:left-[14%] sm:top-[24%] sm:w-[5.25rem]"
+      style="animation-delay: -6.3s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-squiggle-drift h-full w-full"
+        viewBox="0 0 72 32"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+      >
+        <path d="M4 18c10-14 22-14 32-2s20 8 32-6"></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute bottom-[28%] left-[6%] w-[4rem] text-buzz artify-hero-z-dance-1 sm:bottom-[26%] sm:left-[8%] sm:w-[4.5rem]"
+      style="animation-delay: -0.4s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-sticker-bob-slow h-full w-full drop-shadow-[2px_2px_0_var(--color-ink)]"
+        viewBox="0 0 48 56"
+        fill="none"
+        role="img"
+      >
+        <title>Decorative balloon</title>
+        <!-- One path: oval + knot share fill/stroke so the tie reads as part of the balloon -->
+        <path
+          fill="currentColor"
+          stroke="var(--color-ink)"
+          stroke-width="2.5"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          d="M24 2.5C38 2.5 45 12 45 20c0 8-5 12.5-13 11.5L24 47 16 31.5C10 31 3 26 3 20C3 10 12 2.5 24 2.5z"
+        ></path>
+        <path
+          d="M24 47Q21 52.5 18 56"
+          stroke="var(--color-ink)"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          fill="none"
+        ></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[4%] top-[28%] w-[3.6rem] text-club artify-hero-z-dance-2 sm:right-[6%] sm:top-[30%] sm:w-[4rem]"
+      style="animation-delay: -8.1s"
+      aria-hidden="true"
+    >
+      <svg class="artify-hero-goofy-wobble h-full w-full" viewBox="0 0 40 44" fill="none">
+        <path
+          d="M20 3L38 36H2L20 3z"
+          fill="currentColor"
+          stroke="var(--color-ink)"
+          stroke-width="2.5"
+          stroke-linejoin="round"
+        ></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute left-[8%] top-[50%] w-[3.25rem] text-surge artify-hero-z-dance-3 sm:left-[10%] sm:top-[52%] sm:w-[3.75rem]"
+      style="animation-delay: -4.9s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-goofy-wobble h-full w-full"
+        style="animation-delay: -2s"
+        viewBox="0 0 32 48"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3.25"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+      >
+        <path d="M16 4l-4 14h-8l12 18 6-12h10L16 4z"></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[8%] bottom-[40%] w-[3.65rem] text-ink/85 artify-hero-z-dance-4 sm:right-[10%] sm:bottom-[38%] sm:w-[4.15rem]"
+      style="animation-delay: -11.2s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-sticker-bob-slow h-full w-full"
+        viewBox="0 0 44 52"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.75"
+        stroke-linecap="round"
+      >
+        <path d="M10 30c-8-14 6-28 20-24 10 2 16 12 14 22s-10 18-22 16-16-12-12-14z"></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[22%] top-[18%] w-[3.25rem] rotate-[-12deg] text-surge/90 artify-hero-z-dance-5 sm:right-[24%] sm:top-[20%] sm:w-[3.75rem]"
+      style="animation-delay: -2.2s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-jelly-wiggle h-full w-full"
+        viewBox="0 0 40 48"
+        fill="currentColor"
+        stroke="var(--color-ink)"
+        stroke-width="2"
+        stroke-linejoin="round"
+      >
+        <path d="M8 6h24a6 6 0 016 6v22a8 8 0 01-8 8H10a8 8 0 01-8-8V12a6 6 0 016-6z"></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute bottom-[32%] left-[48%] w-[2.65rem] text-ink artify-hero-z-dance-0 sm:bottom-[30%] sm:left-[50%] sm:w-[3.05rem]"
+      style="animation-delay: -9.5s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-dash-wave h-full w-full"
+        viewBox="0 0 24 56"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M12 4 L6 14 L18 14 L6 26 L18 26 L8 38 L16 38 L10 52"></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute left-[58%] top-[38%] w-[3.85rem] -translate-x-1/2 text-buzz artify-hero-z-dance-1 sm:left-[60%] sm:top-[40%] sm:w-[4.35rem]"
+      style="animation-delay: -5.6s"
+      aria-hidden="true"
+    >
+      <svg class="artify-hero-ring-spin-slow h-full w-full" viewBox="0 0 52 52" fill="none">
+        <circle
+          cx="26"
+          cy="26"
+          r="20"
+          stroke="currentColor"
+          stroke-width="4"
+          stroke-dasharray="8 14"
+        ></circle>
+        <circle cx="26" cy="26" r="9" fill="var(--color-mist)" stroke="var(--color-ink)" stroke-width="2"
+        ></circle>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute bottom-[12%] left-[32%] w-[3.95rem] rotate-[18deg] artify-hero-z-dance-2 sm:bottom-[10%] sm:left-[34%] sm:w-[4.5rem]"
+      style="animation-delay: -7.8s"
+      aria-hidden="true"
+    >
+      <svg class="artify-hero-bounce-pop h-full w-full" viewBox="0 0 64 36" fill="none">
+        <ellipse cx="20" cy="18" rx="17" ry="14" fill="var(--color-club)" stroke="var(--color-ink)" stroke-width="2"
+        ></ellipse>
+        <ellipse cx="44" cy="18" rx="17" ry="14" fill="var(--color-surge)" stroke="var(--color-ink)" stroke-width="2"
+        ></ellipse>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute left-[6%] bottom-[18%] w-[3rem] text-mist artify-hero-z-dance-3 sm:left-[8%] sm:bottom-[16%] sm:w-[3.45rem]"
+      style="animation-delay: -1.1s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-slide-tilt h-full w-full"
+        viewBox="0 0 36 36"
+        fill="currentColor"
+        stroke="var(--color-ink)"
+        stroke-width="2"
+        stroke-linejoin="round"
+      >
+        <path d="M18 3 L33 18 L18 33 L3 18 Z"></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[34%] bottom-[30%] w-[2.75rem] text-ink artify-hero-z-dance-4 sm:right-[36%] sm:bottom-[28%] sm:w-[3.15rem]"
+      style="animation-delay: -10.4s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-squiggle-drift h-full w-full"
+        style="animation-duration: 9s"
+        viewBox="0 0 40 40"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+      >
+        <path d="M6 20 Q20 6 34 20 Q20 34 6 20"></path>
+        <circle cx="20" cy="20" r="4" fill="var(--color-buzz)"></circle>
+      </svg>
+    </div>
+
+    <!-- Extra playful flotsam (wholesome sticker energy) -->
+    <div
+      class="pointer-events-none absolute left-[64%] top-[22%] w-[3.2rem] artify-hero-z-dance-2 sm:left-[66%] sm:top-[24%] sm:w-[3.65rem]"
+      style="animation-delay: -13.4s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-sticker-bob h-full w-full drop-shadow-[2px_2px_0_var(--color-ink)]"
+        viewBox="0 0 48 48"
+        fill="none"
+        role="img"
+      >
+        <title>Decorative confetti</title>
+        <circle cx="9" cy="14" r="3.5" fill="var(--color-club)" stroke="var(--color-ink)" stroke-width="1.5"></circle>
+        <rect
+          x="19"
+          y="7"
+          width="7"
+          height="7"
+          rx="1.5"
+          fill="var(--color-surge)"
+          stroke="var(--color-ink)"
+          stroke-width="1.5"
+          transform="rotate(18 22.5 10.5)"
+        ></rect>
+        <circle cx="37" cy="17" r="2.8" fill="var(--color-buzz)" stroke="var(--color-ink)" stroke-width="1.5"
+        ></circle>
+        <rect
+          x="12"
+          y="28"
+          width="5"
+          height="9"
+          rx="1.2"
+          fill="var(--color-mist)"
+          stroke="var(--color-ink)"
+          stroke-width="1.5"
+          transform="rotate(-22 14.5 32.5)"
+        ></rect>
+        <circle cx="32" cy="36" r="4" fill="var(--color-surge)" stroke="var(--color-ink)" stroke-width="1.5"
+        ></circle>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute left-[38%] bottom-[34%] w-[3.35rem] artify-hero-z-dance-5 sm:left-[40%] sm:bottom-[32%] sm:w-[3.85rem]"
+      style="animation-delay: -2.7s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-goofy-wobble h-full w-full drop-shadow-[2px_2px_0_var(--color-ink)]"
+        viewBox="0 0 40 40"
+        fill="none"
+        role="img"
+      >
+        <title>Decorative smiley face</title>
+        <circle cx="20" cy="20" r="17.5" fill="var(--color-mist)" stroke="var(--color-ink)" stroke-width="2.5"></circle>
+        <circle cx="13" cy="17" r="2.8" fill="var(--color-ink)"></circle>
+        <circle cx="27" cy="17" r="2.8" fill="var(--color-ink)"></circle>
+        <path
+          d="M11 25q9 10 18 0"
+          stroke="var(--color-ink)"
+          stroke-width="2.75"
+          stroke-linecap="round"
+          fill="none"
+        ></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute left-[22%] top-[9%] w-[4.25rem] -rotate-[6deg] artify-hero-z-dance-0 sm:left-[24%] sm:top-[11%] sm:w-[4.85rem]"
+      style="animation-delay: -14.1s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-squiggle-drift h-full w-full"
+        style="animation-duration: 16s"
+        viewBox="0 0 64 36"
+        fill="none"
+        role="img"
+      >
+        <title>Decorative rainbow</title>
+        <path
+          d="M6 30a26 26 0 0152 0"
+          stroke="var(--color-club)"
+          stroke-width="4.5"
+          stroke-linecap="round"
+        ></path>
+        <path
+          d="M12 30a20 20 0 0140 0"
+          stroke="var(--color-surge)"
+          stroke-width="4.5"
+          stroke-linecap="round"
+        ></path>
+        <path
+          d="M18 30a14 14 0 0128 0"
+          stroke="var(--color-buzz)"
+          stroke-width="4.5"
+          stroke-linecap="round"
+        ></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[38%] bottom-[20%] w-[2.65rem] artify-hero-z-dance-1 sm:right-[40%] sm:bottom-[18%] sm:w-[3rem]"
+      style="animation-delay: -5.2s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-bounce-pop h-full w-full drop-shadow-[2px_2px_0_var(--color-ink)]"
+        viewBox="0 0 32 44"
+        fill="none"
+        role="img"
+      >
+        <title>Decorative party hat</title>
+        <path
+          d="M16 6L4 38h24L16 6z"
+          fill="var(--color-buzz)"
+          stroke="var(--color-ink)"
+          stroke-width="2.25"
+          stroke-linejoin="round"
+        ></path>
+        <path d="M8 32h16" stroke="var(--color-ink)" stroke-width="2" stroke-linecap="round"></path>
+        <path d="M10 26h12" stroke="var(--color-ink)" stroke-width="2" stroke-linecap="round"></path>
+        <circle cx="16" cy="6" r="4.5" fill="var(--color-club)" stroke="var(--color-ink)" stroke-width="2"></circle>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[12%] bottom-[48%] w-[2.8rem] artify-hero-z-dance-4 sm:right-[14%] sm:bottom-[46%] sm:w-[3.2rem]"
+      style="animation-delay: -7.3s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-sticker-bob-slow h-full w-full drop-shadow-[2px_2px_0_var(--color-ink)]"
+        viewBox="0 0 36 32"
+        fill="none"
+        role="img"
+      >
+        <title>Decorative heart</title>
+        <path
+          d="M18 28C8 18 4 14 4 10a6.2 6.2 0 0112.2-1.8A6 6 0 0118 10a6 6 0 011.8-1.8A6.2 6.2 0 0130.2 10c0 4-4 8-12.2 18L18 28z"
+          fill="var(--color-club)"
+          stroke="var(--color-ink)"
+          stroke-width="2.25"
+          stroke-linejoin="round"
+        ></path>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute left-[50%] top-[26%] w-[2.45rem] -translate-x-1/2 artify-hero-z-dance-3 sm:top-[28%] sm:w-[2.85rem]"
+      style="animation-delay: -11.9s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-sticker-bob-slow h-full w-full text-ink"
+        viewBox="0 0 44 38"
+        fill="currentColor"
+        role="img"
+      >
+        <title>Decorative music notes</title>
+        <path
+          fill="var(--color-mist)"
+          stroke="var(--color-ink)"
+          stroke-width="2"
+          stroke-linejoin="round"
+          d="M6 30V12l14-3v18"
+        ></path>
+        <ellipse cx="6" cy="30" rx="4" ry="3" fill="var(--color-ink)"></ellipse>
+        <ellipse cx="20" cy="27" rx="4" ry="3" fill="var(--color-ink)"></ellipse>
+        <path
+          fill="var(--color-mist)"
+          stroke="var(--color-ink)"
+          stroke-width="2"
+          stroke-linejoin="round"
+          d="M24 32V17l12-2.5v15"
+        ></path>
+        <ellipse cx="24" cy="32" rx="3.5" ry="2.8" fill="var(--color-ink)"></ellipse>
+        <ellipse cx="36" cy="29.5" rx="3.5" ry="2.8" fill="var(--color-ink)"></ellipse>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[50%] top-[54%] w-[2.5rem] translate-x-1/2 rotate-[14deg] artify-hero-z-dance-0 sm:right-[48%] sm:top-[56%] sm:w-[2.9rem]"
+      style="animation-delay: -8.6s"
+      aria-hidden="true"
+    >
+      <svg
+        class="artify-hero-jelly-wiggle h-full w-full"
+        viewBox="0 0 40 40"
+        fill="none"
+        role="img"
+      >
+        <title>Decorative sparkle burst</title>
+        <path
+          d="M20 2l2.2 8.2L30 12l-6.6 5.4 2.4 9.4-5.8-5.8-5.8 5.8 2.4-9.4L10 12l7.8-1.8z"
+          fill="var(--color-surge)"
+          stroke="var(--color-ink)"
+          stroke-width="2"
+          stroke-linejoin="round"
+        ></path>
+        <circle cx="20" cy="20" r="5" fill="var(--color-buzz)" stroke="var(--color-ink)" stroke-width="1.75"></circle>
+      </svg>
+    </div>
+
+    <div
+      class="pointer-events-auto absolute left-[46%] top-[8%] z-[25] -translate-x-1/2 sm:left-[48%] sm:top-[10%]"
+      aria-hidden="true"
+    >
+      <div
+        class="inline-flex rotate-[-8deg] items-center gap-2 rounded-full border-[3px] border-ink bg-white px-3 py-1.5 shadow-[4px_4px_0_0_var(--color-ink)]"
+        data-artify-hero-eyes
+      >
+        <span
+          class="relative inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-ink bg-mist"
+        >
+          <span
+            class="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
+          ></span>
+        </span>
+        <span
+          class="relative inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-ink bg-mist"
+        >
+          <span
+            class="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink"
+          ></span>
+        </span>
+      </div>
+    </div>
+
+    <div
+      class="pointer-events-none absolute left-[22%] top-[34%] w-[4.25rem] rotate-[-14deg] artify-hero-z-dance-0 sm:left-[24%] sm:top-[36%] sm:w-[4.9rem]"
+      style="animation-delay: -3.3s"
+      aria-hidden="true"
+    >
+      <span class="artify-hero-sticker-bob-slow inline-block">
+        <img
+          src={stickerA}
+          alt=""
+          width={PHOTO.width}
+          height={PHOTO.height}
+          loading="lazy"
+          decoding="async"
+          class="aspect-square h-full w-full rounded-lg border-[2px] border-ink object-cover shadow-[4px_4px_0_0_var(--color-ink)]"
+        />
+      </span>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[10%] top-[42%] w-[4.75rem] rotate-[10deg] artify-hero-z-dance-1 sm:right-[12%] sm:top-[44%] sm:w-[5.4rem]"
+      style="animation-delay: -12.6s"
+      aria-hidden="true"
+    >
+      <span class="artify-hero-sticker-bob inline-block">
+        <img
+          src={stickerB}
+          alt=""
+          width={PHOTO.width}
+          height={PHOTO.height}
+          loading="lazy"
+          decoding="async"
+          class="aspect-[3/4] h-full w-full rounded-md border-[2px] border-ink object-cover shadow-[4px_4px_0_0_var(--color-ink)]"
+        />
+      </span>
+    </div>
+
+    <div
+      class="pointer-events-none absolute bottom-[38%] right-[26%] w-[4.35rem] rotate-[16deg] artify-hero-z-dance-2 sm:bottom-[36%] sm:right-[28%] sm:w-[5rem]"
+      style="animation-delay: -6s"
+      aria-hidden="true"
+    >
+      <span class="artify-hero-sticker-bob-slow inline-block">
+        <div
+          class="overflow-hidden rounded-xl border-[2px] border-ink bg-mist shadow-[4px_4px_0_0_var(--color-ink)]"
+        >
+          <img
+            src={stickerC}
+            alt=""
+            width={PHOTO.width}
+            height={PHOTO.height}
+            loading="lazy"
+            decoding="async"
+            class="aspect-square w-full object-cover"
+          />
+        </div>
+      </span>
+    </div>
+
+    <div
+      class="pointer-events-none absolute bottom-[6%] left-[6%] rotate-[-6deg] artify-hero-z-dance-3 sm:bottom-[8%] sm:left-[8%]"
+      style="animation-delay: -8.9s"
+      aria-hidden="true"
+    >
+      <span class="artify-hero-sticker-bob inline-block">
+        <span
+          class="inline-block rounded-md border-2 border-ink bg-club px-2 py-1 font-display text-[0.58rem] font-extrabold uppercase tracking-[0.12em] text-ink shadow-[3px_3px_0_0_var(--color-ink)]"
+        >
+          Since 2017
+        </span>
+      </span>
+    </div>
+
+    <div
+      class="pointer-events-none absolute right-[8%] bottom-[6%] rotate-[7deg] artify-hero-z-dance-5 sm:right-[10%] sm:bottom-[8%]"
+      style="animation-delay: -4.4s"
+      aria-hidden="true"
+    >
+      <span class="artify-hero-sticker-bob-slow inline-block">
+        <span
+          class="inline-flex items-center gap-1 rounded-full border-2 border-ink bg-buzz/90 px-2.5 py-1 font-display text-[0.55rem] font-extrabold uppercase tracking-[0.14em] text-ink shadow-[2px_2px_0_0_var(--color-ink)]"
+        >
+          <span class="text-surge" aria-hidden="true">✦</span>
+          Marion Co.
+        </span>
+      </span>
+    </div>
+
+    {
+      cards.map((c) => {
+        const r = faceRoundClass(c);
+        const a = aspectClass(c);
+        const bRound = bleedPhotoRound(c);
+        return (
+        <article
+          class:list={[
+            'pointer-events-none absolute origin-center will-change-transform',
+            c.bob,
+            c.box,
+            c.layerClass,
+          ]}
+          style={`animation-delay: -${c.layerDelaySec}s`}
+        >
+          <div class:list={['relative w-full origin-center', c.tiltClass, a]}>
+            <div class="absolute inset-0 [perspective:1100px]">
+              <div class:list={['artify-hero-flip-inner absolute inset-0 min-h-0 w-full', c.flip]}>
+                {(c.variant === 'bleed' || c.variant === 'wide') && (
+                  <div
+                    class:list={[
+                      'artify-hero-flip-face artify-hero-flip-face--front absolute inset-0 flex flex-col overflow-hidden border-[3px] border-ink bg-[#f4f2ea] shadow-[8px_8px_0_0_var(--color-ink)]',
+                      r,
+                    ]}
+                  >
+                    <div class="relative min-h-0 flex-1 p-1 sm:p-1.5">
+                      <img
+                        src={c.front.src}
+                        alt={c.front.alt}
+                        width={c.front.width}
+                        height={c.front.height}
+                        loading={c.loading}
+                        decoding="async"
+                        fetchpriority={c.fetchPriority}
+                        class:list={[
+                          'box-border h-full w-full max-h-full border-[3px] border-ink object-cover object-center',
+                          bRound,
+                        ]}
+                      />
+                    </div>
+                    <div
+                      class:list={[
+                        'shrink-0 border-t-[3px] border-ink px-1.5 py-[0.2rem] text-center text-[0.56rem] leading-tight sm:py-0.5 sm:text-[0.58rem]',
+                        c.frontStripClass,
+                      ]}
+                    >
+                      {c.frontCaption}
+                    </div>
+                  </div>
+                )}
+
+                {c.variant === 'arch' && (
+                  <div
+                    class:list={[
+                      'artify-hero-flip-face artify-hero-flip-face--front absolute inset-0 flex flex-col overflow-hidden border-[3px] border-ink bg-[#f4f2ea] shadow-[8px_8px_0_0_var(--color-ink)]',
+                      r,
+                    ]}
+                  >
+                    <div
+                      class="relative min-h-0 w-full flex-1 overflow-hidden rounded-t-[2.5rem] border-b-[3px] border-ink bg-ink"
+                    >
+                      <img
+                        src={c.front.src}
+                        alt={c.front.alt}
+                        width={c.front.width}
+                        height={c.front.height}
+                        loading={c.loading}
+                        decoding="async"
+                        fetchpriority={c.fetchPriority}
+                        class="absolute inset-0 h-full w-full object-cover object-center"
+                      />
+                    </div>
+                    <div
+                      class:list={[
+                        'shrink-0 px-1.5 py-[0.2rem] text-center leading-tight sm:py-0.5',
+                        c.frontStripClass,
+                      ]}
+                    >
+                      {c.frontCaption}
+                    </div>
+                  </div>
+                )}
+
+                {(c.variant === 'bleed' || c.variant === 'wide') && (
+                  <div
+                    class:list={[
+                      'artify-hero-flip-face artify-hero-flip-face--back absolute inset-0 flex flex-col overflow-hidden border-[3px] border-ink bg-ink shadow-[8px_8px_0_0_var(--color-ink)]',
+                      r,
+                    ]}
+                  >
+                    <div class="relative min-h-0 flex-1 p-1 sm:p-1.5">
+                      <img
+                        src={c.back.src}
+                        alt={c.back.alt}
+                        width={c.back.width}
+                        height={c.back.height}
+                        loading={c.loading}
+                        decoding="async"
+                        class:list={[
+                          'box-border h-full w-full max-h-full border-[3px] border-mist/35 object-cover object-center',
+                          bRound,
+                        ]}
+                      />
+                      <div
+                        class="pointer-events-none absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-ink bg-surge text-[0.5rem] font-bold leading-none text-mist shadow-[2px_2px_0_0_var(--color-ink)]"
+                        aria-hidden="true"
+                      >
+                        ★
+                      </div>
+                    </div>
+                    <div
+                      class:list={[
+                        'shrink-0 border-t-[3px] border-ink px-1.5 py-[0.2rem] text-center text-[0.54rem] leading-tight sm:py-0.5 sm:text-[0.56rem]',
+                        c.backStripClass,
+                      ]}
+                    >
+                      {c.backCaption}
+                    </div>
+                  </div>
+                )}
+
+                {c.variant === 'arch' && (
+                  <div
+                    class:list={[
+                      'artify-hero-flip-face artify-hero-flip-face--back absolute inset-0 flex flex-col overflow-hidden border-[3px] border-ink bg-ink shadow-[8px_8px_0_0_var(--color-ink)]',
+                      r,
+                    ]}
+                  >
+                    <div
+                      class="relative min-h-0 w-full flex-1 overflow-hidden rounded-t-[2.5rem] border-b-[3px] border-ink bg-ink"
+                    >
+                      <img
+                        src={c.back.src}
+                        alt={c.back.alt}
+                        width={c.back.width}
+                        height={c.back.height}
+                        loading={c.loading}
+                        decoding="async"
+                        class="absolute inset-0 h-full w-full object-cover object-center"
+                      />
+                    </div>
+                    <div
+                      class:list={[
+                        'shrink-0 px-1.5 py-[0.2rem] text-center text-[0.54rem] leading-tight sm:py-0.5 sm:text-[0.56rem]',
+                        c.backStripClass,
+                      ]}
+                    >
+                      {c.backCaption}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+        );
+      })
+    }
+  </div>
+</div>
+
+<script>
+  import { offsetTowardPointClamped, HERO_EYE_MAX_OFFSET } from '../../lib/hero-eyes';
+
+  function bindHeroEyes(): () => void {
+    const root = document.querySelector('[data-artify-hero-eyes]');
+    if (!root) return () => {};
+
+    const pupils = root.querySelectorAll<HTMLElement>('.artify-hero-pupil');
+    if (pupils.length === 0) return () => {};
+
+    const move = (clientX: number, clientY: number): void => {
+      const rect = root.getBoundingClientRect();
+      const { x, y } = offsetTowardPointClamped(clientX, clientY, rect, HERO_EYE_MAX_OFFSET);
+      for (const el of pupils) {
+        el.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${y}px), 0)`;
+      }
+    };
+
+    const onPointer = (e: PointerEvent): void => {
+      move(e.clientX, e.clientY);
+    };
+
+    const reset = (): void => {
+      for (const el of pupils) {
+        el.style.transform = 'translate3d(-50%, -50%, 0)';
+      }
+    };
+
+    window.addEventListener('pointermove', onPointer, { passive: true });
+    window.addEventListener('blur', reset);
+    root.addEventListener('pointerleave', reset);
+
+    return () => {
+      window.removeEventListener('pointermove', onPointer);
+      window.removeEventListener('blur', reset);
+      root.removeEventListener('pointerleave', reset);
+    };
+  }
+
+  let teardown: (() => void) | undefined;
+
+  function setup(): void {
+    teardown?.();
+    teardown = bindHeroEyes();
+  }
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>

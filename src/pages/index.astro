@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/ui/Section.astro";
 import WhoScrollArch from "../components/sections/WhoScrollArch.astro";
+import HeroPlayfulCollage from "../components/sections/HeroPlayfulCollage.astro";
 import Button from "../components/ui/Button.astro";
 import MarqueeStrip from "../components/ui/MarqueeStrip.astro";
 import WordRotator from "../components/ui/WordRotator.astro";
@@ -31,7 +32,7 @@ const programHref: Record<string, string> = {
   preloadLcpImage={img.logoOnLightHollow}
 >
   <section
-    class="border-b-[3px] border-ink bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))]"
+    class="bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))]"
   >
     <div class="site-container">
       {
@@ -43,10 +44,10 @@ const programHref: Record<string, string> = {
       */
       }
       <div
-        class="flex flex-col gap-y-xl lg:flex-row lg:items-start lg:gap-x-xl lg:gap-y-0"
+        class="flex flex-col gap-y-xl lg:flex-row lg:items-stretch lg:gap-x-xl lg:gap-y-0"
       >
         <div
-          class="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
+          class="contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
         >
           <div
             class="flex min-w-0 flex-col gap-y-5 max-lg:order-1 md:gap-y-6 lg:min-w-0"
@@ -96,16 +97,11 @@ const programHref: Record<string, string> = {
               </div>
             </div>
           </div>
-          <img
-            src={img.homeMakerCollage}
-            alt="Marion County Maker Collective graphic"
-            width={940}
-            height={788}
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-            class="w-full min-w-0 max-lg:order-3 rotate-[0.6deg] rounded-xl border-[3px] bg-twilight border-buzz shadow-[8px_8px_0_0_var(--color-ink)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
-          />
+          <div
+            class="max-lg:contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col"
+          >
+            <HeroPlayfulCollage />
+          </div>
         </div>
         <div
           class="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
