@@ -44,5 +44,6 @@ test.describe('public pages', () => {
     await expect(canvas).toHaveAttribute('data-active', 'true');
     await expect(page.locator('html')).toHaveAttribute('data-artify-messy-studio', 'on');
     await expect(page.getByRole('button', { name: 'Clear studio marks' })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Switch to saw/i })).toBeVisible();
   });
 });

@@ -117,7 +117,7 @@ const wheelNavAlpineData =
   @artify:close-floating-nav.window="closeWheelNav()"
   @keydown.escape.window="navShellOpen && closeWheelNav()"
 >
-  <div class="pointer-events-auto relative flex flex-col items-center">
+  <div class="pointer-events-auto relative flex flex-col items-center" data-artify-studio-chrome>
     <div
       class="pointer-events-auto fixed inset-0 z-[90] bg-void/55 backdrop-blur-[2px] transition-opacity duration-300"
       x-show="navShellOpen"
@@ -257,9 +257,19 @@ const wheelNavAlpineData =
         id="artify-studio-mode-toggle"
         class="flex h-12 min-w-[5.25rem] shrink-0 items-center justify-center rounded-full bg-white/14 px-3 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         aria-pressed="false"
-        aria-label="Turn on studio mode: splatter paint on the page with click or drag"
+        aria-label="Turn on studio mode: paint or cut elements on the page"
       >
         Studio
+      </button>
+      <button
+        type="button"
+        id="artify-studio-tool-toggle"
+        class="ml-1 flex h-12 min-w-[4.5rem] shrink-0 items-center justify-center rounded-full bg-white/10 px-2 text-xs font-bold tracking-wide text-mist/90 transition-colors hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        hidden
+        aria-hidden="true"
+        aria-label="Switch to saw (drag across elements to chop)"
+      >
+        Paint
       </button>
       <button
         type="button"

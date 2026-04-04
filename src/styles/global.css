@@ -334,7 +334,7 @@
   animation-delay: -2.9s;
 }
 
-/* Studio “mess” mode: draw above page, below floating nav (z-100) and chrome (z-50). */
+/* Studio “mess” mode: pointer layer above page, below floating nav (z-100) and chrome (z-50). */
 .artify-messy-canvas {
   position: fixed;
   inset: 0;
@@ -343,10 +343,86 @@
   pointer-events: none;
 }
 
+/* Host gets position so splats/dabs can sit in element space. */
+.artify-damage-host {
+  position: relative;
+}
+
+/* Paint splats live inside real elements (multiply reads on photos/cards). */
+.artify-splatter-mark {
+  pointer-events: none;
+  position: absolute;
+  z-index: 2147483000;
+  width: var(--artify-splat-size, 48px);
+  height: var(--artify-splat-size, 48px);
+  margin: 0;
+  border-radius: 55% 45% 52% 48% / 48% 55% 45% 52%;
+  transform: translate(-50%, -50%) rotate(var(--artify-splat-rot, -8deg));
+  background: radial-gradient(
+    circle at 35% 35%,
+    color-mix(in srgb, var(--artify-splat-color, var(--color-accent)) 90%, transparent),
+    color-mix(in srgb, var(--artify-splat-color, var(--color-accent)) 45%, transparent) 52%,
+    transparent 72%
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.88;
+  filter: drop-shadow(1px 2px 0 rgba(18, 18, 42, 0.12));
+}
+
+.artify-splatter-dab {
+  pointer-events: none;
+  position: absolute;
+  z-index: 2147483000;
+  width: var(--artify-dab-w, 10px);
+  height: var(--artify-dab-h, 9px);
+  margin: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: color-mix(in srgb, var(--artify-dab-color, var(--color-accent)) 78%, transparent);
+  mix-blend-mode: multiply;
+  opacity: 0.82;
+}
+
+/* Saw: jagged clip + shove so blocks feel chopped apart (repeat hits stack via data-artify-saw-hits). */
+@keyframes artify-saw-chop {
+  from {
+    clip-path: inset(0);
+    transform: none;
+    filter: brightness(1);
+  }
+  to {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% 42%,
+      72% 38%,
+      100% 55%,
+      100% 100%,
+      0 100%,
+      0 58%,
+      28% 52%,
+      0 36%
+    );
+    transform: translate(var(--artify-saw-tx, 0px), var(--artify-saw-ty, 6px))
+      rotate(var(--artify-saw-rot, -5deg));
+    filter: brightness(0.92) drop-shadow(3px 6px 0 rgba(18, 18, 42, 0.22));
+  }
+}
+
+.artify-saw-damaged {
+  animation: artify-saw-chop 0.5s cubic-bezier(0.34, 1.25, 0.48, 1) forwards;
+  will-change: transform, clip-path;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #artify-studio-mode-toggle,
-  #artify-studio-mode-clear {
+  #artify-studio-mode-clear,
+  #artify-studio-tool-toggle {
     display: none !important;
+  }
+
+  .artify-saw-damaged {
+    animation: none !important;
   }
 }
 
