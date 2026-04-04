@@ -26,6 +26,9 @@
     "three": "^0.183.2"
   },
   "devDependencies": {
+    "@fontsource-variable/instrument-sans": "^5.2.8",
+    "@fontsource-variable/syne": "^5.2.7",
+    "@fontsource/shrikhand": "^5.2.8",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/vite": "^4.2.2",
     "serve": "^14.2.6",

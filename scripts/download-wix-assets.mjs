@@ -62,6 +62,11 @@ const SOURCE_URLS = [
   'https://static.wixstatic.com/media/dfa8a7_f9ef485e391d4ba8ad77db1dcea54320~mv2.jpg',
 ];
 
+/**
+ * Writes Wix-style filenames (dfa8a7_… / 11062b_…). The Astro site uses
+ * descriptive names under public/images via src/lib/site-images.ts — do not
+ * run this expecting paths to match the app without renaming afterward.
+ */
 function filenameForUrl(url) {
   const path = new URL(url).pathname.split('/media/')[1];
   if (!path) throw new Error(`Bad URL: ${url}`);

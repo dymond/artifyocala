@@ -1,8 +1,14 @@
+/* Self-hosted (Fontsource) — avoids render-blocking Google Fonts CSS on the critical path. */
+@import '@fontsource-variable/instrument-sans/wght.css';
+@import '@fontsource-variable/instrument-sans/wght-italic.css';
+@import '@fontsource-variable/syne/wght.css';
+@import '@fontsource/shrikhand/latin-400.css';
+
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Syne', var(--font-sans);
+  --font-sans: 'Instrument Sans Variable', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Syne Variable', 'Syne', var(--font-sans);
   /* Word rotator / playful display (Google-style pairing: Shrikhand) */
   --font-whimsy: 'Shrikhand', var(--font-display);
 

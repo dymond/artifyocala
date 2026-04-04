@@ -22,7 +22,17 @@ export default defineConfig({
     },
     build: {
       minify: false,
-      modulePreload: { polyfill: false },
+      /** Avoid `__vitePreload` in client chunks (Netlify’s esbuild pass); enables safe `import()`. */
+      modulePreload: false,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('who-arch-loader')) {
+              return 'who-arch-loader';
+            }
+          },
+        },
+      },
     },
   },
   integrations: [

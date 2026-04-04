@@ -71,27 +71,62 @@ import { img } from '../../lib/site-images';
 </section>
 
 <script>
-  /**
-   * Static import avoids Vite’s `__vitePreload` helper (top-level `document` / link preloading).
-   * Netlify’s adapter runs a second esbuild pass that mis-parses that helper and fails the build.
-   * Rollup still splits `three` into its own chunk; the entry stays a thin bootstrap.
-   */
-  import {
-    mountWhoArchBackdrop,
-    unmountWhoArchBackdrop,
-  } from '../../scripts/who-arch-backdrop';
+  import { importWhoArchBackdropModule } from '../../scripts/who-arch-loader';
+
+  type WhoMod = typeof import('../../scripts/who-arch-backdrop');
+
+  let whoMod: WhoMod | null = null;
+  let whoIo: IntersectionObserver | null = null;
+  /** Bumps on teardown so in-flight `import()` doesn’t mount after navigation away. */
+  let whoLoadGen = 0;
+
+  function teardownWhoArchBackdrop(): void {
+    whoLoadGen += 1;
+    whoIo?.disconnect();
+    whoIo = null;
+    if (whoMod) {
+      whoMod.unmountWhoArchBackdrop();
+    }
+  }
+
+  async function loadAndMountWhoArchBackdrop(): Promise<void> {
+    const gen = whoLoadGen;
+    if (!whoMod) {
+      whoMod = await importWhoArchBackdropModule();
+    }
+    if (gen !== whoLoadGen) return;
+    whoMod.mountWhoArchBackdrop();
+  }
 
   function setupWhoArchBackdrop(): void {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
-    function refreshWhoBackdrop(): void {
-      unmountWhoArchBackdrop();
-      mountWhoArchBackdrop();
+    teardownWhoArchBackdrop();
+
+    const who = document.getElementById('who');
+    if (!who) return;
+
+    const kickoff = (): void => {
+      void loadAndMountWhoArchBackdrop();
+    };
+
+    if (!('IntersectionObserver' in window)) {
+      kickoff();
+      return;
     }
 
-    refreshWhoBackdrop();
-    document.addEventListener('astro:page-load', refreshWhoBackdrop);
+    whoIo = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        whoIo?.disconnect();
+        whoIo = null;
+        kickoff();
+      },
+      { root: null, rootMargin: '280px 0px 320px 0px', threshold: 0 },
+    );
+    whoIo.observe(who);
   }
 
-  void setupWhoArchBackdrop();
+  document.addEventListener('astro:page-load', setupWhoArchBackdrop);
+  setupWhoArchBackdrop();
 </script>
