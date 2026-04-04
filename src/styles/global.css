@@ -96,63 +96,115 @@
   }
 }
 
-/* Card shells: gentle translate-only bob (3D flip lives on the inner flip layer). */
+/*
+ * Card shells: bob via margin (not transform). Animated translate on an ancestor of
+ * perspective/preserve-3d flattens the 3D context in Chromium → harsh flicker; Safari is fine.
+ */
 @keyframes artify-hero-card-bob-1 {
   0%,
   100% {
-    transform: translate3d(0, 0, 0);
+    margin: 0;
   }
   50% {
-    transform: translate3d(6px, -10px, 0);
+    margin: -10px 0 0 6px;
   }
 }
 
 @keyframes artify-hero-card-bob-2 {
   0%,
   100% {
-    transform: translate3d(0, 0, 0);
+    margin: 0;
   }
   50% {
-    transform: translate3d(-8px, 8px, 0);
+    margin: 8px 0 0 -8px;
   }
 }
 
 @keyframes artify-hero-card-bob-3 {
   0%,
   100% {
-    transform: translate3d(0, 0, 0);
+    margin: 0;
   }
   33% {
-    transform: translate3d(5px, 7px, 0);
+    margin: 7px 0 0 5px;
   }
   66% {
-    transform: translate3d(-6px, -5px, 0);
+    margin: -5px 0 0 -6px;
   }
 }
 
 @keyframes artify-hero-card-bob-4 {
   0%,
   100% {
-    transform: translate3d(0, 0, 0);
+    margin: 0;
   }
   50% {
-    transform: translate3d(4px, -7px, 0);
+    margin: -7px 0 0 4px;
   }
 }
 
-/* Byooooob-style Y-axis flip: hold on front, hold on back, return (loop). */
-@keyframes artify-hero-flip-cycle {
+/*
+ * Y-axis flip: oscillate 0° ↔ 180° only (no 360° loop) to avoid wrap/compositor glitches in Chrome.
+ * Tilt is baked in so no 2D rotate sits between perspective and preserve-3d (same flicker class as bob).
+ * translateZ pins a stable compositing plane.
+ */
+@keyframes artify-hero-flip-cycle-a {
   0%,
-  28% {
-    transform: rotateY(0deg);
+  22% {
+    transform: rotate(-9deg) rotateY(0deg) translateZ(0.01px);
   }
-  36%,
+  28%,
   72% {
-    transform: rotateY(180deg);
+    transform: rotate(-9deg) rotateY(180deg) translateZ(0.01px);
   }
-  80%,
+  78%,
   100% {
-    transform: rotateY(360deg);
+    transform: rotate(-9deg) rotateY(0deg) translateZ(0.01px);
+  }
+}
+
+@keyframes artify-hero-flip-cycle-b {
+  0%,
+  22% {
+    transform: rotate(8deg) rotateY(0deg) translateZ(0.01px);
+  }
+  28%,
+  72% {
+    transform: rotate(8deg) rotateY(180deg) translateZ(0.01px);
+  }
+  78%,
+  100% {
+    transform: rotate(8deg) rotateY(0deg) translateZ(0.01px);
+  }
+}
+
+@keyframes artify-hero-flip-cycle-c {
+  0%,
+  22% {
+    transform: rotate(-5deg) rotateY(0deg) translateZ(0.01px);
+  }
+  28%,
+  72% {
+    transform: rotate(-5deg) rotateY(180deg) translateZ(0.01px);
+  }
+  78%,
+  100% {
+    transform: rotate(-5deg) rotateY(0deg) translateZ(0.01px);
+  }
+}
+
+@keyframes artify-hero-flip-cycle-d {
+  0%,
+  22% {
+    transform: rotate(7deg) rotateY(0deg) translateZ(0.01px);
+  }
+  28%,
+  72% {
+    transform: rotate(7deg) rotateY(180deg) translateZ(0.01px);
+  }
+  78%,
+  100% {
+    transform: rotate(7deg) rotateY(0deg) translateZ(0.01px);
   }
 }
 
@@ -277,9 +329,11 @@
   animation-delay: -3.5s;
 }
 
-/* Perspective sits on a non-rotating ancestor; this layer must not use overflow:hidden (breaks 3D back faces). */
+/* Tilt + rotateY live here so perspective’s child isn’t under a separate 2D transform (Chromium). */
 .artify-hero-flip-inner {
+  transform-origin: center center;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .artify-hero-flip-face {
@@ -297,21 +351,21 @@
 }
 
 .artify-hero-flip-a {
-  animation: artify-hero-flip-cycle 10.5s ease-in-out infinite;
+  animation: artify-hero-flip-cycle-a 10.5s ease-in-out infinite;
 }
 
 .artify-hero-flip-b {
-  animation: artify-hero-flip-cycle 12.5s ease-in-out infinite;
+  animation: artify-hero-flip-cycle-b 12.5s ease-in-out infinite;
   animation-delay: -2.75s;
 }
 
 .artify-hero-flip-c {
-  animation: artify-hero-flip-cycle 9.25s ease-in-out infinite;
+  animation: artify-hero-flip-cycle-c 9.25s ease-in-out infinite;
   animation-delay: -1.25s;
 }
 
 .artify-hero-flip-d {
-  animation: artify-hero-flip-cycle 11.75s ease-in-out infinite;
+  animation: artify-hero-flip-cycle-d 11.75s ease-in-out infinite;
   animation-delay: -4s;
 }
 
@@ -355,148 +409,6 @@
   animation-delay: -3s;
 }
 
-/*
- * Hero collage — periodic z-index “dance” so stickers, shapes, and cards take turns on top.
- * step-end keeps jumps discrete; different durations + delays desync layers. Googly eyes stay z-25 (no class).
- */
-@keyframes artify-hero-z-dance-0 {
-  0%,
-  100% {
-    z-index: 5;
-  }
-  20% {
-    z-index: 16;
-  }
-  40% {
-    z-index: 4;
-  }
-  60% {
-    z-index: 12;
-  }
-  80% {
-    z-index: 9;
-  }
-}
-
-@keyframes artify-hero-z-dance-1 {
-  0%,
-  100% {
-    z-index: 8;
-  }
-  20% {
-    z-index: 4;
-  }
-  40% {
-    z-index: 17;
-  }
-  60% {
-    z-index: 6;
-  }
-  80% {
-    z-index: 14;
-  }
-}
-
-@keyframes artify-hero-z-dance-2 {
-  0%,
-  100% {
-    z-index: 4;
-  }
-  20% {
-    z-index: 13;
-  }
-  40% {
-    z-index: 7;
-  }
-  60% {
-    z-index: 15;
-  }
-  80% {
-    z-index: 5;
-  }
-}
-
-@keyframes artify-hero-z-dance-3 {
-  0%,
-  100% {
-    z-index: 11;
-  }
-  20% {
-    z-index: 5;
-  }
-  40% {
-    z-index: 10;
-  }
-  60% {
-    z-index: 18;
-  }
-  80% {
-    z-index: 6;
-  }
-}
-
-@keyframes artify-hero-z-dance-4 {
-  0%,
-  100% {
-    z-index: 6;
-  }
-  20% {
-    z-index: 14;
-  }
-  40% {
-    z-index: 5;
-  }
-  60% {
-    z-index: 11;
-  }
-  80% {
-    z-index: 16;
-  }
-}
-
-@keyframes artify-hero-z-dance-5 {
-  0%,
-  100% {
-    z-index: 10;
-  }
-  20% {
-    z-index: 6;
-  }
-  40% {
-    z-index: 13;
-  }
-  60% {
-    z-index: 4;
-  }
-  80% {
-    z-index: 15;
-  }
-}
-
-.artify-hero-z-dance-0 {
-  animation: artify-hero-z-dance-0 29s step-end infinite;
-}
-
-.artify-hero-z-dance-1 {
-  animation: artify-hero-z-dance-1 33s step-end infinite;
-}
-
-.artify-hero-z-dance-2 {
-  animation: artify-hero-z-dance-2 24s step-end infinite;
-}
-
-.artify-hero-z-dance-3 {
-  animation: artify-hero-z-dance-3 31s step-end infinite;
-}
-
-.artify-hero-z-dance-4 {
-  animation: artify-hero-z-dance-4 27s step-end infinite;
-}
-
-.artify-hero-z-dance-5 {
-  animation: artify-hero-z-dance-5 35s step-end infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .artify-hero-star-spin,
   .artify-hero-outline-drift,
@@ -516,43 +428,12 @@
   .artify-hero-slide-tilt,
   .artify-hero-jelly-wiggle,
   .artify-hero-bounce-pop,
-  .artify-hero-dash-wave,
-  .artify-hero-z-dance-0,
-  .artify-hero-z-dance-1,
-  .artify-hero-z-dance-2,
-  .artify-hero-z-dance-3,
-  .artify-hero-z-dance-4,
-  .artify-hero-z-dance-5 {
+  .artify-hero-dash-wave {
     animation: none !important;
   }
 
-  /* Static stacking when z-dance is off */
-  .artify-hero-z-dance-0 {
-    z-index: 6 !important;
-  }
-
-  .artify-hero-z-dance-1 {
-    z-index: 7 !important;
-  }
-
-  .artify-hero-z-dance-2 {
-    z-index: 8 !important;
-  }
-
-  .artify-hero-z-dance-3 {
-    z-index: 9 !important;
-  }
-
-  .artify-hero-z-dance-4 {
-    z-index: 10 !important;
-  }
-
-  .artify-hero-z-dance-5 {
-    z-index: 11 !important;
-  }
-
   .artify-hero-flip-inner {
-    transform: rotateY(0deg) !important;
+    transform: translateZ(0.01px) rotateY(0deg) !important;
   }
 }
 
