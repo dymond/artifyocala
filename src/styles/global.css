@@ -634,6 +634,15 @@
   margin-block: 0 0.5rem;
 }
 
+/* Hero word rotator: ink fill + light periwinkle offset shadow (avoids broken
+   Tailwind arbitrary [text-shadow:…,…] parsing with internal commas). */
+@utility artify-hero-word-rotator {
+  color: var(--color-ink);
+  text-shadow:
+    0.08em 0.08em 0 var(--color-buzz),
+    -0.04em -0.04em 0 var(--color-accent-soft);
+}
+
 @utility type-display-lg {
   font-family: var(--font-display);
   font-weight: 700;
