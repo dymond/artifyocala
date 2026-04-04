@@ -13,6 +13,16 @@ export default defineConfig({
   output: 'static',
   vite: {
     plugins: [tailwindcss()],
+    esbuild: {
+      /** Keep `typeof x === "undefined"` form; some CI esbuild passes choke on `typeof x<"u"`. */
+      minifyIdentifiers: false,
+      minifySyntax: false,
+      minifyWhitespace: false,
+    },
+    build: {
+      minify: false,
+      modulePreload: { polyfill: false },
+    },
   },
   integrations: [
     mdx(),
