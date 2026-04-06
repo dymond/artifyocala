@@ -9,7 +9,11 @@ import {
   LINKS,
   mailtoTourMakerCollective,
 } from '../../lib/links';
-import { brickGlamGallery, img } from '../../lib/site-images';
+import {
+  brickGlamGallery,
+  img,
+  storytellingKnightsGallery,
+} from '../../lib/site-images';
 
 export async function getStaticPaths() {
   const programs = await getCollection('programs');
@@ -104,8 +108,8 @@ const heroGridCols = isBrick
               <Button href={LINKS.boloMembershipApply} tone="outline" external>
                 Apply for membership
               </Button>
-              <Button href={LINKS.zeffyMakerspaceDonation} tone="outline" external>
-                View sponsorship / donate
+              <Button href={LINKS.zeffyDonate} tone="outline" external>
+                Donate
               </Button>
               <Button href="/programs/maker-collective/equipment" tone="outline">
                 Equipment wish list
@@ -116,7 +120,7 @@ const heroGridCols = isBrick
         {
           isBrick ? (
             <div class="flex flex-wrap gap-sm">
-              <Button href={LINKS.mcaApplaudTheArts} external>Upcoming performances</Button>
+              <Button href={LINKS.brickCityGlamFacebook} external>Upcoming performances</Button>
               <Button href={LINKS.jotformCasting} tone="outline" external>
                 Casting form
               </Button>
@@ -164,27 +168,24 @@ const heroGridCols = isBrick
   {
     isStory ? (
       <Section>
-        <h2 class="type-display-lg mb-md">At the table</h2>
-        <div class="grid grid-cols-1 gap-md md:grid-cols-2">
-          <img
-            src={img.programStory}
-            alt=""
-            width={1365}
-            height={1365}
-            class="max-h-[28rem] w-full rounded-lg border border-line object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-          <img
-            src={img.programStoryAlt}
-            alt=""
-            width={1070}
-            height={1279}
-            class="max-h-[28rem] w-full rounded-lg border border-line object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
+        <h2 class="type-display-lg mb-md">Photo gallery</h2>
+        <p class="type-muted mb-lg max-w-[40rem]">
+          Scenes from our tables and events. Follow{' '}
+          <a
+            class="font-medium text-ink underline decoration-ink/35 underline-offset-2 hover:decoration-ink"
+            href={LINKS.storytellingKnightsInstagram}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            @storytellingknights on Instagram
+          </a>{' '}
+          for the latest photos and announcements.
+        </p>
+        <PhotoGrid
+          images={storytellingKnightsGallery}
+          alt="Storytelling Knights"
+          surface="light"
+        />
       </Section>
     ) : null
   }

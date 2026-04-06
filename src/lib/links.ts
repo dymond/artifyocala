@@ -7,18 +7,21 @@ export const SITE = {
   name: 'Artify Ocala',
   tagline: 'Enhancing Everyday Experiences Through Art & Exploration',
   email: 'info@artifyocala.org',
+  phoneDisplay: '352.299.5673',
 } as const;
 
 export const LINKS = {
   instagram: 'https://www.instagram.com/artifyocala',
+  storytellingKnightsInstagram: 'https://www.instagram.com/storytellingknights/',
   facebook: 'https://www.facebook.com/artifyocala',
   facebookMeetupGroup: 'https://www.facebook.com/share/g/1BQuehj359/',
+  brickCityGlamFacebook: 'https://www.facebook.com/BrickCityGlam/',
   zeffyStorytellingSignup:
     'https://www.zeffy.com/ticketing/30685666-0bc4-4a2b-8d0f-85f994415c67',
-  zeffyGetInvolved: 'https://www.zeffy.com/ticketing/a97a54c8-3f9c-414e-89c9-08ccd79e57d8',
   zeffyVolunteerEn: 'https://www.zeffy.com/en-US/ticketing/a97a54c8-3f9c-414e-89c9-08ccd79e57d8',
-  zeffyMakerspaceDonation:
-    'https://www.zeffy.com/en-US/donation-form/help-build-the-marion-county-maker-space',
+  /** General Artify Ocala 501(c)(3) donation (replaces makerspace-only form). */
+  zeffyDonate:
+    'https://www.zeffy.com/en-US/donation-form/4bed9a5f-bbdd-4892-a93b-642a9ee7268a',
   jotformCasting: 'https://form.jotform.com/222587113491052',
   boloMembershipApply:
     'https://fill.boloforms.com/signature/4a7f6985-f626-41ba-8ab2-50b7f6a4ed5c?p=view',
@@ -31,12 +34,13 @@ export type OutboundLinkKey = keyof typeof LINKS;
 
 const URL_KEYS: OutboundLinkKey[] = [
   'instagram',
+  'storytellingKnightsInstagram',
   'facebook',
   'facebookMeetupGroup',
+  'brickCityGlamFacebook',
   'zeffyStorytellingSignup',
-  'zeffyGetInvolved',
   'zeffyVolunteerEn',
-  'zeffyMakerspaceDonation',
+  'zeffyDonate',
   'jotformCasting',
   'boloMembershipApply',
   'mcaGalleryTours',

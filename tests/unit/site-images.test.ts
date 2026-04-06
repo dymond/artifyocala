@@ -1,7 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { brickGlamGallery, img } from '../../src/lib/site-images';
+import {
+  brickGlamGallery,
+  img,
+  storytellingKnightsGallery,
+} from '../../src/lib/site-images';
 
 const publicRoot = resolve(import.meta.dirname, '../../public');
 
@@ -21,6 +25,14 @@ describe('site-images', () => {
   it('lists seventeen Brick City Glam gallery images on disk', () => {
     expect(brickGlamGallery).toHaveLength(17);
     for (const src of brickGlamGallery) {
+      assertPublicFile(src);
+    }
+  });
+
+  it('maps Storytelling Knights gallery entries to existing public files', () => {
+    expect(storytellingKnightsGallery.length).toBeGreaterThan(0);
+    for (const src of storytellingKnightsGallery) {
+      expect(src).toMatch(/^\/images\//);
       assertPublicFile(src);
     }
   });

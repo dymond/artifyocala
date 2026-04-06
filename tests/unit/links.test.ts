@@ -17,7 +17,7 @@ describe('links', () => {
   });
 
   it('keeps Zeffy and form endpoints on expected hosts', () => {
-    expect(new URL(LINKS.zeffyMakerspaceDonation).hostname).toBe('www.zeffy.com');
+    expect(new URL(LINKS.zeffyDonate).hostname).toBe('www.zeffy.com');
     expect(new URL(LINKS.jotformCasting).hostname).toBe('form.jotform.com');
     expect(new URL(LINKS.boloMembershipApply).hostname).toBe('fill.boloforms.com');
   });

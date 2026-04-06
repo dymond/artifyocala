@@ -290,26 +290,6 @@
   }
 }
 
-@keyframes artify-hero-occult-drift {
-  0%,
-  100% {
-    transform: rotate(-6deg);
-  }
-  50% {
-    transform: rotate(8deg);
-  }
-}
-
-@keyframes artify-hero-occult-pulse {
-  0%,
-  100% {
-    opacity: 0.72;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
 /* Hero googly eyes: upper lid + lashes; scaleY closes for blink (origin top). */
 @keyframes artify-hero-eye-blink {
   0%,
@@ -472,15 +452,6 @@
   animation-delay: -3s;
 }
 
-.artify-hero-occult-drift {
-  animation: artify-hero-occult-drift 26s ease-in-out infinite;
-  transform-origin: 50% 55%;
-}
-
-.artify-hero-occult-pulse {
-  animation: artify-hero-occult-pulse 7s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .artify-hero-star-spin,
   .artify-hero-outline-drift,
@@ -505,19 +476,6 @@
   .artify-hero-eye-shutter--blink-delay {
     animation: none !important;
     transform: scaleY(0.4) !important;
-  }
-
-  .artify-hero-occult-drift,
-  .artify-hero-occult-pulse {
-    animation: none !important;
-  }
-
-  .artify-hero-occult-drift {
-    transform: none !important;
-  }
-
-  .artify-hero-occult-pulse {
-    opacity: 1 !important;
   }
 
   .artify-hero-flip-inner {

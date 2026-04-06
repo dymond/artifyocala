@@ -42,6 +42,15 @@ export const img = {
   socialMetaB: `${b}/meta-pwa-icon-201.png`,
 } as const;
 
+/** Storytelling Knights — reuse hero/session/volunteer photography (swap order as new assets land). */
+export const storytellingKnightsGallery = [
+  img.storytellingA,
+  img.storytellingB,
+  img.programStory,
+  img.programStoryAlt,
+  img.volunteerStory,
+] as const;
+
 /** Brick City Glam — photo gallery (order preserved). */
 export const brickGlamGallery = [
   `${b}/brick-city-glam-gallery-01.jpg`,
