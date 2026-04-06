@@ -5,6 +5,7 @@ import {
   brickGlamGallery,
   img,
   storytellingKnightsGallery,
+  storytellingKnightsNew,
 } from '../../src/lib/site-images';
 
 const publicRoot = resolve(import.meta.dirname, '../../public');
@@ -32,6 +33,14 @@ describe('site-images', () => {
   it('maps Storytelling Knights gallery entries to existing public files', () => {
     expect(storytellingKnightsGallery.length).toBeGreaterThan(0);
     for (const src of storytellingKnightsGallery) {
+      expect(src).toMatch(/^\/images\//);
+      assertPublicFile(src);
+    }
+  });
+
+  it('maps storytellingKnightsNew bundle to existing public files', () => {
+    expect(storytellingKnightsNew).toHaveLength(3);
+    for (const src of storytellingKnightsNew) {
       expect(src).toMatch(/^\/images\//);
       assertPublicFile(src);
     }

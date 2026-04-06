@@ -34,6 +34,10 @@ export const img = {
   makerspaceE: `${b}/maker-collective-makerspace-interior-05.jpg`,
   storytellingA: `${b}/storytelling-knights-session-01.jpg`,
   storytellingB: `${b}/storytelling-knights-session-02.jpg`,
+  /** Storytelling Knights — additional photos (not yet placed in layouts). */
+  storytellingKnights1: `${b}/storytelling-knights-1.jpg`,
+  storytellingKnights2: `${b}/storytelling-knights-2.jpg`,
+  storytellingKnights3: `${b}/storytelling-knights-3.jpg`,
   volunteerGlam: `${b}/volunteer-brick-city-glam.jpg`,
   volunteerStory: `${b}/volunteer-storytelling-knights.jpg`,
   volunteerMakers: `${b}/volunteer-maker-collective.jpg`,
@@ -41,6 +45,13 @@ export const img = {
   socialMetaA: `${b}/meta-pwa-icon-1024.png`,
   socialMetaB: `${b}/meta-pwa-icon-201.png`,
 } as const;
+
+/** New STK photos only — merge into `storytellingKnightsGallery` or pages when ready. */
+export const storytellingKnightsNew = [
+  img.storytellingKnights1,
+  img.storytellingKnights2,
+  img.storytellingKnights3,
+] as const;
 
 /** Storytelling Knights — reuse hero/session/volunteer photography (swap order as new assets land). */
 export const storytellingKnightsGallery = [
