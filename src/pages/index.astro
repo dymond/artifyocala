@@ -476,12 +476,23 @@ const programHref: Record<string, string> = {
           Opportunities and developmental coaching for performing artists in
           Ocala and Marion County.
         </p>
-        <div class="flex flex-wrap gap-sm">
-          <Button href={LINKS.brickCityGlamFacebook} tone="surge" external
-            >Upcoming performances</Button
+        <div class="flex max-w-[40rem] flex-col gap-sm">
+          <Button
+            href={LINKS.brickCityGlamFacebook}
+            tone="surge"
+            external
+            class="w-full"
           >
-          <Button href="/volunteer" tone="outline">Volunteer</Button>
-          <Button href="/donate" tone="outline">Donate</Button>
+            Upcoming performances
+          </Button>
+          <div class="flex w-full flex-col gap-sm lg:flex-row">
+            <Button href="/volunteer" tone="outline" class="w-full lg:flex-1">
+              Volunteer
+            </Button>
+            <Button href="/donate" tone="outline" class="w-full lg:flex-1">
+              Donate
+            </Button>
+          </div>
         </div>
       </div>
     </div>
