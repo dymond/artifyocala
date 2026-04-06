@@ -1,0 +1,55 @@
+---
+import Section from "../ui/Section.astro";
+import Button from "../ui/Button.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "objectivesList" }>;
+}
+
+const { section } = Astro.props;
+const lines = section.objLines ?? [];
+const ctas = section.objCtas ?? [];
+---
+
+<Section>
+  {
+    section.objHeading && (
+      <h3 class="mt-xl font-display text-2xl font-bold leading-tight tracking-tight">
+        {section.objHeading}
+      </h3>
+    )
+  }
+  <ul class="mb-lg flex max-w-[44rem] list-none flex-col gap-md p-0">
+    {
+      lines.map((item) => (
+        <li class="border-l-2 border-line pl-md">
+          <strong>{item.objLineTitle}:</strong> {item.objLineBody}
+        </li>
+      ))
+    }
+  </ul>
+  {
+    section.objFooterHtml && (
+      <p
+        class="type-muted max-w-[40rem]"
+        set:html={section.objFooterHtml}
+      />
+    )
+  }
+  {
+    ctas.length > 0 && (
+      <div class="mt-lg flex flex-wrap gap-sm">
+        {ctas.map((b) => (
+          <Button
+            href={b.objCtaHref}
+            tone={b.objCtaTone ?? "outline"}
+            external={Boolean(b.objCtaExternal)}
+          >
+            {b.objCtaLabel}
+          </Button>
+        ))}
+      </div>
+    )
+  }
+</Section>

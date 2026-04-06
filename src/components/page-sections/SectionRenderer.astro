@@ -1,0 +1,49 @@
+---
+import { parsePageSection } from "../../lib/page-sections/schema";
+import { getSectionTemplateKey } from "../../lib/page-sections/registry";
+import PageIntro from "./PageIntro.astro";
+import ProseBand from "./ProseBand.astro";
+import MissionQuote from "./MissionQuote.astro";
+import ObjectivesList from "./ObjectivesList.astro";
+import ContactSection from "./ContactSection.astro";
+import TwoColumnDonateHero from "./TwoColumnDonateHero.astro";
+import BulletBand from "./BulletBand.astro";
+import SplitImageText from "./SplitImageText.astro";
+import HomeHeroBand from "./HomeHeroBand.astro";
+import HomeMarqueeSection from "./HomeMarqueeSection.astro";
+import WhoScrollSection from "./WhoScrollSection.astro";
+import HomeProgramsWithCards from "./HomeProgramsWithCards.astro";
+import HomeMeetupsSection from "./HomeMeetupsSection.astro";
+import HomeSupportBandSection from "./HomeSupportBandSection.astro";
+import HomeMoreGridSection from "./HomeMoreGridSection.astro";
+import HomeCtaBandSection from "./HomeCtaBandSection.astro";
+
+interface Props {
+  section: unknown;
+}
+
+const section = parsePageSection(Astro.props.section);
+getSectionTemplateKey(section);
+const t = section._template;
+---
+
+{
+  t === "pageIntro" && (
+    <PageIntro section={section} />
+  )
+}
+{t === "proseBand" && <ProseBand section={section} />}
+{t === "missionQuote" && <MissionQuote section={section} />}
+{t === "objectivesList" && <ObjectivesList section={section} />}
+{t === "contactSection" && <ContactSection section={section} />}
+{t === "twoColumnDonateHero" && <TwoColumnDonateHero section={section} />}
+{t === "bulletBand" && <BulletBand section={section} />}
+{t === "splitImageText" && <SplitImageText section={section} />}
+{t === "homeHeroFull" && <HomeHeroBand section={section} />}
+{t === "homeMarquee" && <HomeMarqueeSection section={section} />}
+{t === "whoScroll" && <WhoScrollSection section={section} />}
+{t === "homeProgramsIntro" && <HomeProgramsWithCards section={section} />}
+{t === "homeMeetups" && <HomeMeetupsSection section={section} />}
+{t === "homeSupportBand" && <HomeSupportBandSection section={section} />}
+{t === "homeMoreGrid" && <HomeMoreGridSection section={section} />}
+{t === "homeCtaBand" && <HomeCtaBandSection section={section} />}

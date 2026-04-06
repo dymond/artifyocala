@@ -1,169 +1,175 @@
-[
-  {
-    "id": "workshop",
-    "title": "Workshop",
-    "items": [
-      "Table Saw (SawStop)",
-      "Circular saw",
-      "Miter saw",
-      "Power drill and impact drill",
-      "Router",
-      "Orbital sander",
-      "Jigsaw",
-      "Belt sander (stationary)",
-      "Belt sander (handheld)",
-      "Drill press",
-      "Band saw",
-      "Dust collection system",
-      "Mini lathe",
-      "Staple gun",
-      "Planer",
-      "Jointer"
-    ]
-  },
-  {
-    "id": "hand-tools",
-    "title": "Hand tools",
-    "items": [
-      "Chisels",
-      "Combination square",
-      "Knife",
-      "Screwdriver assortment",
-      "Pliers",
-      "Carving sets (whittling)"
-    ]
-  },
-  {
-    "id": "other-essentials",
-    "title": "Other essentials",
-    "items": ["Clamps (pipe, bar, spring)", "Tape measures", "Pencils"]
-  },
-  {
-    "id": "fibershop",
-    "title": "Fibershop",
-    "items": [
-      "Sewing machines",
-      "Embroidery machine",
-      "Serger machine",
-      "Cutting boards",
-      "Fabric bank"
-    ]
-  },
-  {
-    "id": "fiber-materials",
-    "title": "Fiber working — materials",
-    "items": [
-      "Wool (different weights and colors)",
-      "Cotton",
-      "Silk",
-      "Alpaca",
-      "Flax",
-      "Bamboo",
-      "Synthetic fibers",
-      "Yarn (different weights and colors)"
-    ]
-  },
-  {
-    "id": "fiber-tools",
-    "title": "Fiber working — tools",
-    "items": [
-      "Sharp fabric scissors",
-      "Rotary cutter",
-      "Sewing needles",
-      "Embroidery needles",
-      "Felting needles",
-      "Spinning wheel",
-      "Loom",
-      "Felting tools",
-      "Dyeing supplies (dyes, mordants, containers)",
-      "Crochet hooks",
-      "Knitting needles",
-      "Tufting guns",
-      "Frames for tufting projects",
-      "Measuring tape",
-      "Pins",
-      "Gloves (for certain fiber preparation)"
-    ]
-  },
-  {
-    "id": "tech-station",
-    "title": "Tech station",
-    "items": [
-      "Laptops",
-      "Desktops",
-      "3D printer",
-      "Filament: PLA",
-      "Build plate scraper",
-      "Tweezers",
-      "Digital caliper",
-      "Glue stick",
-      "Desiccant and resealable bags",
-      "Cleaning supplies for printer nozzles and build plates",
-      "Safety gear: gloves, safety glasses"
-    ]
-  },
-  {
-    "id": "laser",
-    "title": "Laser engraving / cutting",
-    "items": [
-      "CO2 laser cutting machine",
-      "Industrial water chiller unit",
-      "Exhaust fan / fume extractor",
-      "Laser software",
-      "Laptop or dedicated desktop",
-      "Materials to engrave/cut: acrylic, wood, leather, plastics, fabrics, glass, rubber, cork, brick, granite, marble, tile, river rock, bone, aluminum"
-    ]
-  },
-  {
-    "id": "vinyl",
-    "title": "Vinyl cutter",
-    "items": [
-      "Vinyl cutter machine",
-      "Computer",
-      "Cutting blades",
-      "Printable sticker vinyl",
-      "Transfer tape",
-      "Inkjet printer",
-      "Weeding tools",
-      "Cutting mat",
-      "Scraper tool",
-      "Scissors"
-    ]
-  },
-  {
-    "id": "jewelry",
-    "title": "Jewelry making",
-    "items": [
-      "Pliers: flat nose, round nose, chain nose, flush cutters",
-      "Jeweler's saw with frame and assorted blades",
-      "Bench pin",
-      "Needle files",
-      "Hammers: texturing, repoussé, nylon mallet",
-      "Soldering tools: soldering block, torch, appropriate solder",
-      "Measuring tools: ruler, calipers",
-      "Tweezers",
-      "Magnifying glass or visor",
-      "Practice metals such as copper",
-      "Wire cutters",
-      "Beads, jump rings, clasps, and wire",
-      "Polishing compounds, polishing wheels, ultrasonic cleaner, rolling mill, drill press"
-    ]
-  },
-  {
-    "id": "performing-arts",
-    "title": "Performing arts space",
-    "items": [
-      "Crash mats",
-      "Mirrors",
-      "Basic furniture: chairs, benches, storage cubby shelf",
-      "Cleaning supplies: disinfectant, towels",
-      "Conditioning equipment",
-      "Yoga blocks",
-      "Stretch wheels",
-      "Stretch straps",
-      "Assist (resistance) bands (for inverts)",
-      "Yoga mats",
-      "Floor sliders"
-    ]
-  }
-]
+{
+  "categories": [
+    {
+      "eqCatId": "workshop",
+      "eqCatTitle": "Workshop",
+      "eqCatLines": [
+        "Table Saw (SawStop)",
+        "Circular saw",
+        "Miter saw",
+        "Power drill and impact drill",
+        "Router",
+        "Orbital sander",
+        "Jigsaw",
+        "Belt sander (stationary)",
+        "Belt sander (handheld)",
+        "Drill press",
+        "Band saw",
+        "Dust collection system",
+        "Mini lathe",
+        "Staple gun",
+        "Planer",
+        "Jointer"
+      ]
+    },
+    {
+      "eqCatId": "hand-tools",
+      "eqCatTitle": "Hand tools",
+      "eqCatLines": [
+        "Chisels",
+        "Combination square",
+        "Knife",
+        "Screwdriver assortment",
+        "Pliers",
+        "Carving sets (whittling)"
+      ]
+    },
+    {
+      "eqCatId": "other-essentials",
+      "eqCatTitle": "Other essentials",
+      "eqCatLines": [
+        "Clamps (pipe, bar, spring)",
+        "Tape measures",
+        "Pencils"
+      ]
+    },
+    {
+      "eqCatId": "fibershop",
+      "eqCatTitle": "Fibershop",
+      "eqCatLines": [
+        "Sewing machines",
+        "Embroidery machine",
+        "Serger machine",
+        "Cutting boards",
+        "Fabric bank"
+      ]
+    },
+    {
+      "eqCatId": "fiber-materials",
+      "eqCatTitle": "Fiber working — materials",
+      "eqCatLines": [
+        "Wool (different weights and colors)",
+        "Cotton",
+        "Silk",
+        "Alpaca",
+        "Flax",
+        "Bamboo",
+        "Synthetic fibers",
+        "Yarn (different weights and colors)"
+      ]
+    },
+    {
+      "eqCatId": "fiber-tools",
+      "eqCatTitle": "Fiber working — tools",
+      "eqCatLines": [
+        "Sharp fabric scissors",
+        "Rotary cutter",
+        "Sewing needles",
+        "Embroidery needles",
+        "Felting needles",
+        "Spinning wheel",
+        "Loom",
+        "Felting tools",
+        "Dyeing supplies (dyes, mordants, containers)",
+        "Crochet hooks",
+        "Knitting needles",
+        "Tufting guns",
+        "Frames for tufting projects",
+        "Measuring tape",
+        "Pins",
+        "Gloves (for certain fiber preparation)"
+      ]
+    },
+    {
+      "eqCatId": "tech-station",
+      "eqCatTitle": "Tech station",
+      "eqCatLines": [
+        "Laptops",
+        "Desktops",
+        "3D printer",
+        "Filament: PLA",
+        "Build plate scraper",
+        "Tweezers",
+        "Digital caliper",
+        "Glue stick",
+        "Desiccant and resealable bags",
+        "Cleaning supplies for printer nozzles and build plates",
+        "Safety gear: gloves, safety glasses"
+      ]
+    },
+    {
+      "eqCatId": "laser",
+      "eqCatTitle": "Laser engraving / cutting",
+      "eqCatLines": [
+        "CO2 laser cutting machine",
+        "Industrial water chiller unit",
+        "Exhaust fan / fume extractor",
+        "Laser software",
+        "Laptop or dedicated desktop",
+        "Materials to engrave/cut: acrylic, wood, leather, plastics, fabrics, glass, rubber, cork, brick, granite, marble, tile, river rock, bone, aluminum"
+      ]
+    },
+    {
+      "eqCatId": "vinyl",
+      "eqCatTitle": "Vinyl cutter",
+      "eqCatLines": [
+        "Vinyl cutter machine",
+        "Computer",
+        "Cutting blades",
+        "Printable sticker vinyl",
+        "Transfer tape",
+        "Inkjet printer",
+        "Weeding tools",
+        "Cutting mat",
+        "Scraper tool",
+        "Scissors"
+      ]
+    },
+    {
+      "eqCatId": "jewelry",
+      "eqCatTitle": "Jewelry making",
+      "eqCatLines": [
+        "Pliers: flat nose, round nose, chain nose, flush cutters",
+        "Jeweler's saw with frame and assorted blades",
+        "Bench pin",
+        "Needle files",
+        "Hammers: texturing, repoussé, nylon mallet",
+        "Soldering tools: soldering block, torch, appropriate solder",
+        "Measuring tools: ruler, calipers",
+        "Tweezers",
+        "Magnifying glass or visor",
+        "Practice metals such as copper",
+        "Wire cutters",
+        "Beads, jump rings, clasps, and wire",
+        "Polishing compounds, polishing wheels, ultrasonic cleaner, rolling mill, drill press"
+      ]
+    },
+    {
+      "eqCatId": "performing-arts",
+      "eqCatTitle": "Performing arts space",
+      "eqCatLines": [
+        "Crash mats",
+        "Mirrors",
+        "Basic furniture: chairs, benches, storage cubby shelf",
+        "Cleaning supplies: disinfectant, towels",
+        "Conditioning equipment",
+        "Yoga blocks",
+        "Stretch wheels",
+        "Stretch straps",
+        "Assist (resistance) bands (for inverts)",
+        "Yoga mats",
+        "Floor sliders"
+      ]
+    }
+  ]
+}

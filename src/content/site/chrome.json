@@ -1,0 +1,59 @@
+{
+  "headerLogoImage": "/images/logo-on-light-hollow.png",
+  "footerLogoImage": "/images/logo-on-dark-full.png",
+  "navItems": [
+    {
+      "href": "/about",
+      "label": "About",
+      "ariaLabel": ""
+    },
+    {
+      "href": "/volunteer",
+      "label": "Volunteer",
+      "ariaLabel": ""
+    },
+    {
+      "href": "/donate",
+      "label": "Donate",
+      "ariaLabel": ""
+    },
+    {
+      "href": "/programs/maker-collective",
+      "label": "Makers",
+      "ariaLabel": "Marion County Maker Collective"
+    },
+    {
+      "href": "/programs/maker-collective/equipment",
+      "label": "Wish list",
+      "ariaLabel": "Equipment wish list"
+    },
+    {
+      "href": "/programs/brick-city-glam",
+      "label": "Glam",
+      "ariaLabel": "Brick City Glam"
+    },
+    {
+      "href": "/programs/storytelling-knights",
+      "label": "Knights",
+      "ariaLabel": "Storytelling Knights"
+    }
+  ],
+  "headerLogoAriaLabel": "Artify Ocala — Home",
+  "islandHomeAriaLabel": "Home",
+  "islandMenuOpenText": "Menu",
+  "islandMenuCloseText": "Close",
+  "footerTagline": "Enhancing Everyday Experiences Through Art & Exploration",
+  "footerConnectHeading": "Connect",
+  "footerCommunityHeading": "Community",
+  "footerEmail": "info@artifyocala.org",
+  "footerPhoneDisplay": "352.299.5673",
+  "footerPhoneTel": "+13522995673",
+  "instagramUrl": "https://www.instagram.com/artifyocala",
+  "instagramLabel": "Instagram",
+  "facebookUrl": "https://www.facebook.com/artifyocala",
+  "facebookLabel": "Facebook",
+  "meetupUrl": "https://www.facebook.com/share/g/1BQuehj359/",
+  "meetupLabel": "Maker meetups",
+  "meetupAriaLabel": "Maker meetups on Facebook",
+  "footerCopyright": "©2017 - {{year}} Artify Ocala. 501(c)(3) nonprofit."
+}

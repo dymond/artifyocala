@@ -1,0 +1,244 @@
+{
+  "slug": "home",
+  "metaTitle": "Home",
+  "metaDescription": "Enhancing everyday experiences through art and exploration in Ocala and Marion County.",
+  "sections": [
+    {
+      "hhfEyebrow": "Marion County · nonprofit · volunteers",
+      "hhfTitle": "Art & exploration for everyone.",
+      "hhfLede": "Enhancing Everyday Experiences Through Art & Exploration. Since 2017 we have partnered with artists and local organizations to make space for performance, tabletop storytelling, and hands-on making.",
+      "hhfRotatorWords": [
+        "Stage time",
+        "Tabletop",
+        "Power tools",
+        "Marion County",
+        "Since 2017"
+      ],
+      "hhfHeroButtons": [
+        {
+          "hhbLabel": "Volunteer",
+          "hhbHref": "/volunteer",
+          "hhbExternal": false,
+          "hhbTone": "surge"
+        },
+        {
+          "hhbLabel": "Donate",
+          "hhbHref": "/donate",
+          "hhbExternal": false,
+          "hhbTone": "outline"
+        }
+      ],
+      "hhfAsideBadge": "Now open for members",
+      "hhfAsideTitle": "Marion County Maker Collective",
+      "hhfAsideDescription": "Community makerspace launching January 2026 — tools, classes, and collaboration in Ocala.",
+      "hhfAsideMeetupsHref": "/#meetups",
+      "hhfAsideMeetupsLabel": "Free Meetups",
+      "hhfAsideMeetupsExternal": false,
+      "hhfAsideMeetupsTone": "outline",
+      "hhfAsideStackButtons": [
+        {
+          "habsLabel": "Learn more",
+          "habsHref": "/programs/maker-collective",
+          "habsExternal": false,
+          "habsTone": "primary"
+        },
+        {
+          "habsLabel": "View equipment wish list",
+          "habsHref": "/programs/maker-collective/equipment",
+          "habsExternal": false,
+          "habsTone": "outline"
+        },
+        {
+          "habsLabel": "Apply for membership",
+          "habsHref": "https://fill.boloforms.com/signature/4a7f6985-f626-41ba-8ab2-50b7f6a4ed5c?p=view",
+          "habsExternal": true,
+          "habsTone": "surge"
+        }
+      ],
+      "hhfHiringImage": "/images/maker-collective-hiring-poster.jpg",
+      "hhfHiringImageAlt": "Join the Marion County Maker Collective",
+      "hhfShowCollage": true,
+      "_template": "homeHeroFull"
+    },
+    {
+      "hmrText": "Ocala · Marion County · Stage · Tabletop · Makerspace · Volunteers · Since 2017 · Brick City Glam · Storytelling Knights · Maker Collective · Donate · Get involved ·",
+      "_template": "homeMarquee"
+    },
+    {
+      "wscShowWhoScroll": true,
+      "wscEyebrow": "The crew",
+      "wscHeading": "Who we are",
+      "wscLedeHtml": "<p class=\"m-0\">Since 2017 Artify Ocala has served Marion County alongside visual and performing artists from many disciplines. We connect people to opportunities to showcase work and weave artistry into everyday community life.</p>",
+      "wscImage": "/images/community-members-artify-event.jpg",
+      "wscImageAlt": "Community members at an Artify Ocala event",
+      "wscButtonLabel": "About us",
+      "wscButtonHref": "/about",
+      "wscButtonExternal": false,
+      "wscButtonTone": "surge",
+      "_template": "whoScroll"
+    },
+    {
+      "hpiEyebrow": "Programs",
+      "hpiHeading": "What we do",
+      "hpiLedeHtml": "Three core programs — <strong>performing arts</strong>, <strong>collaborative storytelling (TTRPG)</strong>, and <strong>Marion County Maker Collective makerspace</strong>.",
+      "hpiCards": [
+        {
+          "hpiCardImage": "/images/program-brick-city-glam-performance.jpg",
+          "hpiCardImageAlt": "",
+          "hpiCardTitle": "Performing arts",
+          "hpiCardBodyHtml": "Through Brick City Glam we create space for performance artists to develop, grow, and share self-expression.",
+          "hpiCardTheme": "buzz",
+          "hpiCardTiltBaseZ": "-1",
+          "hpiCardButtons": [
+            {
+              "hpcbLabel": "Casting",
+              "hpcbHref": "https://form.jotform.com/222587113491052",
+              "hpcbExternal": true,
+              "hpcbTone": "surge"
+            },
+            {
+              "hpcbLabel": "Program page",
+              "hpcbHref": "/programs/brick-city-glam",
+              "hpcbExternal": false,
+              "hpcbTone": "outline"
+            }
+          ]
+        },
+        {
+          "hpiCardImage": "/images/storytelling-knights-session-01.jpg",
+          "hpiCardImageAlt": "",
+          "hpiCardTitle": "Collaborative storytelling (TTRPG)",
+          "hpiCardBodyHtml": "Storytelling Knights — tabletop role-playing for all ages and experience levels in a welcoming, high-energy space.",
+          "hpiCardTheme": "club",
+          "hpiCardTiltBaseZ": "1",
+          "hpiCardButtons": [
+            {
+              "hpcbLabel": "Sign up",
+              "hpcbHref": "https://www.zeffy.com/ticketing/30685666-0bc4-4a2b-8d0f-85f994415c67",
+              "hpcbExternal": true,
+              "hpcbTone": "surge"
+            },
+            {
+              "hpcbLabel": "Program page",
+              "hpcbHref": "/programs/storytelling-knights",
+              "hpcbExternal": false,
+              "hpcbTone": "outline"
+            }
+          ]
+        },
+        {
+          "hpiCardImage": "/images/program-community-art-outreach.jpg",
+          "hpiCardImageAlt": "",
+          "hpiCardTitle": "Makerspace",
+          "hpiCardBodyHtml": "<p class=\"m-0\"><strong>Marion County Maker Collective.</strong> We proudly present Marion County's first community maker space — tools, classes, and collaboration in Ocala.</p>",
+          "hpiCardTheme": "surge",
+          "hpiCardTiltBaseZ": "-0.5",
+          "hpiCardButtons": [
+            {
+              "hpcbLabel": "Learn more",
+              "hpcbHref": "/programs/maker-collective",
+              "hpcbExternal": false,
+              "hpcbTone": "primary"
+            },
+            {
+              "hpcbLabel": "Meet up",
+              "hpcbHref": "https://www.facebook.com/share/g/1BQuehj359/",
+              "hpcbExternal": true,
+              "hpcbTone": "outline"
+            }
+          ]
+        }
+      ],
+      "_template": "homeProgramsIntro"
+    },
+    {
+      "hmuEyebrow": "2nd & 4th Wednesdays",
+      "hmuHeading": "Maker meetups",
+      "hmuLedeHtml": "In person on the <strong>2nd and 4th Wednesday</strong> of each month, <strong>7pm–9pm</strong>, at the Marion County Maker Collective, <strong>3650 NE 25th Street (1A)</strong>. Bring a project, share what you are making, and collaborate.",
+      "hmuImageLeft": "/images/maker-meetup-collaboration.jpg",
+      "hmuImageLeftAlt": "Makers collaborating at a meetup",
+      "hmuImageRight": "/images/maker-meetup-monthly-schedule.png",
+      "hmuImageRightAlt": "Monthly meetup schedule graphic",
+      "hmuButtonLabel": "Join the meetup",
+      "hmuButtonHref": "https://www.facebook.com/share/g/1BQuehj359/",
+      "hmuExternal": true,
+      "hmuButtonTone": "primary",
+      "_template": "homeMeetups"
+    },
+    {
+      "hsbImage": "/images/home-why-support-community-art.jpg",
+      "hsbImageAlt": "Community art and creativity in Ocala",
+      "hsbEyebrow": "501(c)(3)",
+      "hsbHeading": "Why support us",
+      "hsbLedeHtml": "Artify Ocala is a 501(c)(3) nonprofit, run entirely by volunteers. Donations and volunteer time sustain free and low-cost programs for the community.",
+      "hsbButtonLabel": "Donate",
+      "hsbButtonHref": "/donate",
+      "hsbButtonExternal": false,
+      "hsbButtonTone": "surge",
+      "_template": "homeSupportBand"
+    },
+    {
+      "hmgEyebrow": "Around town",
+      "hmgHeading": "Create art. Cultivate community.",
+      "hmgLedeHtml": "More ways to experience art in Marion County.",
+      "hmgCards": [
+        {
+          "hmgCardTitle": "First Saturday studio & gallery tours",
+          "hmgCardDescription": "Self-guided free tour of local galleries and studios every first Saturday.",
+          "hmgCardImage": "/images/partner-first-saturday-gallery-tours.jpg",
+          "hmgCardImageAlt": "",
+          "hmgCardButtonLabel": "Join us",
+          "hmgCardButtonHref": "https://mcaocala.org/ocala-gallery-tours/",
+          "hmgCardExternal": true
+        },
+        {
+          "hmgCardTitle": "Ocala Metro Arts Scene",
+          "hmgCardDescription": "See what partners are doing on the community arts calendar.",
+          "hmgCardImage": "/images/partner-ocala-metro-arts-calendar.jpg",
+          "hmgCardImageAlt": "",
+          "hmgCardButtonLabel": "Learn more",
+          "hmgCardButtonHref": "https://www.ocalametroartscene.com/",
+          "hmgCardExternal": true
+        },
+        {
+          "hmgCardTitle": "Volunteer",
+          "hmgCardDescription": "Sign up for opportunity updates and share your time.",
+          "hmgCardImage": "/images/program-storytelling-knights-volunteer-card.jpg",
+          "hmgCardImageAlt": "",
+          "hmgCardButtonLabel": "Volunteer",
+          "hmgCardButtonHref": "https://www.zeffy.com/en-US/ticketing/a97a54c8-3f9c-414e-89c9-08ccd79e57d8",
+          "hmgCardExternal": true
+        }
+      ],
+      "_template": "homeMoreGrid"
+    },
+    {
+      "hcbImage": "/images/program-brick-city-glam-performance.jpg",
+      "hcbImageAlt": "Brick City Glam performance in Ocala",
+      "hcbEyebrow": "Brick City Glam",
+      "hcbHeading": "Get involved. Get creative.",
+      "hcbBodyHtml": "Opportunities and developmental coaching for performing artists in Ocala and Marion County.",
+      "hcbButtons": [
+        {
+          "hcbBtnLabel": "Upcoming performances",
+          "hcbBtnHref": "https://www.facebook.com/BrickCityGlam/",
+          "hcbBtnTone": "surge",
+          "hcbBtnExternal": true
+        },
+        {
+          "hcbBtnLabel": "Volunteer",
+          "hcbBtnHref": "/volunteer",
+          "hcbBtnTone": "outline",
+          "hcbBtnExternal": false
+        },
+        {
+          "hcbBtnLabel": "Donate",
+          "hcbBtnHref": "/donate",
+          "hcbBtnTone": "outline",
+          "hcbBtnExternal": false
+        }
+      ],
+      "_template": "homeCtaBand"
+    }
+  ]
+}

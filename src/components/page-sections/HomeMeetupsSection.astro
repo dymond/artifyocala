@@ -1,0 +1,58 @@
+---
+import Section from "../ui/Section.astro";
+import Button from "../ui/Button.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "homeMeetups" }>;
+}
+
+const { section } = Astro.props;
+---
+
+<Section id="meetups">
+  <p class="type-section-yell">{section.hmuEyebrow}</p>
+  <h2 class="type-display-lg">{section.hmuHeading}</h2>
+  <p class="type-lede" set:html={section.hmuLedeHtml} />
+  <div
+    class="my-lg grid grid-cols-1 items-start gap-md md:grid-cols-[1.4fr_1fr]"
+  >
+    <figure
+      class="m-0 min-w-0 rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-buzz)]"
+    >
+      <div class="overflow-hidden rounded-[inherit]">
+        <img
+          src={section.hmuImageLeft}
+          alt={section.hmuImageLeftAlt}
+          width={2048}
+          height={1365}
+          loading="lazy"
+          decoding="async"
+          class="block w-full"
+        />
+      </div>
+    </figure>
+    <figure
+      class="m-0 min-w-0 rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-surge)]"
+    >
+      <div class="overflow-hidden rounded-[inherit]">
+        <img
+          src={section.hmuImageRight}
+          alt={section.hmuImageRightAlt}
+          width={1080}
+          height={1350}
+          loading="lazy"
+          decoding="async"
+          class="w-full bg-mist object-contain"
+        />
+      </div>
+    </figure>
+  </div>
+  <Button
+    href={section.hmuButtonHref}
+    tone={section.hmuButtonTone ?? "primary"}
+    external={Boolean(section.hmuExternal)}
+  >
+    {section.hmuButtonLabel}
+  </Button>
+</Section>

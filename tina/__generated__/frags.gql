@@ -1,0 +1,268 @@
+fragment ProgramParts on Program {
+  __typename
+  title
+  description
+  order
+  progHeroLayout
+  progHeroSlides {
+    __typename
+    progHeroImage
+    progHeroAlt
+  }
+  progCtaRows {
+    __typename
+    progCtaLabel
+    progCtaHref
+    progCtaExternal
+    progCtaTone
+  }
+  body
+  progGalleryEnable
+  progGalleryHeading
+  progGalleryDekHtml
+  progGallerySurface
+  progGalleryMarqueeAlt
+  progGalleryStrip {
+    __typename
+    progGalImage
+    progGalAlt
+  }
+}
+
+fragment PageParts on Page {
+  __typename
+  slug
+  metaTitle
+  metaDescription
+  sections {
+    __typename
+    ... on PageSectionsPageIntro {
+      introTitle
+      introLede
+      introImage
+      introImageAlt
+    }
+    ... on PageSectionsProseBand {
+      pbVariant
+      pbTopImage
+      pbTopImageAlt
+      pbHeading
+      pbBodyHtml
+    }
+    ... on PageSectionsMissionQuote {
+      mqQuoteText
+    }
+    ... on PageSectionsObjectivesList {
+      objHeading
+      objLines {
+        __typename
+        objLineTitle
+        objLineBody
+      }
+      objFooterHtml
+      objCtas {
+        __typename
+        objCtaLabel
+        objCtaHref
+        objCtaTone
+        objCtaExternal
+      }
+    }
+    ... on PageSectionsContactSection {
+      ctHeading
+      ctSubheading
+      ctAddressHtml
+      ctNoteHtml
+      ctEmail
+      ctPhoneDisplay
+      ctPhoneTel
+    }
+    ... on PageSectionsTwoColumnDonateHero {
+      dchTitle
+      dchLede
+      dchButtonLabel
+      dchButtonHref
+      dchButtonTone
+      dchExternal
+      dchImage
+      dchImageAlt
+    }
+    ... on PageSectionsBulletBand {
+      bbVariant
+      bbHeading
+      bbLines
+    }
+    ... on PageSectionsSplitImageText {
+      sitVariant
+      sitHeading
+      sitBody
+      sitButtonLabel
+      sitButtonHref
+      sitButtonTone
+      sitExternal
+      sitImage
+      sitImageAlt
+      sitImagePosition
+    }
+    ... on PageSectionsHomeHeroFull {
+      hhfEyebrow
+      hhfTitle
+      hhfLede
+      hhfRotatorWords
+      hhfHeroButtons {
+        __typename
+        hhbLabel
+        hhbHref
+        hhbExternal
+        hhbTone
+      }
+      hhfAsideBadge
+      hhfAsideTitle
+      hhfAsideDescription
+      hhfAsideMeetupsLabel
+      hhfAsideMeetupsHref
+      hhfAsideMeetupsExternal
+      hhfAsideMeetupsTone
+      hhfAsideStackButtons {
+        __typename
+        habsLabel
+        habsHref
+        habsExternal
+        habsTone
+      }
+      hhfHiringImage
+      hhfHiringImageAlt
+      hhfShowCollage
+    }
+    ... on PageSectionsHomeMarquee {
+      hmrText
+    }
+    ... on PageSectionsWhoScroll {
+      wscShowWhoScroll
+      wscEyebrow
+      wscHeading
+      wscLedeHtml
+      wscImage
+      wscImageAlt
+      wscButtonLabel
+      wscButtonHref
+      wscButtonExternal
+      wscButtonTone
+    }
+    ... on PageSectionsHomeProgramsIntro {
+      hpiEyebrow
+      hpiHeading
+      hpiLedeHtml
+      hpiCards {
+        __typename
+        hpiCardImage
+        hpiCardImageAlt
+        hpiCardTitle
+        hpiCardBodyHtml
+        hpiCardTheme
+        hpiCardTiltBaseZ
+        hpiCardButtons {
+          __typename
+          hpcbLabel
+          hpcbHref
+          hpcbExternal
+          hpcbTone
+        }
+      }
+    }
+    ... on PageSectionsHomeMeetups {
+      hmuEyebrow
+      hmuHeading
+      hmuLedeHtml
+      hmuImageLeft
+      hmuImageLeftAlt
+      hmuImageRight
+      hmuImageRightAlt
+      hmuButtonLabel
+      hmuButtonHref
+      hmuExternal
+      hmuButtonTone
+    }
+    ... on PageSectionsHomeSupportBand {
+      hsbImage
+      hsbImageAlt
+      hsbEyebrow
+      hsbHeading
+      hsbLedeHtml
+      hsbButtonLabel
+      hsbButtonHref
+      hsbButtonExternal
+      hsbButtonTone
+    }
+    ... on PageSectionsHomeMoreGrid {
+      hmgEyebrow
+      hmgHeading
+      hmgLedeHtml
+      hmgCards {
+        __typename
+        hmgCardTitle
+        hmgCardDescription
+        hmgCardImage
+        hmgCardImageAlt
+        hmgCardButtonLabel
+        hmgCardButtonHref
+        hmgCardExternal
+      }
+    }
+    ... on PageSectionsHomeCtaBand {
+      hcbImage
+      hcbImageAlt
+      hcbEyebrow
+      hcbHeading
+      hcbBodyHtml
+      hcbButtons {
+        __typename
+        hcbBtnLabel
+        hcbBtnHref
+        hcbBtnTone
+        hcbBtnExternal
+      }
+    }
+  }
+}
+
+fragment EquipmentWishlistParts on EquipmentWishlist {
+  __typename
+  categories {
+    __typename
+    eqCatId
+    eqCatTitle
+    eqCatLines
+  }
+}
+
+fragment SiteChromeParts on SiteChrome {
+  __typename
+  headerLogoImage
+  footerLogoImage
+  headerLogoAriaLabel
+  navItems {
+    __typename
+    href
+    label
+    ariaLabel
+    external
+  }
+  islandHomeAriaLabel
+  islandMenuOpenText
+  islandMenuCloseText
+  footerTagline
+  footerConnectHeading
+  footerCommunityHeading
+  footerEmail
+  footerPhoneDisplay
+  footerPhoneTel
+  instagramUrl
+  instagramLabel
+  facebookUrl
+  facebookLabel
+  meetupUrl
+  meetupLabel
+  meetupAriaLabel
+  footerCopyright
+}

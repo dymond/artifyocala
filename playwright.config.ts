@@ -14,7 +14,8 @@ export default defineConfig({
     ...devices['Desktop Chrome'],
   },
   webServer: {
-    command: 'npm run build && npx serve dist -l 4174 --no-clipboard',
+    command:
+      'npm run build:offline && npx serve dist -l 4174 --no-clipboard',
     url: 'http://127.0.0.1:4174',
     reuseExistingServer: false,
     timeout: 120_000,

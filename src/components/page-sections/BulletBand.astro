@@ -1,0 +1,24 @@
+---
+import Section from "../ui/Section.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "bulletBand" }>;
+}
+
+const { section } = Astro.props;
+const variant = section.bbVariant === "dark" ? "dark" : undefined;
+const lines = section.bbLines ?? [];
+---
+
+<Section variant={variant}>
+  <h2 class="type-display-lg">{section.bbHeading}</h2>
+  <ul
+    class:list={[
+      "my-0 pl-[1.2rem] leading-[1.8]",
+      variant === "dark" ? "text-mist/85" : "",
+    ]}
+  >
+    {lines.map((line) => <li>{line}</li>)}
+  </ul>
+</Section>

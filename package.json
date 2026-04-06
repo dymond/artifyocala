@@ -6,9 +6,11 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "tinacms dev -c \"astro dev\"",
+    "dev:astro": "astro dev",
     "dev:netlify": "ARTIFY_NETLIFY_DEV=1 astro dev",
-    "build": "astro build",
+    "build": "tinacms build && astro build",
+    "build:offline": "tinacms build --local --skip-cloud-checks --datalayer-port 9010 && astro build",
     "build:netlify": "netlify build --offline",
     "build:netlify:online": "netlify build",
     "preview": "astro preview",
@@ -22,12 +24,20 @@
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/netlify": "^7.0.6",
     "@astrojs/partytown": "^2.1.6",
+    "@astrojs/react": "^5.0.3",
     "@astrojs/sitemap": "^3.7.2",
+    "@tinacms/cli": "^2.2.1",
     "@types/alpinejs": "^3.13.11",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "alpinejs": "^3.15.11",
     "astro": "^6.1.3",
     "lil-gui": "^0.21.0",
-    "three": "^0.183.2"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "three": "^0.183.2",
+    "tinacms": "^3.7.1",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@fontsource-variable/instrument-sans": "^5.2.8",

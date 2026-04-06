@@ -1,0 +1,45 @@
+---
+import Section from "../ui/Section.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "contactSection" }>;
+}
+
+const { section } = Astro.props;
+---
+
+<Section variant="dark" id="contact">
+  <h2 class="type-display-lg">{section.ctHeading}</h2>
+  <div
+    class="type-lede max-w-[40rem] text-mist/85 [&_p]:mb-md [&_p:last-child]:mb-0"
+  >
+    {
+      section.ctSubheading && (
+        <p class="font-display text-lg font-bold text-mist">{section.ctSubheading}</p>
+      )
+    }
+    {section.ctAddressHtml && <p class="m-0" set:html={section.ctAddressHtml} />}
+    {
+      section.ctNoteHtml && (
+        <p class="m-0 text-mist/70" set:html={section.ctNoteHtml} />
+      )
+    }
+    <p class="m-0">
+      <a
+        class="font-medium text-accent-soft underline decoration-accent-soft/40 underline-offset-2 hover:decoration-accent-soft"
+        href={`mailto:${section.ctEmail}`}
+      >
+        {section.ctEmail}
+      </a>
+    </p>
+    <p class="m-0">
+      <a
+        class="font-medium text-accent-soft underline decoration-accent-soft/40 underline-offset-2 hover:decoration-accent-soft"
+        href={`tel:${section.ctPhoneTel}`}
+      >
+        {section.ctPhoneDisplay}
+      </a>
+    </p>
+  </div>
+</Section>

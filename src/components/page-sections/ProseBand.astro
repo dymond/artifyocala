@@ -1,0 +1,46 @@
+---
+import Section from "../ui/Section.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "proseBand" }>;
+}
+
+const { section } = Astro.props;
+const variant = section.pbVariant === "dark" ? "dark" : undefined;
+const imgSrc = section.pbTopImage?.trim();
+---
+
+<Section variant={variant}>
+  {
+    imgSrc && (
+      <div class="mb-lg max-w-xl">
+        <img
+          src={imgSrc}
+          alt={section.pbTopImageAlt ?? ""}
+          width={1317}
+          height={1756}
+          loading="lazy"
+          decoding="async"
+          class:list={[
+            "w-full rounded-lg border",
+            variant === "dark" ? "border-white/[0.12]" : "border-line",
+          ]}
+        />
+      </div>
+    )
+  }
+  {
+    section.pbHeading && (
+      <h2 class="type-display-lg">{section.pbHeading}</h2>
+    )
+  }
+  {
+    section.pbBodyHtml && (
+      <div
+        class="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+        set:html={section.pbBodyHtml}
+      />
+    )
+  }
+</Section>

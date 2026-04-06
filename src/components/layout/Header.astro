@@ -1,34 +1,16 @@
 ---
-import { img } from '../../lib/site-images';
+import { headerLogoSrc, type SiteChrome } from '../../lib/site-chrome';
 
+interface Props {
+  chrome: SiteChrome;
+}
+
+const { chrome } = Astro.props;
 const pathname = Astro.url.pathname;
+const headerLogo = headerLogoSrc(chrome);
 
 /** Menu arc only — Home lives on the island. */
-const menuArcItems = [
-  { href: '/about', label: 'About' },
-  { href: '/volunteer', label: 'Volunteer' },
-  { href: '/donate', label: 'Donate' },
-  {
-    href: '/programs/maker-collective',
-    label: 'Makers',
-    ariaLabel: 'Marion County Maker Collective',
-  },
-  {
-    href: '/programs/maker-collective/equipment',
-    label: 'Wish list',
-    ariaLabel: 'Equipment wish list',
-  },
-  {
-    href: '/programs/brick-city-glam',
-    label: 'Glam',
-    ariaLabel: 'Brick City Glam',
-  },
-  {
-    href: '/programs/storytelling-knights',
-    label: 'Knights',
-    ariaLabel: 'Storytelling Knights',
-  },
-] as const;
+const menuArcItems = chrome.navItems;
 
 /**
  * Elliptical arc (md+): wider than tall so neighbors get more horizontal gap without
@@ -68,8 +50,7 @@ function current(href: string): boolean {
 const homeActive = pathname === '/';
 
 /** Alpine x-data: keep panel layout open until item leave transitions finish (max stagger + desktop duration). */
-const wheelNavAlpineData =
-  '{ menuOpen:false,navShellOpen:false,shellHoldMs:780,openWheelNav(){if(this.shellTimer)clearTimeout(this.shellTimer);this.navShellOpen=true;this.$nextTick(()=>{this.menuOpen=true})},closeWheelNav(){if(!this.navShellOpen)return;this.menuOpen=false;if(this.shellTimer)clearTimeout(this.shellTimer);this.shellTimer=setTimeout(()=>{this.navShellOpen=false;this.shellTimer=null},this.shellHoldMs)},toggleWheelNav(){this.menuOpen?this.closeWheelNav():this.openWheelNav()} }';
+const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,openLabel:${JSON.stringify(chrome.islandMenuOpenText)},closeLabel:${JSON.stringify(chrome.islandMenuCloseText)},openWheelNav(){if(this.shellTimer)clearTimeout(this.shellTimer);this.navShellOpen=true;this.$nextTick(()=>{this.menuOpen=true})},closeWheelNav(){if(!this.navShellOpen)return;this.menuOpen=false;if(this.shellTimer)clearTimeout(this.shellTimer);this.shellTimer=setTimeout(()=>{this.navShellOpen=false;this.shellTimer=null},this.shellHoldMs)},toggleWheelNav(){this.menuOpen?this.closeWheelNav():this.openWheelNav()} }`;
 ---
 
 <script is:inline>
@@ -92,10 +73,10 @@ const wheelNavAlpineData =
         <a
           href="/"
           class="group block w-[min(42vw,9.25rem)] shrink-0 outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist sm:w-[10rem] md:w-[10.75rem]"
-          aria-label="Artify Ocala — Home"
+          aria-label={chrome.headerLogoAriaLabel}
         >
           <img
-            src={img.logoOnLightHollow}
+            src={headerLogo}
             alt=""
             width={1600}
             height={1260}
@@ -144,7 +125,8 @@ const wheelNavAlpineData =
         {
           menuArcItems.map((item, i) => {
             const isActive = current(item.href);
-            const a11y = 'ariaLabel' in item && item.ariaLabel ? item.ariaLabel : item.label;
+            const a11y = item.ariaLabel?.trim() ? item.ariaLabel.trim() : item.label;
+            const ext = Boolean(item.external);
             const zMobile = 20 - Math.abs(i - arcPeakIndex);
             return (
               <li
@@ -163,6 +145,8 @@ const wheelNavAlpineData =
               >
                 <a
                   href={item.href}
+                  target={ext ? "_blank" : undefined}
+                  rel={ext ? "noopener noreferrer" : undefined}
                   class:list={[
                     'flex min-h-[2.75rem] w-full items-center justify-center rounded-full border px-3 py-2 text-center text-[0.78rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
                     'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
@@ -188,7 +172,8 @@ const wheelNavAlpineData =
           menuArcItems.map((item, i) => {
             const { x, y } = arcOffset(i, menuArcItems.length);
             const isActive = current(item.href);
-            const a11y = 'ariaLabel' in item && item.ariaLabel ? item.ariaLabel : item.label;
+            const a11y = item.ariaLabel?.trim() ? item.ariaLabel.trim() : item.label;
+            const ext = Boolean(item.external);
             const zArc = 40 - Math.abs(i - arcPeakIndex);
             return (
               <div
@@ -211,6 +196,8 @@ const wheelNavAlpineData =
                 >
                   <a
                     href={item.href}
+                    target={ext ? "_blank" : undefined}
+                    rel={ext ? "noopener noreferrer" : undefined}
                     class:list={[
                       'flex min-h-[2.75rem] w-[5rem] max-w-[5rem] items-center justify-center rounded-full border px-1.5 py-2 text-center text-[0.75rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[5.35rem] sm:max-w-[5.35rem] sm:text-[0.78rem]',
                       'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
@@ -242,7 +229,7 @@ const wheelNavAlpineData =
           'bg-white/10 hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
           homeActive && 'bg-buzz text-ink ring-2 ring-white/40',
         ]}
-        aria-label="Home"
+        aria-label={chrome.islandHomeAriaLabel}
         aria-current={homeActive ? 'page' : undefined}
       >
         <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -259,12 +246,12 @@ const wheelNavAlpineData =
         x-bind:aria-expanded="navShellOpen"
         aria-haspopup="true"
         aria-controls="wheel-nav-panel"
-        x-bind:aria-label="menuOpen ? 'Close menu' : 'Open menu'"
+        x-bind:aria-label="menuOpen ? ('Close menu (' + closeLabel + ')') : ('Open menu (' + openLabel + ')')"
       >
         <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <path d="M4 6h16M4 12h16M4 18h10" />
         </svg>
-        <span x-text="menuOpen ? 'Close' : 'Menu'"></span>
+        <span x-text="menuOpen ? closeLabel : openLabel"></span>
       </button>
     </div>
   </div>

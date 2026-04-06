@@ -1,0 +1,39 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageVisualEdit from "../components/tina/PageVisualEdit";
+import { getCollection } from "astro:content";
+import client from "../../tina/__generated__/client";
+
+export async function getStaticPaths() {
+  const all = await getCollection("pages");
+  return all
+    .filter((p) => p.data.slug !== "home")
+    .map((p) => ({
+      params: { pageSlug: p.data.slug },
+      props: { entryId: p.id },
+    }));
+}
+
+const { entryId } = Astro.props;
+const tina = await client.queries.page({
+  relativePath: `${entryId}.json`,
+});
+const page = tina.data.page;
+if (!page) {
+  throw new Error(`Tina page missing for "${entryId}.json"`);
+}
+const { metaTitle, metaDescription } = page;
+---
+
+<BaseLayout
+  title={metaTitle ?? ""}
+  description={metaDescription ?? ""}
+>
+  <PageVisualEdit
+    client:tina
+    query={tina.query}
+    variables={tina.variables}
+    data={tina.data}
+    pageSlug={page.slug}
+  />
+</BaseLayout>

@@ -1,4 +1,5 @@
 /// <reference types="astro/client" />
+/// <reference path="../astro-tina-directive/index.d.ts" />
 /// <reference types="astro/jsx-runtime" />
 /// <reference path="../.astro/types.d.ts" />
 

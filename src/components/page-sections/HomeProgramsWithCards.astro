@@ -1,0 +1,80 @@
+---
+import Section from "../ui/Section.astro";
+import Button from "../ui/Button.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "homeProgramsIntro" }>;
+}
+
+const { section } = Astro.props;
+const cards = section.hpiCards?.filter(Boolean) ?? [];
+
+const themeClass: Record<string, string> = {
+  buzz: "border-buzz/55 shadow-[8px_8px_0_0_rgba(176,184,255,0.28)]",
+  club: "border-club/50 shadow-[8px_8px_0_0_rgba(165,158,255,0.3)]",
+  surge: "border-surge/45 shadow-[8px_8px_0_0_rgba(107,100,201,0.28)]",
+};
+---
+
+<Section variant="dark" id="programs">
+  <p
+    class="mb-0 text-buzz font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em]"
+  >
+    {section.hpiEyebrow}
+  </p>
+  <h2 class="type-display-lg">{section.hpiHeading}</h2>
+  <p class="type-lede text-mist/70" set:html={section.hpiLedeHtml} />
+  <div
+    class="artify-program-card-grid mt-lg grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-lg md:gap-xl [perspective:1200px]"
+  >
+    {
+      cards.map((card) => {
+        const theme = card.hpiCardTheme ?? "buzz";
+        const borderShadow = themeClass[theme] ?? themeClass.buzz;
+        const buttons = card.hpiCardButtons?.filter(Boolean) ?? [];
+        return (
+          <article
+            data-artify-program-tilt
+            data-tilt-base-z={card.hpiCardTiltBaseZ ?? "0"}
+            data-tilt-theme={theme}
+            class:list={[
+              "artify-program-card-tilt flex min-h-[18rem] flex-col overflow-hidden rounded-xl border-[3px] bg-panel p-0 transform-gpu transition-[box-shadow] duration-300 ease-out [transform-style:preserve-3d] will-change-transform",
+              borderShadow,
+            ]}
+          >
+            <div class="aspect-[16/10] overflow-hidden">
+              <img
+                src={card.hpiCardImage}
+                alt={card.hpiCardImageAlt ?? ""}
+                width={1125}
+                height={1138}
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <h3 class="mx-lg mb-sm mt-md font-display text-xl">
+              {card.hpiCardTitle}
+            </h3>
+            <div
+              class="mx-lg mb-md text-[0.98rem] text-mist/80 [&_strong]:font-semibold"
+              set:html={card.hpiCardBodyHtml}
+            />
+            <div class="mx-lg mb-lg mt-auto flex flex-col gap-sm">
+              {buttons.map((btn) => (
+                <Button
+                  href={btn.hpcbHref}
+                  tone={btn.hpcbTone ?? "primary"}
+                  external={Boolean(btn.hpcbExternal)}
+                >
+                  {btn.hpcbLabel}
+                </Button>
+              ))}
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</Section>

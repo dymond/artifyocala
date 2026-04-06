@@ -58,10 +58,112 @@
   }
 }
 
+/** Second row scrolls the other way (seamless loop with duplicated half). */
+@keyframes artify-marquee-reverse {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .artify-marquee-track {
   display: flex;
   width: max-content;
   animation: artify-marquee 42s linear infinite;
+}
+
+/** Slower loop for wide image strips (Brick City Glam gallery, etc.). */
+.artify-marquee-track--gallery {
+  animation-duration: 72s;
+}
+
+/** Opposite-direction row; slightly different duration so rows don’t stay locked in phase. */
+.artify-marquee-track--gallery-reverse {
+  animation: artify-marquee-reverse 84s linear infinite;
+}
+
+/**
+ * Photo gallery marquees: only the animated track is non-interactive except on cards.
+ * Pause that track when a card is hovered (not empty gap / mask padding).
+ */
+.artify-marquee-track--gallery,
+.artify-marquee-track--gallery-reverse {
+  pointer-events: none;
+}
+
+.artify-marquee-track--gallery:has(.gallery-marquee-item:hover),
+.artify-marquee-track--gallery-reverse:has(.gallery-marquee-item:hover) {
+  animation-play-state: paused;
+}
+
+/**
+ * Gallery strip: `clip-path` on the viewport caps how far shadows paint (so they
+ * don’t sit over prose above). The old `mask-image` caused thin horizontal seams
+ * on hover; edge fades use `::before`/`::after` gradients instead — no mask.
+ * Horizontal overflow stays clipped on `.gallery-marquee-track-clip`.
+ */
+.gallery-marquee-shell {
+  max-width: 100%;
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-bottom: 2.5rem;
+}
+
+.gallery-marquee-viewport {
+  position: relative;
+  z-index: 0;
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  isolation: isolate;
+  perspective: 1200px;
+  perspective-origin: 50% 55%;
+  -webkit-clip-path: inset(-3.5rem 0 -8rem 0);
+  clip-path: inset(-3.5rem 0 -8rem 0);
+}
+
+/** Contains marquee width so the page does not gain horizontal scroll. */
+.gallery-marquee-track-clip {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+  transform: translateZ(0);
+}
+
+/**
+ * Left/right edge fades (no mask — avoids 1px seams when cards lift). Uses
+ * --gallery-marquee-edge from the shell.
+ */
+.gallery-marquee-viewport::before,
+.gallery-marquee-viewport::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: -4rem;
+  bottom: -9rem;
+  width: min(8vw, 4.5rem);
+  pointer-events: none;
+}
+
+.gallery-marquee-viewport::before {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    var(--gallery-marquee-edge, var(--color-void)),
+    transparent
+  );
+}
+
+.gallery-marquee-viewport::after {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    var(--gallery-marquee-edge, var(--color-void)),
+    transparent
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {

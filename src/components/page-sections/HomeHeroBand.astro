@@ -1,0 +1,146 @@
+---
+import Button from "../ui/Button.astro";
+import WordRotator from "../ui/WordRotator.astro";
+import HeroPlayfulCollage from "../sections/HeroPlayfulCollage.astro";
+import { img } from "../../lib/site-images";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "homeHeroFull" }>;
+}
+
+const { section } = Astro.props;
+const words = section.hhfRotatorWords?.filter(Boolean) ?? [];
+const showCollage = section.hhfShowCollage !== false;
+const heroButtons = section.hhfHeroButtons?.filter(Boolean) ?? [];
+const asideStack = section.hhfAsideStackButtons?.filter(Boolean) ?? [];
+---
+
+<section
+  class="bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))]"
+>
+  <div class="site-container">
+    <div
+      class="flex flex-col gap-y-xl lg:flex-row lg:items-stretch lg:gap-x-xl lg:gap-y-0"
+    >
+      <div
+        class="contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
+      >
+        <div
+          class="flex min-w-0 flex-col gap-y-5 max-lg:order-1 md:gap-y-6 lg:min-w-0"
+        >
+          <a
+            href="/"
+            class="group relative z-[1] block w-[min(44vw,9.75rem)] max-w-full shrink-0 self-start outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist sm:w-[10.25rem] md:w-[11rem] lg:-mb-1 lg:w-[11.25rem]"
+            aria-label="Artify Ocala — Home"
+          >
+            <img
+              src={img.logoOnLightHollow}
+              alt=""
+              width={1600}
+              height={1260}
+              decoding="async"
+              fetchpriority="high"
+              class="h-auto w-full object-contain object-left"
+              aria-hidden="true"
+            />
+          </a>
+          <div>
+            <p class="type-section-yell">{section.hhfEyebrow}</p>
+            <h1 class="type-display-xl">{section.hhfTitle}</h1>
+            {
+              words.length > 0 && (
+                <p class="mb-md uppercase leading-none">
+                  <WordRotator
+                    class="artify-hero-word-rotator"
+                    words={words}
+                  />
+                </p>
+              )
+            }
+            <p class="type-lede">{section.hhfLede}</p>
+            {
+              heroButtons.length > 0 && (
+                <div class="flex flex-wrap gap-sm">
+                  {heroButtons.map((b) => (
+                    <Button
+                      href={b.hhbHref}
+                      tone={b.hhbTone ?? "primary"}
+                      external={Boolean(b.hhbExternal)}
+                    >
+                      {b.hhbLabel}
+                    </Button>
+                  ))}
+                </div>
+              )
+            }
+          </div>
+        </div>
+        {
+          showCollage && (
+            <div class="max-lg:contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col">
+              <HeroPlayfulCollage />
+            </div>
+          )
+        }
+      </div>
+      <div
+        class="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
+      >
+        <aside
+          class="min-w-0 max-lg:order-2 rotate-[-0.35deg] rounded-xl border-[3px] border-ink bg-mist p-lg shadow-[10px_10px_0_0_var(--color-buzz)] lg:min-w-0"
+        >
+          <div
+            class="mb-md flex flex-col gap-sm sm:flex-row sm:items-start sm:justify-between sm:gap-md"
+          >
+            <div class="min-w-0 flex-1">
+              <p
+                class="mb-sm inline-block rounded border-2 border-surge bg-surge/10 px-2 py-1 font-display text-[0.7rem] font-extrabold uppercase tracking-[0.2em] text-surge"
+              >
+                {section.hhfAsideBadge}
+              </p>
+              <h2
+                class="font-display text-[1.75rem] font-bold leading-tight tracking-tight"
+              >
+                {section.hhfAsideTitle}
+              </h2>
+              <p class="type-muted mb-0 mt-0">{section.hhfAsideDescription}</p>
+            </div>
+            <Button
+              class="w-full shrink-0 sm:mt-1 sm:w-auto sm:self-start"
+              href={section.hhfAsideMeetupsHref}
+              tone={section.hhfAsideMeetupsTone ?? "outline"}
+              external={Boolean(section.hhfAsideMeetupsExternal)}
+            >
+              {section.hhfAsideMeetupsLabel}
+            </Button>
+          </div>
+          {
+            asideStack.length > 0 && (
+              <div class="flex flex-col gap-sm">
+                {asideStack.map((b) => (
+                  <Button
+                    href={b.habsHref}
+                    tone={b.habsTone ?? "primary"}
+                    external={Boolean(b.habsExternal)}
+                  >
+                    {b.habsLabel}
+                  </Button>
+                ))}
+              </div>
+            )
+          }
+        </aside>
+        <img
+          src={section.hhfHiringImage}
+          alt={section.hhfHiringImageAlt}
+          width={1080}
+          height={1350}
+          loading="eager"
+          decoding="async"
+          class="h-auto w-full min-w-0 max-lg:order-4 -rotate-[0.5deg] rounded-xl border-[3px] border-ink object-contain shadow-[6px_6px_0_0_var(--color-surge)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
+        />
+      </div>
+    </div>
+  </div>
+</section>

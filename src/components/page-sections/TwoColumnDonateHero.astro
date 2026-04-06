@@ -1,0 +1,44 @@
+---
+import Section from "../ui/Section.astro";
+import Button from "../ui/Button.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "twoColumnDonateHero" }>;
+}
+
+const { section } = Astro.props;
+---
+
+<Section>
+  <div
+    class="grid grid-cols-1 items-stretch gap-xl lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]"
+  >
+    <div class="min-w-0">
+      <h1 class="type-display-xl">{section.dchTitle}</h1>
+      <p class="type-lede">{section.dchLede}</p>
+      <div class="mt-md flex flex-wrap gap-sm">
+        <Button
+          href={section.dchButtonHref}
+          tone={section.dchButtonTone ?? "surge"}
+          external={Boolean(section.dchExternal)}
+        >
+          {section.dchButtonLabel}
+        </Button>
+      </div>
+    </div>
+    <figure
+      class="m-0 aspect-[4/3] min-w-0 overflow-hidden rounded-lg border border-line lg:aspect-auto lg:h-full lg:min-h-0"
+    >
+      <img
+        src={section.dchImage}
+        alt={section.dchImageAlt}
+        width={1080}
+        height={1080}
+        loading="eager"
+        decoding="async"
+        class="block h-full w-full object-cover"
+      />
+    </figure>
+  </div>
+</Section>

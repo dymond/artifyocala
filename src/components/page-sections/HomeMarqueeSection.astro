@@ -1,0 +1,12 @@
+---
+import MarqueeStrip from "../ui/MarqueeStrip.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "homeMarquee" }>;
+}
+
+const { section } = Astro.props;
+---
+
+<MarqueeStrip text={section.hmrText} />

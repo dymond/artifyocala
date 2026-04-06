@@ -1,4 +1,5 @@
 [build]
+  # Needs PUBLIC_TINA_CLIENT_ID + TINA_TOKEN in Netlify env (see .env.example).
   command = "npm run build"
   publish = "dist"
 
@@ -14,6 +15,18 @@
   for = "/images/*"
   [headers.values]
     Cache-Control = "public, max-age=2592000"
+
+# Tina admin SPA: serve index without requiring /admin/index.html in the URL.
+# Only these exact paths — do not use /admin/* or /admin/assets/* would break.
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/"
+  to = "/admin/index.html"
+  status = 200
 
 [[redirects]]
   from = "/about-us"

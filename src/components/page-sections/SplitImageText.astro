@@ -1,0 +1,61 @@
+---
+import Section from "../ui/Section.astro";
+import Button from "../ui/Button.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "splitImageText" }>;
+}
+
+const { section } = Astro.props;
+const variant = section.sitVariant === "dark" ? "dark" : undefined;
+const imageLeft = section.sitImagePosition === "left";
+const borderImg =
+  variant === "dark" ? "border border-white/[0.12]" : "border border-line";
+---
+
+<Section variant={variant}>
+  <div
+    class="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_0.9fr]"
+  >
+    <div class:list={["min-w-0", imageLeft && "lg:order-2"]}>
+      <h2 class="type-display-lg">{section.sitHeading}</h2>
+      <p
+        class:list={[
+          "mb-md max-w-[40rem]",
+          variant === "dark" ? "text-mist/80" : "type-muted",
+        ]}
+        set:html={section.sitBody}
+      />
+      {
+        section.sitButtonLabel?.trim() &&
+          section.sitButtonHref?.trim() && (
+            <Button
+              href={section.sitButtonHref}
+              tone={section.sitButtonTone ?? "primary"}
+              external={Boolean(section.sitExternal)}
+            >
+              {section.sitButtonLabel}
+            </Button>
+          )
+      }
+    </div>
+    <figure
+      class:list={[
+        "m-0 max-h-[22rem] min-w-0 overflow-hidden rounded-lg",
+        borderImg,
+        imageLeft && "lg:order-1",
+      ]}
+    >
+      <img
+        src={section.sitImage}
+        alt={section.sitImageAlt}
+        width={1152}
+        height={2048}
+        loading="lazy"
+        decoding="async"
+        class="block h-[22rem] w-full object-cover"
+      />
+    </figure>
+  </div>
+</Section>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That page does not exist or the link is incorrect."
+  metaRobots="noindex, nofollow"
+>
+  <section class="site-container py-3xl text-ink">
+    <p
+      class="mb-sm font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em] text-buzz"
+    >
+      404
+    </p>
+    <h1 class="type-display-lg mb-md">Page not found</h1>
+    <p class="type-lede mb-xl max-w-[36rem] text-ink/80">
+      The address may be mistyped, or the page may have moved. You can head
+      home and browse from there.
+    </p>
+    <Button href="/" tone="primary">Back to home</Button>
+  </section>
+</BaseLayout>

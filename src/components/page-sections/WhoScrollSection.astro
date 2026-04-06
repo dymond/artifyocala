@@ -1,0 +1,16 @@
+---
+import WhoScrollArchVisual from "../tina/WhoScrollArchVisual";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "whoScroll" }>;
+}
+
+const { section } = Astro.props;
+---
+
+{
+  section.wscShowWhoScroll !== false && (
+    <WhoScrollArchVisual client:load section={section} />
+  )
+}

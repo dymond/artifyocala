@@ -1,0 +1,27 @@
+{
+  "slug": "donate",
+  "metaTitle": "Donate",
+  "metaDescription": "Support Artify Ocala — a 501(c)(3) nonprofit bringing free and low-cost arts programs to Marion County.",
+  "sections": [
+    {
+      "_template": "twoColumnDonateHero",
+      "dchTitle": "Donate",
+      "dchLede": "Artify Ocala is a volunteer-run 501(c)(3). Your gifts sustain performing arts, collaborative storytelling, the Marion County Maker Collective, and community programs across Marion County.",
+      "dchButtonLabel": "Donate online",
+      "dchButtonHref": "https://www.zeffy.com/en-US/donation-form/4bed9a5f-bbdd-4892-a93b-642a9ee7268a",
+      "dchExternal": true,
+      "dchImage": "/images/home-why-support-community-art.jpg",
+      "dchImageAlt": "Community creating art together"
+    },
+    {
+      "_template": "bulletBand",
+      "bbVariant": "dark",
+      "bbHeading": "Where it goes",
+      "bbLines": [
+        "Free and low-cost workshops and events",
+        "Performance opportunities and artist development",
+        "Makerspace launch: tools, facility, instructors, outreach"
+      ]
+    }
+  ]
+}

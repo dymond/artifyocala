@@ -1,0 +1,61 @@
+---
+import Section from "../ui/Section.astro";
+import Button from "../ui/Button.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "homeMoreGrid" }>;
+}
+
+const { section } = Astro.props;
+const cards = section.hmgCards ?? [];
+const shadows = [
+  "shadow-[6px_6px_0_0_var(--color-ink)]",
+  "shadow-[6px_6px_0_0_var(--color-club)]",
+  "shadow-[6px_6px_0_0_var(--color-surge)]",
+] as const;
+---
+
+<Section id="more">
+  <p class="type-section-yell">{section.hmgEyebrow}</p>
+  <h2 class="type-display-lg">{section.hmgHeading}</h2>
+  <p class="type-lede" set:html={section.hmgLedeHtml} />
+  <div
+    class="mt-md grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-md"
+  >
+    {
+      cards.map((card, i) => (
+        <article
+          class:list={[
+            "flex flex-col overflow-hidden rounded-xl border-[3px] border-ink bg-white/40 p-0 transition-transform duration-300 hover:-translate-y-1",
+            shadows[i % 3],
+          ]}
+        >
+          <div class="aspect-[4/3] overflow-hidden">
+            <img
+              src={card.hmgCardImage}
+              alt={card.hmgCardImageAlt ?? ""}
+              width={1440}
+              height={1440}
+              loading="lazy"
+              decoding="async"
+              class="h-full w-full object-cover"
+            />
+          </div>
+          <h3 class="mx-lg mb-xs mt-md font-display text-[1.15rem]">
+            {card.hmgCardTitle}
+          </h3>
+          <p class="type-muted mx-lg mb-md">{card.hmgCardDescription}</p>
+          <Button
+            class="mb-lg ml-lg self-start"
+            href={card.hmgCardButtonHref}
+            tone="outline"
+            external={Boolean(card.hmgCardExternal)}
+          >
+            {card.hmgCardButtonLabel}
+          </Button>
+        </article>
+      ))
+    }
+  </div>
+</Section>

@@ -1,0 +1,74 @@
+---
+import Button from "../ui/Button.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "homeCtaBand" }>;
+}
+
+const { section } = Astro.props;
+const buttons = (section.hcbButtons ?? []).filter(Boolean);
+---
+
+<section
+  class="dark-surface border-y border-buzz/30 bg-[linear-gradient(120deg,#1c1c33_0%,#0e0e1a_48%,#25244a_100%)] py-2xl text-mist"
+  aria-labelledby="cta-band-title"
+>
+  <div
+    class="site-container grid grid-cols-1 items-center gap-xl lg:grid-cols-[0.9fr_1.1fr]"
+  >
+    <img
+      src={section.hcbImage}
+      alt={section.hcbImageAlt}
+      width={1125}
+      height={1138}
+      loading="lazy"
+      decoding="async"
+      class="max-h-[22rem] w-full min-w-0 rotate-[0.4deg] rounded-xl border-[3px] border-buzz/35 object-cover shadow-[8px_8px_0_0_rgba(176,184,255,0.16)]"
+    />
+    <div class="min-w-0">
+      <p
+        class="mb-0 text-buzz font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em]"
+      >
+        {section.hcbEyebrow}
+      </p>
+      <h2 id="cta-band-title" class="type-display-lg text-mist">
+        {section.hcbHeading}
+      </h2>
+      <p
+        class="mb-md max-w-[40rem] text-[1.2rem] leading-[1.55] text-mist/75"
+        set:html={section.hcbBodyHtml}
+      />
+      <div class="flex max-w-[40rem] flex-col gap-sm">
+        {
+          buttons[0] ? (
+            <Button
+              href={buttons[0].hcbBtnHref}
+              tone={buttons[0].hcbBtnTone ?? "surge"}
+              external={Boolean(buttons[0].hcbBtnExternal)}
+              class="w-full"
+            >
+              {buttons[0].hcbBtnLabel}
+            </Button>
+          ) : null
+        }
+        {
+          buttons.length > 1 && (
+            <div class="flex w-full flex-col gap-sm lg:flex-row">
+              {buttons.slice(1).map((b) => (
+                <Button
+                  href={b.hcbBtnHref}
+                  tone={b.hcbBtnTone ?? "outline"}
+                  external={Boolean(b.hcbBtnExternal)}
+                  class="w-full lg:flex-1"
+                >
+                  {b.hcbBtnLabel}
+                </Button>
+              ))}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

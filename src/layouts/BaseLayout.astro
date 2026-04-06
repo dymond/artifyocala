@@ -1,22 +1,36 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { getCollection } from 'astro:content';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import type { SiteChrome } from '../lib/site-chrome';
 import { img } from '../lib/site-images';
 import { LINKS, SITE } from '../lib/links';
 import '../styles/global.css';
+
+const siteChromeList = await getCollection("siteChrome");
+const siteChromeEntry = siteChromeList[0];
+if (!siteChromeEntry) {
+  throw new Error(
+    'Missing site settings: add src/content/site/chrome.json (Tina: Site settings).',
+  );
+}
+const siteChrome = siteChromeEntry.data as SiteChrome;
 
 interface Props {
   title: string;
   description?: string;
   /** Optional: preload likely LCP image (e.g. home hero logo path from site-images). */
   preloadLcpImage?: string;
+  /** Override default robots meta (use `noindex, nofollow` on error pages). */
+  metaRobots?: string;
 }
 
 const {
   title,
   description = 'Artify Ocala — art, performance, and making in Marion County, Florida.',
   preloadLcpImage,
+  metaRobots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
 } = Astro.props;
 
 const fullTitle = title === 'Home' ? 'Artify Ocala' : `${title} · Artify Ocala`;
@@ -77,10 +91,7 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta
-      name="robots"
-      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-    />
+    <meta name="robots" content={metaRobots} />
     <meta name="theme-color" content="#1c1c33" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#12122a" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
@@ -138,10 +149,10 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     }
   </head>
   <body class="flex min-h-screen flex-col">
-    <Header />
+    <Header chrome={siteChrome} />
     <main class="w-full min-w-0 flex-1">
       <slot />
     </main>
-    <Footer />
+    <Footer chrome={siteChrome} />
   </body>
 </html>

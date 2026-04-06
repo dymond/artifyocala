@@ -1,8 +1,22 @@
 ---
-import { LINKS, SITE } from '../../lib/links';
-import { img } from '../../lib/site-images';
-import IconFacebook from '../ui/icons/IconFacebook.astro';
-import IconInstagram from '../ui/icons/IconInstagram.astro';
+import {
+  footerLogoSrc,
+  formatCopyright,
+  type SiteChrome,
+} from "../../lib/site-chrome";
+import IconFacebook from "../ui/icons/IconFacebook.astro";
+import IconInstagram from "../ui/icons/IconInstagram.astro";
+
+interface Props {
+  chrome: SiteChrome;
+}
+
+const { chrome } = Astro.props;
+const footerLogo = footerLogoSrc(chrome);
+const telHref = chrome.footerPhoneTel.trim().startsWith("tel:")
+  ? chrome.footerPhoneTel.trim()
+  : `tel:${chrome.footerPhoneTel.replace(/\s/g, "")}`;
+const copyrightText = formatCopyright(chrome.footerCopyright);
 ---
 
 <footer
@@ -13,10 +27,10 @@ import IconInstagram from '../ui/icons/IconInstagram.astro';
       <a
         href="/"
         class="mb-sm inline-block max-w-[min(100%,9rem)] outline-none transition-opacity hover:opacity-90 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-panel"
-        aria-label="Artify Ocala — Home"
+        aria-label={chrome.headerLogoAriaLabel}
       >
         <img
-          src={img.logoOnDarkFull}
+          src={footerLogo}
           alt="Artify Ocala"
           width={1600}
           height={1259}
@@ -24,49 +38,60 @@ import IconInstagram from '../ui/icons/IconInstagram.astro';
           class="h-auto w-full object-contain object-left"
         />
       </a>
-      <p class="m-0 leading-normal">{SITE.tagline}</p>
+      <p class="m-0 leading-normal">{chrome.footerTagline}</p>
     </div>
     <div>
-      <p class="mb-sm font-display text-[0.85rem] font-bold uppercase tracking-widest text-buzz">Connect</p>
-      <p class="mb-2 mt-0">
-        <a class="text-mist no-underline hover:underline" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <p class="mb-sm font-display text-[0.85rem] font-bold uppercase tracking-widest text-buzz">
+        {chrome.footerConnectHeading}
       </p>
       <p class="mb-2 mt-0">
-        <a class="text-mist no-underline hover:underline" href="tel:+13522995673">{SITE.phoneDisplay}</a>
+        <a
+          class="text-mist no-underline hover:underline"
+          href={`mailto:${chrome.footerEmail}`}
+        >
+          {chrome.footerEmail}
+        </a>
+      </p>
+      <p class="mb-2 mt-0">
+        <a class="text-mist no-underline hover:underline" href={telHref}>
+          {chrome.footerPhoneDisplay}
+        </a>
       </p>
       <p class="m-0 flex flex-wrap items-center gap-x-2 gap-y-1">
         <a
           class="inline-flex items-center gap-1.5 text-mist no-underline hover:underline"
-          href={LINKS.instagram}
+          href={chrome.instagramUrl}
           rel="noopener noreferrer"
           target="_blank"
         >
-          Instagram
+          {chrome.instagramLabel}
           <IconInstagram class="h-4 w-4 text-mist" />
         </a>
         <span aria-hidden="true" class="text-mist/40">·</span>
         <a
           class="inline-flex items-center gap-1.5 text-mist no-underline hover:underline"
-          href={LINKS.facebook}
+          href={chrome.facebookUrl}
           rel="noopener noreferrer"
           target="_blank"
         >
-          Facebook
+          {chrome.facebookLabel}
           <IconFacebook class="h-4 w-4 text-mist" />
         </a>
       </p>
     </div>
     <div>
-      <p class="mb-sm font-display text-[0.85rem] font-bold uppercase tracking-widest text-buzz">Community</p>
+      <p class="mb-sm font-display text-[0.85rem] font-bold uppercase tracking-widest text-buzz">
+        {chrome.footerCommunityHeading}
+      </p>
       <p class="m-0">
         <a
           class="inline-flex items-center gap-2 text-mist no-underline hover:underline"
-          href={LINKS.facebookMeetupGroup}
+          href={chrome.meetupUrl}
           rel="noopener noreferrer"
           target="_blank"
-          aria-label="Maker meetups on Facebook"
+          aria-label={chrome.meetupAriaLabel}
         >
-          Maker meetups
+          {chrome.meetupLabel}
           <IconFacebook class="h-4 w-4 text-mist" />
         </a>
       </p>
@@ -74,7 +99,7 @@ import IconInstagram from '../ui/icons/IconInstagram.astro';
   </div>
   <div class="site-container mt-xl border-t-2 border-buzz/25 pt-md">
     <p class="m-0 text-[0.85rem] opacity-65">
-      © {new Date().getFullYear()} Artify Ocala. 501(c)(3) nonprofit.
+      {copyrightText}
     </p>
   </div>
 </footer>

@@ -1,0 +1,21 @@
+---
+import Section from "../ui/Section.astro";
+import type { PageSection } from "../../lib/page-sections/schema";
+
+interface Props {
+  section: Extract<PageSection, { _template: "missionQuote" }>;
+}
+
+const { section } = Astro.props;
+---
+
+<Section>
+  <h2 class="type-display-lg">Our mission</h2>
+  {
+    section.mqQuoteText && (
+      <blockquote class="m-0 rounded-r-lg border-l-4 border-accent bg-accent/[0.08] p-lg text-[1.1rem] italic leading-relaxed">
+        {section.mqQuoteText}
+      </blockquote>
+    )
+  }
+</Section>
