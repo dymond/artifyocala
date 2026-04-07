@@ -3,6 +3,8 @@
  *
  * `npm ci` removes `node_modules` each time, so without this plugin the default
  * `./node_modules/.astro` cache (see astro.config) is lost every deploy.
+ *
+ * Uses .cjs because the repo root has "type": "module"; Netlify loads this file as ESM otherwise.
  */
 
 const CACHED_DIRS = ["node_modules/.astro", "node_modules/.vite"];

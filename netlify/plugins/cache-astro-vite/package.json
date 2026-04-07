@@ -1,0 +1,6 @@
+{
+  "name": "artify-cache-astro-vite",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.cjs"
+}
