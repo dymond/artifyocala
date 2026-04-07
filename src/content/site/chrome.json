@@ -24,11 +24,6 @@
       "ariaLabel": "Marion County Maker Collective"
     },
     {
-      "href": "/programs/maker-collective/equipment",
-      "label": "Wish list",
-      "ariaLabel": "Equipment wish list"
-    },
-    {
       "href": "/programs/brick-city-glam",
       "label": "Glam",
       "ariaLabel": "Brick City Glam"
@@ -37,6 +32,11 @@
       "href": "/programs/storytelling-knights",
       "label": "Knights",
       "ariaLabel": "Storytelling Knights"
+    },
+    {
+      "href": "/programs/maker-collective/equipment",
+      "label": "Wish list",
+      "ariaLabel": "Equipment wish list"
     }
   ],
   "islandHomeAriaLabel": "Home",
