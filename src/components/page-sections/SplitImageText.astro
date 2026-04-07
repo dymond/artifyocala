@@ -2,12 +2,14 @@
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
+import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
   section: Extract<PageSection, { _template: "splitImageText" }>;
 }
 
 const { section } = Astro.props;
+const sitAlt = imageAlt(section.sitImageAlt, `${section.sitHeading} — photo`);
 const variant = section.sitVariant === "dark" ? "dark" : undefined;
 const imageLeft = section.sitImagePosition === "left";
 const borderImg =
@@ -49,7 +51,7 @@ const borderImg =
     >
       <img
         src={section.sitImage}
-        alt={section.sitImageAlt}
+        alt={sitAlt}
         width={1152}
         height={2048}
         loading="lazy"

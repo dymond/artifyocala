@@ -4,12 +4,17 @@ import WordRotator from "../ui/WordRotator.astro";
 import HeroPlayfulCollage from "../sections/HeroPlayfulCollage.astro";
 import { img } from "../../lib/site-images";
 import type { PageSection } from "../../lib/page-sections/schema";
+import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
   section: Extract<PageSection, { _template: "homeHeroFull" }>;
 }
 
 const { section } = Astro.props;
+const hiringAlt = imageAlt(
+  section.hhfHiringImageAlt,
+  `${section.hhfAsideTitle} — community photo`,
+);
 const words = section.hhfRotatorWords?.filter(Boolean) ?? [];
 const showCollage = section.hhfShowCollage !== false;
 const heroButtons = section.hhfHeroButtons?.filter(Boolean) ?? [];
@@ -133,7 +138,7 @@ const asideStack = section.hhfAsideStackButtons?.filter(Boolean) ?? [];
         </aside>
         <img
           src={section.hhfHiringImage}
-          alt={section.hhfHiringImageAlt}
+          alt={hiringAlt}
           width={1080}
           height={1350}
           loading="eager"

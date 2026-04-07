@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageVisualEdit from "../components/tina/PageVisualEdit";
 import { img } from "../lib/site-images";
 import client from "../lib/tina-graphql-client";
+import { resolvePageDescription } from "../lib/seo";
 
 const tina = await client.queries.page({ relativePath: "home.json" });
 const page = tina.data.page;
@@ -14,7 +15,7 @@ const { metaTitle, metaDescription } = page;
 
 <BaseLayout
   title={metaTitle ?? "Home"}
-  description={metaDescription ?? ""}
+  description={resolvePageDescription(metaDescription)}
   preloadLcpImage={img.logoOnLightHollow}
 >
   <PageVisualEdit

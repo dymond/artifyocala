@@ -1,6 +1,7 @@
 ---
 import Button from "../ui/Button.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
+import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
   section: Extract<PageSection, { _template: "homeCtaBand" }>;
@@ -8,6 +9,7 @@ interface Props {
 
 const { section } = Astro.props;
 const buttons = (section.hcbButtons ?? []).filter(Boolean);
+const hcbAlt = imageAlt(section.hcbImageAlt, `${section.hcbHeading} — photo`);
 ---
 
 <section
@@ -19,7 +21,7 @@ const buttons = (section.hcbButtons ?? []).filter(Boolean);
   >
     <img
       src={section.hcbImage}
-      alt={section.hcbImageAlt}
+      alt={hcbAlt}
       width={1125}
       height={1138}
       loading="lazy"

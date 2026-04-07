@@ -2,12 +2,14 @@
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
+import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
   section: Extract<PageSection, { _template: "twoColumnDonateHero" }>;
 }
 
 const { section } = Astro.props;
+const dchAlt = imageAlt(section.dchImageAlt, `${section.dchTitle} — photo`);
 ---
 
 <Section>
@@ -32,7 +34,7 @@ const { section } = Astro.props;
     >
       <img
         src={section.dchImage}
-        alt={section.dchImageAlt}
+        alt={dchAlt}
         width={1080}
         height={1080}
         loading="eager"

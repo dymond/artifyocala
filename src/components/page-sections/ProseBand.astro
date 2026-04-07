@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
+import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
   section: Extract<PageSection, { _template: "proseBand" }>;
@@ -9,6 +10,10 @@ interface Props {
 const { section } = Astro.props;
 const variant = section.pbVariant === "dark" ? "dark" : undefined;
 const imgSrc = section.pbTopImage?.trim();
+const pbAlt = imageAlt(
+  section.pbTopImageAlt,
+  section.pbHeading ? `${section.pbHeading} — image` : "Illustration",
+);
 ---
 
 <Section variant={variant}>
@@ -17,7 +22,7 @@ const imgSrc = section.pbTopImage?.trim();
       <div class="mb-lg max-w-xl">
         <img
           src={imgSrc}
-          alt={section.pbTopImageAlt ?? ""}
+          alt={pbAlt}
           width={1317}
           height={1756}
           loading="lazy"

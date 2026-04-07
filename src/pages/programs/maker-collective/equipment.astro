@@ -2,12 +2,25 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Section from '../../../components/ui/Section.astro';
 import Button from '../../../components/ui/Button.astro';
-import GalleryMarquee from '../../../components/ui/GalleryMarquee.astro';
 import { getCollection } from 'astro:content';
 import { LINKS } from '../../../lib/links';
-import { img } from '../../../lib/site-images';
+import { breadcrumbListJsonLd, resolvePageDescription } from '../../../lib/seo';
 
-const makerspaceStrip = [img.makerspaceA, img.makerspaceB, img.makerspaceC, img.makerspaceD] as const;
+const programs = await getCollection('programs');
+const maker = programs.find((p) => p.id === 'maker-collective');
+const makerTitle = maker?.data.title ?? 'Marion County Maker Collective';
+
+const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
+const structuredData = [
+  breadcrumbListJsonLd(siteOrigin, [
+    { name: 'Home', path: '/' },
+    { name: makerTitle, path: '/programs/maker-collective' },
+    {
+      name: 'Equipment wish list',
+      path: '/programs/maker-collective/equipment',
+    },
+  ]),
+];
 
 const sections = await getCollection('equipment');
 const sectionOrder = [
@@ -30,7 +43,10 @@ const sorted = sections.sort(
 
 <BaseLayout
   title="Equipment wish list"
-  description="Equipment and supplies needed for the Marion County Maker Collective makerspace in Ocala, Florida."
+  description={resolvePageDescription(
+    'Equipment and supplies needed for the Marion County Maker Collective makerspace in Ocala, Florida.',
+  )}
+  structuredData={structuredData}
 >
   <Section>
     <h1 class="type-display-xl">Equipment wish list</h1>

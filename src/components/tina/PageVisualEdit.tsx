@@ -1,7 +1,11 @@
 import { tinaField, useTina } from "tinacms/dist/react";
 import { useEffect } from "react";
-import type { PageQuery, PageQueryVariables } from "../../../tina/__generated__/types";
+import type {
+  PageQuery,
+  PageQueryVariables,
+} from "../../../tina/__generated__/types";
 import { cn } from "../../lib/cn";
+import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import { btnOutline } from "../../lib/tina-ui-buttons";
 import { mountProgramCardsTilt } from "../../scripts/program-cards-tilt";
@@ -92,7 +96,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             <figure className="mt-lg max-w-3xl overflow-hidden rounded-lg border border-line">
               <img
                 src={src}
-                alt={s.introImageAlt ?? ""}
+                alt={imageAlt(s.introImageAlt, `${s.introTitle} — photo`)}
                 width={748}
                 height={880}
                 loading="eager"
@@ -115,7 +119,10 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             <div className="mb-lg max-w-xl">
               <img
                 src={imgSrc}
-                alt={s.pbTopImageAlt ?? ""}
+                alt={imageAlt(
+                  s.pbTopImageAlt,
+                  s.pbHeading ? `${s.pbHeading} — image` : "Illustration"
+                )}
                 width={1317}
                 height={1756}
                 loading="lazy"
@@ -311,7 +318,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             <figure className="m-0 aspect-[4/3] min-w-0 overflow-hidden rounded-lg border border-line lg:aspect-auto lg:h-full lg:min-h-0">
               <img
                 src={s.dchImage}
-                alt={s.dchImageAlt}
+                alt={imageAlt(s.dchImageAlt, `${s.dchTitle} — photo`)}
                 width={1080}
                 height={1080}
                 loading="eager"
@@ -399,7 +406,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             >
               <img
                 src={s.sitImage}
-                alt={s.sitImageAlt}
+                alt={imageAlt(s.sitImageAlt, `${s.sitHeading} — photo`)}
                 width={1152}
                 height={2048}
                 loading="lazy"
@@ -451,7 +458,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               <div className="overflow-hidden rounded-[inherit]">
                 <img
                   src={s.hmuImageLeft}
-                  alt={s.hmuImageLeftAlt}
+                  alt={imageAlt(s.hmuImageLeftAlt, `${s.hmuHeading} — photo`)}
                   width={2048}
                   height={1365}
                   loading="lazy"
@@ -467,7 +474,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               <div className="overflow-hidden rounded-[inherit]">
                 <img
                   src={s.hmuImageRight}
-                  alt={s.hmuImageRightAlt}
+                  alt={imageAlt(s.hmuImageRightAlt, `${s.hmuHeading} — photo`)}
                   width={1080}
                   height={1350}
                   loading="lazy"
@@ -498,7 +505,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             <figure className="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-buzz/40 shadow-[8px_8px_0_0_rgba(176,184,255,0.18)]">
               <img
                 src={s.hsbImage}
-                alt={s.hsbImageAlt}
+                alt={imageAlt(s.hsbImageAlt, `${s.hsbHeading} — photo`)}
                 width={1080}
                 height={1080}
                 loading="lazy"
@@ -580,7 +587,10 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                   <div className="aspect-[4/3] overflow-hidden">
                     <img
                       src={card.hmgCardImage}
-                      alt={card.hmgCardImageAlt ?? ""}
+                      alt={imageAlt(
+                        card.hmgCardImageAlt,
+                        `${card.hmgCardTitle} — photo`
+                      )}
                       width={1440}
                       height={1440}
                       loading="lazy"
@@ -631,7 +641,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
           <div className="site-container grid grid-cols-1 items-center gap-xl lg:grid-cols-[0.9fr_1.1fr]">
             <img
               src={s.hcbImage}
-              alt={s.hcbImageAlt}
+              alt={imageAlt(s.hcbImageAlt, `${s.hcbHeading} — photo`)}
               width={1125}
               height={1138}
               loading="lazy"
@@ -723,9 +733,7 @@ export default function PageVisualEdit({
   const page = data.page;
   if (!page) return null;
 
-  const sections = (page.sections ?? []).filter(
-    Boolean,
-  ) as PageSectionItem[];
+  const sections = (page.sections ?? []).filter(Boolean) as PageSectionItem[];
 
   useEffect(() => {
     if (pageSlug !== "home") return;

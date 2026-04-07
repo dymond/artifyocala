@@ -2,12 +2,14 @@
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
+import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
   section: Extract<PageSection, { _template: "homeSupportBand" }>;
 }
 
 const { section } = Astro.props;
+const hsbAlt = imageAlt(section.hsbImageAlt, `${section.hsbHeading} — photo`);
 ---
 
 <Section variant="dark" id="support">
@@ -17,7 +19,7 @@ const { section } = Astro.props;
     >
       <img
         src={section.hsbImage}
-        alt={section.hsbImageAlt}
+        alt={hsbAlt}
         width={1080}
         height={1080}
         loading="lazy"

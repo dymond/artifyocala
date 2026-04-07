@@ -6,6 +6,7 @@ import Footer from '../components/layout/Footer.astro';
 import type { SiteChrome } from '../lib/site-chrome';
 import { img } from '../lib/site-images';
 import { LINKS, SITE } from '../lib/links';
+import { absoluteUrl, resolvePageDescription } from '../lib/seo';
 import '../styles/global.css';
 
 const siteChromeList = await getCollection("siteChrome");
@@ -24,14 +25,30 @@ interface Props {
   preloadLcpImage?: string;
   /** Override default robots meta (use `noindex, nofollow` on error pages). */
   metaRobots?: string;
+  /** Extra JSON-LD nodes merged after WebSite / Organization / WebPage (e.g. Article, BreadcrumbList). */
+  structuredData?: Record<string, unknown>[];
+  /** Per-page Open Graph overrides (default: site-wide social share PNG). */
+  openGraph?: {
+    type?: 'website' | 'article';
+    image?: {
+      url: string;
+      alt?: string;
+      width?: number;
+      height?: number;
+    };
+  };
 }
 
 const {
   title,
-  description = 'Artify Ocala — art, performance, and making in Marion County, Florida.',
+  description,
   preloadLcpImage,
   metaRobots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+  structuredData = [],
+  openGraph,
 } = Astro.props;
+
+const pageDescription = resolvePageDescription(description);
 
 const fullTitle = title === 'Home' ? 'Artify Ocala' : `${title} · Artify Ocala`;
 const canonicalPath = Astro.url.pathname.replace(/\/+$/, '') || '/';
@@ -46,6 +63,16 @@ const shareImageWidth = 2400;
 const shareImageHeight = 1260;
 const shareImageAlt = 'Artify Ocala — logo on dark background with lavender circle motif';
 
+const ogFromProps = openGraph?.image;
+const ogImageUrl = ogFromProps?.url
+  ? absoluteUrl(siteOrigin, ogFromProps.url)
+  : shareImageUrl;
+const ogImageAlt = ogFromProps?.alt ?? shareImageAlt;
+const ogImageWidth = ogFromProps?.width ?? shareImageWidth;
+const ogImageHeight = ogFromProps?.height ?? shareImageHeight;
+const ogType = openGraph?.type ?? 'website';
+const ogImageMime = /\.jpe?g(\?|$)/i.test(ogImageUrl) ? 'image/jpeg' : 'image/png';
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -54,7 +81,7 @@ const jsonLd = {
       '@id': `${siteOrigin}/#website`,
       url: siteRootUrl,
       name: SITE.name,
-      description,
+      description: SITE.tagline,
       inLanguage: 'en-US',
       publisher: { '@id': `${siteOrigin}/#organization` },
     },
@@ -72,6 +99,22 @@ const jsonLd = {
       },
       sameAs: [LINKS.instagram, LINKS.facebook],
     },
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl.href}#webpage`,
+      url: pageUrl.href,
+      name: title,
+      description: pageDescription,
+      isPartOf: { '@id': `${siteOrigin}/#website` },
+      inLanguage: 'en-US',
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        url: ogImageUrl,
+        width: ogImageWidth,
+        height: ogImageHeight,
+      },
+    },
+    ...structuredData,
   ],
 };
 
@@ -90,7 +133,7 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={description} />
+    <meta name="description" content={pageDescription} />
     <meta name="robots" content={metaRobots} />
     <meta name="theme-color" content="#1c1c33" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#12122a" media="(prefers-color-scheme: dark)" />
@@ -111,22 +154,22 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <meta name="apple-mobile-web-app-title" content={SITE.name} />
     <link rel="manifest" href="/site.webmanifest" />
     <title>{fullTitle}</title>
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content={pageUrl.href} />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={shareImageUrl} />
-    <meta property="og:image:width" content={String(shareImageWidth)} />
-    <meta property="og:image:height" content={String(shareImageHeight)} />
-    <meta property="og:image:alt" content={shareImageAlt} />
-    <meta property="og:image:type" content="image/png" />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content={String(ogImageWidth)} />
+    <meta property="og:image:height" content={String(ogImageHeight)} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:type" content={ogImageMime} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={shareImageUrl} />
-    <meta name="twitter:image:alt" content={shareImageAlt} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <ClientRouter />
     {

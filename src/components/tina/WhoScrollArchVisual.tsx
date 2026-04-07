@@ -1,6 +1,7 @@
 import { tinaField } from "tinacms/dist/react";
 import { useEffect } from "react";
 import { btnClassForTone } from "../../lib/tina-button-tone";
+import { imageAlt } from "../../lib/image-alt";
 import {
   setupWhoArchBackdrop,
   teardownWhoArchBackdrop,
@@ -77,7 +78,7 @@ export default function WhoScrollArchVisual({ section }: Props) {
           <div className="artify-who-arch-frame relative z-[2] bg-ink">
             <img
               src={s.wscImage}
-              alt={s.wscImageAlt}
+              alt={imageAlt(s.wscImageAlt, `${s.wscHeading} — background`)}
               width={1317}
               height={1756}
               loading="lazy"

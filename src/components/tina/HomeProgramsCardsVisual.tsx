@@ -1,6 +1,7 @@
 import { tinaField } from "tinacms/dist/react";
 import type { PageSectionsHomeProgramsIntro } from "../../../tina/__generated__/types";
 import { cn } from "../../lib/cn";
+import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 
 function IconExt() {
@@ -71,7 +72,10 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
                 <div className="aspect-[16/10] overflow-hidden">
                   <img
                     src={card.hpiCardImage}
-                    alt={card.hpiCardImageAlt ?? ""}
+                    alt={imageAlt(
+                      card.hpiCardImageAlt,
+                      `${card.hpiCardTitle} — photo`,
+                    )}
                     width={1125}
                     height={1138}
                     loading="lazy"

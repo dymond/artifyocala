@@ -1,6 +1,7 @@
 import { tinaField } from "tinacms/dist/react";
 import type { PageSectionsHomeHeroFull } from "../../../tina/__generated__/types";
 import { img } from "../../lib/site-images";
+import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import HeroPlayfulCollage from "./HeroPlayfulCollage";
 import WordRotator from "./WordRotator";
@@ -177,7 +178,10 @@ export default function HomeHeroFullVisual({ section }: Props) {
             </aside>
             <img
               src={s.hhfHiringImage ?? ""}
-              alt={s.hhfHiringImageAlt ?? ""}
+              alt={imageAlt(
+                s.hhfHiringImageAlt,
+                `${s.hhfAsideTitle} — community photo`,
+              )}
               width={1080}
               height={1350}
               loading="eager"

@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import PageVisualEdit from "../components/tina/PageVisualEdit";
 import { getCollection } from "astro:content";
 import client from "../lib/tina-graphql-client";
+import { breadcrumbListJsonLd, resolvePageDescription } from "../lib/seo";
 
 export async function getStaticPaths() {
   const all = await getCollection("pages");
@@ -23,11 +24,20 @@ if (!page) {
   throw new Error(`Tina page missing for "${entryId}.json"`);
 }
 const { metaTitle, metaDescription } = page;
+
+const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
+const structuredData = [
+  breadcrumbListJsonLd(siteOrigin, [
+    { name: "Home", path: "/" },
+    { name: metaTitle ?? page.slug, path: `/${page.slug}` },
+  ]),
+];
 ---
 
 <BaseLayout
   title={metaTitle ?? ""}
-  description={metaDescription ?? ""}
+  description={resolvePageDescription(metaDescription)}
+  structuredData={structuredData}
 >
   <PageVisualEdit
     client:tina
