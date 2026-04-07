@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageVisualEdit from "../components/tina/PageVisualEdit";
 import { getCollection } from "astro:content";
-import client from "../../tina/__generated__/client";
+import client from "../lib/tina-graphql-client";
 
 export async function getStaticPaths() {
   const all = await getCollection("pages");

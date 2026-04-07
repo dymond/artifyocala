@@ -1,5 +1,5 @@
 [build]
-  # Needs PUBLIC_TINA_CLIENT_ID + TINA_TOKEN in Netlify env (see .env.example).
+  # Needs PUBLIC_TINA_CLIENT_ID + TINA_TOKEN in Netlify env (see .env.example for local vars).
   command = "npm run build"
   publish = "dist"
 

@@ -4,7 +4,7 @@ var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || p
 var config_default = defineConfig({
   branch,
   clientId: process.env.PUBLIC_TINA_CLIENT_ID,
-  token: process.env.TINA_TOKEN,
+  token: process.env.TINA_TOKEN || process.env.TINA_TOKEN_LOCAL,
   build: {
     outputFolder: "admin",
     publicFolder: "public"

@@ -5,6 +5,7 @@
 
 interface ImportMetaEnv {
   readonly PUBLIC_GA_MEASUREMENT_ID?: string;
+  readonly PUBLIC_TINA_CLIENT_ID?: string;
 }
 
 /** Lets plain TS tooling resolve HTML in `.astro` templates (maps to Astro’s element types). */

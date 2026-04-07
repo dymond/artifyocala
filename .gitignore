@@ -32,3 +32,6 @@ playwright-report/
 
 # Tina CLI build cache (regenerated locally / on CI)
 tina/__generated__/.cache/
+
+# Tina CLI inlines TINA_TOKEN here; we use src/lib/tina-graphql-client.ts instead.
+tina/__generated__/client.ts
