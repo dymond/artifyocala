@@ -3,7 +3,13 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Section from '../../../components/ui/Section.astro';
 import Button from '../../../components/ui/Button.astro';
 import { getCollection } from 'astro:content';
-import { LINKS } from '../../../lib/links';
+import { LINKS, SITE } from '../../../lib/links';
+
+const mailtoEquipmentDonation = `mailto:${SITE.email}?subject=${encodeURIComponent(
+  'Maker Collective — equipment or in-kind donation',
+)}`;
+const telDigits = SITE.phoneDisplay.replace(/\D/g, '');
+const telHref = telDigits.length === 10 ? `tel:+1${telDigits}` : `tel:${telDigits}`;
 import { breadcrumbListJsonLd, resolvePageDescription } from '../../../lib/seo';
 
 const programs = await getCollection('programs');
@@ -73,6 +79,59 @@ const sorted = sections.sort(
           </section>
         ))
       }
+      <aside
+        class="flex flex-col rounded-lg border border-white/10 bg-panel p-lg"
+        aria-labelledby="equipment-donate-aside-title"
+      >
+        <p
+          class="mb-xs font-display text-[0.65rem] font-extrabold uppercase tracking-[0.22em] text-buzz"
+        >
+          In-kind gifts
+        </p>
+        <h2
+          id="equipment-donate-aside-title"
+          class="mb-md font-display text-[1.15rem] leading-snug"
+        >
+          Donate equipment
+        </h2>
+        <p class="mb-md text-[0.92rem] leading-[1.55] text-mist/80">
+          New or gently used tools and supplies help us outfit the space faster. Reach out before you drop off or ship anything—we’ll confirm what we can take and when someone can receive it.
+        </p>
+        <div class="space-y-sm text-[0.92rem] leading-[1.55] text-mist/90">
+          <p class="m-0">
+            <span class="text-mist/55">Email</span>
+            <br />
+            <a
+              class="font-medium text-accent-soft underline decoration-accent-soft/45 underline-offset-2 hover:decoration-accent-soft"
+              href={mailtoEquipmentDonation}
+            >
+              {SITE.email}
+            </a>
+          </p>
+          <p class="m-0">
+            <span class="text-mist/55">Phone</span>
+            <br />
+            <a
+              class="font-medium text-accent-soft underline decoration-accent-soft/45 underline-offset-2 hover:decoration-accent-soft"
+              href={telHref}
+            >
+              {SITE.phoneDisplay}
+            </a>
+          </p>
+        </div>
+        <p class="mt-auto pt-md text-[0.85rem] leading-[1.5] text-mist/65">
+          Prefer to give money instead?{' '}
+          <a
+            class="font-medium text-mist underline decoration-mist/35 underline-offset-2 hover:decoration-mist"
+            href={LINKS.zeffyDonate}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Donate online
+          </a>
+          —we’ll put it toward purchases from this list.
+        </p>
+      </aside>
     </div>
   </Section>
 </BaseLayout>
