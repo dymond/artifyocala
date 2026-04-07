@@ -31,8 +31,8 @@
       "hhfAsideBadge": "Now open for members",
       "hhfAsideTitle": "Marion County Maker Collective",
       "hhfAsideDescription": "Community makerspace launching January 2026 — tools, classes, and collaboration in Ocala.",
-      "hhfAsideMeetupsHref": "/#meetups",
       "hhfAsideMeetupsLabel": "Free Meetups",
+      "hhfAsideMeetupsHref": "/#meetups",
       "hhfAsideMeetupsExternal": false,
       "hhfAsideMeetupsTone": "outline",
       "hhfAsideStackButtons": [
@@ -138,7 +138,7 @@
               "hpcbLabel": "Learn more",
               "hpcbHref": "/programs/maker-collective",
               "hpcbExternal": false,
-              "hpcbTone": "primary"
+              "hpcbTone": "surge"
             },
             {
               "hpcbLabel": "Meet up",
