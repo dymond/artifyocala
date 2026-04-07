@@ -20,7 +20,7 @@
     "generate:hal404-audio": "python3 scripts/generate-hal-404-audio.py",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "verify": "npm test && npm run build:netlify"
+    "verify": "pnpm test && HEAD=main NETLIFY_BRANCH=main netlify build --offline"
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.5.0",

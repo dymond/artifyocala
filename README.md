@@ -1,43 +1,35 @@
-# Astro Starter Kit: Minimal
+# Artify Ocala (Astro + TinaCMS)
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Site source for [artify.diy](https://artify.diy), built with [Astro](https://astro.build) and [TinaCMS](https://tina.io).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Prerequisites
 
-## 🚀 Project Structure
+- **Node** 22.12+ (see `engines` in [package.json](package.json))
+- **pnpm** via [Corepack](https://nodejs.org/api/corepack.html) (recommended): `corepack enable` — the repo pins the version with the `packageManager` field in [package.json](package.json)
+- Copy [.env.example](.env.example) to `.env` for Tina local credentials
 
-Inside of your Astro project, you'll see the following folders and files:
+## Commands
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+Run from the repository root:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+| Command | Action |
+| :------ | :----- |
+| `pnpm install` | Install dependencies |
+| `pnpm run dev` | Tina + Astro dev server (see [package.json](package.json) script) |
+| `pnpm run build:deploy` | Production build (Tina + Astro), matches Netlify |
+| `pnpm run build` | Stricter local Tina build (no `--skip-cloud-checks`) |
+| `pnpm test` | Unit tests (Vitest) |
+| `pnpm run verify` | Tests + Netlify offline build (forces `HEAD=main` / `NETLIFY_BRANCH=main` so Tina Cloud matches the `main` branch when you are on a feature branch) |
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Project layout
 
-Any static assets, like images, can be placed in the `public/` directory.
+| Path | Purpose |
+| :--- | :------ |
+| `src/pages/` | Routes (file-based routing) |
+| `src/content/` | Astro content collections + JSON |
+| `tina/` | Tina schema and config |
+| `public/` | Static assets |
 
-## 🧞 Commands
+## Docs
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Implementation and migration plans live under [docs/superpowers/plans/](docs/superpowers/plans/).
