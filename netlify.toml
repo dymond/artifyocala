@@ -1,6 +1,8 @@
 [build]
   # Needs PUBLIC_TINA_CLIENT_ID + TINA_TOKEN in Netlify env (see .env.example for local vars).
-  command = "npm run build"
+  # build:deploy skips Tina Cloud schema SHA check — Netlify often runs before indexing catches up after a push.
+  # Local strict check: `npm run build` (no --skip-cloud-checks).
+  command = "npm run build:deploy"
   publish = "dist"
 
 [build.environment]
