@@ -1,0 +1,4 @@
+# Required by Netlify for local build plugins.
+# https://docs.netlify.com/extend/develop-and-share/develop-build-plugins/
+name: artify-cache-astro-vite
+inputs: []
