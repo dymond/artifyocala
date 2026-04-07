@@ -42,9 +42,21 @@ function viteAdminPathRewrite() {
 }
 
 // https://astro.build/config
+const astroBuildConcurrency = Math.min(
+  8,
+  Math.max(
+    1,
+    Number.parseInt(process.env.ASTRO_BUILD_CONCURRENCY ?? "", 10) || 1
+  )
+);
+
 export default defineConfig({
   site: "https://artify.diy",
   output: "static",
+  build: {
+    /** Netlify sets ASTRO_BUILD_CONCURRENCY (see netlify.toml); local default stays 1. */
+    concurrency: astroBuildConcurrency,
+  },
   vite: {
     plugins: [viteAdminPathRewrite(), tailwindcss()],
     build: {
