@@ -9,21 +9,6 @@
 [[plugins]]
   package = "./netlify/plugins/cache-astro-vite"
 
-# Pa11y default checkPaths ["/"] walks every HTML file; the home page loads WebGL + heavy JS and often hits Pa11y’s 30s timeout on CI. Pin explicit routes (omit /index.html). Merges with the Netlify UI–installed plugin of the same name.
-[[plugins]]
-  package = "netlify-plugin-a11y"
-  [plugins.inputs]
-    checkPaths = [
-      "/404.html",
-      "/about/index.html",
-      "/donate/index.html",
-      "/volunteer/index.html",
-      "/programs/maker-collective/index.html",
-      "/programs/maker-collective/equipment/index.html",
-      "/programs/brick-city-glam/index.html",
-      "/programs/storytelling-knights/index.html",
-    ]
-
 [build.environment]
   NODE_VERSION = "22"
   # Minor npm install speed-up on Netlify
