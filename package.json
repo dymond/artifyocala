@@ -16,6 +16,7 @@
     "build:netlify:online": "netlify build",
     "preview": "astro preview",
     "astro": "astro",
+    "generate:hal404-audio": "python3 scripts/generate-hal-404-audio.py",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "verify": "npm test && npm run build:netlify"
