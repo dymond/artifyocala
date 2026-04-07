@@ -1,6 +1,8 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
 var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.NETLIFY_BRANCH || process.env.HEAD || "main";
+var netlifyDeploysUrl = process.env.PUBLIC_NETLIFY_DEPLOYS_URL?.trim() || "https://app.netlify.com/sites/incredible-tarsier-9abffe/deploys";
+var netlifySiteSlug = "incredible-tarsier-9abffe";
 var config_default = defineConfig({
   branch,
   clientId: process.env.PUBLIC_TINA_CLIENT_ID,
@@ -14,6 +16,36 @@ var config_default = defineConfig({
       mediaRoot: "",
       publicFolder: "public"
     }
+  },
+  ui: {
+    previewUrl: (ctx) => {
+      const b = ctx.branch?.replace(/\//g, "-") || "main";
+      if (b === "main") {
+        return { url: "https://artify.diy" };
+      }
+      return {
+        url: `https://${b}--${netlifySiteSlug}.netlify.app`
+      };
+    }
+  },
+  cmsCallback: (cms) => {
+    let lastDeployHint = 0;
+    cms.events.subscribe(
+      "alerts:add",
+      (evt) => {
+        if (evt?.type !== "alerts:add" || !evt.alert) return;
+        const msg = String(evt.alert.message ?? "");
+        if (msg !== "Document updated!" && msg !== "Document created!") return;
+        const now = Date.now();
+        if (now - lastDeployHint < 1500) return;
+        lastDeployHint = now;
+        cms.alerts.info(
+          `Changes are saved to Git. Netlify is rebuilding the live site (often 1\u20132+ min). Deploy log: ${netlifyDeploysUrl}`,
+          14e3
+        );
+      }
+    );
+    return cms;
   },
   schema: {
     collections: [

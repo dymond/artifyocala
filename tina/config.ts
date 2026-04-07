@@ -7,6 +7,13 @@ const branch =
   process.env.HEAD ||
   "main";
 
+/** Netlify deploy dashboard (optional override). Baked into admin at `tinacms build` time. */
+const netlifyDeploysUrl =
+  process.env.PUBLIC_NETLIFY_DEPLOYS_URL?.trim() ||
+  "https://app.netlify.com/sites/incredible-tarsier-9abffe/deploys";
+
+const netlifySiteSlug = "incredible-tarsier-9abffe";
+
 /**
  * Section template field names must be unique across ALL templates in `sections`
  * (Tina GraphQL merges fragments; duplicate names with different nullability fail).
@@ -24,6 +31,36 @@ export default defineConfig({
       mediaRoot: "",
       publicFolder: "public",
     },
+  },
+  ui: {
+    previewUrl: (ctx) => {
+      const b = ctx.branch?.replace(/\//g, "-") || "main";
+      if (b === "main") {
+        return { url: "https://artify.diy" };
+      }
+      return {
+        url: `https://${b}--${netlifySiteSlug}.netlify.app`,
+      };
+    },
+  },
+  cmsCallback: (cms) => {
+    let lastDeployHint = 0;
+    cms.events.subscribe(
+      "alerts:add",
+      (evt: { type?: string; alert?: { message?: unknown } }) => {
+        if (evt?.type !== "alerts:add" || !evt.alert) return;
+        const msg = String(evt.alert.message ?? "");
+        if (msg !== "Document updated!" && msg !== "Document created!") return;
+        const now = Date.now();
+        if (now - lastDeployHint < 1500) return;
+        lastDeployHint = now;
+        cms.alerts.info(
+          `Changes are saved to Git. Netlify is rebuilding the live site (often 1–2+ min). Deploy log: ${netlifyDeploysUrl}`,
+          14_000
+        );
+      }
+    );
+    return cms;
   },
   schema: {
     collections: [
