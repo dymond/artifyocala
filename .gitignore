@@ -42,6 +42,9 @@ tina/__generated__/client.ts
 # Lighthouse CI local reports
 .lighthouseci/
 
+# Ad-hoc Lighthouse / speed-test output (never commit)
+.lighthouseci-live/
+
 # Generated responsive image variants (built in CI via `pnpm run images:build`)
 public/images/_gen/
 
