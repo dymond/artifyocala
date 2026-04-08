@@ -10,6 +10,9 @@
 [[plugins]]
   package = "./netlify/plugins/cache-astro-vite"
 
+[[plugins]]
+  package = "./netlify/plugins/cache-images-gen"
+
 [build.environment]
   NODE_VERSION = "22"
   # Minor npm install speed-up on Netlify

@@ -44,3 +44,6 @@ tina/__generated__/client.ts
 
 # Generated responsive image variants (built in CI via `pnpm run images:build`)
 public/images/_gen/
+
+# Tina generated artifacts (do not commit)
+tina/__generated__/

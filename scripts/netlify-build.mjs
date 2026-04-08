@@ -31,12 +31,15 @@ function runTinaPipeline() {
     "--skip-cloud-checks",
   ]);
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
+  // `images:build` is incremental *within the workspace* via `public/images/_gen/cache.json`.
+  // Netlify workspaces are ephemeral, so we also cache `public/images/_gen/` via a Netlify plugin.
   run("pnpm", ["run", "images:build"]);
   run("pnpm", ["exec", "astro", "build"]);
 }
 
 function runAstroOnly() {
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
+  // See note in `runTinaPipeline()` about caching `public/images/_gen/` on Netlify.
   run("pnpm", ["run", "images:build"]);
   run("pnpm", ["exec", "astro", "build"]);
 }
