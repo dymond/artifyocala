@@ -1,9 +1,7 @@
-import { mountProgramCardsTilt } from "./program-cards-tilt";
 import { setupWhoArchBackdrop } from "./who-scroll-client";
 
 function runOnce(): void {
-  // These functions are written to no-op safely if the relevant DOM isn't present.
-  mountProgramCardsTilt();
+  // Program cards tilt runs from program-cards-tilt-init.ts (separate bundle).
   setupWhoArchBackdrop();
 }
 

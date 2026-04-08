@@ -107,14 +107,16 @@ export default defineConfig({
         },
       },
     },
-    /** Dev / non-production builds: keep readable transforms (no minify — see `build.minify`). */
-    esbuild: isNetlifyBuild
-      ? undefined
-      : {
-          minifyIdentifiers: false,
-          minifySyntax: false,
-          minifyWhitespace: false,
-        },
+    /**
+     * Always disable esbuild name/syntax/whitespace “minify” during TS→JS transform.
+     * When `vite.esbuild` was omitted for NETLIFY builds, esbuild emitted `typeof x>"u"`
+     * shorthands that a later esbuild parse pass rejects (`Syntax error "d"` in client chunks).
+     */
+    esbuild: {
+      minifyIdentifiers: false,
+      minifySyntax: false,
+      minifyWhitespace: false,
+    },
   },
   integrations: [
     mdx(),
