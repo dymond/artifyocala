@@ -49,7 +49,3 @@ Logic lives in [scripts/netlify-tina-build-gate.mjs](scripts/netlify-tina-build-
 | `src/content/` | Astro content collections + JSON |
 | `tina/` | Tina schema and config |
 | `public/` | Static assets |
-
-## Docs
-
-Implementation and migration plans live under [docs/superpowers/plans/](docs/superpowers/plans/).
