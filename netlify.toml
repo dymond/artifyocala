@@ -13,6 +13,9 @@
 [[plugins]]
   package = "./netlify/plugins/cache-images-gen"
 
+[[plugins]]
+  package = "./netlify/plugins/cache-tina-admin"
+
 [build.environment]
   NODE_VERSION = "22"
   # Minor npm install speed-up on Netlify

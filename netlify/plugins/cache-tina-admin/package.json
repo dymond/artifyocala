@@ -1,0 +1,7 @@
+{
+  "name": "artify-cache-tina-admin",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.cjs"
+}
+
