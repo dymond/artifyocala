@@ -31,11 +31,13 @@ function runTinaPipeline() {
     "--skip-cloud-checks",
   ]);
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
+  run("pnpm", ["run", "images:build"]);
   run("pnpm", ["exec", "astro", "build"]);
 }
 
 function runAstroOnly() {
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
+  run("pnpm", ["run", "images:build"]);
   run("pnpm", ["exec", "astro", "build"]);
 }
 

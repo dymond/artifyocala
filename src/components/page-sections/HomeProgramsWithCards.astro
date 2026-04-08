@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
 
@@ -45,7 +46,7 @@ const themeClass: Record<string, string> = {
             ]}
           >
             <div class="aspect-[16/10] overflow-hidden">
-              <img
+              <ResponsiveImage
                 src={card.hpiCardImage}
                 alt={imageAlt(
                   card.hpiCardImageAlt,
@@ -55,6 +56,7 @@ const themeClass: Record<string, string> = {
                 height={1138}
                 loading="lazy"
                 decoding="async"
+                sizes="(min-width: 1024px) 30vw, 92vw"
                 class="h-full w-full object-cover"
               />
             </div>

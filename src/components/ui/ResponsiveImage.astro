@@ -1,0 +1,66 @@
+---
+import { imageVariants, srcsetFor } from "../../lib/image-variants";
+import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
+
+type Props = {
+  src: string;
+  alt: string;
+  width?: number | string;
+  height?: number | string;
+  loading?: "eager" | "lazy";
+  decoding?: "async" | "auto" | "sync";
+  fetchpriority?: "high" | "low" | "auto";
+  class?: string;
+  sizes?: string;
+};
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  loading,
+  decoding = "async",
+  fetchpriority,
+  class: className,
+  sizes = "100vw",
+} = Astro.props;
+
+const normalizedSrc = normalizeTinaRepoMediaSrc(src);
+const vars = imageVariants(normalizedSrc);
+---
+
+{
+  vars ? (
+    <picture style="display: contents;">
+      {vars.avif.length ? (
+        <source type="image/avif" srcset={srcsetFor(vars.avif)} sizes={sizes} />
+      ) : null}
+      {vars.webp.length ? (
+        <source type="image/webp" srcset={srcsetFor(vars.webp)} sizes={sizes} />
+      ) : null}
+      <img
+        src={normalizedSrc}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        decoding={decoding}
+        fetchpriority={fetchpriority}
+        class={className}
+      />
+    </picture>
+  ) : (
+    <img
+      src={normalizedSrc}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding={decoding}
+      fetchpriority={fetchpriority}
+      class={className}
+    />
+  )
+}
+

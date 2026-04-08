@@ -2,6 +2,7 @@ import { tinaField } from "tinacms/dist/react";
 import { useEffect } from "react";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import { imageAlt } from "../../lib/image-alt";
+import ResponsiveImage from "../ui/ResponsiveImage";
 import {
   setupWhoArchBackdrop,
   teardownWhoArchBackdrop,
@@ -76,13 +77,14 @@ export default function WhoScrollArchVisual({ section }: Props) {
             />
           </div>
           <div className="artify-who-arch-frame relative z-[2] bg-ink">
-            <img
+            <ResponsiveImage
               src={s.wscImage}
               alt={imageAlt(s.wscImageAlt, `${s.wscHeading} — background`)}
               width={1317}
               height={1756}
               loading="lazy"
               decoding="async"
+              sizes="100vw"
               className="absolute inset-0 z-0 h-full max-h-none w-full object-cover object-[center_30%]"
               data-tina-field={tinaField(s, "wscImage")}
             />

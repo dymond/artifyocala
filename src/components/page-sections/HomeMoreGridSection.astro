@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
 
@@ -33,7 +34,7 @@ const shadows = [
           ]}
         >
           <div class="aspect-[4/3] overflow-hidden">
-            <img
+            <ResponsiveImage
               src={card.hmgCardImage}
               alt={imageAlt(
                 card.hmgCardImageAlt,
@@ -43,6 +44,7 @@ const shadows = [
               height={1440}
               loading="lazy"
               decoding="async"
+              sizes="(min-width: 1024px) 30vw, 92vw"
               class="h-full w-full object-cover"
             />
           </div>

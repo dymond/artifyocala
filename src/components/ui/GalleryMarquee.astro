@@ -13,6 +13,8 @@ interface Props {
   'data-testid'?: string;
 }
 
+import ResponsiveImage from "./ResponsiveImage.astro";
+
 const {
   images,
   alt,
@@ -63,12 +65,13 @@ const shellAttrs = {
                 <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                   {images.map((src, i) => (
                     <figure class={cellClass}>
-                      <img
+                      <ResponsiveImage
                         src={src}
                         alt={`${alt} ${i + 1}`}
-                        class={imgClass}
                         loading="lazy"
                         decoding="async"
+                        sizes="(min-width: 1024px) 14rem, 44vw"
+                        class={imgClass}
                       />
                     </figure>
                   ))}
@@ -79,7 +82,14 @@ const shellAttrs = {
                 >
                   {images.map((src) => (
                     <figure class={cellClass}>
-                      <img src={src} alt="" class={imgClass} loading="lazy" decoding="async" />
+                      <ResponsiveImage
+                        src={src}
+                        alt=""
+                        class={imgClass}
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(min-width: 1024px) 14rem, 44vw"
+                      />
                     </figure>
                   ))}
                 </div>
@@ -98,12 +108,13 @@ const shellAttrs = {
                   <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                     {images.map((src, i) => (
                       <figure class={cellClass}>
-                        <img
+                        <ResponsiveImage
                           src={src}
                           alt={`${alt} ${i + 1}`}
-                          class={imgClass}
                           loading="lazy"
                           decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 22vw"
+                          class={imgClass}
                         />
                       </figure>
                     ))}
@@ -114,7 +125,14 @@ const shellAttrs = {
                   >
                     {images.map((src) => (
                       <figure class={cellClass}>
-                        <img src={src} alt="" class={imgClass} loading="lazy" decoding="async" />
+                        <ResponsiveImage
+                          src={src}
+                          alt=""
+                          class={imgClass}
+                          loading="lazy"
+                          decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 22vw"
+                        />
                       </figure>
                     ))}
                   </div>
@@ -132,12 +150,13 @@ const shellAttrs = {
                   <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                     {rowA.map((src, i) => (
                       <figure class={cellClass}>
-                        <img
+                        <ResponsiveImage
                           src={src}
                           alt={`${alt} ${i + 1}`}
                           class={imgClass}
                           loading="lazy"
                           decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 22vw"
                         />
                       </figure>
                     ))}
@@ -148,7 +167,14 @@ const shellAttrs = {
                   >
                     {rowA.map((src) => (
                       <figure class={cellClass}>
-                        <img src={src} alt="" class={imgClass} loading="lazy" decoding="async" />
+                        <ResponsiveImage
+                          src={src}
+                          alt=""
+                          class={imgClass}
+                          loading="lazy"
+                          decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 22vw"
+                        />
                       </figure>
                     ))}
                   </div>
@@ -164,12 +190,13 @@ const shellAttrs = {
                   <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                     {rowB.map((src, i) => (
                       <figure class={cellClass}>
-                        <img
+                        <ResponsiveImage
                           src={src}
                           alt={`${alt} ${rowA.length + i + 1}`}
                           class={imgClass}
                           loading="lazy"
                           decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 22vw"
                         />
                       </figure>
                     ))}
@@ -180,7 +207,14 @@ const shellAttrs = {
                   >
                     {rowB.map((src) => (
                       <figure class={cellClass}>
-                        <img src={src} alt="" class={imgClass} loading="lazy" decoding="async" />
+                        <ResponsiveImage
+                          src={src}
+                          alt=""
+                          class={imgClass}
+                          loading="lazy"
+                          decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 22vw"
+                        />
                       </figure>
                     ))}
                   </div>
@@ -197,12 +231,13 @@ const shellAttrs = {
             <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
               {images.map((src, i) => (
                 <figure class={cellClass}>
-                  <img
+                  <ResponsiveImage
                     src={src}
                     alt={`${alt} ${i + 1}`}
                     class={imgClass}
                     loading="lazy"
                     decoding="async"
+                    sizes="(min-width: 1024px) 14rem, 44vw"
                   />
                 </figure>
               ))}
@@ -213,7 +248,14 @@ const shellAttrs = {
             >
               {images.map((src) => (
                 <figure class={cellClass}>
-                  <img src={src} alt="" class={imgClass} loading="lazy" decoding="async" />
+                  <ResponsiveImage
+                    src={src}
+                    alt=""
+                    class={imgClass}
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(min-width: 1024px) 14rem, 44vw"
+                  />
                 </figure>
               ))}
             </div>

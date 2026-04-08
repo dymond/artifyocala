@@ -8,6 +8,7 @@ import { cn } from "../../lib/cn";
 import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import { btnOutline } from "../../lib/tina-ui-buttons";
+import ResponsiveImage from "../ui/ResponsiveImage";
 import { mountProgramCardsTilt } from "../../scripts/program-cards-tilt";
 import HomeHeroFullVisual from "./HomeHeroFullVisual";
 import HomeProgramsCardsVisual from "./HomeProgramsCardsVisual";
@@ -78,34 +79,39 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
       const src = s.introImage?.trim();
       return (
         <SectionWrap>
-          <h1
-            className="type-display-xl"
-            data-tina-field={tinaField(s, "introTitle")}
-          >
-            {s.introTitle}
-          </h1>
-          {s.introLede ? (
-            <p
-              className="type-lede"
-              data-tina-field={tinaField(s, "introLede")}
-            >
-              {s.introLede}
-            </p>
-          ) : null}
-          {src ? (
-            <figure className="mt-lg max-w-3xl overflow-hidden rounded-lg border border-line">
-              <img
-                src={src}
-                alt={imageAlt(s.introImageAlt, `${s.introTitle} — photo`)}
-                width={748}
-                height={880}
-                loading="eager"
-                decoding="async"
-                className="block w-full"
-                data-tina-field={tinaField(s, "introImage")}
-              />
-            </figure>
-          ) : null}
+          <div className="grid grid-cols-1 items-start gap-xl lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-x-2xl">
+            <div className="min-w-0">
+              <h1
+                className="type-display-xl"
+                data-tina-field={tinaField(s, "introTitle")}
+              >
+                {s.introTitle}
+              </h1>
+              {s.introLede ? (
+                <p
+                  className="type-lede"
+                  data-tina-field={tinaField(s, "introLede")}
+                >
+                  {s.introLede}
+                </p>
+              ) : null}
+            </div>
+            {src ? (
+              <figure className="m-0 max-w-full overflow-hidden rounded-lg border border-line lg:sticky lg:top-6">
+                <ResponsiveImage
+                  src={src}
+                  alt={imageAlt(s.introImageAlt, `${s.introTitle} — photo`)}
+                  width={748}
+                  height={880}
+                  loading="eager"
+                  decoding="async"
+                  sizes="(min-width: 1024px) 22rem, 92vw"
+                  className="block w-full max-h-[26rem] object-cover"
+                  data-tina-field={tinaField(s, "introImage")}
+                />
+              </figure>
+            ) : null}
+          </div>
         </SectionWrap>
       );
     }
@@ -115,41 +121,46 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
       const imgSrc = s.pbTopImage?.trim();
       return (
         <SectionWrap variant={variant === "dark" ? "dark" : "light"}>
-          {imgSrc ? (
-            <div className="mb-lg max-w-xl">
-              <img
-                src={imgSrc}
-                alt={imageAlt(
-                  s.pbTopImageAlt,
-                  s.pbHeading ? `${s.pbHeading} — image` : "Illustration"
-                )}
-                width={1317}
-                height={1756}
-                loading="lazy"
-                decoding="async"
-                className={cn(
-                  "w-full rounded-lg border",
-                  variant === "dark" ? "border-white/[0.12]" : "border-line"
-                )}
-                data-tina-field={tinaField(s, "pbTopImage")}
-              />
+          <div className="grid grid-cols-1 items-start gap-xl lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-x-2xl">
+            <div className="min-w-0">
+              {s.pbHeading ? (
+                <h2
+                  className="type-display-lg"
+                  data-tina-field={tinaField(s, "pbHeading")}
+                >
+                  {s.pbHeading}
+                </h2>
+              ) : null}
+              {s.pbBodyHtml ? (
+                <div
+                  className="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+                  data-tina-field={tinaField(s, "pbBodyHtml")}
+                  dangerouslySetInnerHTML={{ __html: s.pbBodyHtml }}
+                />
+              ) : null}
             </div>
-          ) : null}
-          {s.pbHeading ? (
-            <h2
-              className="type-display-lg"
-              data-tina-field={tinaField(s, "pbHeading")}
-            >
-              {s.pbHeading}
-            </h2>
-          ) : null}
-          {s.pbBodyHtml ? (
-            <div
-              className="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
-              data-tina-field={tinaField(s, "pbBodyHtml")}
-              dangerouslySetInnerHTML={{ __html: s.pbBodyHtml }}
-            />
-          ) : null}
+            {imgSrc ? (
+              <div className="min-w-0 lg:sticky lg:top-6">
+                <ResponsiveImage
+                  src={imgSrc}
+                  alt={imageAlt(
+                    s.pbTopImageAlt,
+                    s.pbHeading ? `${s.pbHeading} — image` : "Illustration"
+                  )}
+                  width={1317}
+                  height={1756}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 1024px) 22rem, 92vw"
+                  className={cn(
+                    "w-full max-h-[26rem] rounded-lg border object-cover",
+                    variant === "dark" ? "border-white/[0.12]" : "border-line"
+                  )}
+                  data-tina-field={tinaField(s, "pbTopImage")}
+                />
+              </div>
+            ) : null}
+          </div>
         </SectionWrap>
       );
     }
@@ -316,13 +327,14 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               </div>
             </div>
             <figure className="m-0 aspect-[4/3] min-w-0 overflow-hidden rounded-lg border border-line lg:aspect-auto lg:h-full lg:min-h-0">
-              <img
+              <ResponsiveImage
                 src={s.dchImage}
                 alt={imageAlt(s.dchImageAlt, `${s.dchTitle} — photo`)}
                 width={1080}
                 height={1080}
                 loading="eager"
                 decoding="async"
+                sizes="(min-width: 1024px) 40vw, 92vw"
                 className="block h-full w-full object-cover"
                 data-tina-field={tinaField(s, "dchImage")}
               />
@@ -404,13 +416,14 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 imageLeft && "lg:order-1"
               )}
             >
-              <img
+              <ResponsiveImage
                 src={s.sitImage}
                 alt={imageAlt(s.sitImageAlt, `${s.sitHeading} — photo`)}
                 width={1152}
                 height={2048}
                 loading="lazy"
                 decoding="async"
+                sizes="(min-width: 1024px) 40vw, 92vw"
                 className="block h-[22rem] w-full object-cover"
                 data-tina-field={tinaField(s, "sitImage")}
               />
@@ -456,13 +469,14 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               data-tina-field={tinaField(s, "hmuImageLeft")}
             >
               <div className="overflow-hidden rounded-[inherit]">
-                <img
+                <ResponsiveImage
                   src={s.hmuImageLeft}
                   alt={imageAlt(s.hmuImageLeftAlt, `${s.hmuHeading} — photo`)}
                   width={2048}
                   height={1365}
                   loading="lazy"
                   decoding="async"
+                  sizes="(min-width: 768px) 55vw, 92vw"
                   className="block w-full"
                 />
               </div>
@@ -472,13 +486,14 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               data-tina-field={tinaField(s, "hmuImageRight")}
             >
               <div className="overflow-hidden rounded-[inherit]">
-                <img
+                <ResponsiveImage
                   src={s.hmuImageRight}
                   alt={imageAlt(s.hmuImageRightAlt, `${s.hmuHeading} — photo`)}
                   width={1080}
                   height={1350}
                   loading="lazy"
                   decoding="async"
+                  sizes="(min-width: 768px) 40vw, 92vw"
                   className="w-full bg-mist object-contain"
                 />
               </div>
@@ -503,13 +518,14 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
         <SectionWrap variant="dark" id="support">
           <div className="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_1.1fr]">
             <figure className="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-buzz/40 shadow-[8px_8px_0_0_rgba(176,184,255,0.18)]">
-              <img
+              <ResponsiveImage
                 src={s.hsbImage}
                 alt={imageAlt(s.hsbImageAlt, `${s.hsbHeading} — photo`)}
                 width={1080}
                 height={1080}
                 loading="lazy"
                 decoding="async"
+                sizes="(min-width: 1024px) 40vw, 92vw"
                 className="block w-full"
                 data-tina-field={tinaField(s, "hsbImage")}
               />
@@ -585,7 +601,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                   )}
                 >
                   <div className="aspect-[4/3] overflow-hidden">
-                    <img
+                    <ResponsiveImage
                       src={card.hmgCardImage}
                       alt={imageAlt(
                         card.hmgCardImageAlt,
@@ -595,6 +611,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                       height={1440}
                       loading="lazy"
                       decoding="async"
+                      sizes="(min-width: 1024px) 30vw, 92vw"
                       className="h-full w-full object-cover"
                       data-tina-field={tinaField(card, "hmgCardImage")}
                     />
@@ -639,13 +656,14 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
           aria-labelledby="cta-band-title"
         >
           <div className="site-container grid grid-cols-1 items-center gap-xl lg:grid-cols-[0.9fr_1.1fr]">
-            <img
+            <ResponsiveImage
               src={s.hcbImage}
               alt={imageAlt(s.hcbImageAlt, `${s.hcbHeading} — photo`)}
               width={1125}
               height={1138}
               loading="lazy"
               decoding="async"
+              sizes="(min-width: 1024px) 40vw, 92vw"
               className="max-h-[22rem] w-full min-w-0 rotate-[0.4deg] rounded-xl border-[3px] border-buzz/35 object-cover shadow-[8px_8px_0_0_rgba(176,184,255,0.16)]"
               data-tina-field={tinaField(s, "hcbImage")}
             />

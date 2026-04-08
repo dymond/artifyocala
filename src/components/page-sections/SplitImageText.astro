@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
 
@@ -49,13 +50,14 @@ const borderImg =
         imageLeft && "lg:order-1",
       ]}
     >
-      <img
+      <ResponsiveImage
         src={section.sitImage}
         alt={sitAlt}
         width={1152}
         height={2048}
         loading="lazy"
         decoding="async"
+        sizes="(min-width: 1024px) 40vw, 92vw"
         class="block h-[22rem] w-full object-cover"
       />
     </figure>

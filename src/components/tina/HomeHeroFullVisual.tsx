@@ -5,6 +5,7 @@ import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import HeroPlayfulCollage from "./HeroPlayfulCollage";
 import WordRotator from "./WordRotator";
+import ResponsiveImage from "../ui/ResponsiveImage";
 
 function IconExt() {
   return (
@@ -46,7 +47,7 @@ export default function HomeHeroFullVisual({ section }: Props) {
                 className="group relative z-[1] block w-[min(44vw,9.75rem)] max-w-full shrink-0 self-start outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist sm:w-[10.25rem] md:w-[11rem] lg:-mb-1 lg:w-[11.25rem]"
                 aria-label="Artify Ocala — Home"
               >
-                <img
+                <ResponsiveImage
                   src={img.logoOnLightHollow}
                   alt=""
                   width={1600}
@@ -54,7 +55,6 @@ export default function HomeHeroFullVisual({ section }: Props) {
                   decoding="async"
                   fetchPriority="high"
                   className="h-auto w-full object-contain object-left"
-                  aria-hidden
                 />
               </a>
               <div>
@@ -176,7 +176,7 @@ export default function HomeHeroFullVisual({ section }: Props) {
                 </div>
               ) : null}
             </aside>
-            <img
+            <ResponsiveImage
               src={s.hhfHiringImage ?? ""}
               alt={imageAlt(
                 s.hhfHiringImageAlt,
@@ -186,6 +186,7 @@ export default function HomeHeroFullVisual({ section }: Props) {
               height={1350}
               loading="eager"
               decoding="async"
+              sizes="(min-width: 1024px) 40vw, 92vw"
               className="h-auto w-full min-w-0 max-lg:order-4 -rotate-[0.5deg] rounded-xl border-[3px] border-ink object-contain shadow-[6px_6px_0_0_var(--color-surge)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
               data-tina-field={tinaField(s, "hhfHiringImage")}
             />

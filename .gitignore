@@ -38,3 +38,9 @@ tina/__generated__/client.ts
 
 # Visual companion (browser mockups / selections)
 .superpowers/
+
+# Lighthouse CI local reports
+.lighthouseci/
+
+# Generated responsive image variants (built in CI via `pnpm run images:build`)
+public/images/_gen/

@@ -3,6 +3,7 @@ import {
   destroyGalleryMarqueeDesktop,
   mountGalleryMarqueeDesktop,
 } from "../../scripts/gallery-marquee-desktop";
+import ResponsiveImage from "../ui/ResponsiveImage";
 
 export type GalleryMarqueeSlide = {
   src: string;
@@ -70,12 +71,13 @@ export default function GalleryMarqueeIsland({
                   <div className="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                     {slides.map((s, i) => (
                       <figure key={`m-${s.src}-${i}`} className={cellClass}>
-                        <img
+                        <ResponsiveImage
                           src={s.src}
                           alt={s.alt}
                           className={imgClass}
                           loading="lazy"
                           decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 44vw"
                         />
                       </figure>
                     ))}
@@ -86,12 +88,13 @@ export default function GalleryMarqueeIsland({
                   >
                     {slides.map((s) => (
                       <figure key={`m-dup-${s.src}`} className={cellClass}>
-                        <img
+                        <ResponsiveImage
                           src={s.src}
                           alt=""
                           className={imgClass}
                           loading="lazy"
                           decoding="async"
+                          sizes="(min-width: 1024px) 14rem, 44vw"
                         />
                       </figure>
                     ))}
@@ -111,12 +114,13 @@ export default function GalleryMarqueeIsland({
                     <div className="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                       {slides.map((s, i) => (
                         <figure key={`d-${s.src}-${i}`} className={cellClass}>
-                          <img
+                          <ResponsiveImage
                             src={s.src}
                             alt={s.alt}
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
+                            sizes="(min-width: 1024px) 14rem, 22vw"
                           />
                         </figure>
                       ))}
@@ -127,12 +131,13 @@ export default function GalleryMarqueeIsland({
                     >
                       {slides.map((s) => (
                         <figure key={`d-dup-${s.src}`} className={cellClass}>
-                          <img
+                          <ResponsiveImage
                             src={s.src}
                             alt=""
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
+                            sizes="(min-width: 1024px) 14rem, 22vw"
                           />
                         </figure>
                       ))}
@@ -151,12 +156,13 @@ export default function GalleryMarqueeIsland({
                     <div className="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                       {rowA.map((s, i) => (
                         <figure key={`a-${s.src}-${i}`} className={cellClass}>
-                          <img
+                          <ResponsiveImage
                             src={s.src}
                             alt={s.alt}
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
+                            sizes="(min-width: 1024px) 14rem, 22vw"
                           />
                         </figure>
                       ))}
@@ -167,12 +173,13 @@ export default function GalleryMarqueeIsland({
                     >
                       {rowA.map((s) => (
                         <figure key={`a-dup-${s.src}`} className={cellClass}>
-                          <img
+                          <ResponsiveImage
                             src={s.src}
                             alt=""
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
+                            sizes="(min-width: 1024px) 14rem, 22vw"
                           />
                         </figure>
                       ))}
@@ -189,12 +196,13 @@ export default function GalleryMarqueeIsland({
                     <div className="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                       {rowB.map((s, i) => (
                         <figure key={`b-${s.src}-${i}`} className={cellClass}>
-                          <img
+                          <ResponsiveImage
                             src={s.src}
                             alt={s.alt}
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
+                            sizes="(min-width: 1024px) 14rem, 22vw"
                           />
                         </figure>
                       ))}
@@ -205,12 +213,13 @@ export default function GalleryMarqueeIsland({
                     >
                       {rowB.map((s) => (
                         <figure key={`b-dup-${s.src}`} className={cellClass}>
-                          <img
+                          <ResponsiveImage
                             src={s.src}
                             alt=""
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
+                            sizes="(min-width: 1024px) 14rem, 22vw"
                           />
                         </figure>
                       ))}
@@ -228,12 +237,13 @@ export default function GalleryMarqueeIsland({
               <div className="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                 {slides.map((s, i) => (
                   <figure key={`s-${s.src}-${i}`} className={cellClass}>
-                    <img
+                    <ResponsiveImage
                       src={s.src}
                       alt={s.alt}
                       className={imgClass}
                       loading="lazy"
                       decoding="async"
+                      sizes="(min-width: 1024px) 14rem, 44vw"
                     />
                   </figure>
                 ))}
@@ -244,12 +254,13 @@ export default function GalleryMarqueeIsland({
               >
                 {slides.map((s) => (
                   <figure key={`s-dup-${s.src}`} className={cellClass}>
-                    <img
+                    <ResponsiveImage
                       src={s.src}
                       alt=""
                       className={imgClass}
                       loading="lazy"
                       decoding="async"
+                      sizes="(min-width: 1024px) 14rem, 44vw"
                     />
                   </figure>
                 ))}

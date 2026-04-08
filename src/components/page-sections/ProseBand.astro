@@ -2,6 +2,7 @@
 import Section from "../ui/Section.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 
 interface Props {
   section: Extract<PageSection, { _template: "proseBand" }>;
@@ -17,35 +18,40 @@ const pbAlt = imageAlt(
 ---
 
 <Section variant={variant}>
-  {
-    imgSrc && (
-      <div class="mb-lg max-w-xl">
-        <img
-          src={imgSrc}
-          alt={pbAlt}
-          width={1317}
-          height={1756}
-          loading="lazy"
-          decoding="async"
-          class:list={[
-            "w-full rounded-lg border",
-            variant === "dark" ? "border-white/[0.12]" : "border-line",
-          ]}
-        />
-      </div>
-    )
-  }
-  {
-    section.pbHeading && (
-      <h2 class="type-display-lg">{section.pbHeading}</h2>
-    )
-  }
-  {
-    section.pbBodyHtml && (
-      <div
-        class="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
-        set:html={section.pbBodyHtml}
-      />
-    )
-  }
+  <div class="grid grid-cols-1 items-start gap-xl lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-x-2xl">
+    <div class="min-w-0">
+      {
+        section.pbHeading && (
+          <h2 class="type-display-lg">{section.pbHeading}</h2>
+        )
+      }
+      {
+        section.pbBodyHtml && (
+          <div
+            class="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+            set:html={section.pbBodyHtml}
+          />
+        )
+      }
+    </div>
+    {
+      imgSrc && (
+        <div class="min-w-0 lg:sticky lg:top-6">
+          <ResponsiveImage
+            src={imgSrc}
+            alt={pbAlt}
+            width={1317}
+            height={1756}
+            loading="lazy"
+            decoding="async"
+            sizes="(min-width: 1024px) 22rem, 92vw"
+            class:list={[
+              "w-full max-h-[26rem] rounded-lg border object-cover",
+              variant === "dark" ? "border-white/[0.12]" : "border-line",
+            ]}
+          />
+        </div>
+      )
+    }
+  </div>
 </Section>

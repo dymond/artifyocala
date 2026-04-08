@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
 
@@ -17,13 +18,14 @@ const hsbAlt = imageAlt(section.hsbImageAlt, `${section.hsbHeading} — photo`);
     <figure
       class="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-buzz/40 shadow-[8px_8px_0_0_rgba(176,184,255,0.18)]"
     >
-      <img
+      <ResponsiveImage
         src={section.hsbImage}
         alt={hsbAlt}
         width={1080}
         height={1080}
         loading="lazy"
         decoding="async"
+        sizes="(min-width: 1024px) 40vw, 92vw"
         class="block w-full"
       />
     </figure>

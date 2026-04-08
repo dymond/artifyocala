@@ -40,7 +40,7 @@ describe("hal-404-voice", () => {
 
   it("uses combined proximity thresholds for hold and auto-start", () => {
     expect(shouldHoldSpeechProximity(0)).toBe(false);
-    expect(shouldHoldSpeechProximity(0.08)).toBe(true);
+    expect(shouldHoldSpeechProximity(0.055)).toBe(true);
     expect(shouldAutoStartOrbSpeech(0.2)).toBe(true);
     expect(shouldAutoStartOrbSpeech(0.08)).toBe(false);
   });
@@ -49,7 +49,7 @@ describe("hal-404-voice", () => {
     const rect = { left: 0, top: 0, width: 400, height: 400 };
     const cx = 200;
     const cy = 200;
-    const rOrb = 400 * 0.24;
+    const rOrb = 400 * 0.32;
     expect(proximityFromScreenPointOrbHost(cx, cy, rect)).toBeCloseTo(1, 5);
     expect(proximityFromScreenPointOrbHost(cx + rOrb, cy, rect)).toBeCloseTo(0, 5);
     expect(proximityFromScreenPointOrbHost(cx + rOrb * 0.5, cy, rect)).toBeCloseTo(0.5, 5);

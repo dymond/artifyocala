@@ -46,8 +46,8 @@ export function proximityFromScreenPointOrbHost(
   const cy = rect.top + rect.height / 2;
   const d = Math.hypot(clientX - cx, clientY - cy);
   const minSide = Math.min(rect.width, rect.height);
-  /** Distance from center at which proximity reaches 0 (tuned to ~on-sphere, not whole host). */
-  const falloffRadius = minSide * 0.24;
+  /** Distance from center at which proximity reaches 0 (tight to orb, but not “nose on glass”). */
+  const falloffRadius = minSide * 0.32;
   if (falloffRadius < 1e-6) return 0;
   return Math.max(0, Math.min(1, 1 - d / falloffRadius));
 }
@@ -60,10 +60,10 @@ export function volumeFromProximity(proximity: number): number {
 
 /** Keep speaking while combined proximity (pointer approach or scroll-in-view) is in range. */
 export function shouldHoldSpeechProximity(proximity: number): boolean {
-  return proximity >= 0.065;
+  return proximity >= 0.05;
 }
 
 /** Begin / continue hover-driven speech when close enough in screen space or orb is well in view. */
 export function shouldAutoStartOrbSpeech(proximity: number): boolean {
-  return proximity >= 0.13;
+  return proximity >= 0.1;
 }

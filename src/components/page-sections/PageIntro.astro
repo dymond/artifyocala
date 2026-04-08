@@ -2,6 +2,7 @@
 import Section from "../ui/Section.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 
 interface Props {
   section: Extract<PageSection, { _template: "pageIntro" }>;
@@ -13,25 +14,30 @@ const introAlt = imageAlt(section.introImageAlt, `${section.introTitle} — phot
 ---
 
 <Section>
-  <h1 class="type-display-xl">{section.introTitle}</h1>
-  {
-    section.introLede && (
-      <p class="type-lede">{section.introLede}</p>
-    )
-  }
-  {
-    src && (
-      <figure class="mt-lg max-w-3xl overflow-hidden rounded-lg border border-line">
-        <img
-          src={src}
-          alt={introAlt}
-          width={748}
-          height={880}
-          loading="eager"
-          decoding="async"
-          class="block w-full"
-        />
-      </figure>
-    )
-  }
+  <div class="grid grid-cols-1 items-start gap-xl lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-x-2xl">
+    <div class="min-w-0">
+      <h1 class="type-display-xl">{section.introTitle}</h1>
+      {
+        section.introLede && (
+          <p class="type-lede">{section.introLede}</p>
+        )
+      }
+    </div>
+    {
+      src && (
+        <figure class="m-0 max-w-full overflow-hidden rounded-lg border border-line lg:sticky lg:top-6">
+          <ResponsiveImage
+            src={src}
+            alt={introAlt}
+            width={748}
+            height={880}
+            loading="eager"
+            decoding="async"
+            sizes="(min-width: 1024px) 22rem, 92vw"
+            class="block w-full max-h-[26rem] object-cover"
+          />
+        </figure>
+      )
+    }
+  </div>
 </Section>

@@ -9,6 +9,7 @@ import { LINKS, mailtoTourMakerCollective } from "../../lib/links";
 import GalleryMarqueeIsland, {
   type GalleryMarqueeSlide,
 } from "./GalleryMarqueeIsland";
+import ResponsiveImage from "../ui/ResponsiveImage";
 
 import {
   btnOutline,
@@ -222,7 +223,7 @@ function HeroImages({
     return (
       <div className="grid w-full min-w-0 grid-cols-1 items-stretch gap-sm sm:grid-cols-[2fr_0.55fr]">
         {a ? (
-          <img
+          <ResponsiveImage
             src={a.src}
             alt={a.alt}
             width={2048}
@@ -230,6 +231,7 @@ function HeroImages({
             className="w-full min-w-0 rounded-lg border border-line"
             loading="eager"
             decoding="async"
+            sizes="(min-width: 768px) 65vw, 92vw"
             data-tina-field={
               program.progHeroSlides?.[0]
                 ? tinaField(program.progHeroSlides[0], "progHeroImage")
@@ -238,7 +240,7 @@ function HeroImages({
           />
         ) : null}
         {b ? (
-          <img
+          <ResponsiveImage
             src={b.src}
             alt={b.alt}
             width={303}
@@ -246,6 +248,7 @@ function HeroImages({
             className="max-h-80 w-full min-w-0 rounded-lg border border-line object-cover"
             loading="eager"
             decoding="async"
+            sizes="(min-width: 768px) 25vw, 92vw"
             data-tina-field={
               program.progHeroSlides?.[1]
                 ? tinaField(program.progHeroSlides[1], "progHeroImage")
@@ -266,7 +269,7 @@ function HeroImages({
       : "w-full min-w-0 rounded-lg border border-line";
 
   return (
-    <img
+    <ResponsiveImage
       src={first.src}
       alt={first.alt}
       width={layout === "singleTall" ? 1125 : 940}
@@ -274,6 +277,7 @@ function HeroImages({
       className={imgClass}
       loading="eager"
       decoding="async"
+      sizes="(min-width: 768px) 55vw, 92vw"
       data-tina-field={
         program.progHeroSlides?.[0]
           ? tinaField(program.progHeroSlides[0], "progHeroImage")

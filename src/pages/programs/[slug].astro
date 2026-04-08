@@ -51,6 +51,7 @@ const structuredData = [
     imageUrl: heroOgUrl,
   }),
 ];
+const enableTinaVisualEdit = import.meta.env.DEV;
 ---
 
 <BaseLayout
@@ -67,11 +68,22 @@ const structuredData = [
       : undefined,
   }}
 >
-  <ProgramVisualEdit
-    client:tina
-    query={tina.query}
-    variables={tina.variables}
-    data={tina.data}
-    slug={slug}
-  />
+  {
+    enableTinaVisualEdit ? (
+      <ProgramVisualEdit
+        client:tina
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        slug={slug}
+      />
+    ) : (
+      <ProgramVisualEdit
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        slug={slug}
+      />
+    )
+  }
 </BaseLayout>

@@ -6,6 +6,7 @@ import {
 } from "../../lib/site-chrome";
 import IconFacebook from "../ui/icons/IconFacebook.astro";
 import IconInstagram from "../ui/icons/IconInstagram.astro";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 
 interface Props {
   chrome: SiteChrome;
@@ -29,7 +30,7 @@ const copyrightText = formatCopyright(chrome.footerCopyright);
         class="mb-sm inline-block max-w-[min(100%,9rem)] outline-none transition-opacity hover:opacity-90 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-panel"
         aria-label={chrome.headerLogoAriaLabel}
       >
-        <img
+        <ResponsiveImage
           src={footerLogo}
           alt="Artify Ocala"
           width={1600}

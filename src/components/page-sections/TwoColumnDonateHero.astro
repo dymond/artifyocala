@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
 
@@ -32,13 +33,14 @@ const dchAlt = imageAlt(section.dchImageAlt, `${section.dchTitle} — photo`);
     <figure
       class="m-0 aspect-[4/3] min-w-0 overflow-hidden rounded-lg border border-line lg:aspect-auto lg:h-full lg:min-h-0"
     >
-      <img
+      <ResponsiveImage
         src={section.dchImage}
         alt={dchAlt}
         width={1080}
         height={1080}
         loading="eager"
         decoding="async"
+        sizes="(min-width: 1024px) 40vw, 92vw"
         class="block h-full w-full object-cover"
       />
     </figure>

@@ -20,7 +20,11 @@ if (!clientId) {
   );
 }
 
-const url = `https://content.tinajs.io/2.2/content/${clientId}/github/${branch}`;
+// Dev: use local Tina GraphQL server (started by `tinacms dev`).
+// Prod/CI: use Tina Content API.
+const localUrl = process.env.TINA_LOCAL_GRAPHQL_URL?.trim() || "http://localhost:4001/graphql";
+const cloudUrl = `https://content.tinajs.io/2.2/content/${clientId}/github/${branch}`;
+const url = process.env.NODE_ENV === "development" ? localUrl : cloudUrl;
 
 const tinaToken =
   process.env.TINA_TOKEN?.trim() || process.env.TINA_TOKEN_LOCAL?.trim() || "";

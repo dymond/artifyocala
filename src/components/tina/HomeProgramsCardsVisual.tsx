@@ -3,6 +3,7 @@ import type { PageSectionsHomeProgramsIntro } from "../../../tina/__generated__/
 import { cn } from "../../lib/cn";
 import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
+import ResponsiveImage from "../ui/ResponsiveImage";
 
 function IconExt() {
   return (
@@ -70,7 +71,7 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
                 )}
               >
                 <div className="aspect-[16/10] overflow-hidden">
-                  <img
+                  <ResponsiveImage
                     src={card.hpiCardImage}
                     alt={imageAlt(
                       card.hpiCardImageAlt,
@@ -80,6 +81,7 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
                     height={1138}
                     loading="lazy"
                     decoding="async"
+                    sizes="(min-width: 1024px) 30vw, 92vw"
                     className="h-full w-full object-cover"
                     data-tina-field={tinaField(card, "hpiCardImage")}
                   />

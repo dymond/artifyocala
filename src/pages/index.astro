@@ -11,6 +11,7 @@ if (!page) {
   throw new Error('Tina page "home.json" is required for the home page.');
 }
 const { metaTitle, metaDescription } = page;
+const enableTinaVisualEdit = import.meta.env.DEV;
 ---
 
 <BaseLayout
@@ -18,11 +19,22 @@ const { metaTitle, metaDescription } = page;
   description={resolvePageDescription(metaDescription)}
   preloadLcpImage={img.logoOnLightHollow}
 >
-  <PageVisualEdit
-    client:tina
-    query={tina.query}
-    variables={tina.variables}
-    data={tina.data}
-    pageSlug="home"
-  />
+  {
+    enableTinaVisualEdit ? (
+      <PageVisualEdit
+        client:tina
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        pageSlug="home"
+      />
+    ) : (
+      <PageVisualEdit
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        pageSlug="home"
+      />
+    )
+  }
 </BaseLayout>

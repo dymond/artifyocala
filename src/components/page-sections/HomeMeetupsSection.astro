@@ -1,6 +1,7 @@
 ---
 import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
+import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
 import { imageAlt } from "../../lib/image-alt";
 
@@ -24,13 +25,14 @@ const rightAlt = imageAlt(section.hmuImageRightAlt, `${section.hmuHeading} — p
       class="m-0 min-w-0 rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-buzz)]"
     >
       <div class="overflow-hidden rounded-[inherit]">
-        <img
+        <ResponsiveImage
           src={section.hmuImageLeft}
           alt={leftAlt}
           width={2048}
           height={1365}
           loading="lazy"
           decoding="async"
+          sizes="(min-width: 768px) 55vw, 92vw"
           class="block w-full"
         />
       </div>
@@ -39,13 +41,14 @@ const rightAlt = imageAlt(section.hmuImageRightAlt, `${section.hmuHeading} — p
       class="m-0 min-w-0 rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-surge)]"
     >
       <div class="overflow-hidden rounded-[inherit]">
-        <img
+        <ResponsiveImage
           src={section.hmuImageRight}
           alt={rightAlt}
           width={1080}
           height={1350}
           loading="lazy"
           decoding="async"
+          sizes="(min-width: 768px) 40vw, 92vw"
           class="w-full bg-mist object-contain"
         />
       </div>

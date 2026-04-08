@@ -590,6 +590,10 @@ export function mountHal404Blob(
   let prevNearEnoughForSpeech = false;
   /** Smoothed 0–1: redder orb as tiers complete + pointer aggression. */
   let angerSmoothed = 0;
+  /** Visual-only: eases tier step when a new line starts (avoids one-frame pop in rotation/waves). */
+  let lineAggroVisualSmoothed = 0;
+  /** 0–1 while pointer is over the orb; ramps in/out so lean/aim don’t snap on hover. */
+  let hoverPresenceSmoothed = 0;
 
   let globalClientX = 0;
   let globalClientY = 0;
@@ -689,8 +693,14 @@ export function mountHal404Blob(
 
     const variantIndex = pickRandomHal404VariantIndex(index);
 
-    const vol =
-      mode === "manual" ? 1 : volumeFromProximity(lastSpeechProximity);
+    if (mode === "manual") {
+      const rect = container.getBoundingClientRect();
+      lastSpeechProximity = hasGlobalPointer
+        ? proximityFromScreenPointOrbHost(globalClientX, globalClientY, rect)
+        : 1;
+    }
+
+    const vol = volumeFromProximity(lastSpeechProximity);
 
     playHal404TierAudio(index, variantIndex, {
       volume: Math.max(0.06, Math.min(1, vol)),
@@ -800,8 +810,12 @@ export function mountHal404Blob(
     t += dt;
 
     const speaking = isHal404AudioPlaying();
-    const target = speaking ? 1 : 0;
-    speakIntensity += (target - speakIntensity) * Math.min(1, dt * 5.5);
+    const speakTarget = speaking ? 1 : 0;
+    const speakRampRate =
+      speakTarget > speakIntensity
+        ? Math.min(1, dt * 2.35)
+        : Math.min(1, dt * 6.2);
+    speakIntensity += (speakTarget - speakIntensity) * speakRampRate;
 
     const rawAudioDrive = speaking ? getHal404SpeechAudioDrive() : 0;
     audioDriveSmoothed +=
@@ -821,6 +835,13 @@ export function mountHal404Blob(
         Math.min(1, dt * (pointerOver ? 18 : 5.5));
       const aimRate = pointerOver ? 14 : 7;
       aimSmoothed.lerp(aimTarget, 1 - Math.exp(-dt * aimRate));
+      const hoverPresenceTarget = pointerOver ? 1 : 0;
+      const hoverPresenceRate =
+        hoverPresenceTarget > hoverPresenceSmoothed
+          ? Math.min(1, dt * 3.1)
+          : Math.min(1, dt * 5.2);
+      hoverPresenceSmoothed +=
+        (hoverPresenceTarget - hoverPresenceSmoothed) * hoverPresenceRate;
     }
 
     if (!skipSpeech) {
@@ -833,13 +854,15 @@ export function mountHal404Blob(
       lastSpeechProximity += (raw - lastSpeechProximity) * Math.min(1, dt * 12);
 
       const activeEl = getHal404ActiveAudio();
-      if (activeEl && !activeEl.paused && currentPlaybackMode === "hover") {
+      if (
+        activeEl &&
+        !activeEl.paused &&
+        (currentPlaybackMode === "hover" || currentPlaybackMode === "manual")
+      ) {
         activeEl.volume = Math.max(
           0.06,
           Math.min(1, volumeFromProximity(lastSpeechProximity))
         );
-      } else if (activeEl && !activeEl.paused && currentPlaybackMode === "manual") {
-        activeEl.volume = 1;
       }
 
       if (
@@ -875,25 +898,39 @@ export function mountHal404Blob(
 
     const nMsg = HAL_404_TIER_LINES.length;
     const lineAggro = !skipSpeech ? Math.min(1, nextHoverTier / nMsg) : 0;
-    const agitationMul = 1 + lineAggro * 1.45 + lineAggro * lineAggro * 0.55;
+    if (!skipSpeech) {
+      lineAggroVisualSmoothed +=
+        (lineAggro - lineAggroVisualSmoothed) * Math.min(1, dt * 2.65);
+    } else {
+      lineAggroVisualSmoothed = 0;
+    }
+    const lineAggroVis = !skipSpeech ? lineAggroVisualSmoothed : 0;
+    const agitationMul =
+      1 + lineAggroVis * 1.45 + lineAggroVis * lineAggroVis * 0.55;
 
-    const threat = skipPointer ? 0 : aggressionSmoothed;
+    const threat =
+      skipPointer
+        ? 0
+        : aggressionSmoothed *
+          THREE.MathUtils.clamp(hoverPresenceSmoothed, 0, 1);
     const threatPulse = threat * threat;
 
     const pulse =
       speechPulse *
       (0.55 + 0.45 * Math.sin(t * 22 + audioDriveSmoothed * 5)) *
       (0.4 + 0.6 * Math.sin(t * 7.3 + audioDriveSmoothed * 2.5)) *
-      (0.72 + 0.28 * lineAggro);
+      (0.72 + 0.28 * lineAggroVis);
     const idle =
       (0.045 + 0.018 * Math.sin(t * 1.4) * Math.cos(t * 0.9)) *
-        (1 + lineAggro * 0.5) +
-      (speaking ? audioDriveSmoothed * 0.042 : 0);
+        (1 + lineAggroVis * 0.5) +
+      speakIntensity * audioDriveSmoothed * 0.042;
     const threatMul = (1 + threat * 1.05) * agitationMul;
     const attackSpike =
       threat *
-      (0.14 + lineAggro * 0.12) *
-      Math.sin(t * (29 + lineAggro * 8) + threat * 11 + aimSmoothed.x * 6);
+      (0.14 + lineAggroVis * 0.12) *
+      Math.sin(
+        t * (29 + lineAggroVis * 8) + threat * 11 + aimSmoothed.x * 6
+      );
 
     for (let i = 0; i < posAttr.count; i++) {
       const bx = base[i * 3]!;
@@ -902,13 +939,13 @@ export function mountHal404Blob(
       n.set(baseN[i * 3]!, baseN[i * 3 + 1]!, baseN[i * 3 + 2]!);
       const wave =
         (idle +
-          (0.07 + lineAggro * 0.055) *
-            Math.sin(t * (2.1 + lineAggro * 1.2) + bx * 4.2) *
+          (0.07 + lineAggroVis * 0.055) *
+            Math.sin(t * (2.1 + lineAggroVis * 1.2) + bx * 4.2) *
             Math.cos(t * 1.7 + by * 3.1) +
-          pulse * (0.28 + lineAggro * 0.24) *
-            Math.sin(t * (16 + lineAggro * 10) + (bx + by + bz) * 6)) *
+          pulse * (0.28 + lineAggroVis * 0.24) *
+            Math.sin(t * (16 + lineAggroVis * 10) + (bx + by + bz) * 6)) *
           threatMul +
-        attackSpike * Math.sin(t * (19 + lineAggro * 6) + bx * 5 + by * 4);
+        attackSpike * Math.sin(t * (19 + lineAggroVis * 6) + bx * 5 + by * 4);
       p.set(bx, by, bz).addScaledVector(n, wave);
       posAttr.setXYZ(i, p.x, p.y, p.z);
     }
@@ -916,25 +953,27 @@ export function mountHal404Blob(
     geo.computeVertexNormals();
 
     const meshBaseYaw =
-      t * (0.11 + lineAggro * 0.22) +
-      threatPulse * (0.08 + lineAggro * 0.1);
+      t * (0.11 + lineAggroVis * 0.22) +
+      threatPulse * (0.08 + lineAggroVis * 0.1);
     const meshPointerYaw =
-      aimSmoothed.x * (0.62 + lineAggro * 0.35) * threat;
+      aimSmoothed.x * (0.62 + lineAggroVis * 0.35) * threat;
     const meshAudioWobbleYaw =
-      speaking
-        ? audioDriveSmoothed * 0.09 * Math.sin(t * 48 + audioDriveSmoothed * 8)
-        : 0;
+      speakIntensity *
+      audioDriveSmoothed *
+      0.09 *
+      Math.sin(t * 48 + audioDriveSmoothed * 8);
     mesh.rotation.y =
       meshBaseYaw + meshPointerYaw + meshAudioWobbleYaw;
 
     const meshBasePitch =
-      Math.sin(t * (0.35 + lineAggro * 0.25)) * (0.08 + lineAggro * 0.06);
+      Math.sin(t * (0.35 + lineAggroVis * 0.25)) *
+      (0.08 + lineAggroVis * 0.06);
     const meshPointerPitch =
-      -aimSmoothed.y * (0.52 + lineAggro * 0.28) * threat;
+      -aimSmoothed.y * (0.52 + lineAggroVis * 0.28) * threat;
     mesh.rotation.x = meshBasePitch + meshPointerPitch;
 
-    const lungeZ = (0.15 + lineAggro * 0.12) * threatPulse;
-    const lean = (0.2 + lineAggro * 0.15) * threat;
+    const lungeZ = (0.15 + lineAggroVis * 0.12) * threatPulse;
+    const lean = (0.2 + lineAggroVis * 0.15) * threat;
     mesh.position.x = aimSmoothed.x * lean;
     mesh.position.y = aimSmoothed.y * lean;
     mesh.position.z = lungeZ;
@@ -947,20 +986,17 @@ export function mountHal404Blob(
 
     mat.emissiveIntensity =
       0.18 +
-      speakIntensity * (0.35 + lineAggro * 0.12) +
-      (speaking ? audioDriveSmoothed * 0.38 : 0) +
-      threat * (0.42 + lineAggro * 0.2) +
-      threatPulse * (0.22 + lineAggro * 0.15);
+      speakIntensity * (0.35 + lineAggroVis * 0.12) +
+      speakIntensity * audioDriveSmoothed * 0.38 +
+      threat * (0.42 + lineAggroVis * 0.2) +
+      threatPulse * (0.22 + lineAggroVis * 0.15);
 
     if (!skipSpeech) {
-      const nTiers = HAL_404_TIER_LINES.length;
-      const tierFrac = Math.min(1, nextHoverTier / nTiers);
       const angerTarget = THREE.MathUtils.clamp(
-        tierFrac * 0.78 +
+        lineAggroVis * 0.9 +
           aggressionSmoothed * 0.28 +
           speakIntensity * 0.14 +
-          (speaking ? audioDriveSmoothed * 0.12 : 0) +
-          lineAggro * 0.12,
+          speakIntensity * audioDriveSmoothed * 0.12,
         0,
         1
       );
@@ -977,26 +1013,26 @@ export function mountHal404Blob(
     const anger = skipSpeech ? 0 : angerSmoothed;
     glowMat.uniforms.uFresnelPow.value = 1.75 + (1.0 - anger) * 0.95;
     const glowPulse =
-      speakIntensity * 0.24 + (speaking ? audioDriveSmoothed * 0.32 : 0);
+      speakIntensity * 0.24 + speakIntensity * audioDriveSmoothed * 0.32;
     glowMat.uniforms.uStrength.value =
       0.36 +
       glowPulse +
       threat * 0.14 +
       threatPulse * 0.11 +
       anger * 0.34 +
-      (speaking ? audioDriveSmoothed * 0.22 : 0);
+      speakIntensity * audioDriveSmoothed * 0.22;
     const glowScale =
       1.016 +
       speechPulse * 0.068 +
       threatPulse * 0.036 +
-      (speaking ? audioDriveSmoothed * 0.052 : 0);
+      speakIntensity * audioDriveSmoothed * 0.052;
     glowMesh.scale.setScalar(glowScale);
 
     // Hypercube hologram: subtle until anger rises; tracks HAL colors and breathes with audio.
     const hyperVis = THREE.MathUtils.clamp(
       0.28 +
         anger * 0.55 +
-        (speaking ? audioDriveSmoothed * 0.26 : 0) +
+        speakIntensity * audioDriveSmoothed * 0.26 +
         speakIntensity * 0.14,
       0,
       1
@@ -1013,7 +1049,7 @@ export function mountHal404Blob(
     const hyperScale =
       1.0 +
       0.018 * Math.sin(t * (0.42 + anger * 0.32)) +
-      (speaking ? audioDriveSmoothed * 0.01 : 0) +
+      speakIntensity * audioDriveSmoothed * 0.01 +
       speechPulse * 0.008;
     hyperPoints.scale.setScalar(hyperScale);
     hyperHalo.scale.setScalar(hyperScale);
@@ -1057,7 +1093,7 @@ export function mountHal404Blob(
     const flowSpeedMul =
       0.18 +
       0.2 * anger +
-      (speaking ? audioDriveSmoothed * 0.055 : 0) +
+      speakIntensity * audioDriveSmoothed * 0.055 +
       speechPulse * 0.028;
     const flowPosAttr = hyperFlowGeo.attributes.position as THREE.BufferAttribute;
     const flowArr = flowPosAttr.array as Float32Array;

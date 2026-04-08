@@ -4,26 +4,25 @@
   "metaDescription": "Mission, history, and strategic objectives of Artify Ocala — nonprofit arts organization in Marion County, Florida.",
   "sections": [
     {
-      "_template": "pageIntro",
       "introTitle": "About Artify Ocala",
       "introLede": "Learn who we are, why we exist, and how we serve artists and neighbors across Marion County.",
       "introImage": "/images/about-mission-illustration.png",
-      "introImageAlt": ""
+      "introImageAlt": "",
+      "_template": "pageIntro"
     },
     {
-      "_template": "proseBand",
       "pbVariant": "dark",
       "pbTopImage": "/images/community-members-artify-event.jpg",
       "pbTopImageAlt": "Community arts programming in Marion County",
       "pbHeading": "Who we are",
-      "pbBodyHtml": "<p>Since 2017 Artify Ocala (formerly known as <strong>Art Army Ocala</strong>) has served the greater Marion County community in collaboration with a growing number of visual artists and performing artists from a variety of disciplines. By partnering with local organizations and agencies, we have organized multiple events that create opportunities for local artists and broaden their reach. We empower artists by connecting them to opportunities to showcase their work and integrate their artistry into the lives of fellow community members.</p>"
+      "pbBodyHtml": "<p>Since 2017 Artify Ocala (formerly known as <strong>Art Army Ocala</strong>) has served the greater Marion County community in collaboration with a growing number of visual artists and performing artists from a variety of disciplines. By partnering with local organizations and agencies, we have organized multiple events that create opportunities for local artists and broaden their reach. We empower artists by connecting them to opportunities to showcase their work and integrate their artistry into the lives of fellow community members.</p>",
+      "_template": "proseBand"
     },
     {
-      "_template": "missionQuote",
-      "mqQuoteText": "At Artify Ocala, our mission is to cultivate a vibrant arts community in Marion County by empowering local artists and performers through collaboration, opportunity, and creative expression. We are dedicated to enhancing community engagement by providing diverse platforms for artistic showcase, education, and interactive experiences. Through initiatives like Brick City Glam and Storytelling Knights, we aim to inspire creativity, foster connections, and enrich the cultural landscape of our community, ensuring that art is accessible and integral to the lives of all residents."
+      "mqQuoteText": "At Artify Ocala, our mission is to cultivate a vibrant arts community in Marion County by empowering local artists and performers through collaboration, opportunity, and creative expression. We are dedicated to enhancing community engagement by providing diverse platforms for artistic showcase, education, and interactive experiences. Through initiatives like Brick City Glam and Storytelling Knights, we aim to inspire creativity, foster connections, and enrich the cultural landscape of our community, ensuring that art is accessible and integral to the lives of all residents.",
+      "_template": "missionQuote"
     },
     {
-      "_template": "objectivesList",
       "objHeading": "Strategic objectives",
       "objLines": [
         {
@@ -68,17 +67,18 @@
           "objCtaHref": "/programs/maker-collective",
           "objCtaTone": "outline"
         }
-      ]
+      ],
+      "_template": "objectivesList"
     },
     {
-      "_template": "contactSection",
       "ctHeading": "Contact us",
       "ctSubheading": "Marion County Maker Collective",
       "ctAddressHtml": "3650 NE 25th St, Unit 1A<br />Ocala, FL 34470",
       "ctNoteHtml": "Location is not staffed full time — email or call ahead when you need to reach someone.",
       "ctEmail": "info@artifyocala.org",
       "ctPhoneDisplay": "352.299.5673",
-      "ctPhoneTel": "+13522995673"
+      "ctPhoneTel": "+13522995673",
+      "_template": "contactSection"
     }
   ]
 }

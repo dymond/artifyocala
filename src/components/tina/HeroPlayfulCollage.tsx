@@ -7,6 +7,7 @@ import {
   type CardConfig,
 } from "../../lib/hero-playful-collage-data";
 import { cn } from "../../lib/cn";
+import ResponsiveImage from "../ui/ResponsiveImage";
 import {
   HERO_EYE_CLAMP,
   HERO_EYE_PUPIL_Y_BIAS_PX,
@@ -79,7 +80,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                 )}
               >
                 <div className="relative min-h-0 flex-1 p-1 sm:p-1.5">
-                  <img
+                  <ResponsiveImage
                     src={c.front.src}
                     alt={c.front.alt}
                     width={c.front.width}
@@ -87,6 +88,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                     loading={c.loading}
                     decoding="async"
                     fetchPriority={c.fetchPriority}
+                    sizes="(min-width: 1024px) 260px, 44vw"
                     className={cn(
                       "box-border h-full w-full max-h-full border-[3px] border-ink object-cover object-center",
                       bRound,
@@ -109,13 +111,14 @@ function CardFaces({ c }: { c: CardConfig }) {
                 )}
               >
                 <div className="relative min-h-0 flex-1 p-1 sm:p-1.5">
-                  <img
+                  <ResponsiveImage
                     src={c.back.src}
                     alt={c.back.alt}
                     width={c.back.width}
                     height={c.back.height}
                     loading={c.loading}
                     decoding="async"
+                    sizes="(min-width: 1024px) 260px, 44vw"
                     className={cn(
                       "box-border h-full w-full max-h-full border-[3px] border-mist/35 object-cover object-center",
                       bRound,
@@ -149,7 +152,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                 )}
               >
                 <div className="relative min-h-0 w-full flex-1 overflow-hidden rounded-t-[2.5rem] border-b-[3px] border-ink bg-ink">
-                  <img
+                  <ResponsiveImage
                     src={c.front.src}
                     alt={c.front.alt}
                     width={c.front.width}
@@ -157,6 +160,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                     loading={c.loading}
                     decoding="async"
                     fetchPriority={c.fetchPriority}
+                    sizes="(min-width: 1024px) 260px, 44vw"
                     className="absolute inset-0 h-full w-full object-cover object-center"
                   />
                 </div>
@@ -176,13 +180,14 @@ function CardFaces({ c }: { c: CardConfig }) {
                 )}
               >
                 <div className="relative min-h-0 w-full flex-1 overflow-hidden rounded-t-[2.5rem] border-b-[3px] border-ink bg-ink">
-                  <img
+                  <ResponsiveImage
                     src={c.back.src}
                     alt={c.back.alt}
                     width={c.back.width}
                     height={c.back.height}
                     loading={c.loading}
                     decoding="async"
+                    sizes="(min-width: 1024px) 260px, 44vw"
                     className="absolute inset-0 h-full w-full object-cover object-center"
                   />
                 </div>

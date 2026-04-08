@@ -32,6 +32,7 @@ const structuredData = [
     { name: metaTitle ?? page.slug, path: `/${page.slug}` },
   ]),
 ];
+const enableTinaVisualEdit = import.meta.env.DEV;
 ---
 
 <BaseLayout
@@ -39,11 +40,22 @@ const structuredData = [
   description={resolvePageDescription(metaDescription)}
   structuredData={structuredData}
 >
-  <PageVisualEdit
-    client:tina
-    query={tina.query}
-    variables={tina.variables}
-    data={tina.data}
-    pageSlug={page.slug}
-  />
+  {
+    enableTinaVisualEdit ? (
+      <PageVisualEdit
+        client:tina
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        pageSlug={page.slug}
+      />
+    ) : (
+      <PageVisualEdit
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        pageSlug={page.slug}
+      />
+    )
+  }
 </BaseLayout>

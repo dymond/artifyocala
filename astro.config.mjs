@@ -20,6 +20,9 @@ import tinaClientDirective from "./astro-tina-directive/register.mjs";
  */
 const useNetlifyAdapter =
   process.env.ARTIFY_NETLIFY_DEV === "1" || process.argv.includes("build");
+const isAstroBuild = process.argv.includes("build");
+/** Netlify CI sets NETLIFY=true; keep local builds readable/unminified. */
+const isNetlifyBuild = process.env.NETLIFY === "true";
 
 /** Same as netlify.toml: /admin and /admin/ serve Tina admin without /index.html in the URL. */
 function viteAdminPathRewrite() {
@@ -53,6 +56,7 @@ const astroBuildConcurrency = Math.min(
 export default defineConfig({
   site: "https://artify.diy",
   output: "static",
+  compressHTML: isNetlifyBuild,
   build: {
     /** Netlify sets ASTRO_BUILD_CONCURRENCY (see netlify.toml); local default stays 1. */
     concurrency: astroBuildConcurrency,
@@ -60,8 +64,8 @@ export default defineConfig({
   vite: {
     plugins: [viteAdminPathRewrite(), tailwindcss()],
     build: {
-      minify: false,
-      modulePreload: false,
+      minify: isNetlifyBuild ? "esbuild" : false,
+      modulePreload: isAstroBuild && isNetlifyBuild,
       /** Server/SSR chunks still exceed default 500 kB; manualChunks splits three/react/tina/shiki. */
       chunkSizeWarningLimit: 1600,
       rollupOptions: {
@@ -97,12 +101,18 @@ export default defineConfig({
         },
       },
     },
-    esbuild: {
-      /** Keep `typeof x === "undefined"` form; some CI esbuild passes choke on `typeof x<"u"`. */
-      minifyIdentifiers: false,
-      minifySyntax: false,
-      minifyWhitespace: false,
-    },
+    /**
+     * Keep dev output readable; production should minify.
+     * (We used to disable esbuild minification globally for a CI edge case; this now scopes it to non-build.)
+     */
+    esbuild: isNetlifyBuild
+      ? undefined
+      : {
+          /** Keep `typeof x === "undefined"` form; some CI esbuild passes choke on `typeof x<"u"`. */
+          minifyIdentifiers: false,
+          minifySyntax: false,
+          minifyWhitespace: false,
+        },
   },
   integrations: [
     mdx(),
