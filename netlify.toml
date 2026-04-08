@@ -15,7 +15,7 @@
   NPM_CONFIG_AUDIT = "false"
   NPM_CONFIG_FUND = "false"
   # Parallel static page builds (Astro default is 1). Override in Netlify UI if builds OOM.
-  ASTRO_BUILD_CONCURRENCY = "6"
+  ASTRO_BUILD_CONCURRENCY = "8"
 
 [[headers]]
   for = "/_astro/*"
