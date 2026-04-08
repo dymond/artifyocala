@@ -25,7 +25,7 @@ export const img = {
   galleryTours: `${b}/partner-first-saturday-gallery-tours.jpg`,
   metroArtsCalendar: `${b}/partner-ocala-metro-arts-calendar.jpg`,
   getCreative: `${b}/home-get-involved-creative-expression.jpg`,
-  aboutGraphic: `${b}/about-mission-illustration.png`,
+  aboutGraphic: `${b}/about-mission-illustration.jpg`,
   makerspaceBanner: `${b}/maker-collective-space-hero-banner.png`,
   makerspaceA: `${b}/maker-collective-makerspace-interior-01.jpg`,
   makerspaceB: `${b}/maker-collective-makerspace-interior-02.jpg`,
