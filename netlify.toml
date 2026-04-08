@@ -2,7 +2,8 @@
   # Needs PUBLIC_TINA_CLIENT_ID + TINA_TOKEN in Netlify env (see .env.example for local vars).
   # build:deploy skips Tina Cloud schema SHA check — Netlify often runs before indexing catches up after a push.
   # Local strict check: `pnpm run build` (no --skip-cloud-checks).
-  command = "pnpm run build:deploy"
+  # CI skips `tinacms build` when only CMS content/media changed (see scripts/netlify-build.mjs).
+  command = "pnpm run build:netlify:ci"
   publish = "dist"
 
 # Restore/save `node_modules/.astro` and `node_modules/.vite` across deploys (install step recreates node_modules).

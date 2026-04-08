@@ -1,0 +1,120 @@
+/**
+ * Netlify CI entry: optionally skip `tinacms build` when only CMS content/media changed.
+ * Environment: COMMIT_REF, CACHED_COMMIT_REF (see Netlify docs).
+ */
+import { execSync, spawnSync } from "node:child_process";
+import process from "node:process";
+import {
+  needsTinaBuild,
+  normalizeChangedPath,
+  resolveTinaStrategyFromEnv,
+  shouldRunFullTinaWithoutDiff,
+} from "./netlify-tina-build-gate.mjs";
+
+function run(cmd, args) {
+  const r = spawnSync(cmd, args, {
+    stdio: "inherit",
+    shell: false,
+    env: process.env,
+  });
+  if (r.status !== 0) {
+    process.exit(r.status ?? 1);
+  }
+}
+
+function runTinaPipeline() {
+  run("pnpm", [
+    "exec",
+    "tinacms",
+    "build",
+    "--skip-search-index",
+    "--skip-cloud-checks",
+  ]);
+  run("node", ["scripts/remove-tina-generated-client.mjs"]);
+  run("pnpm", ["exec", "astro", "build"]);
+}
+
+function runAstroOnly() {
+  run("node", ["scripts/remove-tina-generated-client.mjs"]);
+  run("pnpm", ["exec", "astro", "build"]);
+}
+
+function main() {
+  const env = process.env;
+  const strategy = resolveTinaStrategyFromEnv(env);
+
+  if (strategy === "full") {
+    console.log("[netlify-build] FORCE_TINA_BUILD: running full Tina pipeline.");
+    runTinaPipeline();
+    return;
+  }
+
+  if (strategy === "skip") {
+    console.log(
+      "[netlify-build] SKIP_TINA_BUILD: skipping tinacms (astro build only)."
+    );
+    runAstroOnly();
+    return;
+  }
+
+  if (shouldRunFullTinaWithoutDiff(env)) {
+    console.log(
+      "[netlify-build] Missing COMMIT_REF or CACHED_COMMIT_REF === COMMIT_REF: full Tina pipeline."
+    );
+    runTinaPipeline();
+    return;
+  }
+
+  const cached = env.CACHED_COMMIT_REF?.trim();
+  const commit = env.COMMIT_REF?.trim();
+  if (!cached || !commit) {
+    console.log("[netlify-build] Missing ref after diff check: full Tina pipeline.");
+    runTinaPipeline();
+    return;
+  }
+
+  let diffText = "";
+  try {
+    diffText = execSync(`git diff --name-only ${cached} ${commit}`, {
+      encoding: "utf8",
+      maxBuffer: 10 * 1024 * 1024,
+    });
+  } catch (e) {
+    console.warn(
+      "[netlify-build] git diff failed; running full Tina pipeline.",
+      e
+    );
+    runTinaPipeline();
+    return;
+  }
+
+  const paths = diffText
+    .split(/\r?\n/)
+    .map(normalizeChangedPath)
+    .filter(Boolean);
+
+  if (paths.length === 0) {
+    console.log("[netlify-build] Empty diff: full Tina pipeline.");
+    runTinaPipeline();
+    return;
+  }
+
+  const need = needsTinaBuild(paths);
+  console.log(`[netlify-build] Changed files (${paths.length}):`);
+  for (const p of paths.slice(0, 40)) {
+    console.log(`  ${p}`);
+  }
+  if (paths.length > 40) {
+    console.log(`  ... and ${paths.length - 40} more`);
+  }
+
+  if (need) {
+    console.log("[netlify-build] Tina build: REQUIRED");
+    runTinaPipeline();
+  } else {
+    console.log("[netlify-build] Tina build: SKIPPED (no schema/admin deps)");
+    runAstroOnly();
+  }
+}
+
+main();
