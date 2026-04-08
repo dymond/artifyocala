@@ -1,8 +1,8 @@
-import { setupWhoArchBackdrop } from "./who-scroll-client";
-
 function runOnce(): void {
+  // Intentionally empty.
   // Program cards tilt runs from program-cards-tilt-init.ts (separate bundle).
-  setupWhoArchBackdrop();
+  // Who backdrop is currently disabled for Netlify builds due to CI-only esbuild
+  // parse failures in the generated who-scroll-client chunk.
 }
 
 if (typeof window !== "undefined") {
