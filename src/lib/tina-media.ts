@@ -10,6 +10,14 @@ export function normalizeTinaRepoMediaSrc(raw: string): string {
       const p = u.pathname || "";
       const idx = p.indexOf("/images/");
       if (idx !== -1) return p.slice(idx);
+
+      // Some Tina URLs omit the /images/ segment (older uploads / different mediaRoot).
+      // In this project we want repo-served images under /images/<filename>.
+      const parts = p.split("/").filter(Boolean);
+      const last = parts[parts.length - 1] ?? "";
+      if (/\.(avif|webp|png|jpe?g|gif)$/i.test(last)) {
+        return `/images/${last}`;
+      }
     } catch {
       // fall through
     }
