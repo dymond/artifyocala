@@ -11,6 +11,7 @@ import '../styles/global.css';
 // Preload the primary body font so text LCP isn't delayed by font swap.
 // Use Vite `?url` so the emitted filename is correct (hashed) in dist.
 import instrumentSansLatinNormalUrl from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
+import siteEffectsUrl from '../scripts/site-effects.ts?url';
 
 const siteChromeList = await getCollection("siteChrome");
 const siteChromeEntry = siteChromeList[0];
@@ -201,6 +202,7 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     }
   </head>
   <body class="flex min-h-screen flex-col">
+    <script type="module" src={siteEffectsUrl}></script>
     <Header chrome={siteChrome} />
     <main class="w-full min-w-0 flex-1">
       <slot />
