@@ -37,7 +37,9 @@ export function setupWhoArchBackdrop(): void {
   const kickoff = (): void => {
     void (async () => {
       if (whoMounted) return;
-      const mod = await import("./who-arch-backdrop");
+      // @vite-ignore — avoids __vitePreload/__vite__mapDeps emission; Netlify’s build re-parses
+      // chunks with esbuild and fails on that helper (`Syntax error "d"`).
+      const mod = await import(/* @vite-ignore */ "./who-arch-backdrop");
       if (captured !== gen) return;
       mod.mountWhoArchBackdrop();
       whoMod = mod;

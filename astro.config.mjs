@@ -76,7 +76,12 @@ export default defineConfig({
        * the minify pass. Rollup output stays unminified; gzip/Brotli at the edge still apply.
        */
       minify: false,
-      modulePreload: isAstroBuild && isNetlifyBuild,
+      /**
+       * With NETLIFY=true, Vite injects __vitePreload/__vite__mapDeps around dynamic imports.
+       * Netlify’s later esbuild parse of SSR chunks then fails (`Syntax error "d"`). Disable
+       * module preload polyfill for Netlify CI only; local `astro build` keeps default hints.
+       */
+      modulePreload: isAstroBuild && !isNetlifyBuild,
       /** Server/SSR chunks still exceed default 500 kB; manualChunks splits three/react/tina/shiki. */
       chunkSizeWarningLimit: 1600,
       rollupOptions: {
