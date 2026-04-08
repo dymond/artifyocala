@@ -37,7 +37,6 @@ export {
 } from "../lib/hal-404-speech";
 export { hal404TierAudioUrl } from "../lib/hal-404-audio";
 
-const VOID_BG = 0x12122a;
 /** --color-surge */
 const COL_SURGE = 0x6b64c9;
 /** --color-buzz */
@@ -56,6 +55,64 @@ const colWarmKey = new THREE.Color(0xffd0d5);
 
 let hal404PlayManual: (() => void) | null = null;
 
+function createHal404FilmGrain(
+  container: HTMLElement,
+  disabled: boolean
+): { update: () => void; destroy: () => void } {
+  if (disabled) {
+    return {
+      update: () => {},
+      destroy: () => {},
+    };
+  }
+
+  const el = document.createElement("canvas");
+  el.className =
+    "pointer-events-none absolute inset-0 z-[1] size-full touch-none";
+  el.setAttribute("aria-hidden", "true");
+  const ctx = el.getContext("2d", { alpha: true });
+  if (!ctx) {
+    return {
+      update: () => {},
+      destroy: () => {},
+    };
+  }
+
+  /** Large enough to scale smoothly; soft-light reads on dark void. */
+  const w = 320;
+  const h = 240;
+  el.width = w;
+  el.height = h;
+  el.style.opacity = "0.22";
+  el.style.mixBlendMode = "soft-light";
+  container.appendChild(el);
+
+  const imgData = ctx.createImageData(w, h);
+  const data = imgData.data;
+  ctx.imageSmoothingEnabled = true;
+  let grainTick = 0;
+
+  return {
+    update() {
+      grainTick += 1;
+      if (grainTick % 2 !== 0) return;
+      for (let i = 0; i < data.length; i += 4) {
+        const n = Math.random() * 255;
+        data[i] = n;
+        data[i + 1] = n;
+        data[i + 2] = n;
+        data[i + 3] = 58;
+      }
+      ctx.putImageData(imgData, 0, 0);
+    },
+    destroy() {
+      if (el.parentNode === container) {
+        container.removeChild(el);
+      }
+    },
+  };
+}
+
 /** Play the next tier at full volume (e.g. Safari / tap). Interrupts any current line. */
 export function playHal404Speech(): void {
   hal404PlayManual?.();
@@ -70,7 +127,7 @@ export function mountHal404Blob(
 
   const canvas = document.createElement("canvas");
   canvas.className =
-    "pointer-events-none absolute inset-0 block size-full touch-none";
+    "pointer-events-none absolute inset-0 z-0 block size-full touch-none";
   canvas.setAttribute("role", "img");
   const ariaOrb = skipPointer
     ? "Animated orb representing the error interface"
@@ -84,11 +141,70 @@ export function mountHal404Blob(
   const renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: true,
-    alpha: false,
+    alpha: true,
     powerPreference: "high-performance",
   });
+  renderer.setClearColor(0x000000, 0);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.06;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.VSMShadowMap;
+
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(VOID_BG);
+  scene.background = null;
+
+  /** Inside-out gradient so the WebGL rect reads as cinematic space, not a flat card; matches void/twilight. */
+  const backdropGeo = new THREE.SphereGeometry(48, 40, 32);
+  const backdropMat = new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    depthWrite: true,
+    uniforms: {},
+    vertexShader: `
+      varying vec3 vLocal;
+      void main() {
+        vLocal = position;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vLocal;
+      void main() {
+        vec3 dir = normalize(vLocal);
+        float h = dir.y * 0.5 + 0.5;
+        vec3 twilight = vec3(0.106, 0.106, 0.220);
+        vec3 voidCol = vec3(0.071, 0.071, 0.165);
+        vec3 c = mix(voidCol, twilight, h);
+        float horizon = 1.0 - abs(dir.y);
+        c += vec3(0.04, 0.035, 0.08) * horizon * horizon * 0.35;
+        float vig = 0.88 + 0.12 * (1.0 - abs(dir.z));
+        c *= vig;
+        float stageFloor = smoothstep(0.35, -0.72, dir.y);
+        c *= 1.0 - stageFloor * 0.42;
+        gl_FragColor = vec4(c, 1.0);
+      }
+    `,
+  });
+  const backdrop = new THREE.Mesh(backdropGeo, backdropMat);
+  backdrop.renderOrder = -200;
+  backdrop.castShadow = false;
+  backdrop.receiveShadow = false;
+  scene.add(backdrop);
+
+  /** “Stage floor” directly under the orb — receives real shadow from the blob. */
+  const stageGeo = new THREE.PlaneGeometry(18, 18);
+  const stageMat = new THREE.ShadowMaterial({
+    opacity: 0.42,
+    color: 0x06041a,
+    transparent: true,
+  });
+  const stageMesh = new THREE.Mesh(stageGeo, stageMat);
+  stageMesh.receiveShadow = true;
+  stageMesh.castShadow = false;
+  stageMesh.rotation.x = -Math.PI / 2;
+  stageMesh.position.set(0, -1.42, 0);
+  stageMesh.renderOrder = -155;
+  scene.add(stageMesh);
 
   const FOV_DEG = 42;
   /** World radius that must fit in frame (geometry ~1.15 + displacement + margin). */
@@ -96,10 +212,22 @@ export function mountHal404Blob(
 
   const camera = new THREE.PerspectiveCamera(FOV_DEG, 1, 0.1, 100);
 
-  const ambient = new THREE.AmbientLight(0x8890c8, 0.35);
+  const ambient = new THREE.AmbientLight(0x8890c8, 0.3);
   scene.add(ambient);
-  const key = new THREE.DirectionalLight(COL_BUZZ, 1.15);
-  key.position.set(2.2, 1.8, 4);
+  const key = new THREE.DirectionalLight(COL_BUZZ, 1.2);
+  key.position.set(0.65, 2.35, 3.8);
+  key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048);
+  key.shadow.camera.near = 0.2;
+  key.shadow.camera.far = 28;
+  key.shadow.camera.left = -6;
+  key.shadow.camera.right = 6;
+  key.shadow.camera.top = 6;
+  key.shadow.camera.bottom = -6;
+  key.shadow.bias = -0.00015;
+  key.shadow.normalBias = 0.018;
+  key.shadow.radius = 10;
+  key.shadow.blurSamples = 16;
   scene.add(key);
 
   const orbRoot = new THREE.Group();
@@ -108,6 +236,7 @@ export function mountHal404Blob(
   const rim = new THREE.PointLight(COL_SURGE, 2.2, 12, 2);
   const rimBase = new THREE.Vector3(-2.5, -1.2, 3);
   rim.position.copy(rimBase);
+  rim.castShadow = false;
   orbRoot.add(rim);
 
   const geo = new THREE.IcosahedronGeometry(1.15, 4);
@@ -131,7 +260,93 @@ export function mountHal404Blob(
   });
 
   const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true;
+  mesh.receiveShadow = false;
   orbRoot.add(mesh);
+
+  /** Same displaced geometry as the orb so the halo tracks audio + deformation; fresnel = soft round edges. */
+  const glowUniforms = {
+    uColor: { value: new THREE.Color(COL_SURGE) },
+    uStrength: { value: 0.5 },
+    uFresnelPow: { value: 2.35 },
+    uCameraPos: { value: new THREE.Vector3() },
+  };
+  const glowMat = new THREE.ShaderMaterial({
+    uniforms: glowUniforms,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: true,
+    side: THREE.FrontSide,
+    vertexShader: `
+      varying vec3 vWorldPos;
+      varying vec3 vWorldNormal;
+      void main() {
+        vec4 wp = modelMatrix * vec4(position, 1.0);
+        vWorldPos = wp.xyz;
+        vWorldNormal = normalize(mat3(modelMatrix) * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform vec3 uColor;
+      uniform float uStrength;
+      uniform float uFresnelPow;
+      uniform vec3 uCameraPos;
+      varying vec3 vWorldPos;
+      varying vec3 vWorldNormal;
+      void main() {
+        vec3 N = normalize(vWorldNormal);
+        vec3 V = normalize(uCameraPos - vWorldPos);
+        float ndv = clamp(dot(N, V), 0.0, 1.0);
+        float rim = pow(1.0 - ndv, uFresnelPow);
+        float soft = smoothstep(0.0, 1.0, rim);
+        float a = soft * uStrength;
+        gl_FragColor = vec4(uColor * a, a);
+      }
+    `,
+  });
+  const glowMesh = new THREE.Mesh(geo, glowMat);
+  glowMesh.scale.setScalar(1.024);
+  glowMesh.renderOrder = 3;
+  glowMesh.castShadow = false;
+  glowMesh.receiveShadow = false;
+  mesh.add(glowMesh);
+
+  /** Soft contact shadow on an XY plane behind the orb (reads as “on the stage”). */
+  const shadowCanvas = document.createElement("canvas");
+  shadowCanvas.width = 256;
+  shadowCanvas.height = 256;
+  const sctx = shadowCanvas.getContext("2d");
+  if (sctx) {
+    const g = sctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    g.addColorStop(0, "rgba(6,4,18,0.62)");
+    g.addColorStop(0.42, "rgba(14,12,36,0.22)");
+    g.addColorStop(0.72, "rgba(18,16,42,0.06)");
+    g.addColorStop(1, "rgba(18,16,42,0)");
+    sctx.fillStyle = g;
+    sctx.fillRect(0, 0, 256, 256);
+  }
+  const shadowTex = new THREE.CanvasTexture(shadowCanvas);
+  shadowTex.colorSpace = THREE.SRGBColorSpace;
+  const shadowMat = new THREE.MeshBasicMaterial({
+    map: shadowTex,
+    transparent: true,
+    opacity: 0.48,
+    depthWrite: false,
+    depthTest: true,
+    blending: THREE.NormalBlending,
+  });
+  const shadowGeo = new THREE.PlaneGeometry(3.2, 3.2);
+  const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
+  shadowMesh.renderOrder = -80;
+  shadowMesh.position.set(0, -0.92, -0.48);
+  orbRoot.add(shadowMesh);
+
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const grain = createHal404FilmGrain(container, reducedMotion);
 
   let speakIntensity = 0;
   /** Smoothed envelope from Web Audio analysis (follows the actual clip). */
@@ -536,6 +751,31 @@ export function mountHal404Blob(
       rim.intensity = 2.2 + threat * 3.2 + threatPulse * 1.4 + angerSmoothed * 1.8;
     }
 
+    glowMat.uniforms.uCameraPos.value.copy(camera.position);
+    glowMat.uniforms.uColor.value.copy(mat.emissive).multiplyScalar(1.12);
+    const anger = skipSpeech ? 0 : angerSmoothed;
+    glowMat.uniforms.uFresnelPow.value = 1.75 + (1.0 - anger) * 0.95;
+    const glowPulse =
+      speakIntensity * 0.24 + (speaking ? audioDriveSmoothed * 0.32 : 0);
+    glowMat.uniforms.uStrength.value =
+      0.36 +
+      glowPulse +
+      threat * 0.14 +
+      threatPulse * 0.11 +
+      anger * 0.34 +
+      (speaking ? audioDriveSmoothed * 0.22 : 0);
+    const glowScale =
+      1.016 +
+      speechPulse * 0.068 +
+      threatPulse * 0.036 +
+      (speaking ? audioDriveSmoothed * 0.052 : 0);
+    glowMesh.scale.setScalar(glowScale);
+
+    shadowMesh.position.x = mesh.position.x * 0.94;
+    shadowMesh.position.y = mesh.position.y * 0.42 - 0.92;
+    shadowMesh.position.z = mesh.position.z - 0.54;
+
+    grain.update();
     renderer.render(scene, camera);
     rafId = requestAnimationFrame(animate);
   }
@@ -556,10 +796,19 @@ export function mountHal404Blob(
       window.removeEventListener("pointermove", onWindowPointerMove);
       window.removeEventListener("pointerdown", onWindowPointerMove);
     }
+    grain.destroy();
     muteHal404Speech();
     disposeHal404AudioContext();
     geo.dispose();
     mat.dispose();
+    glowMat.dispose();
+    shadowGeo.dispose();
+    shadowMat.dispose();
+    shadowTex.dispose();
+    stageGeo.dispose();
+    stageMat.dispose();
+    backdropGeo.dispose();
+    backdropMat.dispose();
     renderer.dispose();
     if (canvas.parentNode === container) {
       container.removeChild(canvas);

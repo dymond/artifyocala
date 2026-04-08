@@ -62,7 +62,30 @@ export default defineConfig({
     build: {
       minify: false,
       modulePreload: false,
+      /** Server/SSR chunks still exceed default 500 kB; manualChunks splits three/react/tina/shiki. */
+      chunkSizeWarningLimit: 1600,
       rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes("node_modules")) return;
+            if (id.includes("three") || id.includes("three/")) {
+              return "three";
+            }
+            if (
+              id.includes("react-dom") ||
+              id.includes("/react/") ||
+              id.includes("\\react\\")
+            ) {
+              return "react-vendor";
+            }
+            if (id.includes("tinacms") || id.includes("@tinacms")) {
+              return "tinacms-vendor";
+            }
+            if (id.includes("shiki") || id.includes("/shiki/")) {
+              return "shiki-vendor";
+            }
+          },
+        },
         onwarn(warning, warn) {
           if (
             warning.code === "UNUSED_EXTERNAL_IMPORT" &&
