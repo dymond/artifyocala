@@ -21,6 +21,30 @@ function hasBuiltTinaAdmin() {
   return fs.existsSync(adminIndex);
 }
 
+function hasImageGenManifest() {
+  const manifest = path.join(
+    process.cwd(),
+    "public",
+    "images",
+    "_gen",
+    "manifest.json"
+  );
+  return fs.existsSync(manifest);
+}
+
+function shouldRunImagesBuild(changedPaths) {
+  // If any real image changed, we must rebuild variants.
+  // Note: generated files live under public/images/_gen/ and are ignored.
+  if (changedPaths.some((p) => p.startsWith("public/images/"))) {
+    return changedPaths.some(
+      (p) => !p.startsWith("public/images/_gen/") && !p.endsWith("/_gen")
+    );
+  }
+  // No images changed: if a manifest already exists (restored from cache),
+  // skip the scan step entirely to keep deploys fast.
+  return !hasImageGenManifest();
+}
+
 function run(cmd, args) {
   const r = spawnSync(cmd, args, {
     stdio: "inherit",
@@ -32,7 +56,7 @@ function run(cmd, args) {
   }
 }
 
-function runTinaPipeline() {
+function runTinaPipeline(changedPaths = []) {
   run("pnpm", [
     "exec",
     "tinacms",
@@ -43,14 +67,22 @@ function runTinaPipeline() {
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
   // `images:build` is incremental *within the workspace* via `public/images/_gen/cache.json`.
   // Netlify workspaces are ephemeral, so we also cache `public/images/_gen/` via a Netlify plugin.
-  run("pnpm", ["run", "images:build"]);
+  if (shouldRunImagesBuild(changedPaths)) {
+    run("pnpm", ["run", "images:build"]);
+  } else {
+    console.log("[netlify-build] images:build SKIPPED (no image changes)");
+  }
   run("pnpm", ["exec", "astro", "build"]);
 }
 
-function runAstroOnly() {
+function runAstroOnly(changedPaths = []) {
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
   // See note in `runTinaPipeline()` about caching `public/images/_gen/` on Netlify.
-  run("pnpm", ["run", "images:build"]);
+  if (shouldRunImagesBuild(changedPaths)) {
+    run("pnpm", ["run", "images:build"]);
+  } else {
+    console.log("[netlify-build] images:build SKIPPED (no image changes)");
+  }
   run("pnpm", ["exec", "astro", "build"]);
 }
 
@@ -132,17 +164,17 @@ function main() {
 
   if (need) {
     console.log("[netlify-build] Tina build: REQUIRED");
-    runTinaPipeline();
+    runTinaPipeline(paths);
   } else {
     console.log("[netlify-build] Tina build: SKIPPED (no schema/admin deps)");
     if (!hasBuiltTinaAdmin()) {
       console.log(
         "[netlify-build] Admin output missing; running full Tina pipeline to restore /admin."
       );
-      runTinaPipeline();
+      runTinaPipeline(paths);
       return;
     }
-    runAstroOnly();
+    runAstroOnly(paths);
   }
 }
 
