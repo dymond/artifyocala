@@ -81,7 +81,7 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
                     height={1138}
                     loading="lazy"
                     decoding="async"
-                    sizes="(min-width: 1024px) 30vw, 92vw"
+                    sizes="(min-width: 1280px) min(28vw, 400px), (min-width: 1024px) min(42vw, 480px), 92vw"
                     className="h-full w-full object-cover"
                     data-tina-field={tinaField(card, "hpiCardImage")}
                   />

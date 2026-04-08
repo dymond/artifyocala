@@ -182,7 +182,8 @@ vec3 blendNormal(vec3 base, vec3 blend, float opacity) {
 }
 `;
 
-const MESH_VERTEX = /* glsl */ `
+/** Split + concat (no nested `${…}` in one template) so esbuild/Vite minify cannot mis-parse GLSL. */
+const MESH_VERTEX_HEAD = /* glsl */ `
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec2 u_noiseFreqGlobal;
@@ -222,8 +223,9 @@ uniform float u_layerBlendWeight;
 
 out vec3 vColor;
 
-${MESH_NOISE}
+`;
 
+const MESH_VERTEX_TAIL = /* glsl */ `
 void main() {
   // World XY of the undeformed vertex (handles geometry.translate / mesh transform).
   vec4 worldBase = modelMatrix * vec4(position, 1.0);
@@ -297,6 +299,8 @@ void main() {
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }
 `;
+
+const MESH_VERTEX = MESH_VERTEX_HEAD + MESH_NOISE + MESH_VERTEX_TAIL;
 
 const MESH_FRAGMENT = /* glsl */ `
 precision highp float;

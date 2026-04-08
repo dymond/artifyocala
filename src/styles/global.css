@@ -72,6 +72,9 @@
   display: flex;
   width: max-content;
   animation: artify-marquee 42s linear infinite;
+  /* Promote to own layer so PSI does not flag non-composited transform animations. */
+  will-change: transform;
+  backface-visibility: hidden;
 }
 
 /** Slower loop for wide image strips (Brick City Glam gallery, etc.). */
@@ -169,6 +172,7 @@
 @media (prefers-reduced-motion: reduce) {
   .artify-marquee-track {
     animation: none;
+    will-change: auto;
   }
 }
 

@@ -77,7 +77,7 @@ export default function GalleryMarqueeIsland({
                           className={imgClass}
                           loading="lazy"
                           decoding="async"
-                          sizes="(min-width: 1024px) 14rem, 44vw"
+                          sizes="min(44vw, 14rem)"
                         />
                       </figure>
                     ))}
@@ -94,7 +94,7 @@ export default function GalleryMarqueeIsland({
                           className={imgClass}
                           loading="lazy"
                           decoding="async"
-                          sizes="(min-width: 1024px) 14rem, 44vw"
+                          sizes="min(44vw, 14rem)"
                         />
                       </figure>
                     ))}
@@ -120,7 +120,7 @@ export default function GalleryMarqueeIsland({
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
-                            sizes="(min-width: 1024px) 14rem, 22vw"
+                            sizes="min(22vw, 14rem)"
                           />
                         </figure>
                       ))}
@@ -137,7 +137,7 @@ export default function GalleryMarqueeIsland({
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
-                            sizes="(min-width: 1024px) 14rem, 22vw"
+                            sizes="min(22vw, 14rem)"
                           />
                         </figure>
                       ))}
@@ -162,7 +162,7 @@ export default function GalleryMarqueeIsland({
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
-                            sizes="(min-width: 1024px) 14rem, 22vw"
+                            sizes="min(22vw, 14rem)"
                           />
                         </figure>
                       ))}
@@ -179,7 +179,7 @@ export default function GalleryMarqueeIsland({
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
-                            sizes="(min-width: 1024px) 14rem, 22vw"
+                            sizes="min(22vw, 14rem)"
                           />
                         </figure>
                       ))}
@@ -202,7 +202,7 @@ export default function GalleryMarqueeIsland({
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
-                            sizes="(min-width: 1024px) 14rem, 22vw"
+                            sizes="min(22vw, 14rem)"
                           />
                         </figure>
                       ))}
@@ -219,7 +219,7 @@ export default function GalleryMarqueeIsland({
                             className={imgClass}
                             loading="lazy"
                             decoding="async"
-                            sizes="(min-width: 1024px) 14rem, 22vw"
+                            sizes="min(22vw, 14rem)"
                           />
                         </figure>
                       ))}
@@ -243,7 +243,7 @@ export default function GalleryMarqueeIsland({
                       className={imgClass}
                       loading="lazy"
                       decoding="async"
-                      sizes="(min-width: 1024px) 14rem, 44vw"
+                      sizes="(min-width: 1024px) min(22vw, 14rem), min(44vw, 14rem)"
                     />
                   </figure>
                 ))}
@@ -260,7 +260,7 @@ export default function GalleryMarqueeIsland({
                       className={imgClass}
                       loading="lazy"
                       decoding="async"
-                      sizes="(min-width: 1024px) 14rem, 44vw"
+                      sizes="(min-width: 1024px) min(22vw, 14rem), min(44vw, 14rem)"
                     />
                   </figure>
                 ))}

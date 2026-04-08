@@ -54,6 +54,7 @@ export default function HomeHeroFullVisual({ section }: Props) {
                   height={1260}
                   decoding="async"
                   fetchPriority="high"
+                  sizes="(max-width: 1023px) min(44vw, 12rem), 11.25rem"
                   className="h-auto w-full object-contain object-left"
                 />
               </a>
@@ -186,7 +187,7 @@ export default function HomeHeroFullVisual({ section }: Props) {
               height={1350}
               loading="eager"
               decoding="async"
-              sizes="(min-width: 1024px) 40vw, 92vw"
+              sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
               className="h-auto w-full min-w-0 max-lg:order-4 -rotate-[0.5deg] rounded-xl border-[3px] border-ink object-contain shadow-[6px_6px_0_0_var(--color-surge)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
               data-tina-field={tinaField(s, "hhfHiringImage")}
             />

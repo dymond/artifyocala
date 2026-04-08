@@ -334,7 +334,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 height={1080}
                 loading="eager"
                 decoding="async"
-                sizes="(min-width: 1024px) 40vw, 92vw"
+                sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
                 className="block h-full w-full object-cover"
                 data-tina-field={tinaField(s, "dchImage")}
               />
@@ -423,7 +423,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 height={2048}
                 loading="lazy"
                 decoding="async"
-                sizes="(min-width: 1024px) 40vw, 92vw"
+                sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
                 className="block h-[22rem] w-full object-cover"
                 data-tina-field={tinaField(s, "sitImage")}
               />
@@ -525,7 +525,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 height={1080}
                 loading="lazy"
                 decoding="async"
-                sizes="(min-width: 1024px) 40vw, 92vw"
+                sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
                 className="block w-full"
                 data-tina-field={tinaField(s, "hsbImage")}
               />
@@ -611,7 +611,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                       height={1440}
                       loading="lazy"
                       decoding="async"
-                      sizes="(min-width: 1024px) 30vw, 92vw"
+                      sizes="(min-width: 1280px) min(28vw, 400px), (min-width: 1024px) min(42vw, 480px), 92vw"
                       className="h-full w-full object-cover"
                       data-tina-field={tinaField(card, "hmgCardImage")}
                     />
@@ -663,7 +663,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               height={1138}
               loading="lazy"
               decoding="async"
-              sizes="(min-width: 1024px) 40vw, 92vw"
+              sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
               className="max-h-[22rem] w-full min-w-0 rotate-[0.4deg] rounded-xl border-[3px] border-buzz/35 object-cover shadow-[8px_8px_0_0_rgba(176,184,255,0.16)]"
               data-tina-field={tinaField(s, "hcbImage")}
             />

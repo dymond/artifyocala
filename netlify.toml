@@ -3,7 +3,9 @@
   # build:deploy skips Tina Cloud schema SHA check — Netlify often runs before indexing catches up after a push.
   # Local strict check: `pnpm run build` (no --skip-cloud-checks).
   # CI skips `tinacms build` when only CMS content/media changed (see scripts/netlify-build.mjs).
-  command = "pnpm run build:netlify:ci"
+  # `pnpm rebuild esbuild`: pnpm 10 may skip install scripts; without the native binary Vite’s esbuild
+  # minify pass can throw opaque errors (e.g. Syntax error "d" in client chunks). See package.json `pnpm.onlyBuiltDependencies`.
+  command = "pnpm rebuild esbuild && pnpm run build:netlify:ci"
   publish = "dist"
 
 # Restore/save `node_modules/.astro` and `node_modules/.vite` across deploys (install step recreates node_modules).
@@ -18,6 +20,7 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  NETLIFY = "true"
   # Minor npm install speed-up on Netlify
   NPM_CONFIG_AUDIT = "false"
   NPM_CONFIG_FUND = "false"
