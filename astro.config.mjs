@@ -102,13 +102,15 @@ export default defineConfig({
       },
     },
     /**
-     * Keep dev output readable; production should minify.
-     * (We used to disable esbuild minification globally for a CI edge case; this now scopes it to non-build.)
+     * Non-Netlify: no minify (readable). Netlify: minify identifiers + whitespace but not syntax —
+     * esbuild’s `typeof x === "undefined"` → `typeof x>"u"` rewrite can make a later esbuild parse
+     * pass fail on CI (`Syntax error "d"` in who-scroll-client). See Vite `build.minify` + esbuild options.
      */
     esbuild: isNetlifyBuild
-      ? undefined
+      ? {
+          minifySyntax: false,
+        }
       : {
-          /** Keep `typeof x === "undefined"` form; some CI esbuild passes choke on `typeof x<"u"`. */
           minifyIdentifiers: false,
           minifySyntax: false,
           minifyWhitespace: false,
