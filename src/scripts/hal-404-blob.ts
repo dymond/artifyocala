@@ -55,6 +55,116 @@ const colWarmKey = new THREE.Color(0xffd0d5);
 
 let hal404PlayManual: (() => void) | null = null;
 
+export function hal404ImpliedHypercubeData(size = 1): {
+  points: Float32Array;
+  streaks: Float32Array;
+  /** Full edge segments ax,ay,az,bx,by,bz — outer (12) + inner (12) + connectors (8) = 32 edges. */
+  flowEdges: Float32Array;
+} {
+  const s = Math.max(1e-6, size);
+
+  const outer = [
+    [-1, -1, -1],
+    [1, -1, -1],
+    [-1, 1, -1],
+    [1, 1, -1],
+    [-1, -1, 1],
+    [1, -1, 1],
+    [-1, 1, 1],
+    [1, 1, 1],
+  ].map((v) => new THREE.Vector3(v[0]! * s, v[1]! * s, v[2]! * s));
+
+  // Inner cube: rotated and slightly smaller to imply “hypercube” depth.
+  const inner = outer.map((v) => v.clone().multiplyScalar(0.68));
+  const rot = new THREE.Euler(0.38, 0.72, 0.15);
+  for (const v of inner) v.applyEuler(rot);
+
+  const points = new Float32Array((outer.length + inner.length) * 3);
+  let p = 0;
+  for (const v of [...outer, ...inner]) {
+    points[p++] = v.x;
+    points[p++] = v.y;
+    points[p++] = v.z;
+  }
+
+  const edgePairs = [
+    [0, 1],
+    [0, 2],
+    [1, 3],
+    [2, 3],
+    [4, 5],
+    [4, 6],
+    [5, 7],
+    [6, 7],
+    [0, 4],
+    [1, 5],
+    [2, 6],
+    [3, 7],
+  ] as const;
+
+  const segLen = s * 0.46;
+  const streaksArr: number[] = [];
+  const tmp = new THREE.Vector3();
+
+  function pushShortStreak(a: THREE.Vector3, b: THREE.Vector3) {
+    const dir = tmp.copy(b).sub(a);
+    const len = Math.max(1e-6, dir.length());
+    dir.multiplyScalar(1 / len);
+    // short near each vertex (gap in the middle)
+    const a2 = a.clone().addScaledVector(dir, segLen);
+    const b2 = b.clone().addScaledVector(dir, -segLen);
+    streaksArr.push(a.x, a.y, a.z, a2.x, a2.y, a2.z);
+    streaksArr.push(b.x, b.y, b.z, b2.x, b2.y, b2.z);
+  }
+
+  // Outer implied edges.
+  for (const [i, j] of edgePairs) pushShortStreak(outer[i], outer[j]);
+  // “W” connections outer↔inner (like a tesseract projection).
+  for (let i = 0; i < outer.length; i++) pushShortStreak(outer[i]!, inner[i]!);
+
+  const flowList: number[] = [];
+  for (const [i, j] of edgePairs) {
+    const a = outer[i]!;
+    const b = outer[j]!;
+    flowList.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  }
+  for (const [i, j] of edgePairs) {
+    const a = inner[i]!;
+    const b = inner[j]!;
+    flowList.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  }
+  for (let i = 0; i < 8; i++) {
+    const a = outer[i]!;
+    const b = inner[i]!;
+    flowList.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  }
+
+  const streaks = new Float32Array(streaksArr);
+  const flowEdges = new Float32Array(flowList);
+  return { points, streaks, flowEdges };
+}
+
+function createHal404SoftParticleTexture(): THREE.CanvasTexture {
+  const c = document.createElement("canvas");
+  c.width = 64;
+  c.height = 64;
+  const ctx = c.getContext("2d");
+  if (!ctx) {
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, "rgba(255,255,255,1)");
+  g.addColorStop(0.4, "rgba(255,255,255,0.5)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
 function createHal404FilmGrain(
   container: HTMLElement,
   disabled: boolean
@@ -312,6 +422,108 @@ export function mountHal404Blob(
   glowMesh.castShadow = false;
   glowMesh.receiveShadow = false;
   mesh.add(glowMesh);
+
+  /** Option C: implied hypercube “only light” cage (points + short streaks + edge flow). */
+  const hyper = hal404ImpliedHypercubeData(1.55);
+  const hyperParticleTex = createHal404SoftParticleTexture();
+
+  const hyperPointsGeo = new THREE.BufferGeometry();
+  hyperPointsGeo.setAttribute(
+    "position",
+    new THREE.BufferAttribute(hyper.points, 3)
+  );
+  const hyperStreaksGeo = new THREE.BufferGeometry();
+  hyperStreaksGeo.setAttribute(
+    "position",
+    new THREE.BufferAttribute(hyper.streaks, 3)
+  );
+
+  const PARTICLES_PER_EDGE = 6;
+  const nFlowEdges = hyper.flowEdges.length / 6;
+  const nFlowParticles = nFlowEdges * PARTICLES_PER_EDGE;
+  const flowPositions = new Float32Array(nFlowParticles * 3);
+  const flowPhase = new Float32Array(nFlowParticles);
+  const flowSpeed = new Float32Array(nFlowParticles);
+  for (let e = 0; e < nFlowEdges; e++) {
+    for (let k = 0; k < PARTICLES_PER_EDGE; k++) {
+      const idx = e * PARTICLES_PER_EDGE + k;
+      flowPhase[idx] =
+        k / PARTICLES_PER_EDGE + (e % 5) * 0.017 + (k % 3) * 0.031;
+      flowSpeed[idx] =
+        (0.055 + (idx % 7) * 0.009 + (e % 4) * 0.006) * 0.55;
+    }
+  }
+  const hyperFlowGeo = new THREE.BufferGeometry();
+  hyperFlowGeo.setAttribute(
+    "position",
+    new THREE.BufferAttribute(flowPositions, 3).setUsage(THREE.DynamicDrawUsage)
+  );
+
+  const hyperCol = new THREE.Color(COL_BUZZ);
+  const hyperPointsMat = new THREE.PointsMaterial({
+    map: hyperParticleTex,
+    color: hyperCol,
+    size: 0.11,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 0.55,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    /** Floor + contact shadow write depth; cage is a hologram and must not vanish under the stage. */
+    depthTest: false,
+  });
+  const hyperHaloMat = new THREE.PointsMaterial({
+    map: hyperParticleTex,
+    color: hyperCol,
+    size: 0.28,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 0.22,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: false,
+  });
+  const hyperFlowMat = new THREE.PointsMaterial({
+    map: hyperParticleTex,
+    color: hyperCol,
+    size: 0.075,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 0.62,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: false,
+  });
+  const hyperStreaksMat = new THREE.LineBasicMaterial({
+    color: hyperCol,
+    transparent: true,
+    opacity: 0.38,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: false,
+  });
+
+  const hyperPoints = new THREE.Points(hyperPointsGeo, hyperPointsMat);
+  const hyperHalo = new THREE.Points(hyperPointsGeo, hyperHaloMat);
+  const hyperFlow = new THREE.Points(hyperFlowGeo, hyperFlowMat);
+  const hyperStreaks = new THREE.LineSegments(hyperStreaksGeo, hyperStreaksMat);
+  hyperPoints.renderOrder = 6;
+  hyperHalo.renderOrder = 5;
+  hyperFlow.renderOrder = 7;
+  hyperStreaks.renderOrder = 6;
+  hyperPoints.position.set(0, 0, 0);
+  hyperHalo.position.set(0, 0, 0);
+  hyperFlow.position.set(0, 0, 0);
+  hyperStreaks.position.set(0, 0, 0);
+  mesh.add(hyperHalo);
+  mesh.add(hyperPoints);
+  mesh.add(hyperFlow);
+  mesh.add(hyperStreaks);
+
+  const flowEdgeArr = hyper.flowEdges;
+  const flowTmpA = new THREE.Vector3();
+  const flowTmpB = new THREE.Vector3();
+  const flowTmpOut = new THREE.Vector3();
 
   /** Soft contact shadow on an XY plane behind the orb (reads as “on the stage”). */
   const shadowCanvas = document.createElement("canvas");
@@ -703,14 +915,23 @@ export function mountHal404Blob(
     posAttr.needsUpdate = true;
     geo.computeVertexNormals();
 
-    mesh.rotation.y =
+    const meshBaseYaw =
       t * (0.11 + lineAggro * 0.22) +
-      aimSmoothed.x * (0.62 + lineAggro * 0.35) * threat +
-      threatPulse * (0.08 + lineAggro * 0.1) +
-      (speaking ? audioDriveSmoothed * 0.09 * Math.sin(t * 48 + audioDriveSmoothed * 8) : 0);
-    mesh.rotation.x =
-      Math.sin(t * (0.35 + lineAggro * 0.25)) * (0.08 + lineAggro * 0.06) -
-      aimSmoothed.y * (0.52 + lineAggro * 0.28) * threat;
+      threatPulse * (0.08 + lineAggro * 0.1);
+    const meshPointerYaw =
+      aimSmoothed.x * (0.62 + lineAggro * 0.35) * threat;
+    const meshAudioWobbleYaw =
+      speaking
+        ? audioDriveSmoothed * 0.09 * Math.sin(t * 48 + audioDriveSmoothed * 8)
+        : 0;
+    mesh.rotation.y =
+      meshBaseYaw + meshPointerYaw + meshAudioWobbleYaw;
+
+    const meshBasePitch =
+      Math.sin(t * (0.35 + lineAggro * 0.25)) * (0.08 + lineAggro * 0.06);
+    const meshPointerPitch =
+      -aimSmoothed.y * (0.52 + lineAggro * 0.28) * threat;
+    mesh.rotation.x = meshBasePitch + meshPointerPitch;
 
     const lungeZ = (0.15 + lineAggro * 0.12) * threatPulse;
     const lean = (0.2 + lineAggro * 0.15) * threat;
@@ -771,6 +992,99 @@ export function mountHal404Blob(
       (speaking ? audioDriveSmoothed * 0.052 : 0);
     glowMesh.scale.setScalar(glowScale);
 
+    // Hypercube hologram: subtle until anger rises; tracks HAL colors and breathes with audio.
+    const hyperVis = THREE.MathUtils.clamp(
+      0.28 +
+        anger * 0.55 +
+        (speaking ? audioDriveSmoothed * 0.26 : 0) +
+        speakIntensity * 0.14,
+      0,
+      1
+    );
+    hyperCol.copy(colBuzz).lerp(colAngryEmissive, anger);
+    hyperPointsMat.color.copy(hyperCol);
+    hyperHaloMat.color.copy(hyperCol);
+    hyperFlowMat.color.copy(hyperCol);
+    hyperStreaksMat.color.copy(hyperCol);
+    hyperPointsMat.opacity = hyperVis * (0.42 + 0.32 * (1 - anger));
+    hyperHaloMat.opacity = hyperVis * (0.26 + 0.18 * (1 - anger));
+    hyperFlowMat.opacity = hyperVis * (0.52 + 0.32 * anger);
+    hyperStreaksMat.opacity = hyperVis * (0.34 + 0.24 * anger);
+    const hyperScale =
+      1.0 +
+      0.018 * Math.sin(t * (0.42 + anger * 0.32)) +
+      (speaking ? audioDriveSmoothed * 0.01 : 0) +
+      speechPulse * 0.008;
+    hyperPoints.scale.setScalar(hyperScale);
+    hyperHalo.scale.setScalar(hyperScale);
+    hyperFlow.scale.setScalar(hyperScale);
+    hyperStreaks.scale.setScalar(hyperScale);
+
+    /**
+     * Cage stays calmer: counter pointer + speech wobble, and most of the orb’s idle spin
+     * (otherwise the cage still tracks meshBaseYaw / meshBasePitch and feels hectic).
+     */
+    const cageYaw = t * (0.007 + anger * 0.0045);
+    const cagePitch = 0.012 * Math.sin(t * 0.14);
+    const hyperYaw =
+      cageYaw -
+      0.985 * meshPointerYaw -
+      0.985 * meshAudioWobbleYaw -
+      0.86 * meshBaseYaw;
+    const hyperPitch =
+      cagePitch - 0.985 * meshPointerPitch - 0.82 * meshBasePitch;
+    hyperPoints.rotation.y = hyperYaw;
+    hyperHalo.rotation.y = hyperYaw;
+    hyperFlow.rotation.y = hyperYaw;
+    hyperStreaks.rotation.y = hyperYaw;
+    hyperPoints.rotation.x = hyperPitch;
+    hyperHalo.rotation.x = hyperPitch;
+    hyperFlow.rotation.x = hyperPitch;
+    hyperStreaks.rotation.x = hyperPitch;
+
+    const leanCancel = 0.78;
+    /** Slight lift so the cage clears the XZ stage plane (y ≈ -1.42) after world transform. */
+    const cageLift = 0.09;
+    hyperPoints.position.set(
+      -mesh.position.x * leanCancel,
+      -mesh.position.y * leanCancel + cageLift,
+      -mesh.position.z * 0.35
+    );
+    hyperHalo.position.copy(hyperPoints.position);
+    hyperFlow.position.copy(hyperPoints.position);
+    hyperStreaks.position.copy(hyperPoints.position);
+
+    const flowSpeedMul =
+      0.18 +
+      0.2 * anger +
+      (speaking ? audioDriveSmoothed * 0.055 : 0) +
+      speechPulse * 0.028;
+    const flowPosAttr = hyperFlowGeo.attributes.position as THREE.BufferAttribute;
+    const flowArr = flowPosAttr.array as Float32Array;
+    let fq = 0;
+    for (let e = 0; e < nFlowEdges; e++) {
+      flowTmpA.set(
+        flowEdgeArr[e * 6]!,
+        flowEdgeArr[e * 6 + 1]!,
+        flowEdgeArr[e * 6 + 2]!
+      );
+      flowTmpB.set(
+        flowEdgeArr[e * 6 + 3]!,
+        flowEdgeArr[e * 6 + 4]!,
+        flowEdgeArr[e * 6 + 5]!
+      );
+      for (let k = 0; k < PARTICLES_PER_EDGE; k++) {
+        const idx = e * PARTICLES_PER_EDGE + k;
+        const u =
+          ((flowPhase[idx]! + t * flowSpeed[idx]! * flowSpeedMul) % 1 + 1) % 1;
+        flowTmpOut.lerpVectors(flowTmpA, flowTmpB, u);
+        flowArr[fq++] = flowTmpOut.x;
+        flowArr[fq++] = flowTmpOut.y;
+        flowArr[fq++] = flowTmpOut.z;
+      }
+    }
+    flowPosAttr.needsUpdate = true;
+
     shadowMesh.position.x = mesh.position.x * 0.94;
     shadowMesh.position.y = mesh.position.y * 0.42 - 0.92;
     shadowMesh.position.z = mesh.position.z - 0.54;
@@ -802,6 +1116,14 @@ export function mountHal404Blob(
     geo.dispose();
     mat.dispose();
     glowMat.dispose();
+    hyperPointsGeo.dispose();
+    hyperStreaksGeo.dispose();
+    hyperFlowGeo.dispose();
+    hyperPointsMat.dispose();
+    hyperHaloMat.dispose();
+    hyperFlowMat.dispose();
+    hyperStreaksMat.dispose();
+    hyperParticleTex.dispose();
     shadowGeo.dispose();
     shadowMat.dispose();
     shadowTex.dispose();
