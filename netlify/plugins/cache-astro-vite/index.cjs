@@ -1,13 +1,17 @@
 /**
- * Persist Astro + Vite caches between Netlify builds.
+ * Persist Astro’s cache between Netlify builds.
  *
  * `npm ci` removes `node_modules` each time, so without this plugin the default
  * `./node_modules/.astro` cache (see astro.config) is lost every deploy.
  *
+ * We do **not** cache `node_modules/.vite`: restoring stale dependency pre-bundles
+ * across Vite / esbuild / astro.config changes has caused CI-only failures where
+ * esbuild re-parses merged client chunks (`Syntax error "d"` in who-scroll-client).
+ *
  * Uses .cjs because the repo root has "type": "module"; Netlify loads this file as ESM otherwise.
  */
 
-const CACHED_DIRS = ["node_modules/.astro", "node_modules/.vite"];
+const CACHED_DIRS = ["node_modules/.astro"];
 
 module.exports = {
   async onPreBuild({ utils }) {
