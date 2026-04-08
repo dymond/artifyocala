@@ -21,11 +21,15 @@ export function teardownWhoArchBackdrop(): void {
 
 /** Mount WebGL backdrop when #who nears the viewport (matches WhoScrollArch.astro). */
 export function setupWhoArchBackdrop(): void {
-  if (typeof window === "undefined" || typeof document === "undefined") return;
+  // Avoid `typeof x === "undefined"` — some CI esbuild passes rewrite it to `typeof x>"u"`
+  // and a later parse step fails with `Syntax error "d"` around `document`.
+  if (!("document" in globalThis)) return;
+  const doc = globalThis.document;
+  if (!doc) return;
 
   teardownWhoArchBackdrop();
 
-  const who = document.getElementById("who");
+  const who = doc.getElementById("who");
   if (!who) return;
 
   const captured = gen;
@@ -41,7 +45,7 @@ export function setupWhoArchBackdrop(): void {
     })();
   };
 
-  if (!("IntersectionObserver" in window)) {
+  if (!("IntersectionObserver" in globalThis)) {
     kickoff();
     return;
   }

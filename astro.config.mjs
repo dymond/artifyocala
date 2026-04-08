@@ -10,6 +10,7 @@ import sitemap from "@astrojs/sitemap";
 
 import react from "@astrojs/react";
 import tinaClientDirective from "./astro-tina-directive/register.mjs";
+import stripWhoScrollPreload from "./vite-plugins/strip-who-scroll-preload.mjs";
 
 /**
  * Netlify’s Vite dev middleware spawns Deno for edge emulation; after hot config
@@ -62,7 +63,11 @@ export default defineConfig({
     concurrency: astroBuildConcurrency,
   },
   vite: {
-    plugins: [viteAdminPathRewrite(), tailwindcss()],
+    plugins: [
+      viteAdminPathRewrite(),
+      tailwindcss(),
+      stripWhoScrollPreload(),
+    ],
     build: {
       /**
        * Do not run esbuild minify on production bundles: Netlify’s pipeline re-parses chunks
