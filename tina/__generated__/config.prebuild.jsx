@@ -1,6 +1,8 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
-var branch = process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.NETLIFY_BRANCH || process.env.HEAD || "main";
+var netlifyContext = process.env.CONTEXT;
+var isNetlifyPreviewContext = netlifyContext === "deploy-preview" || netlifyContext === "branch-deploy";
+var branch = process.env.TINA_CONTENT_BRANCH?.trim() || (isNetlifyPreviewContext ? "main" : void 0) || process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.NETLIFY_BRANCH || process.env.HEAD || "main";
 var netlifyDeploysUrl = process.env.PUBLIC_NETLIFY_DEPLOYS_URL?.trim() || "https://app.netlify.com/sites/incredible-tarsier-9abffe/deploys";
 var netlifySiteSlug = "incredible-tarsier-9abffe";
 var config_default = defineConfig({

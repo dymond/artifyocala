@@ -1,6 +1,17 @@
 import { defineConfig } from "tinacms";
 
+/**
+ * Netlify branch / PR previews check out a git branch that often does not exist in Tina Cloud.
+ * The read token then gets 403 from the Tina Content API for that branch. Use `main` for GraphQL
+ * on preview contexts unless `TINA_CONTENT_BRANCH` overrides (e.g. to test indexed branches).
+ */
+const netlifyContext = process.env.CONTEXT;
+const isNetlifyPreviewContext =
+  netlifyContext === "deploy-preview" || netlifyContext === "branch-deploy";
+
 const branch =
+  process.env.TINA_CONTENT_BRANCH?.trim() ||
+  (isNetlifyPreviewContext ? "main" : undefined) ||
   process.env.GITHUB_BRANCH ||
   process.env.VERCEL_GIT_COMMIT_REF ||
   process.env.NETLIFY_BRANCH ||
