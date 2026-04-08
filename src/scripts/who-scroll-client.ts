@@ -1,28 +1,29 @@
 /**
- * Who-section WebGL: load `three` + backdrop only after #who nears the viewport.
- * A static import of `who-arch-backdrop` would pull Three.js into the main bundle.
+ * Who-section WebGL: mount `who-arch-backdrop` when #who nears the viewport.
+ *
+ * We use a static import (not dynamic `import()`) so Vite never injects
+ * __vitePreload/__vite__mapDeps — Netlify’s esbuild pass fails on that helper.
+ * Three.js is code-split into its own chunk via `manualChunks` in `astro.config.mjs`.
  */
+
+import { mountWhoArchBackdrop, unmountWhoArchBackdrop } from "./who-arch-backdrop";
 
 let gen = 0;
 let whoIo: IntersectionObserver | null = null;
 let whoMounted = false;
-let whoMod: typeof import("./who-arch-backdrop") | null = null;
 
 export function teardownWhoArchBackdrop(): void {
   gen += 1;
   whoIo?.disconnect();
   whoIo = null;
-  if (whoMounted && whoMod) {
-    whoMod.unmountWhoArchBackdrop();
+  if (whoMounted) {
+    unmountWhoArchBackdrop();
     whoMounted = false;
-    whoMod = null;
   }
 }
 
 /** Mount WebGL backdrop when #who nears the viewport (matches WhoScrollArch.astro). */
 export function setupWhoArchBackdrop(): void {
-  // Avoid `typeof x === "undefined"` — some CI esbuild passes rewrite it to `typeof x>"u"`
-  // and a later parse step fails with `Syntax error "d"` around `document`.
   if (!("document" in globalThis)) return;
   const doc = globalThis.document;
   if (!doc) return;
@@ -32,19 +33,15 @@ export function setupWhoArchBackdrop(): void {
   const who = doc.getElementById("who");
   if (!who) return;
 
-  const captured = gen;
-
   const kickoff = (): void => {
-    void (async () => {
-      if (whoMounted) return;
-      // Stripped in build by strip-who-scroll-preload (Rollup output + Vite hooks) so CI
-      // esbuild never sees Vite’s __vitePreload/__vite__mapDeps wrapper.
-      const mod = await import(/* @vite-ignore */ "./who-arch-backdrop");
-      if (captured !== gen) return;
-      mod.mountWhoArchBackdrop();
-      whoMod = mod;
-      whoMounted = true;
-    })();
+    if (whoMounted) return;
+    const before = gen;
+    mountWhoArchBackdrop();
+    if (before !== gen) {
+      unmountWhoArchBackdrop();
+      return;
+    }
+    whoMounted = true;
   };
 
   if (!("IntersectionObserver" in globalThis)) {

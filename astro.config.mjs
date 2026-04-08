@@ -10,10 +10,6 @@ import sitemap from "@astrojs/sitemap";
 
 import react from "@astrojs/react";
 import tinaClientDirective from "./astro-tina-directive/register.mjs";
-import stripWhoScrollPreload, {
-  stripVitePreloadRollupOutputPlugin,
-} from "./vite-plugins/strip-who-scroll-preload.mjs";
-
 /**
  * Netlify’s Vite dev middleware spawns Deno for edge emulation; after hot config
  * reloads it can throw `spawn EBADF` / “Could not establish a connection to the
@@ -65,11 +61,7 @@ export default defineConfig({
     concurrency: astroBuildConcurrency,
   },
   vite: {
-    plugins: [
-      viteAdminPathRewrite(),
-      tailwindcss(),
-      stripWhoScrollPreload(),
-    ],
+    plugins: [viteAdminPathRewrite(), tailwindcss()],
     build: {
       /**
        * Do not run esbuild minify on production bundles: Netlify’s pipeline re-parses chunks
@@ -88,8 +80,6 @@ export default defineConfig({
       chunkSizeWarningLimit: 1600,
       rollupOptions: {
         output: {
-          /** Netlify SSR pass: ensure who-scroll-client / PageVisualEdit chunks are stripped here. */
-          plugins: [stripVitePreloadRollupOutputPlugin()],
           manualChunks(id) {
             if (!id.includes("node_modules")) return;
             if (id.includes("three") || id.includes("three/")) {

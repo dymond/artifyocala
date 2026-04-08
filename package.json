@@ -13,6 +13,7 @@
     "build": "tinacms build --no-client-build-cache --skip-search-index && node scripts/remove-tina-generated-client.mjs && astro build",
     "build:deploy": "tinacms build --skip-search-index --skip-cloud-checks && node scripts/remove-tina-generated-client.mjs && astro build",
     "build:netlify:ci": "node scripts/netlify-build.mjs",
+    "build:netlify-parity": "rm -rf node_modules/.vite dist && pnpm rebuild esbuild && NETLIFY=true pnpm exec astro build",
     "build:offline": "tinacms build --local --skip-cloud-checks --datalayer-port 9010 --no-client-build-cache --skip-search-index && node scripts/remove-tina-generated-client.mjs && astro build",
     "build:netlify": "netlify build --offline",
     "build:netlify:online": "netlify build",
