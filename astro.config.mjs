@@ -64,7 +64,13 @@ export default defineConfig({
   vite: {
     plugins: [viteAdminPathRewrite(), tailwindcss()],
     build: {
-      minify: isNetlifyBuild ? "esbuild" : false,
+      /**
+       * Do not run esbuild minify on production bundles: Netlify’s pipeline re-parses chunks
+       * and fails on output that uses esbuild’s `typeof` shorthand (`Syntax error "d"` in
+       * who-scroll-client). `vite.esbuild.minifySyntax: false` is not reliably applied to
+       * the minify pass. Rollup output stays unminified; gzip/Brotli at the edge still apply.
+       */
+      minify: false,
       modulePreload: isAstroBuild && isNetlifyBuild,
       /** Server/SSR chunks still exceed default 500 kB; manualChunks splits three/react/tina/shiki. */
       chunkSizeWarningLimit: 1600,
@@ -101,15 +107,9 @@ export default defineConfig({
         },
       },
     },
-    /**
-     * Non-Netlify: no minify (readable). Netlify: minify identifiers + whitespace but not syntax —
-     * esbuild’s `typeof x === "undefined"` → `typeof x>"u"` rewrite can make a later esbuild parse
-     * pass fail on CI (`Syntax error "d"` in who-scroll-client). See Vite `build.minify` + esbuild options.
-     */
+    /** Dev / non-production builds: keep readable transforms (no minify — see `build.minify`). */
     esbuild: isNetlifyBuild
-      ? {
-          minifySyntax: false,
-        }
+      ? undefined
       : {
           minifyIdentifiers: false,
           minifySyntax: false,
