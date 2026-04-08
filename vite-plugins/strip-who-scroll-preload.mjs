@@ -43,6 +43,24 @@ export function stripVitePreloadFromChunk(code) {
   return code;
 }
 
+/**
+ * Rollup `output.plugins` hook — runs for every emitted chunk in *all* Vite/Astro build passes
+ * (including “Building server entrypoints”), where a top-level Vite plugin can be skipped.
+ */
+export function stripVitePreloadRollupOutputPlugin() {
+  return {
+    name: "strip-vite-preload-rollup-output",
+    renderChunk(code) {
+      if (!code.includes("__vitePreload") && !code.includes("__vite__mapDeps")) {
+        return null;
+      }
+      const next = stripVitePreloadFromChunk(code);
+      if (next === code) return null;
+      return { code: next, map: null };
+    },
+  };
+}
+
 export default function stripWhoScrollPreload() {
   return {
     name: "strip-who-scroll-preload",

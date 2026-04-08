@@ -10,7 +10,9 @@ import sitemap from "@astrojs/sitemap";
 
 import react from "@astrojs/react";
 import tinaClientDirective from "./astro-tina-directive/register.mjs";
-import stripWhoScrollPreload from "./vite-plugins/strip-who-scroll-preload.mjs";
+import stripWhoScrollPreload, {
+  stripVitePreloadRollupOutputPlugin,
+} from "./vite-plugins/strip-who-scroll-preload.mjs";
 
 /**
  * Netlify’s Vite dev middleware spawns Deno for edge emulation; after hot config
@@ -86,6 +88,8 @@ export default defineConfig({
       chunkSizeWarningLimit: 1600,
       rollupOptions: {
         output: {
+          /** Netlify SSR pass: ensure who-scroll-client / PageVisualEdit chunks are stripped here. */
+          plugins: [stripVitePreloadRollupOutputPlugin()],
           manualChunks(id) {
             if (!id.includes("node_modules")) return;
             if (id.includes("three") || id.includes("three/")) {

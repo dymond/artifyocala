@@ -37,8 +37,8 @@ export function setupWhoArchBackdrop(): void {
   const kickoff = (): void => {
     void (async () => {
       if (whoMounted) return;
-      // @vite-ignore — avoids __vitePreload/__vite__mapDeps emission; Netlify’s build re-parses
-      // chunks with esbuild and fails on that helper (`Syntax error "d"`).
+      // Stripped in build by strip-who-scroll-preload (Rollup output + Vite hooks) so CI
+      // esbuild never sees Vite’s __vitePreload/__vite__mapDeps wrapper.
       const mod = await import(/* @vite-ignore */ "./who-arch-backdrop");
       if (captured !== gen) return;
       mod.mountWhoArchBackdrop();

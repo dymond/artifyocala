@@ -1,5 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { stripVitePreloadFromChunk } from "../../vite-plugins/strip-who-scroll-preload.mjs";
+import {
+  stripVitePreloadFromChunk,
+  stripVitePreloadRollupOutputPlugin,
+} from "../../vite-plugins/strip-who-scroll-preload.mjs";
+
+describe("stripVitePreloadRollupOutputPlugin", () => {
+  it("is a Rollup output plugin with renderChunk", () => {
+    const p = stripVitePreloadRollupOutputPlugin();
+    expect(p.name).toBe("strip-vite-preload-rollup-output");
+    expect(typeof p.renderChunk).toBe("function");
+  });
+});
 
 describe("stripVitePreloadFromChunk", () => {
   it("leaves unrelated code unchanged", () => {
