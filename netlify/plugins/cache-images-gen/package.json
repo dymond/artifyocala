@@ -1,0 +1,7 @@
+{
+  "name": "artify-cache-images-gen",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.cjs"
+}
+
