@@ -84,7 +84,7 @@ export default function WhoScrollArchVisual({ section }: Props) {
               height={1756}
               loading="lazy"
               decoding="async"
-              sizes="100vw"
+              sizes="(min-width: 1536px) min(90vw, 1280px), 100vw"
               className="absolute inset-0 z-0 h-full max-h-none w-full object-cover object-[center_30%]"
               data-tina-field={tinaField(s, "wscImage")}
             />

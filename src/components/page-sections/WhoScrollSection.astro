@@ -11,6 +11,6 @@ const { section } = Astro.props;
 
 {
   section.wscShowWhoScroll !== false && (
-    <WhoScrollArchVisual client:load section={section} />
+    <WhoScrollArchVisual client:visible section={section} />
   )
 }

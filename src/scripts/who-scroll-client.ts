@@ -1,17 +1,21 @@
-import {
-  mountWhoArchBackdrop,
-  unmountWhoArchBackdrop,
-} from "./who-arch-backdrop";
+/**
+ * Who-section WebGL: load `three` + backdrop only after #who nears the viewport.
+ * A static import of `who-arch-backdrop` would pull Three.js into the main bundle.
+ */
 
+let gen = 0;
 let whoIo: IntersectionObserver | null = null;
 let whoMounted = false;
+let whoMod: typeof import("./who-arch-backdrop") | null = null;
 
 export function teardownWhoArchBackdrop(): void {
+  gen += 1;
   whoIo?.disconnect();
   whoIo = null;
-  if (whoMounted) {
-    unmountWhoArchBackdrop();
+  if (whoMounted && whoMod) {
+    whoMod.unmountWhoArchBackdrop();
     whoMounted = false;
+    whoMod = null;
   }
 }
 
@@ -24,10 +28,17 @@ export function setupWhoArchBackdrop(): void {
   const who = document.getElementById("who");
   if (!who) return;
 
+  const captured = gen;
+
   const kickoff = (): void => {
-    if (whoMounted) return;
-    mountWhoArchBackdrop();
-    whoMounted = true;
+    void (async () => {
+      if (whoMounted) return;
+      const mod = await import("./who-arch-backdrop");
+      if (captured !== gen) return;
+      mod.mountWhoArchBackdrop();
+      whoMod = mod;
+      whoMounted = true;
+    })();
   };
 
   if (!("IntersectionObserver" in window)) {
