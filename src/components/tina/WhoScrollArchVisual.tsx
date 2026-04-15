@@ -1,12 +1,7 @@
 import { tinaField } from "tinacms/dist/react";
-import { useEffect } from "react";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import { imageAlt } from "../../lib/image-alt";
 import ResponsiveImage from "../ui/ResponsiveImage";
-import {
-  setupWhoArchBackdrop,
-  teardownWhoArchBackdrop,
-} from "../../scripts/who-scroll-client";
 
 function IconExt() {
   return (
@@ -44,18 +39,6 @@ export type WhoScrollSectionFields = {
 type Props = { section: WhoScrollSectionFields };
 
 export default function WhoScrollArchVisual({ section }: Props) {
-  useEffect(() => {
-    setupWhoArchBackdrop();
-    const onPageLoad = (): void => {
-      setupWhoArchBackdrop();
-    };
-    document.addEventListener("astro:page-load", onPageLoad);
-    return () => {
-      document.removeEventListener("astro:page-load", onPageLoad);
-      teardownWhoArchBackdrop();
-    };
-  }, []);
-
   const s = section;
   const tone = s.wscButtonTone ?? "surge";
 
