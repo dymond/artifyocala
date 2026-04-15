@@ -2,6 +2,11 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
+import {
+  buildContentSecurityPolicy,
+  buildContentSecurityPolicyReportOnly,
+} from "./netlify-csp.mjs";
+
 const ROOT = process.cwd();
 const OUT = path.join(ROOT, "public", "_headers");
 
@@ -15,76 +20,6 @@ const commitRef =
   process.env.HEAD?.trim() ||
   process.env.NETLIFY_BRANCH?.trim() ||
   "";
-
-function csp({ allowEval, allowTina }) {
-  const scriptSrc = [
-    "'self'",
-    "'unsafe-inline'",
-    ...(allowEval ? ["'unsafe-eval'"] : []),
-    "https://www.googletagmanager.com",
-    "https://www.google-analytics.com",
-    ...(allowTina ? ["https://us-assets.i.posthog.com"] : []),
-  ].join(" ");
-
-  const connectSrc = [
-    "'self'",
-    "https://www.google-analytics.com",
-    "https://region1.google-analytics.com",
-    "https://www.googletagmanager.com",
-    ...(allowTina
-      ? [
-          "https://content.tinajs.io",
-          "https://identity.tinajs.io",
-          "https://identity-v2.tinajs.io",
-          "https://assets.tinajs.io",
-          "https://assets.tina.io",
-          "https://app.tina.io",
-          "https://us.i.posthog.com",
-        ]
-      : []),
-  ].join(" ");
-
-  const frameSrc = ["'self'", ...(allowTina ? ["https://app.tina.io"] : [])].join(
-    " "
-  );
-
-  const styleSrc = [
-    "'self'",
-    "'unsafe-inline'",
-    ...(allowTina ? ["https://fonts.googleapis.com"] : []),
-  ].join(" ");
-
-  const fontSrc = ["'self'", "data:", ...(allowTina ? ["https://fonts.gstatic.com"] : [])].join(
-    " "
-  );
-
-  return [
-    "default-src 'self'",
-    "base-uri 'self'",
-    "object-src 'none'",
-    // Allow Tina visual editor to iframe the site (same-origin only).
-    "frame-ancestors 'self'",
-    `frame-src ${frameSrc}`,
-    "form-action 'self'",
-    "img-src 'self' data: https:",
-    `font-src ${fontSrc}`,
-    `style-src ${styleSrc}`,
-    `script-src ${scriptSrc}`,
-    `connect-src ${connectSrc}`,
-    "worker-src 'self' blob:",
-    "manifest-src 'self'",
-    "upgrade-insecure-requests",
-  ].join("; ");
-}
-
-function cspReportOnly({ allowEval, allowTina }) {
-  return [
-    csp({ allowEval, allowTina }),
-    "require-trusted-types-for 'script'",
-    "trusted-types default",
-    "report-sample",
-  ].join("; ");
-}
 
 const lines = [];
 
@@ -122,10 +57,10 @@ lines.push("");
 lines.push("/*");
 if (!isEditSite) {
   lines.push(
-    `  Content-Security-Policy: ${csp({ allowEval: true, allowTina: false })}`
+    `  Content-Security-Policy: ${buildContentSecurityPolicy({ allowEval: true, allowTina: false })}`
   );
   lines.push(
-    `  Content-Security-Policy-Report-Only: ${cspReportOnly({
+    `  Content-Security-Policy-Report-Only: ${buildContentSecurityPolicyReportOnly({
       allowEval: true,
       allowTina: false,
     })}`
@@ -157,9 +92,11 @@ lines.push("");
 // Production site: keep CSP strict on public pages but allow Tina admin to function.
 if (!isEditSite) {
   lines.push("/admin/*");
-  lines.push(`  Content-Security-Policy: ${csp({ allowEval: true, allowTina: true })}`);
   lines.push(
-    `  Content-Security-Policy-Report-Only: ${cspReportOnly({
+    `  Content-Security-Policy: ${buildContentSecurityPolicy({ allowEval: true, allowTina: true })}`
+  );
+  lines.push(
+    `  Content-Security-Policy-Report-Only: ${buildContentSecurityPolicyReportOnly({
       allowEval: true,
       allowTina: true,
     })}`
