@@ -135,7 +135,8 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: (page) => !page.endsWith("/404") && !page.startsWith("/__tina__/"),
+      filter: (page) =>
+        !page.endsWith("/404") && !page.startsWith("/tina-preview/"),
     }),
     alpinejs(),
     ...(enableAnalytics

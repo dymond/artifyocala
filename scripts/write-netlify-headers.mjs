@@ -109,7 +109,7 @@ lines.push("/admin/assets/*");
 lines.push("  Cache-Control: public, max-age=31536000, immutable");
 lines.push("");
 
-lines.push("/__tina__/*");
+lines.push("/tina-preview/*");
 lines.push("  Cache-Control: no-store");
 lines.push("");
 

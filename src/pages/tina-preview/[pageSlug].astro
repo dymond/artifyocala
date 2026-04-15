@@ -1,0 +1,51 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageVisualEdit from "../../components/tina/PageVisualEdit";
+import { getCollection } from "astro:content";
+import client from "../../lib/tina-graphql-client";
+import { breadcrumbListJsonLd, resolvePageDescription } from "../../lib/seo";
+
+export async function getStaticPaths() {
+  const all = await getCollection("pages");
+  return all
+    .filter((p) => p.data.slug !== "home")
+    .map((p) => ({
+      params: { pageSlug: p.data.slug },
+      props: { entryId: p.id },
+    }));
+}
+
+const { entryId } = Astro.props;
+const tina = await client.queries.page({
+  relativePath: `${entryId}.json`,
+});
+const page = tina.data.page;
+if (!page) {
+  throw new Error(`Tina page missing for "${entryId}.json"`);
+}
+const { metaTitle, metaDescription } = page;
+
+const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
+const structuredData = [
+  breadcrumbListJsonLd(siteOrigin, [
+    { name: "Home", path: "/" },
+    { name: metaTitle ?? page.slug, path: `/${page.slug}` },
+  ]),
+];
+---
+
+<BaseLayout
+  title={metaTitle ?? ""}
+  description={resolvePageDescription(metaDescription)}
+  structuredData={structuredData}
+  metaRobots="noindex, nofollow"
+>
+  <PageVisualEdit
+    client:tina
+    query={tina.query}
+    variables={tina.variables}
+    data={tina.data}
+    pageSlug={page.slug}
+  />
+</BaseLayout>
+

@@ -76,7 +76,7 @@ export default defineConfig({
         ui: {
           router: ({ document }) => {
             const base = document._sys.basename.replace(/\.mdx?$/i, "");
-            return `/__tina__/programs/${base}`;
+            return `/tina-preview/programs/${base}`;
           },
         },
         fields: [
@@ -248,9 +248,9 @@ export default defineConfig({
               "";
             const slug =
               (document as { slug?: string }).slug?.trim() || fromSys || "";
-            if (slug === "home") return "/__tina__/";
+            if (slug === "home") return "/tina-preview/";
             if (!slug) return undefined;
-            return `/__tina__/${slug}`;
+            return `/tina-preview/${slug}`;
           },
         },
         fields: [
