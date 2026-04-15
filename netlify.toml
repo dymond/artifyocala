@@ -31,6 +31,28 @@
 ## Headers are generated at build time into `public/_headers` by
 ## `scripts/write-netlify-headers.mjs` so production and edit sites can differ.
 
+# Production domain: send all CMS/admin traffic to edit subdomain.
+[[redirects]]
+  from = "/admin/*"
+  to = "https://edit.artify.diy/admin/:splat"
+  status = 301
+  force = true
+  conditions = { Host = ["artify.diy", "www.artify.diy"] }
+
+[[redirects]]
+  from = "/admin"
+  to = "https://edit.artify.diy/admin"
+  status = 301
+  force = true
+  conditions = { Host = ["artify.diy", "www.artify.diy"] }
+
+[[redirects]]
+  from = "/admin/"
+  to = "https://edit.artify.diy/admin/"
+  status = 301
+  force = true
+  conditions = { Host = ["artify.diy", "www.artify.diy"] }
+
 # Tina admin SPA: serve index without requiring /admin/index.html in the URL.
 # Only these exact paths — do not use /admin/* or /admin/assets/* would break.
 [[redirects]]

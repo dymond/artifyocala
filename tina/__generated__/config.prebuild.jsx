@@ -3,6 +3,7 @@ import { defineConfig } from "tinacms";
 var branch = process.env.TINA_CONTENT_BRANCH?.trim() || process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.NETLIFY_BRANCH || process.env.HEAD || "main";
 var netlifyDeploysUrl = process.env.PUBLIC_NETLIFY_DEPLOYS_URL?.trim() || "https://app.netlify.com/sites/incredible-tarsier-9abffe/deploys";
 var netlifySiteSlug = "incredible-tarsier-9abffe";
+var tinaPreviewUrl = process.env.PUBLIC_TINA_PREVIEW_URL?.trim() || "";
 var config_default = defineConfig({
   branch,
   clientId: process.env.PUBLIC_TINA_CLIENT_ID,
@@ -21,7 +22,7 @@ var config_default = defineConfig({
     previewUrl: (ctx) => {
       const b = ctx.branch?.replace(/\//g, "-") || "main";
       if (b === "main") {
-        return { url: "https://artify.diy" };
+        return { url: tinaPreviewUrl || "https://artify.diy" };
       }
       return {
         url: `https://${b}--${netlifySiteSlug}.netlify.app`

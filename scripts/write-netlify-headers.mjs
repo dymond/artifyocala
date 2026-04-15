@@ -9,7 +9,7 @@ const isEditSite =
   process.env.ARTIFY_NETLIFY_EDIT_SITE === "1" ||
   process.env.PUBLIC_ARTIFY_VISUAL_EDITING === "1";
 
-function csp({ allowEval }) {
+function csp({ allowEval, allowTina }) {
   const scriptSrc = [
     "'self'",
     "'unsafe-inline'",
@@ -18,26 +18,45 @@ function csp({ allowEval }) {
     "https://www.google-analytics.com",
   ].join(" ");
 
+  const connectSrc = [
+    "'self'",
+    "https://www.google-analytics.com",
+    "https://region1.google-analytics.com",
+    "https://www.googletagmanager.com",
+    ...(allowTina
+      ? [
+          "https://content.tinajs.io",
+          "https://identity.tinajs.io",
+          "https://app.tina.io",
+        ]
+      : []),
+  ].join(" ");
+
+  const frameSrc = ["'self'", ...(allowTina ? ["https://app.tina.io"] : [])].join(
+    " "
+  );
+
   return [
     "default-src 'self'",
     "base-uri 'self'",
     "object-src 'none'",
     "frame-ancestors 'none'",
+    `frame-src ${frameSrc}`,
     "form-action 'self'",
     "img-src 'self' data: https:",
     "font-src 'self' data:",
     "style-src 'self' 'unsafe-inline'",
     `script-src ${scriptSrc}`,
-    "connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://www.googletagmanager.com",
+    `connect-src ${connectSrc}`,
     "worker-src 'self' blob:",
     "manifest-src 'self'",
     "upgrade-insecure-requests",
   ].join("; ");
 }
 
-function cspReportOnly({ allowEval }) {
+function cspReportOnly({ allowEval, allowTina }) {
   return [
-    csp({ allowEval }),
+    csp({ allowEval, allowTina }),
     "require-trusted-types-for 'script'",
     "trusted-types default",
     "report-sample",
@@ -57,9 +76,14 @@ lines.push("");
 
 // Baseline security headers
 lines.push("/*");
-lines.push(`  Content-Security-Policy: ${csp({ allowEval: isEditSite })}`);
 lines.push(
-  `  Content-Security-Policy-Report-Only: ${cspReportOnly({ allowEval: isEditSite })}`
+  `  Content-Security-Policy: ${csp({ allowEval: isEditSite, allowTina: isEditSite })}`
+);
+lines.push(
+  `  Content-Security-Policy-Report-Only: ${cspReportOnly({
+    allowEval: isEditSite,
+    allowTina: isEditSite,
+  })}`
 );
 lines.push("  Cross-Origin-Opener-Policy: same-origin");
 lines.push("  Referrer-Policy: strict-origin-when-cross-origin");
@@ -79,9 +103,12 @@ lines.push("");
 // Production site: keep CSP strict on public pages but allow Tina admin to function.
 if (!isEditSite) {
   lines.push("/admin/*");
-  lines.push(`  Content-Security-Policy: ${csp({ allowEval: true })}`);
+  lines.push(`  Content-Security-Policy: ${csp({ allowEval: true, allowTina: true })}`);
   lines.push(
-    `  Content-Security-Policy-Report-Only: ${cspReportOnly({ allowEval: true })}`
+    `  Content-Security-Policy-Report-Only: ${cspReportOnly({
+      allowEval: true,
+      allowTina: true,
+    })}`
   );
   lines.push("");
 }

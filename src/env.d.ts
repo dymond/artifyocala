@@ -12,3 +12,5 @@ interface ImportMetaEnv {
 declare namespace JSX {
   interface IntrinsicElements extends astroHTML.JSX.IntrinsicElements {}
 }
+
+declare module "@alpinejs/csp";

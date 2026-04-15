@@ -4,7 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 
 import mdx from "@astrojs/mdx";
 import netlify from "@astrojs/netlify";
-import alpinejs from "@astrojs/alpinejs";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 
@@ -26,11 +25,14 @@ const enableAnalytics = Boolean(process.env.PUBLIC_GA_MEASUREMENT_ID);
 
 /** Same as netlify.toml: /admin and /admin/ serve Tina admin without /index.html in the URL. */
 function viteAdminPathRewrite() {
-  return {
+  /** @type {any} */
+  const plugin = {
     name: "vite-admin-path-rewrite",
-    apply: "serve",
+    apply: /** @type {any} */ ("serve"),
+    /** @param {any} server */
     configureServer(server) {
-      server.middlewares.use((req, _res, next) => {
+      /** @type {(req: any, _res: any, next: any) => void} */
+      const middleware = (req, _res, next) => {
         const raw = req.url ?? "";
         const q = raw.indexOf("?");
         const path = q === -1 ? raw : raw.slice(0, q);
@@ -39,9 +41,11 @@ function viteAdminPathRewrite() {
           req.url = "/admin/index.html" + search;
         }
         next();
-      });
+      };
+      server.middlewares.use(middleware);
     },
   };
+  return plugin;
 }
 
 // https://astro.build/config
@@ -132,7 +136,6 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.endsWith("/404"),
     }),
-    alpinejs(),
     ...(enableAnalytics
       ? [
           partytown({
