@@ -79,6 +79,9 @@ function runTinaPipeline(changedPaths = []) {
 
 function runAstroOnly(changedPaths = []) {
   run("node", ["scripts/write-netlify-headers.mjs"]);
+  // Even when we skip `tinacms build`, the admin output may be restored from cache.
+  // Patch it so post-login `/#/~` lands on the visual editor preview.
+  run("node", ["scripts/patch-tina-admin-index.mjs"]);
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
   // See note in `runTinaPipeline()` about caching `public/images/_gen/` on Netlify.
   if (shouldRunImagesBuild(changedPaths)) {
