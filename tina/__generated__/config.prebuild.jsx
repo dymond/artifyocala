@@ -58,7 +58,7 @@ var config_default = defineConfig({
         ui: {
           router: ({ document }) => {
             const base = document._sys.basename.replace(/\.mdx?$/i, "");
-            return `/__tina__/programs/${base}`;
+            return `/tina-preview/programs/${base}`;
           }
         },
         fields: [
@@ -214,9 +214,9 @@ var config_default = defineConfig({
             const sys = document._sys;
             const fromSys = sys?.filename?.replace(/\.json$/i, "") || sys?.basename?.replace(/\.json$/i, "") || sys?.relativePath?.replace(/^.*[/\\]/, "").replace(/\.json$/i, "") || "";
             const slug = document.slug?.trim() || fromSys || "";
-            if (slug === "home") return "/__tina__/";
+            if (slug === "home") return "/tina-preview/";
             if (!slug) return void 0;
-            return `/__tina__/${slug}`;
+            return `/tina-preview/${slug}`;
           }
         },
         fields: [
