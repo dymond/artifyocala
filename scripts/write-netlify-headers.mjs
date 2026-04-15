@@ -99,10 +99,12 @@ lines.push("");
 // Keep hashed assets cacheable, but force HTML + app shell to revalidate on every load.
 lines.push("/admin/index.html");
 lines.push("  Cache-Control: no-store");
+lines.push("  Netlify-CDN-Cache-Control: no-store");
 lines.push("");
 
 lines.push("/admin/*");
 lines.push("  Cache-Control: no-store");
+lines.push("  Netlify-CDN-Cache-Control: no-store");
 lines.push("");
 
 lines.push("/admin/assets/*");
@@ -111,6 +113,7 @@ lines.push("");
 
 lines.push("/tina-preview/*");
 lines.push("  Cache-Control: no-store");
+lines.push("  Netlify-CDN-Cache-Control: no-store");
 lines.push("");
 
 // Baseline security headers
