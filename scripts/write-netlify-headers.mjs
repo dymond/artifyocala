@@ -9,6 +9,13 @@ const isEditSite =
   process.env.ARTIFY_NETLIFY_EDIT_SITE === "1" ||
   process.env.PUBLIC_ARTIFY_VISUAL_EDITING === "1";
 
+const commitRef =
+  process.env.COMMIT_REF?.trim() ||
+  process.env.GITHUB_SHA?.trim() ||
+  process.env.HEAD?.trim() ||
+  process.env.NETLIFY_BRANCH?.trim() ||
+  "";
+
 function csp({ allowEval, allowTina }) {
   const scriptSrc = [
     "'self'",
@@ -89,6 +96,10 @@ lines.push("  Cross-Origin-Opener-Policy: same-origin");
 lines.push("  Referrer-Policy: strict-origin-when-cross-origin");
 lines.push("  X-Content-Type-Options: nosniff");
 lines.push("  X-Frame-Options: DENY");
+if (commitRef) {
+  lines.push(`  X-Artify-Commit: ${commitRef}`);
+}
+lines.push(`  X-Artify-Site: ${isEditSite ? "edit" : "prod"}`);
 // Keep HSTS scoped on production so new subdomains can be brought up safely.
 lines.push(
   `  Strict-Transport-Security: ${
