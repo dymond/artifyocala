@@ -60,7 +60,8 @@ function csp({ allowEval, allowTina }) {
     "default-src 'self'",
     "base-uri 'self'",
     "object-src 'none'",
-    "frame-ancestors 'none'",
+    // Allow Tina visual editor to iframe the site (same-origin only).
+    "frame-ancestors 'self'",
     `frame-src ${frameSrc}`,
     "form-action 'self'",
     "img-src 'self' data: https:",
@@ -113,7 +114,8 @@ if (!isEditSite) {
 }
 lines.push("  Referrer-Policy: strict-origin-when-cross-origin");
 lines.push("  X-Content-Type-Options: nosniff");
-lines.push("  X-Frame-Options: DENY");
+// Allow same-origin framing for Tina visual editor iframe.
+lines.push("  X-Frame-Options: SAMEORIGIN");
 if (commitRef) {
   lines.push(`  X-Artify-Commit: ${commitRef}`);
 }
