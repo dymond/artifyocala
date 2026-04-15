@@ -39,6 +39,41 @@
   force = true
   conditions = { Host = ["edit.artify.diy"] }
 
+[[redirects]]
+  from = "/login"
+  to = "/admin"
+  status = 301
+  force = true
+  conditions = { Host = ["edit.artify.diy"] }
+
+[[redirects]]
+  from = "/signin"
+  to = "/admin"
+  status = 301
+  force = true
+  conditions = { Host = ["edit.artify.diy"] }
+
+[[redirects]]
+  from = "/sign-in"
+  to = "/admin"
+  status = 301
+  force = true
+  conditions = { Host = ["edit.artify.diy"] }
+
+[[redirects]]
+  from = "/cms"
+  to = "/admin"
+  status = 301
+  force = true
+  conditions = { Host = ["edit.artify.diy"] }
+
+[[redirects]]
+  from = "/editor"
+  to = "/admin"
+  status = 301
+  force = true
+  conditions = { Host = ["edit.artify.diy"] }
+
 # Production domain: send all CMS/admin traffic to edit subdomain.
 [[redirects]]
   from = "/admin/*"
