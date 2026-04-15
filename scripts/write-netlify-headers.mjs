@@ -95,6 +95,24 @@ lines.push("/images/*");
 lines.push("  Cache-Control: public, max-age=2592000");
 lines.push("");
 
+// Tina surfaces: avoid sticky HTML/runtime caching.
+// Keep hashed assets cacheable, but force HTML + app shell to revalidate on every load.
+lines.push("/admin/index.html");
+lines.push("  Cache-Control: no-store");
+lines.push("");
+
+lines.push("/admin/*");
+lines.push("  Cache-Control: no-store");
+lines.push("");
+
+lines.push("/admin/assets/*");
+lines.push("  Cache-Control: public, max-age=31536000, immutable");
+lines.push("");
+
+lines.push("/__tina__/*");
+lines.push("  Cache-Control: no-store");
+lines.push("");
+
 // Baseline security headers
 lines.push("/*");
 if (!isEditSite) {
