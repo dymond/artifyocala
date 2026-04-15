@@ -36,6 +36,8 @@ function csp({ allowEval, allowTina }) {
           "https://content.tinajs.io",
           "https://identity.tinajs.io",
           "https://identity-v2.tinajs.io",
+          "https://assets.tinajs.io",
+          "https://assets.tina.io",
           "https://app.tina.io",
           "https://us.i.posthog.com",
         ]

@@ -33,9 +33,17 @@ export function patchTinaAdminIndexHtml(
         var next = preview;
         // Preserve query params (rare, but safe).
         if (h.includes("?")) next += "?" + h.split("?").slice(1).join("?");
-        window.location.replace(
-          window.location.pathname + window.location.search + next
-        );
+        // Changing only the hash may not make Tina reload the preview iframe.
+        // Force a full reload once by adding a query param.
+        var url = new URL(window.location.href);
+        if (!url.searchParams.has("__tina_redirect")) {
+          url.searchParams.set("__tina_redirect", "1");
+          url.hash = next;
+          window.location.replace(url.toString());
+          return;
+        }
+        // If we've already reloaded once, just ensure the hash is correct.
+        if (window.location.hash !== next) window.location.hash = next;
       }
       // 1) Immediate check on first paint
       redirectIfNeeded();
