@@ -48,11 +48,6 @@ lines.push("/admin/assets/*");
 lines.push("  Cache-Control: public, max-age=31536000, immutable");
 lines.push("");
 
-lines.push("/tina-preview/*");
-lines.push("  Cache-Control: no-store");
-lines.push("  Netlify-CDN-Cache-Control: no-store");
-lines.push("");
-
 // Baseline security headers
 lines.push("/*");
 if (!isEditSite) {
@@ -105,6 +100,26 @@ if (!isEditSite) {
   lines.push("  Cross-Origin-Opener-Policy: same-origin-allow-popups");
   lines.push("");
 }
+
+// Visual editor iframe loads `/tina-preview/*` on the same origin; it needs the same
+// Tina-friendly CSP as `/admin/*`, otherwise connect-src blocks the content API and
+// media URLs break inside the preview.
+lines.push("/tina-preview/*");
+lines.push("  Cache-Control: no-store");
+lines.push("  Netlify-CDN-Cache-Control: no-store");
+if (!isEditSite) {
+  lines.push(
+    `  Content-Security-Policy: ${buildContentSecurityPolicy({ allowEval: true, allowTina: true })}`
+  );
+  lines.push(
+    `  Content-Security-Policy-Report-Only: ${buildContentSecurityPolicyReportOnly({
+      allowEval: true,
+      allowTina: true,
+    })}`
+  );
+  lines.push("  Cross-Origin-Opener-Policy: same-origin-allow-popups");
+}
+lines.push("");
 
 await mkdir(path.dirname(OUT), { recursive: true });
 await writeFile(OUT, lines.join("\n") + "\n", "utf8");
