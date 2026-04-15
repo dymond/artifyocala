@@ -92,7 +92,12 @@ lines.push(
     allowTina: isEditSite,
   })}`
 );
-lines.push("  Cross-Origin-Opener-Policy: same-origin");
+// Tina auth uses a cross-origin popup; COOP same-origin breaks window.opener flows.
+lines.push(
+  `  Cross-Origin-Opener-Policy: ${
+    isEditSite ? "same-origin-allow-popups" : "same-origin"
+  }`
+);
 lines.push("  Referrer-Policy: strict-origin-when-cross-origin");
 lines.push("  X-Content-Type-Options: nosniff");
 lines.push("  X-Frame-Options: DENY");
