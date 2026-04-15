@@ -17,12 +17,14 @@ describe("buildContentSecurityPolicy", () => {
     expect(csp).toContain("https://cognito-idp.us-east-1.amazonaws.com");
     expect(csp).toContain("https://*.execute-api.us-east-1.amazonaws.com");
     expect(csp).toContain("https://*.tina.io");
+    expect(csp).toContain("https://s3.us-east-1.amazonaws.com");
   });
 
   it("does not widen connect-src for GitHub when Tina is disabled", () => {
     const csp = buildContentSecurityPolicy({ allowEval: true, allowTina: false });
     expect(csp).not.toContain("api.github.com");
     expect(csp).not.toContain("amazoncognito.com");
+    expect(csp).not.toContain("s3.us-east-1.amazonaws.com");
   });
 
   it("report-only policy extends the enforced policy", () => {

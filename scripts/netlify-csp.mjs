@@ -29,6 +29,8 @@ export function buildContentSecurityPolicy({ allowEval, allowTina }) {
           "https://*.tina.io",
           "https://app.tina.io",
           "https://us.i.posthog.com",
+          // TinaCloud media: presigned PutObject to regional S3 (path-style host).
+          "https://s3.us-east-1.amazonaws.com",
           // TinaCloud auth (AWS Cognito / API Gateway)
           "https://*.auth.us-east-1.amazoncognito.com",
           "https://cognito-idp.us-east-1.amazonaws.com",
