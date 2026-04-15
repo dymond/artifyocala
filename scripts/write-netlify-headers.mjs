@@ -23,6 +23,7 @@ function csp({ allowEval, allowTina }) {
     ...(allowEval ? ["'unsafe-eval'"] : []),
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
+    ...(allowTina ? ["https://us-assets.i.posthog.com"] : []),
   ].join(" ");
 
   const connectSrc = [
@@ -36,6 +37,7 @@ function csp({ allowEval, allowTina }) {
           "https://identity.tinajs.io",
           "https://identity-v2.tinajs.io",
           "https://app.tina.io",
+          "https://us.i.posthog.com",
         ]
       : []),
   ].join(" ");
