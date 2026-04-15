@@ -31,6 +31,14 @@
 ## Headers are generated at build time into `public/_headers` by
 ## `scripts/write-netlify-headers.mjs` so production and edit sites can differ.
 
+# Edit domain: make the editor feel like the “home page”.
+[[redirects]]
+  from = "/"
+  to = "/admin"
+  status = 301
+  force = true
+  conditions = { Host = ["edit.artify.diy"] }
+
 # Production domain: send all CMS/admin traffic to edit subdomain.
 [[redirects]]
   from = "/admin/*"
