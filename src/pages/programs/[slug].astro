@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProgramVisualEdit from '../../components/tina/ProgramVisualEdit';
+import ProgramStatic from '../../components/tina/ProgramStatic';
 import { getCollection } from 'astro:content';
 import client from "../../lib/tina-graphql-client";
 import {
@@ -51,6 +52,7 @@ const structuredData = [
     imageUrl: heroOgUrl,
   }),
 ];
+const visualEditingEnabled = import.meta.env.PUBLIC_ARTIFY_VISUAL_EDITING === "1";
 ---
 
 <BaseLayout
@@ -67,11 +69,17 @@ const structuredData = [
       : undefined,
   }}
 >
-  <ProgramVisualEdit
-    client:tina
-    query={tina.query}
-    variables={tina.variables}
-    data={tina.data}
-    slug={slug}
-  />
+  {
+    visualEditingEnabled ? (
+      <ProgramVisualEdit
+        client:tina
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        slug={slug}
+      />
+    ) : (
+      <ProgramStatic data={tina.data} slug={slug} />
+    )
+  }
 </BaseLayout>

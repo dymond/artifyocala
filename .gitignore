@@ -48,5 +48,8 @@ tina/__generated__/client.ts
 # Generated responsive image variants (built in CI via `pnpm run images:build`)
 public/images/_gen/
 
+# Netlify headers file (generated at build time)
+public/_headers
+
 # Tina generated artifacts (do not commit)
 tina/__generated__/

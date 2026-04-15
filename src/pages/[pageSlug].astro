@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageVisualEdit from "../components/tina/PageVisualEdit";
+import PageStatic from "../components/tina/PageStatic";
 import { getCollection } from "astro:content";
 import client from "../lib/tina-graphql-client";
 import { breadcrumbListJsonLd, resolvePageDescription } from "../lib/seo";
@@ -32,6 +33,7 @@ const structuredData = [
     { name: metaTitle ?? page.slug, path: `/${page.slug}` },
   ]),
 ];
+const visualEditingEnabled = import.meta.env.PUBLIC_ARTIFY_VISUAL_EDITING === "1";
 ---
 
 <BaseLayout
@@ -39,11 +41,17 @@ const structuredData = [
   description={resolvePageDescription(metaDescription)}
   structuredData={structuredData}
 >
-  <PageVisualEdit
-    client:tina
-    query={tina.query}
-    variables={tina.variables}
-    data={tina.data}
-    pageSlug={page.slug}
-  />
+  {
+    visualEditingEnabled ? (
+      <PageVisualEdit
+        client:tina
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        pageSlug={page.slug}
+      />
+    ) : (
+      <PageStatic data={tina.data} />
+    )
+  }
 </BaseLayout>

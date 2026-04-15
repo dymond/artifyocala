@@ -57,6 +57,7 @@ function run(cmd, args) {
 }
 
 function runTinaPipeline(changedPaths = []) {
+  run("node", ["scripts/write-netlify-headers.mjs"]);
   run("pnpm", [
     "exec",
     "tinacms",
@@ -76,6 +77,7 @@ function runTinaPipeline(changedPaths = []) {
 }
 
 function runAstroOnly(changedPaths = []) {
+  run("node", ["scripts/write-netlify-headers.mjs"]);
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
   // See note in `runTinaPipeline()` about caching `public/images/_gen/` on Netlify.
   if (shouldRunImagesBuild(changedPaths)) {

@@ -26,6 +26,7 @@
     "audit:lighthouse": "lhci autorun",
     "audit:pagespeed": "node scripts/pagespeed-insights.mjs",
     "images:build": "node scripts/images-build.mjs",
+    "headers:build": "node scripts/write-netlify-headers.mjs",
     "verify:predeploy": "pnpm test && NETLIFY=true pnpm run images:build && NETLIFY=true pnpm exec astro build && pnpm run audit:lighthouse"
   },
   "dependencies": {

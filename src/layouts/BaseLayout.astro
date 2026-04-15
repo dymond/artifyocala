@@ -25,6 +25,8 @@ const siteChrome = siteChromeEntry.data as SiteChrome;
 interface Props {
   title: string;
   description?: string;
+  /** Slot content (TS helper; Astro provides via <slot />). */
+  children?: unknown;
   /** Optional: preload likely LCP image (e.g. home hero logo path from site-images). */
   preloadLcpImage?: string;
   /** Override default robots meta (use `noindex, nofollow` on error pages). */

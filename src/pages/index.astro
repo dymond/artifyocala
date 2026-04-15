@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageVisualEdit from "../components/tina/PageVisualEdit";
+import PageStatic from "../components/tina/PageStatic";
 import { img } from "../lib/site-images";
 import client from "../lib/tina-graphql-client";
 import { resolvePageDescription } from "../lib/seo";
@@ -11,6 +12,7 @@ if (!page) {
   throw new Error('Tina page "home.json" is required for the home page.');
 }
 const { metaTitle, metaDescription } = page;
+const visualEditingEnabled = import.meta.env.PUBLIC_ARTIFY_VISUAL_EDITING === "1";
 ---
 
 <BaseLayout
@@ -18,11 +20,17 @@ const { metaTitle, metaDescription } = page;
   description={resolvePageDescription(metaDescription)}
   preloadLcpImage={img.logoOnLightHollow}
 >
-  <PageVisualEdit
-    client:tina
-    query={tina.query}
-    variables={tina.variables}
-    data={tina.data}
-    pageSlug="home"
-  />
+  {
+    visualEditingEnabled ? (
+      <PageVisualEdit
+        client:tina
+        query={tina.query}
+        variables={tina.variables}
+        data={tina.data}
+        pageSlug="home"
+      />
+    ) : (
+      <PageStatic data={tina.data} />
+    )
+  }
 </BaseLayout>

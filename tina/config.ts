@@ -15,6 +15,8 @@ const netlifyDeploysUrl =
   "https://app.netlify.com/sites/incredible-tarsier-9abffe/deploys";
 
 const netlifySiteSlug = "incredible-tarsier-9abffe";
+const tinaPreviewUrl =
+  process.env.PUBLIC_TINA_PREVIEW_URL?.trim() || "";
 
 /**
  * Section template field names must be unique across ALL templates in `sections`
@@ -38,7 +40,7 @@ export default defineConfig({
     previewUrl: (ctx) => {
       const b = ctx.branch?.replace(/\//g, "-") || "main";
       if (b === "main") {
-        return { url: "https://artify.diy" };
+        return { url: tinaPreviewUrl || "https://artify.diy" };
       }
       return {
         url: `https://${b}--${netlifySiteSlug}.netlify.app`,

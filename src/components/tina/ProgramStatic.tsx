@@ -1,9 +1,6 @@
-import { tinaField, useTina } from "tinacms/dist/react";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
-import type {
-  ProgramQuery,
-  ProgramQueryVariables,
-} from "../../../tina/__generated__/types";
+import type { ProgramQuery } from "../../../tina/__generated__/types";
+
 import { brickGlamGallery, img, storytellingKnightsGallery } from "../../lib/site-images";
 import { LINKS, mailtoTourMakerCollective } from "../../lib/links";
 import GalleryMarqueeIsland, {
@@ -11,10 +8,7 @@ import GalleryMarqueeIsland, {
 } from "./GalleryMarqueeIsland";
 import ResponsiveImage from "../ui/ResponsiveImage";
 
-import {
-  btnOutline,
-  btnSurge,
-} from "../../lib/tina-ui-buttons";
+import { btnOutline, btnSurge } from "../../lib/tina-ui-buttons";
 
 const btnBase =
   "inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] no-underline cursor-pointer transition-all duration-200 ease-out";
@@ -25,15 +19,6 @@ const btnGhost = `${btnBase} border-2 border-transparent bg-transparent text-ink
 
 const proseDark =
   "prose-inner max-w-[48rem] [&_h2]:font-display [&_h2]:text-[1.65rem] [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:mt-xl [&_h2]:mb-sm [&_h2:first-child]:mt-0 [&_h3]:text-[1.15rem] [&_h3]:font-semibold [&_h3]:mt-lg [&_h3]:mb-xs [&_p]:mb-md [&_ul]:mb-md [&_ul]:pl-5 [&_li]:mb-xs [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline [&_strong]:font-semibold";
-
-type Props = {
-  /** Astro custom client directive typing shim (not forwarded as a React prop). */
-  "client:tina"?: boolean;
-  query: string;
-  variables: ProgramQueryVariables;
-  data: ProgramQuery;
-  slug: string;
-};
 
 type HeroSlide = { src: string; alt: string };
 type CtaRow = {
@@ -96,114 +81,53 @@ function slugDefaults(slug: string): SlugDefaults | null {
   if (slug === "maker-collective") {
     return {
       heroLayout: "singleStandard",
-      heroSlides: [
-        {
-          src: img.makerspaceBanner,
-          alt: "Marion County Maker Collective",
-        },
-      ],
+      heroSlides: [{ src: img.makerspaceBanner, alt: "Marion County Maker Collective" }],
       ctas: [
         { label: "Schedule a tour", href: mailtoTourMakerCollective() },
-        {
-          label: "Apply for membership",
-          href: LINKS.boloMembershipApply,
-          external: true,
-          tone: "outline",
-        },
-        {
-          label: "Donate",
-          href: LINKS.zeffyDonate,
-          external: true,
-          tone: "outline",
-        },
-        {
-          label: "Equipment wish list",
-          href: "/programs/maker-collective/equipment",
-          tone: "outline",
-        },
+        { label: "Apply for membership", href: LINKS.boloMembershipApply, external: true, tone: "outline" },
+        { label: "Donate", href: LINKS.zeffyDonate, external: true, tone: "outline" },
+        { label: "Equipment wish list", href: "/programs/maker-collective/equipment", tone: "outline" },
       ],
       galleryEnable: true,
       galleryHeading: "Makerspace & community",
       galleryDekHtml: "",
       gallerySurface: "light",
       galleryMarqueeAlt: "Marion County Maker Collective",
-      gallerySlides: [
-        img.makerspaceA,
-        img.makerspaceB,
-        img.makerspaceC,
-        img.makerspaceD,
-        img.makerspaceE,
-      ].map((src, i) => ({
-        src,
-        alt: `Marion County Maker Collective ${i + 1}`,
-      })),
+      gallerySlides: [img.makerspaceA, img.makerspaceB, img.makerspaceC, img.makerspaceD, img.makerspaceE].map(
+        (src, i) => ({ src, alt: `Marion County Maker Collective ${i + 1}` })
+      ),
     };
   }
   if (slug === "brick-city-glam") {
     return {
       heroLayout: "singleTall",
-      heroSlides: [
-        {
-          src: img.programGlam,
-          alt: "Brick City Glam performance",
-        },
-      ],
+      heroSlides: [{ src: img.programGlam, alt: "Brick City Glam performance" }],
       ctas: [
-        {
-          label: "Upcoming performances",
-          href: LINKS.brickCityGlamFacebook,
-          external: true,
-          tone: "surge",
-        },
-        {
-          label: "Casting form",
-          href: LINKS.jotformCasting,
-          external: true,
-          tone: "outline",
-        },
+        { label: "Upcoming performances", href: LINKS.brickCityGlamFacebook, external: true, tone: "surge" },
+        { label: "Casting form", href: LINKS.jotformCasting, external: true, tone: "outline" },
       ],
       galleryEnable: true,
       galleryHeading: "Photo gallery",
-      galleryDekHtml:
-        "<p>Moments from performances, collaborations, and community events.</p>",
+      galleryDekHtml: "<p>Moments from performances, collaborations, and community events.</p>",
       gallerySurface: "dark",
       galleryMarqueeAlt: "Brick City Glam",
-      gallerySlides: [...brickGlamGallery].map((src, i) => ({
-        src,
-        alt: `Brick City Glam ${i + 1}`,
-      })),
+      gallerySlides: [...brickGlamGallery].map((src, i) => ({ src, alt: `Brick City Glam ${i + 1}` })),
     };
   }
   if (slug === "storytelling-knights") {
     return {
       heroLayout: "twoStacked",
       heroSlides: [
-        {
-          src: img.storytellingA,
-          alt: "Storytelling Knights tabletop session",
-        },
-        {
-          src: img.storytellingB,
-          alt: "Storytelling Knights community",
-        },
+        { src: img.storytellingA, alt: "Storytelling Knights tabletop session" },
+        { src: img.storytellingB, alt: "Storytelling Knights community" },
       ],
-      ctas: [
-        {
-          label: "Sign up for events",
-          href: LINKS.zeffyStorytellingSignup,
-          external: true,
-          tone: "surge",
-        },
-      ],
+      ctas: [{ label: "Sign up for events", href: LINKS.zeffyStorytellingSignup, external: true, tone: "surge" }],
       galleryEnable: true,
       galleryHeading: "Photo gallery",
       galleryDekHtml: `<p class="type-muted mb-0 max-w-[40rem]">Scenes from our tables and events. Follow <a class="font-medium text-ink underline decoration-ink/35 underline-offset-2 hover:decoration-ink" href="${LINKS.storytellingKnightsInstagram}" rel="noopener noreferrer" target="_blank">@storytellingknights on Instagram</a> for the latest photos and announcements.</p>`,
       gallerySurface: "light",
       galleryMarqueeAlt: "Storytelling Knights",
-      gallerySlides: [...storytellingKnightsGallery].map((src, i) => ({
-        src,
-        alt: `Storytelling Knights ${i + 1}`,
-      })),
+      gallerySlides: [...storytellingKnightsGallery].map((src, i) => ({ src, alt: `Storytelling Knights ${i + 1}` })),
     };
   }
   return null;
@@ -212,11 +136,9 @@ function slugDefaults(slug: string): SlugDefaults | null {
 function HeroImages({
   layout,
   slides,
-  program,
 }: {
   layout: SlugDefaults["heroLayout"];
   slides: HeroSlide[];
-  program: NonNullable<ProgramQuery["program"]>;
 }) {
   if (slides.length === 0) return null;
 
@@ -234,11 +156,6 @@ function HeroImages({
             loading="eager"
             decoding="async"
             sizes="(min-width: 768px) 65vw, 92vw"
-            data-tina-field={
-              program.progHeroSlides?.[0]
-                ? tinaField(program.progHeroSlides[0], "progHeroImage")
-                : undefined
-            }
           />
         ) : null}
         {b ? (
@@ -251,11 +168,6 @@ function HeroImages({
             loading="eager"
             decoding="async"
             sizes="(min-width: 768px) 25vw, 92vw"
-            data-tina-field={
-              program.progHeroSlides?.[1]
-                ? tinaField(program.progHeroSlides[1], "progHeroImage")
-                : undefined
-            }
           />
         ) : null}
       </div>
@@ -280,31 +192,19 @@ function HeroImages({
       loading="eager"
       decoding="async"
       sizes="(min-width: 768px) 55vw, 92vw"
-      data-tina-field={
-        program.progHeroSlides?.[0]
-          ? tinaField(program.progHeroSlides[0], "progHeroImage")
-          : undefined
-      }
     />
   );
 }
 
-export default function ProgramVisualEdit({
-  query,
-  variables,
-  data: initialData,
+export default function ProgramStatic({
+  data,
   slug,
-}: Props) {
-  const { data } = useTina({
-    query,
-    variables,
-    data: initialData,
-  });
-
+}: {
+  data: ProgramQuery;
+  slug: string;
+}) {
   const p = data.program;
-  if (!p) {
-    return null;
-  }
+  if (!p) return null;
 
   const defaults = slugDefaults(slug);
 
@@ -323,7 +223,7 @@ export default function ProgramVisualEdit({
           src: s.src,
           alt: s.alt || defaults?.heroSlides[i]?.alt || `Program image ${i + 1}`,
         }))
-      : (defaults?.heroSlides ?? []);
+      : defaults?.heroSlides ?? [];
 
   const tinaCtas = nonNull(p.progCtaRows).map((r) => ({
     label: r.progCtaLabel,
@@ -332,36 +232,25 @@ export default function ProgramVisualEdit({
     tone: (r.progCtaTone || "outline") as CtaRow["tone"],
   }));
 
-  const ctas: CtaRow[] =
-    tinaCtas.length > 0 ? tinaCtas : (defaults?.ctas ?? []);
+  const ctas: CtaRow[] = tinaCtas.length > 0 ? tinaCtas : defaults?.ctas ?? [];
 
-  const galleryEnable =
-    p.progGalleryEnable ?? defaults?.galleryEnable ?? false;
+  const galleryEnable = p.progGalleryEnable ?? defaults?.galleryEnable ?? false;
 
   const galleryMarqueeAlt =
-    p.progGalleryMarqueeAlt?.trim() ||
-    defaults?.galleryMarqueeAlt ||
-    p.title;
+    p.progGalleryMarqueeAlt?.trim() || defaults?.galleryMarqueeAlt || p.title;
 
   const tinaGallery = nonNull(p.progGalleryStrip).map((g, i) => ({
     src: g.progGalImage,
-    alt:
-      g.progGalAlt?.trim() ||
-      `${galleryMarqueeAlt} ${i + 1}`,
+    alt: g.progGalAlt?.trim() || `${galleryMarqueeAlt} ${i + 1}`,
   }));
 
   const gallerySlides: GalleryMarqueeSlide[] =
-    tinaGallery.length > 0
-      ? tinaGallery
-      : (defaults?.gallerySlides ?? []);
+    tinaGallery.length > 0 ? tinaGallery : defaults?.gallerySlides ?? [];
 
   const galleryHeading =
-    p.progGalleryHeading?.trim() ||
-    defaults?.galleryHeading ||
-    "Photo gallery";
+    p.progGalleryHeading?.trim() || defaults?.galleryHeading || "Photo gallery";
 
-  const galleryDekHtml =
-    p.progGalleryDekHtml ?? defaults?.galleryDekHtml ?? "";
+  const galleryDekHtml = p.progGalleryDekHtml ?? defaults?.galleryDekHtml ?? "";
 
   const gallerySurface = (p.progGallerySurface ||
     defaults?.gallerySurface ||
@@ -383,23 +272,11 @@ export default function ProgramVisualEdit({
     <>
       <section className="bg-mist py-2xl text-ink">
         <div className="site-container">
-          <div
-            className={`grid grid-cols-1 items-start gap-xl ${heroGridCols}`}
-          >
-            <HeroImages layout={heroLayout} slides={heroSlides} program={p} />
+          <div className={`grid grid-cols-1 items-start gap-xl ${heroGridCols}`}>
+            <HeroImages layout={heroLayout} slides={heroSlides} />
             <div className="min-w-0">
-              <h1
-                className="type-display-xl"
-                data-tina-field={tinaField(p, "title")}
-              >
-                {p.title}
-              </h1>
-              <p
-                className="type-lede"
-                data-tina-field={tinaField(p, "description")}
-              >
-                {p.description}
-              </p>
+              <h1 className="type-display-xl">{p.title}</h1>
+              <p className="type-lede">{p.description}</p>
               {ctas.length > 0 ? (
                 <div className="mt-md flex flex-wrap gap-sm">
                   {ctas.map((a, i) => (
@@ -407,16 +284,8 @@ export default function ProgramVisualEdit({
                       key={`${a.href}-${a.label}-${i}`}
                       href={a.href}
                       className={ctaToneClass(a.tone)}
-                      data-tina-field={
-                        p.progCtaRows?.[i]
-                          ? tinaField(p.progCtaRows[i], "progCtaLabel")
-                          : undefined
-                      }
                       {...(a.external
-                        ? {
-                            target: "_blank",
-                            rel: "noopener noreferrer",
-                          }
+                        ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
                     >
                       {a.external ? <IconExternal /> : null}
@@ -432,10 +301,7 @@ export default function ProgramVisualEdit({
 
       <section className="dark-surface bg-void py-2xl text-mist">
         <div className="site-container">
-          <div
-            className={proseDark}
-            data-tina-field={tinaField(p, "body")}
-          >
+          <div className={proseDark}>
             <TinaMarkdown content={p.body} />
           </div>
         </div>
@@ -450,16 +316,10 @@ export default function ProgramVisualEdit({
           }`}
         >
           <div className="site-container">
-            <h2
-              className="relative z-20 type-display-lg mb-md"
-              data-tina-field={tinaField(p, "progGalleryHeading")}
-            >
-              {galleryHeading}
-            </h2>
+            <h2 className="relative z-20 type-display-lg mb-md">{galleryHeading}</h2>
             {galleryDekHtml ? (
               <div
                 className={dekClass}
-                data-tina-field={tinaField(p, "progGalleryDekHtml")}
                 dangerouslySetInnerHTML={{ __html: galleryDekHtml }}
               />
             ) : null}
@@ -474,3 +334,4 @@ export default function ProgramVisualEdit({
     </>
   );
 }
+
