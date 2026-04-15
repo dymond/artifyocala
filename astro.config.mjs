@@ -22,6 +22,7 @@ const useNetlifyAdapter =
 const isAstroBuild = process.argv.includes("build");
 /** Netlify CI sets NETLIFY=true; keep local builds readable/unminified. */
 const isNetlifyBuild = process.env.NETLIFY === "true";
+const enableAnalytics = Boolean(process.env.PUBLIC_GA_MEASUREMENT_ID);
 
 /** Same as netlify.toml: /admin and /admin/ serve Tina admin without /index.html in the URL. */
 function viteAdminPathRewrite() {
@@ -64,12 +65,16 @@ export default defineConfig({
     plugins: [viteAdminPathRewrite(), tailwindcss()],
     build: {
       /**
-       * Do not run esbuild minify on production bundles: Netlify’s pipeline re-parses chunks
-       * and fails on output that uses esbuild’s `typeof` shorthand (`Syntax error "d"` in
-       * who-scroll-client). `vite.esbuild.minifySyntax: false` is not reliably applied to
-       * the minify pass. Rollup output stays unminified; gzip/Brotli at the edge still apply.
+       * Minify bundles for Lighthouse/PageSpeed. Avoid esbuild minify output because Netlify’s
+       * pipeline can re-parse chunks and fail on esbuild’s `typeof` shorthand. Use terser.
        */
-      minify: false,
+      minify: isAstroBuild ? "terser" : false,
+      cssMinify: isAstroBuild,
+      /**
+       * Lighthouse/PageSpeed can’t provide deep bundle insights without source maps.
+       * Ship maps in production; they’re separate files and don’t change runtime behavior.
+       */
+      sourcemap: isAstroBuild,
       /**
        * With NETLIFY=true, Vite injects __vitePreload/__vite__mapDeps around dynamic imports.
        * Netlify’s later esbuild parse of SSR chunks then fails (`Syntax error "d"`). Disable
@@ -128,12 +133,16 @@ export default defineConfig({
       filter: (page) => !page.endsWith("/404"),
     }),
     alpinejs(),
-    partytown({
-      config: {
-        // Forward when you add GTM / GA4 via Partytown (see BaseLayout.astro).
-        forward: ["dataLayer.push"],
-      },
-    }),
+    ...(enableAnalytics
+      ? [
+          partytown({
+            config: {
+              // Forward when you add GTM / GA4 via Partytown (see BaseLayout.astro).
+              forward: ["dataLayer.push"],
+            },
+          }),
+        ]
+      : []),
     react(),
     tinaClientDirective(),
   ],

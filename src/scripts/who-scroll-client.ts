@@ -1,8 +1,8 @@
 /**
  * Who-section WebGL: mount `who-arch-backdrop` when #who nears the viewport.
  *
- * We use a static import (not dynamic `import()`) so Vite never injects
- * __vitePreload/__vite__mapDeps — Netlify’s esbuild pass fails on that helper.
+ * We use a static import so Vite never injects __vitePreload/__vite__mapDeps
+ * helpers — Netlify’s esbuild pass fails on that helper.
  * Three.js is code-split into its own chunk via `manualChunks` in `astro.config.mjs`.
  */
 
