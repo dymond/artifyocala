@@ -1,0 +1,81 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ProgramVisualEdit from "../../../components/tina/ProgramVisualEdit";
+import { getCollection } from "astro:content";
+import client from "../../../lib/tina-graphql-client";
+import {
+  absoluteUrl,
+  breadcrumbListJsonLd,
+  programArticleJsonLd,
+  resolvePageDescription,
+} from "../../../lib/seo";
+
+export async function getStaticPaths() {
+  const programs = await getCollection("programs");
+  return programs.map((entry) => ({
+    params: { slug: entry.id },
+    props: {
+      slug: entry.id,
+      getTinaProps: async () =>
+        client.queries.program({ relativePath: `${entry.id}.mdx` }),
+    },
+  }));
+}
+
+const { slug, getTinaProps } = Astro.props;
+const tina = await getTinaProps();
+const program = tina.data.program;
+
+if (!program) {
+  throw new Error(`Tina program not found for slug "${slug}"`);
+}
+
+const siteOrigin = Astro.site?.origin ?? Astro.url.origin;
+const canonicalPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const pageHref = new URL(canonicalPath, Astro.site).href;
+const firstHeroPath = program.progHeroSlides?.[0]?.progHeroImage?.trim();
+const heroOgUrl = firstHeroPath
+  ? absoluteUrl(siteOrigin, firstHeroPath)
+  : undefined;
+const heroAlt =
+  program.progHeroSlides?.[0]?.progHeroAlt?.trim() ||
+  `${program.title} — program photo`;
+const structuredData = [
+  breadcrumbListJsonLd(siteOrigin, [
+    { name: "Home", path: "/" },
+    { name: program.title, path: `/programs/${slug}` },
+  ]),
+  programArticleJsonLd({
+    siteOrigin,
+    pageUrl: pageHref,
+    headline: program.title,
+    description: program.description,
+    imageUrl: heroOgUrl,
+  }),
+];
+---
+
+<BaseLayout
+  title={program.title}
+  description={resolvePageDescription(program.description)}
+  structuredData={structuredData}
+  metaRobots="noindex, nofollow"
+  openGraph={{
+    type: "article",
+    image: firstHeroPath
+      ? {
+          url: firstHeroPath,
+          alt: heroAlt,
+        }
+      : undefined,
+  }}
+>
+  <ProgramVisualEdit
+    client:tina
+    query={tina.query}
+    variables={tina.variables}
+    data={tina.data}
+    slug={slug}
+  />
+</BaseLayout>
+
