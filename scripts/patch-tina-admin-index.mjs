@@ -14,8 +14,6 @@ export function patchTinaAdminIndexHtml(
 ) {
   const markerStart = "<!-- artify:tina-admin-redirect:start -->";
   const markerEnd = "<!-- artify:tina-admin-redirect:end -->";
-  if (html.includes(markerStart) && html.includes(markerEnd)) return html;
-
   const script = `${markerStart}
 <script>
   (function () {
@@ -55,6 +53,17 @@ export function patchTinaAdminIndexHtml(
   })();
 </script>
 ${markerEnd}`;
+
+  // If previously patched, replace the old block with the new one.
+  if (html.includes(markerStart) && html.includes(markerEnd)) {
+    const start = html.indexOf(markerStart);
+    const end = html.indexOf(markerEnd, start);
+    if (start !== -1 && end !== -1) {
+      const afterEnd = end + markerEnd.length;
+      return html.slice(0, start) + script + html.slice(afterEnd);
+    }
+    return html;
+  }
 
   if (html.includes("</head>")) {
     return html.replace("</head>", `${script}\n</head>`);
