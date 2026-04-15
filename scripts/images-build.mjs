@@ -44,10 +44,19 @@ function isInOutDir(file) {
   return !rel.startsWith("..");
 }
 
-function makeVariantName(srcFile, width, fmtExt) {
-  const base = path.basename(srcFile, path.extname(srcFile));
-  // Keep enough uniqueness while staying readable.
-  return `${base}.w${width}${fmtExt}`;
+export function makeVariantName(srcFile, width, fmtExt) {
+  // Include relative directory to avoid collisions when the same basename exists
+  // in different subfolders under public/images/.
+  const relFromSrc = path
+    .relative(SRC_DIR, srcFile)
+    .replaceAll(path.sep, "/")
+    .replace(/\.[^.]+$/, "");
+  const safe = relFromSrc
+    .split("/")
+    .filter(Boolean)
+    .join("__")
+    .replace(/[^a-zA-Z0-9_-]/g, "-");
+  return `${safe}.w${width}${fmtExt}`;
 }
 
 async function exists(p) {
