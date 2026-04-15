@@ -77,11 +77,11 @@ lines.push("");
 // Baseline security headers
 lines.push("/*");
 lines.push(
-  `  Content-Security-Policy: ${csp({ allowEval: isEditSite, allowTina: isEditSite })}`
+  `  Content-Security-Policy: ${csp({ allowEval: true, allowTina: isEditSite })}`
 );
 lines.push(
   `  Content-Security-Policy-Report-Only: ${cspReportOnly({
-    allowEval: isEditSite,
+    allowEval: true,
     allowTina: isEditSite,
   })}`
 );

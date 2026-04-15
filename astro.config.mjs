@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 import mdx from "@astrojs/mdx";
 import netlify from "@astrojs/netlify";
+import alpinejs from "@astrojs/alpinejs";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 
@@ -136,6 +137,7 @@ export default defineConfig({
     sitemap({
       filter: (page) => !page.endsWith("/404"),
     }),
+    alpinejs(),
     ...(enableAnalytics
       ? [
           partytown({
