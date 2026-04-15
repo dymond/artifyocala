@@ -65,7 +65,14 @@ lines.push("  Cross-Origin-Opener-Policy: same-origin");
 lines.push("  Referrer-Policy: strict-origin-when-cross-origin");
 lines.push("  X-Content-Type-Options: nosniff");
 lines.push("  X-Frame-Options: DENY");
-lines.push("  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+// Keep HSTS scoped on production so new subdomains can be brought up safely.
+lines.push(
+  `  Strict-Transport-Security: ${
+    isEditSite
+      ? "max-age=31536000; includeSubDomains; preload"
+      : "max-age=31536000"
+  }`
+);
 lines.push("  Permissions-Policy: attribution-reporting=(), shared-storage=()");
 lines.push("");
 
