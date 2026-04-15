@@ -34,12 +34,23 @@ function csp({ allowEval, allowTina }) {
       ? [
           "https://content.tinajs.io",
           "https://identity.tinajs.io",
+          "https://identity-v2.tinajs.io",
           "https://app.tina.io",
         ]
       : []),
   ].join(" ");
 
   const frameSrc = ["'self'", ...(allowTina ? ["https://app.tina.io"] : [])].join(
+    " "
+  );
+
+  const styleSrc = [
+    "'self'",
+    "'unsafe-inline'",
+    ...(allowTina ? ["https://fonts.googleapis.com"] : []),
+  ].join(" ");
+
+  const fontSrc = ["'self'", "data:", ...(allowTina ? ["https://fonts.gstatic.com"] : [])].join(
     " "
   );
 
@@ -51,8 +62,8 @@ function csp({ allowEval, allowTina }) {
     `frame-src ${frameSrc}`,
     "form-action 'self'",
     "img-src 'self' data: https:",
-    "font-src 'self' data:",
-    "style-src 'self' 'unsafe-inline'",
+    `font-src ${fontSrc}`,
+    `style-src ${styleSrc}`,
     `script-src ${scriptSrc}`,
     `connect-src ${connectSrc}`,
     "worker-src 'self' blob:",
