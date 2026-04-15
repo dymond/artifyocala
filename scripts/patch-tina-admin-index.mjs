@@ -8,7 +8,10 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export function patchTinaAdminIndexHtml(html, { previewPath = "/tina-preview/" } = {}) {
+export function patchTinaAdminIndexHtml(
+  html,
+  { previewPath = "/tina-preview/" } = {}
+) {
   const markerStart = "<!-- artify:tina-admin-redirect:start -->";
   const markerEnd = "<!-- artify:tina-admin-redirect:end -->";
   if (html.includes(markerStart) && html.includes(markerEnd)) return html;
@@ -17,14 +20,37 @@ export function patchTinaAdminIndexHtml(html, { previewPath = "/tina-preview/" }
 <script>
   (function () {
     try {
-      var h = window.location.hash || "";
-      // Tina's "home" route after login.
-      if (h === "#/~" || h === "#/~/" || h.startsWith("#/~?") || h.startsWith("#/~/?" )) {
-        var next = "#/~/${previewPath.replace(/^\//, "")}";
+      var preview = "#/~/${previewPath.replace(/^\//, "")}";
+      function isTinaHome(hash) {
+        return (
+          hash === "#/~" ||
+          hash === "#/~/" ||
+          hash.startsWith("#/~?") ||
+          hash.startsWith("#/~/?" )
+        );
+      }
+      function redirectIfNeeded() {
+        var h = window.location.hash || "";
+        if (!isTinaHome(h)) return;
+        var next = preview;
         // Preserve query params (rare, but safe).
         if (h.includes("?")) next += "?" + h.split("?").slice(1).join("?");
-        window.location.replace(window.location.pathname + window.location.search + next);
+        window.location.replace(
+          window.location.pathname + window.location.search + next
+        );
       }
+      // 1) Immediate check on first paint
+      redirectIfNeeded();
+      // 2) Tina often updates the hash after auth resolves; listen for it.
+      window.addEventListener("hashchange", redirectIfNeeded);
+      // 3) Fallback: poll briefly in case routing happens without hashchange.
+      var tries = 0;
+      var max = 40; // ~10s
+      var t = setInterval(function () {
+        tries++;
+        redirectIfNeeded();
+        if (tries >= max) clearInterval(t);
+      }, 250);
     } catch (e) {}
   })();
 </script>
