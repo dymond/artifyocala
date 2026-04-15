@@ -65,6 +65,7 @@ function runTinaPipeline(changedPaths = []) {
     "--skip-search-index",
     "--skip-cloud-checks",
   ]);
+  run("node", ["scripts/patch-tina-admin-index.mjs"]);
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
   // `images:build` is incremental *within the workspace* via `public/images/_gen/cache.json`.
   // Netlify workspaces are ephemeral, so we also cache `public/images/_gen/` via a Netlify plugin.
