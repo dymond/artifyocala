@@ -1,5 +1,6 @@
 import type React from "react";
 import type { PageQuery } from "../../../tina/__generated__/types";
+import { tinaField } from "tinacms/dist/react";
 
 import { cn } from "../../lib/cn";
 import { imageAlt } from "../../lib/image-alt";
@@ -70,8 +71,20 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
         <SectionWrap>
           <div className="grid grid-cols-1 items-start gap-xl lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-x-2xl">
             <div className="min-w-0">
-              <h1 className="type-display-xl">{s.introTitle}</h1>
-              {s.introLede ? <p className="type-lede">{s.introLede}</p> : null}
+              <h1
+                className="type-display-xl"
+                data-tina-field={tinaField(s, "introTitle")}
+              >
+                {s.introTitle}
+              </h1>
+              {s.introLede ? (
+                <p
+                  className="type-lede"
+                  data-tina-field={tinaField(s, "introLede")}
+                >
+                  {s.introLede}
+                </p>
+              ) : null}
             </div>
             {src ? (
               <figure className="m-0 max-w-full overflow-hidden rounded-lg border border-line lg:sticky lg:top-6">
@@ -84,6 +97,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                   decoding="async"
                   sizes="(min-width: 1024px) 22rem, 92vw"
                   className="block w-full max-h-[26rem] object-cover"
+                  data-tina-field={tinaField(s, "introImage")}
                 />
               </figure>
             ) : null}
@@ -100,11 +114,17 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
           <div className="grid grid-cols-1 items-start gap-xl lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)] lg:gap-x-2xl">
             <div className="min-w-0">
               {s.pbHeading ? (
-                <h2 className="type-display-lg">{s.pbHeading}</h2>
+                <h2
+                  className="type-display-lg"
+                  data-tina-field={tinaField(s, "pbHeading")}
+                >
+                  {s.pbHeading}
+                </h2>
               ) : null}
               {s.pbBodyHtml ? (
                 <div
                   className="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+                  data-tina-field={tinaField(s, "pbBodyHtml")}
                   dangerouslySetInnerHTML={{ __html: s.pbBodyHtml }}
                 />
               ) : null}
@@ -126,6 +146,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                     "w-full max-h-[26rem] rounded-lg border object-cover",
                     variant === "dark" ? "border-white/[0.12]" : "border-line"
                   )}
+                  data-tina-field={tinaField(s, "pbTopImage")}
                 />
               </div>
             ) : null}
@@ -139,7 +160,10 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
         <SectionWrap>
           <h2 className="type-display-lg">Our mission</h2>
           {s.mqQuoteText ? (
-            <blockquote className="m-0 rounded-r-lg border-l-4 border-accent bg-accent/[0.08] p-lg text-[1.1rem] italic leading-relaxed">
+            <blockquote
+              className="m-0 rounded-r-lg border-l-4 border-accent bg-accent/[0.08] p-lg text-[1.1rem] italic leading-relaxed"
+              data-tina-field={tinaField(s, "mqQuoteText")}
+            >
               {s.mqQuoteText}
             </blockquote>
           ) : null}
@@ -164,8 +188,12 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                   key={`${item.objLineTitle}-${i}`}
                   className="border-l-2 border-line pl-md"
                 >
-                  <strong>{item.objLineTitle}:</strong>{" "}
-                  <span>{item.objLineBody}</span>
+                  <strong data-tina-field={tinaField(item, "objLineTitle")}>
+                    {item.objLineTitle}:
+                  </strong>{" "}
+                  <span data-tina-field={tinaField(item, "objLineBody")}>
+                    {item.objLineBody}
+                  </span>
                 </li>
               ) : null
             )}
@@ -173,6 +201,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
           {s.objFooterHtml ? (
             <p
               className="type-muted max-w-[40rem]"
+              data-tina-field={tinaField(s, "objFooterHtml")}
               dangerouslySetInnerHTML={{ __html: s.objFooterHtml }}
             />
           ) : null}
@@ -186,6 +215,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                     className={btnClassForTone(b.objCtaTone ?? "outline")}
                     target={b.objCtaExternal ? "_blank" : undefined}
                     rel={b.objCtaExternal ? "noopener noreferrer" : undefined}
+                    data-tina-field={tinaField(b, "objCtaLabel")}
                   >
                     {b.objCtaExternal ? <IconExt /> : null}
                     {b.objCtaLabel}
@@ -201,22 +231,32 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
       const s = section;
       return (
         <SectionWrap variant="dark" id="contact">
-          <h2 className="type-display-lg">{s.ctHeading}</h2>
+          <h2
+            className="type-display-lg"
+            data-tina-field={tinaField(s, "ctHeading")}
+          >
+            {s.ctHeading}
+          </h2>
           <div className="type-lede max-w-[40rem] text-mist/85 [&_p]:mb-md [&_p:last-child]:mb-0">
             {s.ctSubheading ? (
-              <p className="font-display text-lg font-bold text-mist">
+              <p
+                className="font-display text-lg font-bold text-mist"
+                data-tina-field={tinaField(s, "ctSubheading")}
+              >
                 {s.ctSubheading}
               </p>
             ) : null}
             {s.ctAddressHtml ? (
               <p
                 className="m-0"
+                data-tina-field={tinaField(s, "ctAddressHtml")}
                 dangerouslySetInnerHTML={{ __html: s.ctAddressHtml }}
               />
             ) : null}
             {s.ctNoteHtml ? (
               <p
                 className="m-0 text-mist/70"
+                data-tina-field={tinaField(s, "ctNoteHtml")}
                 dangerouslySetInnerHTML={{ __html: s.ctNoteHtml }}
               />
             ) : null}
@@ -224,6 +264,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               <a
                 className="font-medium text-accent-soft underline decoration-accent-soft/40 underline-offset-2 hover:decoration-accent-soft"
                 href={`mailto:${s.ctEmail}`}
+                data-tina-field={tinaField(s, "ctEmail")}
               >
                 {s.ctEmail}
               </a>
@@ -232,6 +273,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               <a
                 className="font-medium text-accent-soft underline decoration-accent-soft/40 underline-offset-2 hover:decoration-accent-soft"
                 href={`tel:${s.ctPhoneTel}`}
+                data-tina-field={tinaField(s, "ctPhoneDisplay")}
               >
                 {s.ctPhoneDisplay}
               </a>

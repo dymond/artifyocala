@@ -1,4 +1,5 @@
 import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { tinaField } from "tinacms/dist/react";
 import type { ProgramQuery } from "../../../tina/__generated__/types";
 
 import { brickGlamGallery, img, storytellingKnightsGallery } from "../../lib/site-images";
@@ -275,8 +276,15 @@ export default function ProgramStatic({
           <div className={`grid grid-cols-1 items-start gap-xl ${heroGridCols}`}>
             <HeroImages layout={heroLayout} slides={heroSlides} />
             <div className="min-w-0">
-              <h1 className="type-display-xl">{p.title}</h1>
-              <p className="type-lede">{p.description}</p>
+              <h1 className="type-display-xl" data-tina-field={tinaField(p, "title")}>
+                {p.title}
+              </h1>
+              <p
+                className="type-lede"
+                data-tina-field={tinaField(p, "description")}
+              >
+                {p.description}
+              </p>
               {ctas.length > 0 ? (
                 <div className="mt-md flex flex-wrap gap-sm">
                   {ctas.map((a, i) => (
@@ -284,6 +292,11 @@ export default function ProgramStatic({
                       key={`${a.href}-${a.label}-${i}`}
                       href={a.href}
                       className={ctaToneClass(a.tone)}
+                      data-tina-field={
+                        p.progCtaRows?.[i]
+                          ? tinaField(p.progCtaRows[i], "progCtaLabel")
+                          : undefined
+                      }
                       {...(a.external
                         ? { target: "_blank", rel: "noopener noreferrer" }
                         : {})}
@@ -301,7 +314,7 @@ export default function ProgramStatic({
 
       <section className="dark-surface bg-void py-2xl text-mist">
         <div className="site-container">
-          <div className={proseDark}>
+          <div className={proseDark} data-tina-field={tinaField(p, "body")}>
             <TinaMarkdown content={p.body} />
           </div>
         </div>
@@ -316,10 +329,16 @@ export default function ProgramStatic({
           }`}
         >
           <div className="site-container">
-            <h2 className="relative z-20 type-display-lg mb-md">{galleryHeading}</h2>
+            <h2
+              className="relative z-20 type-display-lg mb-md"
+              data-tina-field={tinaField(p, "progGalleryHeading")}
+            >
+              {galleryHeading}
+            </h2>
             {galleryDekHtml ? (
               <div
                 className={dekClass}
+                data-tina-field={tinaField(p, "progGalleryDekHtml")}
                 dangerouslySetInnerHTML={{ __html: galleryDekHtml }}
               />
             ) : null}
