@@ -96,21 +96,21 @@ lines.push("");
 
 // Baseline security headers
 lines.push("/*");
-lines.push(
-  `  Content-Security-Policy: ${csp({ allowEval: true, allowTina: isEditSite })}`
-);
-lines.push(
-  `  Content-Security-Policy-Report-Only: ${cspReportOnly({
-    allowEval: true,
-    allowTina: isEditSite,
-  })}`
-);
-// Tina auth uses a cross-origin popup; COOP same-origin breaks window.opener flows.
-lines.push(
-  `  Cross-Origin-Opener-Policy: ${
-    isEditSite ? "same-origin-allow-popups" : "same-origin"
-  }`
-);
+if (!isEditSite) {
+  lines.push(
+    `  Content-Security-Policy: ${csp({ allowEval: true, allowTina: false })}`
+  );
+  lines.push(
+    `  Content-Security-Policy-Report-Only: ${cspReportOnly({
+      allowEval: true,
+      allowTina: false,
+    })}`
+  );
+  lines.push("  Cross-Origin-Opener-Policy: same-origin");
+} else {
+  // Edit site: avoid CSP/COOP breakage in Tina Admin.
+  // Keep non-CSP security headers below; Tina itself remains behind auth.
+}
 lines.push("  Referrer-Policy: strict-origin-when-cross-origin");
 lines.push("  X-Content-Type-Options: nosniff");
 lines.push("  X-Frame-Options: DENY");
