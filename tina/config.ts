@@ -1,13 +1,8 @@
 import { defineConfig } from "tinacms";
 
-/** Optional: force Tina Content API branch (e.g. when debugging). Otherwise uses CI/git env or `main`. */
-const branch =
-  process.env.TINA_CONTENT_BRANCH?.trim() ||
-  process.env.GITHUB_BRANCH ||
-  process.env.VERCEL_GIT_COMMIT_REF ||
-  process.env.NETLIFY_BRANCH ||
-  process.env.HEAD ||
-  "main";
+import { getTinaGitBranch } from "./branch";
+
+const branch = getTinaGitBranch();
 
 /** Netlify deploy dashboard (optional override). Baked into admin at `tinacms build` time. */
 const netlifyDeploysUrl =

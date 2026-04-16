@@ -22,7 +22,7 @@
     "generate:hal404-audio": "python3 scripts/generate-hal-404-audio.py",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "verify": "pnpm test && HEAD=main NETLIFY_BRANCH=main netlify build --offline",
+    "verify": "pnpm test && BRANCH=main netlify build --offline",
     "audit:lighthouse": "lhci autorun",
     "audit:pagespeed": "node scripts/pagespeed-insights.mjs",
     "images:build": "node scripts/images-build.mjs",

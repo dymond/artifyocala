@@ -20,7 +20,7 @@ Run from the repository root:
 | `pnpm run build:netlify:ci` | Netlify build entry (see below); skips `tinacms build` when safe |
 | `pnpm run build` | Stricter local Tina build (no `--skip-cloud-checks`) |
 | `pnpm test` | Unit tests (Vitest) |
-| `pnpm run verify` | Tests + Netlify offline build (forces `HEAD=main` / `NETLIFY_BRANCH=main` so Tina Cloud matches the `main` branch when you are on a feature branch) |
+| `pnpm run verify` | Tests + Netlify offline build (sets `BRANCH=main` so offline Tina matches `main` when your local git branch is not `main`) |
 
 ### Conditional Tina build on Netlify
 

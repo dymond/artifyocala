@@ -4,15 +4,11 @@
  * overwrites with inlined secrets and breaks Netlify secrets scanning.
  */
 import { createClient } from "tinacms/dist/client";
+import { getTinaGitBranch } from "../../tina/branch";
 import { queries } from "../../tina/__generated__/types";
 
 const clientId = process.env.PUBLIC_TINA_CLIENT_ID?.trim();
-const branch =
-  process.env.GITHUB_BRANCH ||
-  process.env.VERCEL_GIT_COMMIT_REF ||
-  process.env.NETLIFY_BRANCH ||
-  process.env.HEAD ||
-  "main";
+const branch = getTinaGitBranch();
 
 if (!clientId) {
   throw new Error(
