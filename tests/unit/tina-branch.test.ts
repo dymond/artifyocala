@@ -42,4 +42,19 @@ describe("getTinaGitBranch", () => {
   it("falls back to main when no git env is set", () => {
     expect(getTinaGitBranch()).toBe("main");
   });
+
+  it("ignores HEAD when it looks like a commit SHA", () => {
+    process.env.HEAD = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0";
+    expect(getTinaGitBranch()).toBe("main");
+  });
+
+  it("ignores short hex HEAD that looks like a SHA", () => {
+    process.env.HEAD = "abcdef1";
+    expect(getTinaGitBranch()).toBe("main");
+  });
+
+  it("allows branch names with slashes", () => {
+    process.env.BRANCH = "feat/cms-media";
+    expect(getTinaGitBranch()).toBe("feat/cms-media");
+  });
 });

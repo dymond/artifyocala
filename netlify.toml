@@ -28,6 +28,12 @@
   # Parallel static page builds (Astro default is 1). Override in Netlify UI if builds OOM.
   ASTRO_BUILD_CONCURRENCY = "8"
 
+# Pin Tina Content API + repo media to default branch (full `public/images/` tree).
+# Without this, a mis-set CI env can point Tina at a non-branch ref and the media manager
+# only shows cloud uploads, not files already in Git.
+[context.production.environment]
+  TINA_CONTENT_BRANCH = "main"
+
 ## Headers are generated at build time into `public/_headers` by
 ## `scripts/write-netlify-headers.mjs` so production and edit sites can differ.
 
