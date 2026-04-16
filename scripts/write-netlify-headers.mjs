@@ -5,6 +5,7 @@ import process from "node:process";
 import {
   buildContentSecurityPolicy,
   buildContentSecurityPolicyReportOnly,
+  buildEditingSurfacesContentSecurityPolicy,
 } from "./netlify-csp.mjs";
 
 const ROOT = process.cwd();
@@ -52,12 +53,11 @@ lines.push("");
 lines.push("/*");
 if (!isEditSite) {
   lines.push(
-    `  Content-Security-Policy: ${buildContentSecurityPolicy({ allowEval: true, allowTina: false })}`
+    `  Content-Security-Policy: ${buildContentSecurityPolicy({ allowEval: true })}`
   );
   lines.push(
     `  Content-Security-Policy-Report-Only: ${buildContentSecurityPolicyReportOnly({
       allowEval: true,
-      allowTina: false,
     })}`
   );
   lines.push("  Cross-Origin-Opener-Policy: same-origin");
@@ -84,46 +84,29 @@ lines.push(
 lines.push("  Permissions-Policy: attribution-reporting=(), shared-storage=()");
 lines.push("");
 
-// Production site: keep CSP strict on public pages but allow Tina admin to function.
+// Production: override `/*` strict CSP for Tina — relaxed policy, no report-only noise.
 if (!isEditSite) {
+  const cmsCsp = buildEditingSurfacesContentSecurityPolicy();
   lines.push("/admin/*");
-  lines.push(
-    `  Content-Security-Policy: ${buildContentSecurityPolicy({ allowEval: true, allowTina: true })}`
-  );
-  lines.push(
-    `  Content-Security-Policy-Report-Only: ${buildContentSecurityPolicyReportOnly({
-      allowEval: true,
-      allowTina: true,
-    })}`
-  );
-  // Tina auth uses a cross-origin popup; COOP same-origin breaks window.opener flows.
+  lines.push(`  Content-Security-Policy: ${cmsCsp}`);
   lines.push("  Cross-Origin-Opener-Policy: same-origin-allow-popups");
   lines.push("");
-}
 
-// Visual editor iframe loads `/tina-preview/*` on the same origin; it needs the same
-// Tina-friendly CSP as `/admin/*`, otherwise connect-src blocks the content API and
-// media URLs break inside the preview.
-lines.push("/tina-preview/*");
-lines.push("  Cache-Control: no-store");
-lines.push("  Netlify-CDN-Cache-Control: no-store");
-if (!isEditSite) {
-  lines.push(
-    `  Content-Security-Policy: ${buildContentSecurityPolicy({ allowEval: true, allowTina: true })}`
-  );
-  lines.push(
-    `  Content-Security-Policy-Report-Only: ${buildContentSecurityPolicyReportOnly({
-      allowEval: true,
-      allowTina: true,
-    })}`
-  );
+  lines.push("/tina-preview/*");
+  lines.push("  Cache-Control: no-store");
+  lines.push("  Netlify-CDN-Cache-Control: no-store");
+  lines.push(`  Content-Security-Policy: ${cmsCsp}`);
   lines.push("  Cross-Origin-Opener-Policy: same-origin-allow-popups");
+  lines.push("");
+} else {
+  lines.push("/tina-preview/*");
+  lines.push("  Cache-Control: no-store");
+  lines.push("  Netlify-CDN-Cache-Control: no-store");
+  lines.push("");
 }
-lines.push("");
 
 await mkdir(path.dirname(OUT), { recursive: true });
 await writeFile(OUT, lines.join("\n") + "\n", "utf8");
 process.stdout.write(
   `write-netlify-headers: wrote ${path.relative(ROOT, OUT)} (editSite=${isEditSite ? "1" : "0"})\n`
 );
-

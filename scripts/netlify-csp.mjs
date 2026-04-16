@@ -1,17 +1,19 @@
 /**
  * Content-Security-Policy strings for Netlify `_headers`.
- * Tina admin needs extra `connect-src` entries per TinaCloud network requirements:
- * https://tina.io/docs/tinacloud/network-requirements
+ *
+ * - Public HTML uses a strict policy (`buildContentSecurityPolicy`).
+ * - Tina admin (`/admin/*`) and visual preview (`/tina-preview/*`) use a relaxed
+ *   policy so the CMS is not brittle against Tina/AWS/GitHub URL changes.
  */
 
-export function buildContentSecurityPolicy({ allowEval, allowTina }) {
+/** CSP for anonymous site visitors (strict). */
+export function buildContentSecurityPolicy({ allowEval }) {
   const scriptSrc = [
     "'self'",
     "'unsafe-inline'",
     ...(allowEval ? ["'unsafe-eval'"] : []),
     "https://www.googletagmanager.com",
     "https://www.google-analytics.com",
-    ...(allowTina ? ["https://us-assets.i.posthog.com"] : []),
   ].join(" ");
 
   const connectSrc = [
@@ -19,43 +21,13 @@ export function buildContentSecurityPolicy({ allowEval, allowTina }) {
     "https://www.google-analytics.com",
     "https://region1.google-analytics.com",
     "https://www.googletagmanager.com",
-    ...(allowTina
-      ? [
-          "https://content.tinajs.io",
-          "https://identity.tinajs.io",
-          "https://identity-v2.tinajs.io",
-          "https://assets.tinajs.io",
-          "https://assets.tina.io",
-          "https://*.tina.io",
-          "https://app.tina.io",
-          "https://us.i.posthog.com",
-          // TinaCloud media: presigned PutObject to regional S3 (path-style host).
-          "https://s3.us-east-1.amazonaws.com",
-          // TinaCloud auth (AWS Cognito / API Gateway)
-          "https://*.auth.us-east-1.amazoncognito.com",
-          "https://cognito-idp.us-east-1.amazonaws.com",
-          "https://*.execute-api.us-east-1.amazonaws.com",
-          // Git provider (default: GitHub) for token exchange and Git-backed writes
-          "https://github.com",
-          "https://api.github.com",
-          "https://login.github.com",
-        ]
-      : []),
   ].join(" ");
 
-  const frameSrc = ["'self'", ...(allowTina ? ["https://app.tina.io"] : [])].join(
-    " "
-  );
+  const frameSrc = "'self'";
 
-  const styleSrc = [
-    "'self'",
-    "'unsafe-inline'",
-    ...(allowTina ? ["https://fonts.googleapis.com"] : []),
-  ].join(" ");
+  const styleSrc = ["'self'", "'unsafe-inline'"].join(" ");
 
-  const fontSrc = ["'self'", "data:", ...(allowTina ? ["https://fonts.gstatic.com"] : [])].join(
-    " "
-  );
+  const fontSrc = ["'self'", "data:"].join(" ");
 
   return [
     "default-src 'self'",
@@ -76,11 +48,32 @@ export function buildContentSecurityPolicy({ allowEval, allowTina }) {
   ].join("; ");
 }
 
-export function buildContentSecurityPolicyReportOnly({ allowEval, allowTina }) {
+export function buildContentSecurityPolicyReportOnly({ allowEval }) {
   return [
-    buildContentSecurityPolicy({ allowEval, allowTina }),
+    buildContentSecurityPolicy({ allowEval }),
     "require-trusted-types-for 'script'",
     "trusted-types default",
     "report-sample",
+  ].join("; ");
+}
+
+/**
+ * CSP for Tina admin and `/tina-preview/*` — intentionally broad so uploads,
+ * OAuth popups, and third-party scripts are not blocked by an allowlist.
+ */
+export function buildEditingSurfacesContentSecurityPolicy() {
+  return [
+    "default-src * data: blob:",
+    "script-src * 'unsafe-inline' 'unsafe-eval' data: blob:",
+    "connect-src *",
+    "img-src * data: blob:",
+    "style-src * 'unsafe-inline'",
+    "font-src * data:",
+    "frame-src *",
+    "worker-src * blob:",
+    "frame-ancestors 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "upgrade-insecure-requests",
   ].join("; ");
 }
