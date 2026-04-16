@@ -32,4 +32,16 @@ describe("normalizeTinaRepoMediaSrc", () => {
       "https://example.com/x.jpg"
     );
   });
+
+  it("collapses duplicated /images/images/ segments", () => {
+    expect(
+      normalizeTinaRepoMediaSrc("/images/images/program-brick-city-glam-performance.jpg")
+    ).toBe("/images/program-brick-city-glam-performance.jpg");
+  });
+
+  it("prefixes repo-relative images/ paths from Tina", () => {
+    expect(normalizeTinaRepoMediaSrc("images/community-members-artify-event.jpg")).toBe(
+      "/images/community-members-artify-event.jpg"
+    );
+  });
 });

@@ -3,6 +3,24 @@ const tinaAssetHosts = new Set([
   "assets.tinajs.io",
 ]);
 
+/** Tina sometimes stores `images/foo.jpg` (no leading slash) for mediaRoot `images`. */
+function ensureRootRelativeImagesPath(path: string): string {
+  const p = path.trim();
+  if (!p) return p;
+  if (p.startsWith("/")) return p;
+  if (/^images\//i.test(p)) return `/${p}`;
+  return p;
+}
+
+/** Fix duplicated `.../images/images/...` from older saves / Tina quirks. */
+function collapseDuplicateImagesPrefix(path: string): string {
+  let out = path;
+  while (out.includes("/images/images/")) {
+    out = out.replace("/images/images/", "/images/");
+  }
+  return out;
+}
+
 function rewriteTinaAssetCdnUrl(v: string): string | null {
   try {
     const u = new URL(v);
@@ -31,7 +49,10 @@ export function normalizeTinaRepoMediaSrc(raw: string): string {
   // Tina media CDNs mirror repo files but return absolute URLs.
   // When possible, rewrite to the repo-served path so production uses the site's domain.
   const rewritten = rewriteTinaAssetCdnUrl(v);
-  if (rewritten) return rewritten;
+  if (rewritten) return collapseDuplicateImagesPrefix(rewritten);
+
+  const rooted = ensureRootRelativeImagesPath(v);
+  if (rooted.startsWith("/")) return collapseDuplicateImagesPrefix(rooted);
 
   return v;
 }
