@@ -489,26 +489,6 @@
   animation-delay: -3.5s;
 }
 
-/* Desktop: cycle stacking order so hidden captions get a turn. */
-@keyframes artify-hero-card-stack-cycle {
-  0%,
-  24% {
-    z-index: 23;
-  }
-  25%,
-  49% {
-    z-index: 22;
-  }
-  50%,
-  74% {
-    z-index: 21;
-  }
-  75%,
-  100% {
-    z-index: 20;
-  }
-}
-
 /* Tilt + rotateY live here so perspective’s child isn’t under a separate 2D transform (Chromium). */
 .artify-hero-flip-inner {
   transform-origin: center center;
@@ -617,13 +597,6 @@
 
   .artify-hero-flip-inner {
     transform: translateZ(0.01px) rotateY(0deg) !important;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
-  .artify-hero-card-stack-cycle {
-    animation: artify-hero-card-stack-cycle 16s steps(1, end) infinite;
-    /* Desync per card comes from inline animationDelay on the card shell. */
   }
 }
 
