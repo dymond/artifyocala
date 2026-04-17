@@ -881,16 +881,9 @@ export default defineConfig({
                       description:
                         "Four animated cards on the home hero (fixed spots on the page). Each card has two sides: Side A is what people see first; Side B appears when the card flips. Tip: while editing the live preview, click the collage once to jump to this hero section in the sidebar.",
                       max: 4,
-                      itemProps: (item: {
-                        hccFrontCaption?: string | null;
-                      }) => {
-                        const cap = item?.hccFrontCaption?.trim();
-                        return {
-                          label: cap
-                            ? `Card — ${cap}`
-                            : "Card — (add a Side A caption to name this row)",
-                        };
-                      },
+                      itemProps: () => ({
+                        label: "Collage card",
+                      }),
                     },
                     fields: [
                       {
