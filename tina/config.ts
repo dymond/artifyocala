@@ -816,6 +816,10 @@ export default defineConfig({
                     name: "hhfShowCollage",
                     label:
                       "Show playful 3D collage (between hero copy and aside column)",
+                    ui: {
+                      description:
+                        "Turn this off to hide the animated photo cards entirely. When it is on, use “Collage flip-cards” below to change the photos and short lines of text.",
+                    },
                   },
                   {
                     type: "object",
@@ -824,67 +828,87 @@ export default defineConfig({
                     list: true,
                     ui: {
                       description:
-                        "Four flip cards in the hero collage. Edit images and captions — layout/positions are fixed. Leave empty to use defaults.",
+                        "Four animated cards on the home hero (fixed spots on the page). Each card has two sides: Side A is what people see first; Side B appears when the card flips. Tip: while editing the live preview, click the collage once to jump to this hero section in the sidebar.",
                       max: 4,
+                      itemProps: (item: {
+                        hccFrontCaption?: string | null;
+                      }) => {
+                        const cap = item?.hccFrontCaption?.trim();
+                        return {
+                          label: cap
+                            ? `Card — ${cap}`
+                            : "Card — (add a Side A caption to name this row)",
+                        };
+                      },
                     },
                     fields: [
                       {
                         type: "image",
                         name: "hccFrontImage",
-                        label: "Front image",
+                        label: "Side A — photo",
+                        ui: {
+                          description:
+                            "Shown on the front of the card first. Pick a clear, bright photo; it will be cropped to fit the card.",
+                        },
                       },
                       {
                         type: "string",
                         name: "hccFrontAlt",
-                        label: "Front image alt text",
+                        label: "Side A — short description for screen readers",
                         ui: {
-                          description: "Keep under 80 characters.",
+                          description:
+                            "Describe what is in the Side A photo (under 80 characters). Helps visitors who use assistive technology.",
                           validate: (val: string | undefined) =>
                             val && val.length > 80
-                              ? "Keep alt text under 80 characters"
+                              ? "Keep this under 80 characters"
                               : undefined,
                         },
                       },
                       {
                         type: "string",
                         name: "hccFrontCaption",
-                        label: "Front caption",
+                        label: "Side A — line under the photo",
                         ui: {
                           description:
-                            "Short phrase shown below the front image (max 30 chars).",
+                            "A very short phrase under the photo (30 characters max so the card layout stays tidy).",
                           validate: (val: string | undefined) =>
                             val && val.length > 30
-                              ? "Caption must be 30 characters or fewer so cards look normal"
+                              ? "Use 30 characters or fewer so the card still looks good"
                               : undefined,
                         },
                       },
                       {
                         type: "image",
                         name: "hccBackImage",
-                        label: "Back image",
+                        label: "Side B — photo (after the card flips)",
+                        ui: {
+                          description:
+                            "Shown when the card flips. Same tips as Side A — clear subject, will be cropped.",
+                        },
                       },
                       {
                         type: "string",
                         name: "hccBackAlt",
-                        label: "Back image alt text",
+                        label: "Side B — short description for screen readers",
                         ui: {
-                          description: "Keep under 80 characters.",
+                          description:
+                            "Describe the Side B photo (under 80 characters).",
                           validate: (val: string | undefined) =>
                             val && val.length > 80
-                              ? "Keep alt text under 80 characters"
+                              ? "Keep this under 80 characters"
                               : undefined,
                         },
                       },
                       {
                         type: "string",
                         name: "hccBackCaption",
-                        label: "Back caption",
+                        label: "Side B — line under the photo",
                         ui: {
                           description:
-                            "Short phrase shown below the back image (max 30 chars).",
+                            "Short phrase for the flipped side (30 characters max).",
                           validate: (val: string | undefined) =>
                             val && val.length > 30
-                              ? "Caption must be 30 characters or fewer so cards look normal"
+                              ? "Use 30 characters or fewer so the card still looks good"
                               : undefined,
                         },
                       },
