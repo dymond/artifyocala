@@ -115,7 +115,6 @@ export default function HomeHeroFullVisual({ section }: Props) {
               <div className="max-lg:contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col">
                 <HeroPlayfulCollage
                   collageCards={s.hhfCollageCards}
-                  tinaSection={s}
                 />
               </div>
             ) : null}
