@@ -58,6 +58,40 @@
       "hhfHiringImage": "/images/maker-collective-hiring-poster.jpg",
       "hhfHiringImageAlt": "Join the Marion County Maker Collective!",
       "hhfShowCollage": true,
+      "hhfCollageCards": [
+        {
+          "hccFrontImage": "/images/brick-city-glam-gallery-01.jpg",
+          "hccFrontAlt": "Brick City Glam — live performance photograph (A)",
+          "hccFrontCaption": "Wings & glitter & grit",
+          "hccBackImage": "/images/brick-city-glam-gallery-11.jpg",
+          "hccBackAlt": "Brick City Glam — live performance photograph (B)",
+          "hccBackCaption": "Totally different frame"
+        },
+        {
+          "hccFrontImage": "/images/brick-city-glam-gallery-03.jpg",
+          "hccFrontAlt": "Brick City Glam — live performance photograph (C)",
+          "hccFrontCaption": "Main character energy",
+          "hccBackImage": "/images/brick-city-glam-gallery-12.jpg",
+          "hccBackAlt": "Brick City Glam — live performance photograph (D)",
+          "hccBackCaption": "Back side, different photo"
+        },
+        {
+          "hccFrontImage": "/images/brick-city-glam-gallery-05.jpg",
+          "hccFrontAlt": "Brick City Glam — live performance photograph (E)",
+          "hccFrontCaption": "Ok who brought snacks",
+          "hccBackImage": "/images/brick-city-glam-gallery-13.jpg",
+          "hccBackAlt": "Brick City Glam — live performance photograph (F)",
+          "hccBackCaption": "Another moment entirely"
+        },
+        {
+          "hccFrontImage": "/images/brick-city-glam-gallery-07.jpg",
+          "hccFrontAlt": "Brick City Glam — live performance photograph (G)",
+          "hccFrontCaption": "Standing O pending",
+          "hccBackImage": "/images/brick-city-glam-gallery-14.jpg",
+          "hccBackAlt": "Brick City Glam — live performance photograph (H)",
+          "hccBackCaption": "Yep — new pic back here"
+        }
+      ],
       "_template": "homeHeroFull"
     },
     {

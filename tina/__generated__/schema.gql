@@ -303,6 +303,15 @@ type PageSectionsHomeHeroFullHhfAsideStackButtons {
   habsTone: String
 }
 
+type PageSectionsHomeHeroFullHhfCollageCards {
+  hccFrontImage: String
+  hccFrontAlt: String
+  hccFrontCaption: String
+  hccBackImage: String
+  hccBackAlt: String
+  hccBackCaption: String
+}
+
 type PageSectionsHomeHeroFull {
   hhfEyebrow: String!
   hhfTitle: String!
@@ -320,6 +329,7 @@ type PageSectionsHomeHeroFull {
   hhfHiringImage: String!
   hhfHiringImageAlt: String!
   hhfShowCollage: Boolean
+  hhfCollageCards: [PageSectionsHomeHeroFullHhfCollageCards]
 }
 
 type PageSectionsHomeMarquee {
@@ -526,6 +536,15 @@ input PageSectionsHomeHeroFullHhfAsideStackButtonsFilter {
   habsTone: StringFilter
 }
 
+input PageSectionsHomeHeroFullHhfCollageCardsFilter {
+  hccFrontImage: ImageFilter
+  hccFrontAlt: StringFilter
+  hccFrontCaption: StringFilter
+  hccBackImage: ImageFilter
+  hccBackAlt: StringFilter
+  hccBackCaption: StringFilter
+}
+
 input PageSectionsHomeHeroFullFilter {
   hhfEyebrow: StringFilter
   hhfTitle: StringFilter
@@ -543,6 +562,7 @@ input PageSectionsHomeHeroFullFilter {
   hhfHiringImage: ImageFilter
   hhfHiringImageAlt: StringFilter
   hhfShowCollage: BooleanFilter
+  hhfCollageCards: PageSectionsHomeHeroFullHhfCollageCardsFilter
 }
 
 input PageSectionsHomeMarqueeFilter {
@@ -948,6 +968,15 @@ input PageSectionsHomeHeroFullHhfAsideStackButtonsMutation {
   habsTone: String
 }
 
+input PageSectionsHomeHeroFullHhfCollageCardsMutation {
+  hccFrontImage: String
+  hccFrontAlt: String
+  hccFrontCaption: String
+  hccBackImage: String
+  hccBackAlt: String
+  hccBackCaption: String
+}
+
 input PageSectionsHomeHeroFullMutation {
   hhfEyebrow: String
   hhfTitle: String
@@ -965,6 +994,7 @@ input PageSectionsHomeHeroFullMutation {
   hhfHiringImage: String
   hhfHiringImageAlt: String
   hhfShowCollage: Boolean
+  hhfCollageCards: [PageSectionsHomeHeroFullHhfCollageCardsMutation]
 }
 
 input PageSectionsHomeMarqueeMutation {

@@ -148,6 +148,19 @@ const homeHeroFullSchema = z.object({
   hhfHiringImage: z.string(),
   hhfHiringImageAlt: z.string(),
   hhfShowCollage: z.boolean().optional().nullable(),
+  hhfCollageCards: z
+    .array(
+      z.object({
+        hccFrontImage: z.string().optional().nullable(),
+        hccFrontAlt: z.string().optional().nullable(),
+        hccFrontCaption: z.string().optional().nullable(),
+        hccBackImage: z.string().optional().nullable(),
+        hccBackAlt: z.string().optional().nullable(),
+        hccBackCaption: z.string().optional().nullable(),
+      })
+    )
+    .optional()
+    .nullable(),
 });
 
 const homeMarqueeSchema = z.object({

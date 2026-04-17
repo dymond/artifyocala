@@ -16,7 +16,7 @@ export type FlipClass =
   | "artify-hero-flip-c"
   | "artify-hero-flip-d";
 
-export type CardVariant = "bleed" | "arch" | "wide";
+export type CardVariant = "bleed" | "arch" | "wide" | "door";
 
 export type CardConfig = {
   variant: CardVariant;
@@ -35,12 +35,14 @@ export type CardConfig = {
 };
 
 export function faceRound(v: CardVariant): string {
+  if (v === "door") return "rounded-t-full rounded-b-2xl";
   if (v === "arch") return "rounded-t-[2.75rem] rounded-b-2xl";
   if (v === "wide") return "rounded-3xl";
   return "rounded-2xl";
 }
 
 export function aspectInner(v: CardVariant): string {
+  if (v === "door") return "aspect-[2/3]";
   if (v === "bleed" || v === "wide") return "aspect-[5/4]";
   return "aspect-[4/5]";
 }
@@ -52,7 +54,7 @@ export function photoRoundBleed(v: CardVariant): string {
 
 export const heroPlayfulCollageCards: ReadonlyArray<CardConfig> = [
   {
-    variant: "bleed",
+    variant: "door",
     front: {
       src: G[0],
       alt: `${galleryAlt} (A)`,
@@ -73,7 +75,7 @@ export const heroPlayfulCollageCards: ReadonlyArray<CardConfig> = [
       "bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist",
     bob: "artify-hero-card-bob-1",
     flip: "artify-hero-flip-a",
-    box: "left-[5%] top-[5%] w-[min(94%,13.75rem)] sm:left-[7%] sm:top-[7%] sm:w-[min(88%,15.75rem)]",
+    box: "left-[5%] top-[5%] w-[min(94%,11.5rem)] sm:left-[7%] sm:top-[5%] sm:w-[min(88%,13rem)]",
     layerDelaySec: 0.8,
     loading: "eager",
     fetchPriority: "high",

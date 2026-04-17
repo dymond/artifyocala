@@ -3,6 +3,11 @@
  * Byooooob-style hero scene — implementation shared with Tina visual editor.
  */
 import HeroPlayfulCollageReact from '../tina/HeroPlayfulCollage';
+
+interface Props {
+  collageCards?: any[] | null;
+}
+const { collageCards } = Astro.props;
 ---
 
-<HeroPlayfulCollageReact client:visible />
+<HeroPlayfulCollageReact client:visible collageCards={collageCards} />

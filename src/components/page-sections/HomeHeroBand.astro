@@ -85,7 +85,7 @@ const asideStack = section.hhfAsideStackButtons?.filter(Boolean) ?? [];
         {
           showCollage && (
             <div class="max-lg:contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col">
-              <HeroPlayfulCollage />
+              <HeroPlayfulCollage collageCards={(section as any).hhfCollageCards} />
             </div>
           )
         }

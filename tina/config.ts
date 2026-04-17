@@ -817,6 +817,79 @@ export default defineConfig({
                     label:
                       "Show playful 3D collage (between hero copy and aside column)",
                   },
+                  {
+                    type: "object",
+                    name: "hhfCollageCards",
+                    label: "Collage flip-cards",
+                    list: true,
+                    ui: {
+                      description:
+                        "Four flip cards in the hero collage. Edit images and captions — layout/positions are fixed. Leave empty to use defaults.",
+                      max: 4,
+                    },
+                    fields: [
+                      {
+                        type: "image",
+                        name: "hccFrontImage",
+                        label: "Front image",
+                      },
+                      {
+                        type: "string",
+                        name: "hccFrontAlt",
+                        label: "Front image alt text",
+                        ui: {
+                          description: "Keep under 80 characters.",
+                          validate: (val: string | undefined) =>
+                            val && val.length > 80
+                              ? "Keep alt text under 80 characters"
+                              : undefined,
+                        },
+                      },
+                      {
+                        type: "string",
+                        name: "hccFrontCaption",
+                        label: "Front caption",
+                        ui: {
+                          description:
+                            "Short phrase shown below the front image (max 30 chars).",
+                          validate: (val: string | undefined) =>
+                            val && val.length > 30
+                              ? "Caption must be 30 characters or fewer so cards look normal"
+                              : undefined,
+                        },
+                      },
+                      {
+                        type: "image",
+                        name: "hccBackImage",
+                        label: "Back image",
+                      },
+                      {
+                        type: "string",
+                        name: "hccBackAlt",
+                        label: "Back image alt text",
+                        ui: {
+                          description: "Keep under 80 characters.",
+                          validate: (val: string | undefined) =>
+                            val && val.length > 80
+                              ? "Keep alt text under 80 characters"
+                              : undefined,
+                        },
+                      },
+                      {
+                        type: "string",
+                        name: "hccBackCaption",
+                        label: "Back caption",
+                        ui: {
+                          description:
+                            "Short phrase shown below the back image (max 30 chars).",
+                          validate: (val: string | undefined) =>
+                            val && val.length > 30
+                              ? "Caption must be 30 characters or fewer so cards look normal"
+                              : undefined,
+                        },
+                      },
+                    ],
+                  },
                 ],
               },
               {

@@ -113,7 +113,9 @@ export default function HomeHeroFullVisual({ section }: Props) {
             </div>
             {showCollage ? (
               <div className="max-lg:contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col">
-                <HeroPlayfulCollage />
+                <HeroPlayfulCollage
+                  collageCards={s.hhfCollageCards}
+                />
               </div>
             ) : null}
           </div>

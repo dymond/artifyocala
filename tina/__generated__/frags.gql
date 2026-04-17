@@ -133,6 +133,15 @@ fragment PageParts on Page {
       hhfHiringImage
       hhfHiringImageAlt
       hhfShowCollage
+      hhfCollageCards {
+        __typename
+        hccFrontImage
+        hccFrontAlt
+        hccFrontCaption
+        hccBackImage
+        hccBackAlt
+        hccBackCaption
+      }
     }
     ... on PageSectionsHomeMarquee {
       hmrText

@@ -1,6 +1,36 @@
 // tina/config.ts
 import { defineConfig } from "tinacms";
-var branch = process.env.TINA_CONTENT_BRANCH?.trim() || process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || process.env.NETLIFY_BRANCH || process.env.HEAD || "main";
+
+// tina/branch.ts
+function looksLikeGitCommitish(s) {
+  const t = s.trim();
+  if (!t) return false;
+  if (/^[0-9a-f]{40}$/i.test(t)) return true;
+  if (t.includes("/") || t.includes("_")) return false;
+  return /^[0-9a-f]{7,12}$/i.test(t);
+}
+function pickFirstPlausibleBranch(...candidates) {
+  for (const raw of candidates) {
+    const v = raw?.trim();
+    if (v && !looksLikeGitCommitish(v)) return v;
+  }
+  return void 0;
+}
+function getTinaGitBranch() {
+  const explicit = process.env.TINA_CONTENT_BRANCH?.trim();
+  if (explicit) return explicit;
+  const fromEnv = pickFirstPlausibleBranch(
+    process.env.BRANCH,
+    process.env.GITHUB_BRANCH,
+    process.env.NETLIFY_BRANCH,
+    process.env.VERCEL_GIT_BRANCH,
+    process.env.HEAD
+  );
+  return fromEnv ?? "main";
+}
+
+// tina/config.ts
+var branch = getTinaGitBranch();
 var netlifyDeploysUrl = process.env.PUBLIC_NETLIFY_DEPLOYS_URL?.trim() || "https://app.netlify.com/sites/incredible-tarsier-9abffe/deploys";
 var netlifySiteSlug = "incredible-tarsier-9abffe";
 var tinaPreviewUrl = process.env.PUBLIC_TINA_PREVIEW_URL?.trim() || "";
@@ -780,6 +810,64 @@ var config_default = defineConfig({
                     type: "boolean",
                     name: "hhfShowCollage",
                     label: "Show playful 3D collage (between hero copy and aside column)"
+                  },
+                  {
+                    type: "object",
+                    name: "hhfCollageCards",
+                    label: "Collage flip-cards",
+                    list: true,
+                    ui: {
+                      description: "Four flip cards in the hero collage. Edit images and captions \u2014 layout/positions are fixed. Leave empty to use defaults.",
+                      max: 4
+                    },
+                    fields: [
+                      {
+                        type: "image",
+                        name: "hccFrontImage",
+                        label: "Front image"
+                      },
+                      {
+                        type: "string",
+                        name: "hccFrontAlt",
+                        label: "Front image alt text",
+                        ui: {
+                          description: "Keep under 80 characters.",
+                          validate: (val) => val && val.length > 80 ? "Keep alt text under 80 characters" : void 0
+                        }
+                      },
+                      {
+                        type: "string",
+                        name: "hccFrontCaption",
+                        label: "Front caption",
+                        ui: {
+                          description: "Short phrase shown below the front image (max 30 chars).",
+                          validate: (val) => val && val.length > 30 ? "Caption must be 30 characters or fewer so cards look normal" : void 0
+                        }
+                      },
+                      {
+                        type: "image",
+                        name: "hccBackImage",
+                        label: "Back image"
+                      },
+                      {
+                        type: "string",
+                        name: "hccBackAlt",
+                        label: "Back image alt text",
+                        ui: {
+                          description: "Keep under 80 characters.",
+                          validate: (val) => val && val.length > 80 ? "Keep alt text under 80 characters" : void 0
+                        }
+                      },
+                      {
+                        type: "string",
+                        name: "hccBackCaption",
+                        label: "Back caption",
+                        ui: {
+                          description: "Short phrase shown below the back image (max 30 chars).",
+                          validate: (val) => val && val.length > 30 ? "Caption must be 30 characters or fewer so cards look normal" : void 0
+                        }
+                      }
+                    ]
                   }
                 ]
               },

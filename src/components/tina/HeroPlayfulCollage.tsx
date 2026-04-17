@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   aspectInner,
   faceRound,
@@ -13,6 +13,40 @@ import {
   HERO_EYE_PUPIL_Y_BIAS_PX,
   offsetTowardPointClamped,
 } from "../../lib/hero-eyes";
+
+export type CollageCardOverride = {
+  hccFrontImage?: string | null;
+  hccFrontAlt?: string | null;
+  hccFrontCaption?: string | null;
+  hccBackImage?: string | null;
+  hccBackAlt?: string | null;
+  hccBackCaption?: string | null;
+};
+
+function mergeCollageCards(
+  overrides?: ReadonlyArray<CollageCardOverride | null> | null,
+): ReadonlyArray<CardConfig> {
+  if (!overrides || overrides.length === 0) return heroPlayfulCollageCards;
+  return heroPlayfulCollageCards.map((card, i) => {
+    const o = overrides[i];
+    if (!o) return card;
+    return {
+      ...card,
+      front: {
+        ...card.front,
+        ...(o.hccFrontImage ? { src: o.hccFrontImage } : {}),
+        ...(o.hccFrontAlt ? { alt: o.hccFrontAlt } : {}),
+      },
+      back: {
+        ...card.back,
+        ...(o.hccBackImage ? { src: o.hccBackImage } : {}),
+        ...(o.hccBackAlt ? { alt: o.hccBackAlt } : {}),
+      },
+      ...(o.hccFrontCaption ? { frontCaption: o.hccFrontCaption } : {}),
+      ...(o.hccBackCaption ? { backCaption: o.hccBackCaption } : {}),
+    };
+  });
+}
 
 function bindHeroEyes(): () => void {
   const root = document.querySelector("[data-artify-hero-eyes]");
@@ -143,7 +177,7 @@ function CardFaces({ c }: { c: CardConfig }) {
             </>
           )}
 
-          {c.variant === "arch" && (
+          {(c.variant === "arch" || c.variant === "door") && (
             <>
               <div
                 className={cn(
@@ -151,7 +185,14 @@ function CardFaces({ c }: { c: CardConfig }) {
                   r,
                 )}
               >
-                <div className="relative min-h-0 w-full flex-1 overflow-hidden rounded-t-[2.5rem] border-b-[3px] border-ink bg-ink">
+                <div
+                  className={cn(
+                    "relative min-h-0 w-full flex-1 overflow-hidden border-b-[3px] border-ink bg-ink",
+                    c.variant === "door"
+                      ? "rounded-t-full"
+                      : "rounded-t-[2.5rem]",
+                  )}
+                >
                   <ResponsiveImage
                     src={c.front.src}
                     alt={c.front.alt}
@@ -179,7 +220,14 @@ function CardFaces({ c }: { c: CardConfig }) {
                   r,
                 )}
               >
-                <div className="relative min-h-0 w-full flex-1 overflow-hidden rounded-t-[2.5rem] border-b-[3px] border-ink bg-ink">
+                <div
+                  className={cn(
+                    "relative min-h-0 w-full flex-1 overflow-hidden border-b-[3px] border-ink bg-ink",
+                    c.variant === "door"
+                      ? "rounded-t-full"
+                      : "rounded-t-[2.5rem]",
+                  )}
+                >
                   <ResponsiveImage
                     src={c.back.src}
                     alt={c.back.alt}
@@ -208,8 +256,16 @@ function CardFaces({ c }: { c: CardConfig }) {
   );
 }
 
+type HeroPlayfulCollageProps = {
+  collageCards?: ReadonlyArray<CollageCardOverride | null> | null;
+};
+
 /** Shared hero collage (was HeroPlayfulCollage.astro). */
-export default function HeroPlayfulCollage() {
+export default function HeroPlayfulCollage({
+  collageCards,
+}: HeroPlayfulCollageProps = {}) {
+  const cards = useMemo(() => mergeCollageCards(collageCards), [collageCards]);
+
   useEffect(() => {
     let teardown: (() => void) | undefined;
     const run = (): void => {
@@ -351,7 +407,7 @@ export default function HeroPlayfulCollage() {
           </div>
         </div>
 
-        {heroPlayfulCollageCards.map((c) => (
+        {cards.map((c) => (
           <article
             key={`${c.box}-${c.front.src}`}
             className={cn(
