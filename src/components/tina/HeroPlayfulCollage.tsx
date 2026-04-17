@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { tinaField } from "tinacms/dist/react";
 import {
   aspectInner,
@@ -268,6 +268,7 @@ export default function HeroPlayfulCollage({
   tinaSection,
 }: HeroPlayfulCollageProps = {}) {
   const cards = useMemo(() => mergeCollageCards(collageCards), [collageCards]);
+  const [frontCardIdx, setFrontCardIdx] = useState(0);
 
   useEffect(() => {
     let teardown: (() => void) | undefined;
@@ -282,6 +283,22 @@ export default function HeroPlayfulCollage({
       teardown?.();
     };
   }, []);
+
+  useEffect(() => {
+    if (cards.length <= 1) return;
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mql.matches) return;
+
+    // Desktop only: rotate stacking order occasionally so hidden captions
+    // get a turn on top. Keep mobile stacked layout unchanged.
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    if (!desktop.matches) return;
+
+    const id = window.setInterval(() => {
+      setFrontCardIdx((n) => (n + 1) % cards.length);
+    }, 5200);
+    return () => window.clearInterval(id);
+  }, [cards.length]);
 
   return (
     <div
@@ -417,7 +434,7 @@ export default function HeroPlayfulCollage({
           </div>
         </div>
 
-        {cards.map((c) => (
+        {cards.map((c, i) => (
           <article
             key={`${c.box}-${c.front.src}`}
             className={cn(
@@ -425,7 +442,10 @@ export default function HeroPlayfulCollage({
               c.bob,
               c.box,
             )}
-            style={{ animationDelay: `-${c.layerDelaySec}s` }}
+            style={{
+              animationDelay: `-${c.layerDelaySec}s`,
+              zIndex: i === frontCardIdx ? 23 : 22,
+            }}
           >
             <CardFaces c={c} />
           </article>
