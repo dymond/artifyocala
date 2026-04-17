@@ -686,41 +686,41 @@ export default defineConfig({
               },
               {
                 name: "homeHeroFull",
-                label: "Home — hero + aside + hiring image",
+                label: "Home — top section (headline, buttons, collage, Maker Collective card)",
                 fields: [
                   {
                     type: "string",
                     name: "hhfEyebrow",
-                    label: "Eyebrow (small line above headline)",
+                    label: "Small line above headline",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfTitle",
-                    label: "Headline (h1)",
+                    label: "Main headline",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfLede",
-                    label: "Supporting paragraph",
+                    label: "Supporting paragraph (short)",
                     ui: { component: "textarea" },
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfRotatorWords",
-                    label: "Word rotator lines",
+                    label: "Rotating words/phrases (optional)",
                     list: true,
                     ui: {
                       description:
-                        "Phrases that cycle in the hero (one per line).",
+                        "Optional: short phrases that cycle under the headline (one per line).",
                     },
                   },
                   {
                     type: "object",
                     name: "hhfHeroButtons",
-                    label: "Hero buttons (under headline)",
+                    label: "Buttons under the headline",
                     list: true,
                     ui: {
                       description:
@@ -733,24 +733,24 @@ export default defineConfig({
                       {
                         type: "string",
                         name: "hhbLabel",
-                        label: "Label",
+                        label: "Button text",
                         required: true,
                       },
                       {
                         type: "string",
                         name: "hhbHref",
-                        label: "Link URL",
+                        label: "Link",
                         required: true,
                       },
                       {
                         type: "boolean",
                         name: "hhbExternal",
-                        label: "Open in new tab",
+                        label: "Open in a new tab",
                       },
                       {
                         type: "string",
                         name: "hhbTone",
-                        label: "Button style",
+                        label: "Button style (look)",
                         options: [
                           { label: "Primary", value: "primary" },
                           { label: "Outline", value: "outline" },
@@ -763,43 +763,43 @@ export default defineConfig({
                   {
                     type: "string",
                     name: "hhfAsideBadge",
-                    label: "Aside — badge text",
+                    label: "Maker Collective card — badge",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideTitle",
-                    label: "Aside — title",
+                    label: "Maker Collective card — title",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideDescription",
-                    label: "Aside — description",
+                    label: "Maker Collective card — description",
                     ui: { component: "textarea" },
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsLabel",
-                    label: "Aside — meetups button label",
+                    label: "Maker Collective card — main button text",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsHref",
-                    label: "Aside — meetups button URL",
+                    label: "Maker Collective card — main button link",
                     required: true,
                   },
                   {
                     type: "boolean",
                     name: "hhfAsideMeetupsExternal",
-                    label: "Aside — meetups opens in new tab",
+                    label: "Maker Collective card — main button opens new tab",
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsTone",
-                    label: "Aside — meetups button style",
+                    label: "Maker Collective card — main button style",
                     options: [
                       { label: "Primary", value: "primary" },
                       { label: "Outline", value: "outline" },
@@ -810,11 +810,11 @@ export default defineConfig({
                   {
                     type: "object",
                     name: "hhfAsideStackButtons",
-                    label: "Aside — stacked buttons",
+                    label: "Maker Collective card — extra buttons",
                     list: true,
                     ui: {
                       description:
-                        "Buttons in the aside column (e.g. Learn more, Wish list, Membership).",
+                        "Extra buttons shown under the main button (e.g. Learn more, Wish list, Membership).",
                       itemProps: (item: { habsLabel?: string | null }) => ({
                         label: item?.habsLabel?.trim() || "Aside button",
                       }),
@@ -823,24 +823,24 @@ export default defineConfig({
                       {
                         type: "string",
                         name: "habsLabel",
-                        label: "Label",
+                        label: "Button text",
                         required: true,
                       },
                       {
                         type: "string",
                         name: "habsHref",
-                        label: "Link URL",
+                        label: "Link",
                         required: true,
                       },
                       {
                         type: "boolean",
                         name: "habsExternal",
-                        label: "Open in new tab",
+                        label: "Open in a new tab",
                       },
                       {
                         type: "string",
                         name: "habsTone",
-                        label: "Button style",
+                        label: "Button style (look)",
                         options: [
                           { label: "Primary", value: "primary" },
                           { label: "Outline", value: "outline" },
@@ -853,13 +853,13 @@ export default defineConfig({
                   {
                     type: "image",
                     name: "hhfHiringImage",
-                    label: "Hiring poster image",
+                    label: "Maker Collective poster image (right side)",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfHiringImageAlt",
-                    label: "Hiring poster alt text",
+                    label: "Maker Collective poster — short description",
                     required: true,
                   },
                   {
