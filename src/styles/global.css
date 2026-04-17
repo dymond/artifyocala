@@ -325,14 +325,15 @@
 /* Raise card stacking during its flip so captions get airtime. */
 @keyframes artify-hero-stack-during-flip {
   0%,
-  21% {
+  24% {
     z-index: 22;
   }
-  22%,
-  82% {
+  /* Flip transition runs ~22%→28%; midpoint is ~25%. Raise at midpoint. */
+  25%,
+  78% {
     z-index: 23;
   }
-  83%,
+  79%,
   100% {
     z-index: 22;
   }
