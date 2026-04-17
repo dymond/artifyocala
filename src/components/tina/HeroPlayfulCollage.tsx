@@ -429,12 +429,16 @@ export default function HeroPlayfulCollage({
                   : c.flip === "artify-hero-flip-c"
                     ? "artify-hero-stack-c"
                     : "artify-hero-stack-d",
-              c.bob,
               c.box,
             )}
             style={{ animationDelay: `-${c.layerDelaySec}s` }}
           >
-            <CardFaces c={c} />
+            <div
+              className={cn("origin-center", c.bob)}
+              style={{ animationDelay: `-${c.layerDelaySec}s` }}
+            >
+              <CardFaces c={c} />
+            </div>
           </article>
         ))}
       </div>
