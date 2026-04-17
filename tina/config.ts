@@ -70,7 +70,7 @@ export default defineConfig({
         format: "mdx",
         ui: {
           description:
-            "Program pages (Brick City Glam, Storytelling Knights, Maker Collective, etc.). Use the live preview while editing; save sends changes to Git and the public site rebuilds in a minute or two.",
+            "Program pages for the site (one per program). Use the live preview while editing; save sends changes to Git and the public site rebuilds in a minute or two.",
           router: ({ document }) => {
             const base = document._sys.basename.replace(/\.mdx?$/i, "");
             return `/tina-preview/programs/${base}`;
@@ -1173,7 +1173,7 @@ export default defineConfig({
               },
               {
                 name: "homeMeetups",
-                label: "Home — maker meetups",
+                label: "Home — events spotlight (time/place + photos)",
                 fields: [
                   {
                     type: "string",
@@ -1666,17 +1666,17 @@ export default defineConfig({
           {
             type: "string",
             name: "meetupUrl",
-            label: "Footer — Maker meetups URL",
+            label: "Footer — community meetup URL",
           },
           {
             type: "string",
             name: "meetupLabel",
-            label: "Footer — Maker meetups link text",
+            label: "Footer — community meetup link text",
           },
           {
             type: "string",
             name: "meetupAriaLabel",
-            label: "Footer — Maker meetups accessible name",
+            label: "Footer — community meetup accessible name",
           },
           {
             type: "string",
