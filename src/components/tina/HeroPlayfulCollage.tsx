@@ -92,13 +92,7 @@ function bindHeroEyes(): () => void {
   };
 }
 
-function CardFaces({
-  c,
-  tinaCard,
-}: {
-  c: CardConfig;
-  tinaCard?: CollageCardOverride | null;
-}) {
+function CardFaces({ c }: { c: CardConfig }) {
   const r = faceRound(c.variant);
   const a = aspectInner(c.variant);
   const bRound = photoRoundBleed(c.variant);
@@ -120,14 +114,7 @@ function CardFaces({
                   r,
                 )}
               >
-                <div
-                  className="relative min-h-0 flex-1 p-1 sm:p-1.5"
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccFrontImage")
-                      : undefined
-                  }
-                >
+                <div className="relative min-h-0 flex-1 p-1 sm:p-1.5">
                   <ResponsiveImage
                     src={c.front.src}
                     alt={c.front.alt}
@@ -148,11 +135,6 @@ function CardFaces({
                     "shrink-0 border-t-[3px] border-ink px-1.5 py-[0.2rem] text-center text-[0.56rem] leading-tight sm:py-0.5 sm:text-[0.58rem]",
                     c.frontStripClass,
                   )}
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccFrontCaption")
-                      : undefined
-                  }
                 >
                   {c.frontCaption}
                 </div>
@@ -163,14 +145,7 @@ function CardFaces({
                   r,
                 )}
               >
-                <div
-                  className="relative min-h-0 flex-1 p-1 sm:p-1.5"
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccBackImage")
-                      : undefined
-                  }
-                >
+                <div className="relative min-h-0 flex-1 p-1 sm:p-1.5">
                   <ResponsiveImage
                     src={c.back.src}
                     alt={c.back.alt}
@@ -196,11 +171,6 @@ function CardFaces({
                     "shrink-0 border-t-[3px] border-ink px-1.5 py-[0.2rem] text-center text-[0.54rem] leading-tight sm:py-0.5 sm:text-[0.56rem]",
                     c.backStripClass,
                   )}
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccBackCaption")
-                      : undefined
-                  }
                 >
                   {c.backCaption}
                 </div>
@@ -223,11 +193,6 @@ function CardFaces({
                       ? "rounded-t-full"
                       : "rounded-t-[2.5rem]",
                   )}
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccFrontImage")
-                      : undefined
-                  }
                 >
                   <ResponsiveImage
                     src={c.front.src}
@@ -246,11 +211,6 @@ function CardFaces({
                     "shrink-0 px-1.5 py-[0.2rem] text-center leading-tight sm:py-0.5",
                     c.frontStripClass,
                   )}
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccFrontCaption")
-                      : undefined
-                  }
                 >
                   {c.frontCaption}
                 </div>
@@ -268,11 +228,6 @@ function CardFaces({
                       ? "rounded-t-full"
                       : "rounded-t-[2.5rem]",
                   )}
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccBackImage")
-                      : undefined
-                  }
                 >
                   <ResponsiveImage
                     src={c.back.src}
@@ -290,11 +245,6 @@ function CardFaces({
                     "shrink-0 px-1.5 py-[0.2rem] text-center text-[0.54rem] leading-tight sm:py-0.5 sm:text-[0.56rem]",
                     c.backStripClass,
                   )}
-                  data-tina-field={
-                    tinaCard
-                      ? tinaField(tinaCard, "hccBackCaption")
-                      : undefined
-                  }
                 >
                   {c.backCaption}
                 </div>
@@ -309,11 +259,13 @@ function CardFaces({
 
 type HeroPlayfulCollageProps = {
   collageCards?: ReadonlyArray<CollageCardOverride | null> | null;
+  tinaSection?: any;
 };
 
 /** Shared hero collage (was HeroPlayfulCollage.astro). */
 export default function HeroPlayfulCollage({
   collageCards,
+  tinaSection,
 }: HeroPlayfulCollageProps = {}) {
   const cards = useMemo(() => mergeCollageCards(collageCards), [collageCards]);
 
@@ -336,7 +288,14 @@ export default function HeroPlayfulCollage({
       className="artify-hero-playful relative flex min-h-0 w-full min-w-0 max-lg:order-3 lg:min-h-0 lg:flex-1 lg:flex-col"
       aria-label="Collage of Artify programs and community"
     >
-      <div className="artify-hero-scene-grid relative mx-auto min-h-[26.5rem] w-full flex-1 overflow-visible rounded-2xl border-[3px] border-ink p-4 shadow-[8px_8px_0_0_var(--color-ink)] sm:min-h-[31rem] sm:p-5 lg:h-full lg:min-h-0">
+      <div
+        className="artify-hero-scene-grid relative mx-auto min-h-[26.5rem] w-full flex-1 overflow-visible rounded-2xl border-[3px] border-ink p-4 shadow-[8px_8px_0_0_var(--color-ink)] sm:min-h-[31rem] sm:p-5 lg:h-full lg:min-h-0"
+        data-tina-field={
+          tinaSection
+            ? tinaField(tinaSection, "hhfCollageCards")
+            : undefined
+        }
+      >
         <div
           className="pointer-events-none absolute bottom-[34%] left-[38%] w-[3.35rem] sm:bottom-[32%] sm:left-[40%] sm:w-[3.85rem]"
           style={{ animationDelay: "-2.7s" }}
@@ -458,7 +417,7 @@ export default function HeroPlayfulCollage({
           </div>
         </div>
 
-        {cards.map((c, i) => (
+        {cards.map((c) => (
           <article
             key={`${c.box}-${c.front.src}`}
             className={cn(
@@ -468,10 +427,7 @@ export default function HeroPlayfulCollage({
             )}
             style={{ animationDelay: `-${c.layerDelaySec}s` }}
           >
-            <CardFaces
-              c={c}
-              tinaCard={collageCards?.[i]}
-            />
+            <CardFaces c={c} />
           </article>
         ))}
       </div>
