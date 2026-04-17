@@ -438,13 +438,16 @@ export default function HeroPlayfulCollage({
           <article
             key={`${c.box}-${c.front.src}`}
             className={cn(
-              "pointer-events-none absolute z-[22] origin-center",
+              "pointer-events-none absolute z-[20] origin-center",
               c.bob,
               c.box,
             )}
             style={{
               animationDelay: `-${c.layerDelaySec}s`,
-              zIndex: i === frontCardIdx ? 23 : 22,
+              zIndex:
+                cards.length > 0
+                  ? 23 - ((i - frontCardIdx + cards.length) % cards.length)
+                  : 22,
             }}
           >
             <CardFaces c={c} />
