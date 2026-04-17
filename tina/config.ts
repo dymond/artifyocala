@@ -686,7 +686,7 @@ export default defineConfig({
               },
               {
                 name: "homeHeroFull",
-                label: "Home — top section (headline, buttons, collage, Maker Collective card)",
+                label: "Home — top section (headline, buttons, collage, feature card)",
                 fields: [
                   {
                     type: "string",
@@ -763,43 +763,43 @@ export default defineConfig({
                   {
                     type: "string",
                     name: "hhfAsideBadge",
-                    label: "Maker Collective card — badge",
+                    label: "Feature card — badge",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideTitle",
-                    label: "Maker Collective card — title",
+                    label: "Feature card — title",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideDescription",
-                    label: "Maker Collective card — description",
+                    label: "Feature card — description",
                     ui: { component: "textarea" },
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsLabel",
-                    label: "Maker Collective card — main button text",
+                    label: "Feature card — main button text",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsHref",
-                    label: "Maker Collective card — main button link",
+                    label: "Feature card — main button link",
                     required: true,
                   },
                   {
                     type: "boolean",
                     name: "hhfAsideMeetupsExternal",
-                    label: "Maker Collective card — main button opens new tab",
+                    label: "Feature card — main button opens new tab",
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsTone",
-                    label: "Maker Collective card — main button style",
+                    label: "Feature card — main button style",
                     options: [
                       { label: "Primary", value: "primary" },
                       { label: "Outline", value: "outline" },
@@ -810,11 +810,11 @@ export default defineConfig({
                   {
                     type: "object",
                     name: "hhfAsideStackButtons",
-                    label: "Maker Collective card — extra buttons",
+                    label: "Feature card — extra buttons",
                     list: true,
                     ui: {
                       description:
-                        "Extra buttons shown under the main button (e.g. Learn more, Wish list, Membership).",
+                        "Extra buttons shown under the main button (optional).",
                       itemProps: (item: { habsLabel?: string | null }) => ({
                         label: item?.habsLabel?.trim() || "Aside button",
                       }),
@@ -853,13 +853,13 @@ export default defineConfig({
                   {
                     type: "image",
                     name: "hhfHiringImage",
-                    label: "Maker Collective poster image (right side)",
+                    label: "Right-side poster image",
                     required: true,
                   },
                   {
                     type: "string",
                     name: "hhfHiringImageAlt",
-                    label: "Maker Collective poster — short description",
+                    label: "Right-side poster — short description",
                     required: true,
                   },
                   {
