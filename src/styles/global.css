@@ -322,6 +322,22 @@
   }
 }
 
+/* Raise card stacking during its flip so captions get airtime. */
+@keyframes artify-hero-stack-during-flip {
+  0%,
+  21% {
+    z-index: 22;
+  }
+  22%,
+  82% {
+    z-index: 23;
+  }
+  83%,
+  100% {
+    z-index: 22;
+  }
+}
+
 @keyframes artify-hero-sticker-bob {
   0%,
   100% {
@@ -529,6 +545,25 @@
   animation-delay: -4s;
 }
 
+/* Desktop only: sync z-index raise to each card's flip timing. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  .artify-hero-stack-a {
+    animation: artify-hero-stack-during-flip 10.5s steps(1, end) infinite;
+  }
+  .artify-hero-stack-b {
+    animation: artify-hero-stack-during-flip 12.5s steps(1, end) infinite;
+    animation-delay: -2.75s;
+  }
+  .artify-hero-stack-c {
+    animation: artify-hero-stack-during-flip 9.25s steps(1, end) infinite;
+    animation-delay: -1.25s;
+  }
+  .artify-hero-stack-d {
+    animation: artify-hero-stack-during-flip 11.75s steps(1, end) infinite;
+    animation-delay: -4s;
+  }
+}
+
 .artify-hero-sticker-bob {
   animation: artify-hero-sticker-bob 4.5s ease-in-out infinite;
 }
@@ -576,6 +611,10 @@
   .artify-hero-card-bob-2,
   .artify-hero-card-bob-3,
   .artify-hero-card-bob-4,
+  .artify-hero-stack-a,
+  .artify-hero-stack-b,
+  .artify-hero-stack-c,
+  .artify-hero-stack-d,
   .artify-hero-flip-a,
   .artify-hero-flip-b,
   .artify-hero-flip-c,

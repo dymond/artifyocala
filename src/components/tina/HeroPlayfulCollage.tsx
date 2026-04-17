@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo } from "react";
 import { tinaField } from "tinacms/dist/react";
 import {
   aspectInner,
@@ -92,15 +92,6 @@ function bindHeroEyes(): () => void {
   };
 }
 
-function parseCssTimeToMs(v: string): number {
-  // Supports comma-separated animation lists; we only need the first.
-  const s = (v.split(",")[0] ?? "").trim();
-  if (!s) return 0;
-  if (s.endsWith("ms")) return Number(s.slice(0, -2)) || 0;
-  if (s.endsWith("s")) return (Number(s.slice(0, -1)) || 0) * 1000;
-  return Number(s) || 0;
-}
-
 function CardFaces({ c }: { c: CardConfig }) {
   const r = faceRound(c.variant);
   const a = aspectInner(c.variant);
@@ -114,7 +105,6 @@ function CardFaces({ c }: { c: CardConfig }) {
             "artify-hero-flip-inner absolute inset-0 min-h-0 w-full",
             c.flip,
           )}
-          data-artify-hero-flip
         >
           {(c.variant === "bleed" || c.variant === "wide") && (
             <>
@@ -278,7 +268,6 @@ export default function HeroPlayfulCollage({
   tinaSection,
 }: HeroPlayfulCollageProps = {}) {
   const cards = useMemo(() => mergeCollageCards(collageCards), [collageCards]);
-  const cardsRootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let teardown: (() => void) | undefined;
@@ -294,83 +283,6 @@ export default function HeroPlayfulCollage({
     };
   }, []);
 
-  useEffect(() => {
-    const root = cardsRootRef.current;
-    if (!root) return;
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reduced.matches) return;
-
-    const desktop = window.matchMedia("(min-width: 1024px)");
-    if (!desktop.matches) return;
-
-    const articles = Array.from(
-      root.querySelectorAll<HTMLElement>("[data-artify-hero-card]"),
-    );
-    if (articles.length === 0) return;
-
-    const baseZ = "22";
-    const topZ = "23";
-    for (const a of articles) a.style.zIndex = baseZ;
-
-    const perCardTimers = new Map<HTMLElement, number[]>();
-    const clearCardTimers = (article: HTMLElement) => {
-      const ids = perCardTimers.get(article);
-      if (!ids) return;
-      for (const id of ids) window.clearTimeout(id);
-      perCardTimers.delete(article);
-    };
-
-    const scheduleForNextIteration = (article: HTMLElement) => {
-      const flipEl =
-        article.querySelector<HTMLElement>("[data-artify-hero-flip]");
-      if (!flipEl) return;
-      const cs = window.getComputedStyle(flipEl);
-      const dur = parseCssTimeToMs(cs.animationDuration);
-      if (!dur) return;
-
-      // Flip keyframes transition between ~22% and ~28%; midpoint is ~25%.
-      // We schedule relative to the start of the next iteration to avoid
-      // negative animation delays and tab-sleep drift.
-      const riseAt = dur * 0.25;
-      const dropAt = dur * 0.82;
-
-      const t1 = window.setTimeout(() => {
-        for (const a of articles) a.style.zIndex = baseZ;
-        article.style.zIndex = topZ;
-      }, riseAt);
-      const t2 = window.setTimeout(() => {
-        article.style.zIndex = baseZ;
-      }, dropAt);
-      perCardTimers.set(article, [t1, t2]);
-    };
-
-    const handlers: Array<() => void> = [];
-    for (const article of articles) {
-      const flipEl =
-        article.querySelector<HTMLElement>("[data-artify-hero-flip]");
-      if (!flipEl) continue;
-
-      // Kick once immediately so something starts cycling even mid-iteration.
-      scheduleForNextIteration(article);
-
-      const onIter = () => {
-        clearCardTimers(article);
-        scheduleForNextIteration(article);
-      };
-      flipEl.addEventListener("animationiteration", onIter);
-      handlers.push(() =>
-        flipEl.removeEventListener("animationiteration", onIter),
-      );
-    }
-
-    return () => {
-      for (const a of articles) clearCardTimers(a);
-      for (const off of handlers) off();
-      for (const a of articles) a.style.zIndex = "";
-    };
-  }, [cards.length]);
-
   return (
     <div
       className="artify-hero-playful relative flex min-h-0 w-full min-w-0 max-lg:order-3 lg:min-h-0 lg:flex-1 lg:flex-col"
@@ -383,7 +295,6 @@ export default function HeroPlayfulCollage({
             ? tinaField(tinaSection, "hhfShowCollage")
             : undefined
         }
-        ref={cardsRootRef}
       >
         <div
           className="pointer-events-none absolute bottom-[34%] left-[38%] w-[3.35rem] sm:bottom-[32%] sm:left-[40%] sm:w-[3.85rem]"
@@ -511,11 +422,17 @@ export default function HeroPlayfulCollage({
             key={`${c.box}-${c.front.src}`}
             className={cn(
               "pointer-events-none absolute z-[22] origin-center",
+              c.flip === "artify-hero-flip-a"
+                ? "artify-hero-stack-a"
+                : c.flip === "artify-hero-flip-b"
+                  ? "artify-hero-stack-b"
+                  : c.flip === "artify-hero-flip-c"
+                    ? "artify-hero-stack-c"
+                    : "artify-hero-stack-d",
               c.bob,
               c.box,
             )}
             style={{ animationDelay: `-${c.layerDelaySec}s` }}
-            data-artify-hero-card
           >
             <CardFaces c={c} />
           </article>
