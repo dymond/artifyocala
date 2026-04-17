@@ -621,9 +621,18 @@
   /* Turn the absolute-position collage into a stacked list. */
   .artify-hero-scene-grid article {
     position: static !important;
-    transform: none !important;
     width: min(100%, 22rem) !important;
     margin: 0.9rem auto !important;
+    transform: translateZ(0);
+  }
+
+  /* Add a gentle alternating tilt for “collage” feel (left/right/left/right). */
+  .artify-hero-scene-grid article:nth-of-type(odd) {
+    transform: rotate(-1.75deg) translateZ(0);
+  }
+
+  .artify-hero-scene-grid article:nth-of-type(even) {
+    transform: rotate(1.75deg) translateZ(0);
   }
 
   /* Keep motion playful but subtle on mobile (flip stays unchanged). */
