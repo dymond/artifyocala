@@ -313,23 +313,27 @@ export default function HeroPlayfulCollage({
     const topZ = "23";
     for (const a of articles) a.style.zIndex = baseZ;
 
-    const timers = new Set<number>();
-    const clearTimers = () => {
-      for (const id of timers) window.clearTimeout(id);
-      timers.clear();
+    const perCardTimers = new Map<HTMLElement, number[]>();
+    const clearCardTimers = (article: HTMLElement) => {
+      const ids = perCardTimers.get(article);
+      if (!ids) return;
+      for (const id of ids) window.clearTimeout(id);
+      perCardTimers.delete(article);
     };
 
-    const bringToFrontAtFlipMidpoint = (article: HTMLElement) => {
-      const flipEl = article.querySelector<HTMLElement>("[data-artify-hero-flip]");
+    const scheduleForNextIteration = (article: HTMLElement) => {
+      const flipEl =
+        article.querySelector<HTMLElement>("[data-artify-hero-flip]");
       if (!flipEl) return;
       const cs = window.getComputedStyle(flipEl);
       const dur = parseCssTimeToMs(cs.animationDuration);
-      const delay = parseCssTimeToMs(cs.animationDelay);
       if (!dur) return;
 
       // Flip keyframes transition between ~22% and ~28%; midpoint is ~25%.
-      const riseAt = Math.max(0, delay) + dur * 0.25;
-      const dropAt = Math.max(0, delay) + dur * 0.78;
+      // We schedule relative to the start of the next iteration to avoid
+      // negative animation delays and tab-sleep drift.
+      const riseAt = dur * 0.25;
+      const dropAt = dur * 0.82;
 
       const t1 = window.setTimeout(() => {
         for (const a of articles) a.style.zIndex = baseZ;
@@ -338,30 +342,30 @@ export default function HeroPlayfulCollage({
       const t2 = window.setTimeout(() => {
         article.style.zIndex = baseZ;
       }, dropAt);
-      timers.add(t1);
-      timers.add(t2);
+      perCardTimers.set(article, [t1, t2]);
     };
 
-    // Initial scheduling (respects negative delays by clamping to 0ms).
-    for (const a of articles) bringToFrontAtFlipMidpoint(a);
-
-    // Reschedule on each flip iteration so it stays aligned.
     const handlers: Array<() => void> = [];
     for (const article of articles) {
-      const flipEl = article.querySelector<HTMLElement>("[data-artify-hero-flip]");
+      const flipEl =
+        article.querySelector<HTMLElement>("[data-artify-hero-flip]");
       if (!flipEl) continue;
+
+      // Kick once immediately so something starts cycling even mid-iteration.
+      scheduleForNextIteration(article);
+
       const onIter = () => {
-        // Drop any pending timers from previous cycles and reschedule fresh.
-        // This keeps timing stable across tab sleeps / refreshes.
-        clearTimers();
-        for (const a of articles) bringToFrontAtFlipMidpoint(a);
+        clearCardTimers(article);
+        scheduleForNextIteration(article);
       };
       flipEl.addEventListener("animationiteration", onIter);
-      handlers.push(() => flipEl.removeEventListener("animationiteration", onIter));
+      handlers.push(() =>
+        flipEl.removeEventListener("animationiteration", onIter),
+      );
     }
 
     return () => {
-      clearTimers();
+      for (const a of articles) clearCardTimers(a);
       for (const off of handlers) off();
       for (const a of articles) a.style.zIndex = "";
     };
