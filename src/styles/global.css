@@ -246,6 +246,17 @@
   }
 }
 
+/* Mobile: smaller-amplitude bob so cards stay readable. */
+@keyframes artify-hero-card-bob-mobile {
+  0%,
+  100% {
+    margin: 0;
+  }
+  50% {
+    margin: -3px 0 0 2px;
+  }
+}
+
 /*
  * Y-axis flip: oscillate 0° ↔ 180° only (no 360° loop) to avoid wrap/compositor glitches in Chrome.
  * Tilt is baked in so no 2D rotate sits between perspective and preserve-3d (same flicker class as bob).
@@ -586,6 +597,43 @@
 
   .artify-hero-flip-inner {
     transform: translateZ(0.01px) rotateY(0deg) !important;
+  }
+}
+
+/* Home hero collage: stack cards on small screens for legibility. */
+@media (max-width: 639px) {
+  .artify-hero-playful {
+    min-height: 0;
+  }
+
+  .artify-hero-scene-grid {
+    min-height: 0 !important;
+    height: auto;
+    padding: 1rem;
+  }
+
+  /* Hide decorative absolute elements that overlap stacked layout. */
+  .artify-hero-scene-grid > div.pointer-events-none.absolute,
+  .artify-hero-scene-grid > div.pointer-events-auto.absolute {
+    display: none;
+  }
+
+  /* Turn the absolute-position collage into a stacked list. */
+  .artify-hero-scene-grid article {
+    position: static !important;
+    transform: none !important;
+    width: min(100%, 22rem) !important;
+    margin: 0.9rem auto !important;
+  }
+
+  /* Keep motion playful but subtle on mobile (flip stays unchanged). */
+  .artify-hero-card-bob-1,
+  .artify-hero-card-bob-2,
+  .artify-hero-card-bob-3,
+  .artify-hero-card-bob-4 {
+    animation-name: artify-hero-card-bob-mobile !important;
+    animation-duration: 12s;
+    animation-timing-function: ease-in-out;
   }
 }
 

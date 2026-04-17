@@ -132,7 +132,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                 </div>
                 <div
                   className={cn(
-                    "shrink-0 border-t-[3px] border-ink px-1.5 py-[0.2rem] text-center text-[0.56rem] leading-tight sm:py-0.5 sm:text-[0.58rem]",
+                    "shrink-0 border-t-[3px] border-ink px-1.5 py-1 text-center text-[0.72rem] leading-snug sm:py-0.5 sm:text-[0.58rem]",
                     c.frontStripClass,
                   )}
                 >
@@ -168,7 +168,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                 </div>
                 <div
                   className={cn(
-                    "shrink-0 border-t-[3px] border-ink px-1.5 py-[0.2rem] text-center text-[0.54rem] leading-tight sm:py-0.5 sm:text-[0.56rem]",
+                    "shrink-0 border-t-[3px] border-ink px-1.5 py-1 text-center text-[0.7rem] leading-snug sm:py-0.5 sm:text-[0.56rem]",
                     c.backStripClass,
                   )}
                 >
@@ -208,7 +208,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                 </div>
                 <div
                   className={cn(
-                    "shrink-0 px-1.5 py-[0.2rem] text-center leading-tight sm:py-0.5",
+                    "shrink-0 px-1.5 py-1 text-center text-[0.72rem] leading-snug sm:py-0.5 sm:text-[0.56rem]",
                     c.frontStripClass,
                   )}
                 >
@@ -242,7 +242,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                 </div>
                 <div
                   className={cn(
-                    "shrink-0 px-1.5 py-[0.2rem] text-center text-[0.54rem] leading-tight sm:py-0.5 sm:text-[0.56rem]",
+                    "shrink-0 px-1.5 py-1 text-center text-[0.7rem] leading-snug sm:py-0.5 sm:text-[0.56rem]",
                     c.backStripClass,
                   )}
                 >
