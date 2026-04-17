@@ -112,11 +112,7 @@ export default defineConfig({
             label: "Hero images",
             list: true,
             ui: {
-              itemProps: (item: { progHeroAlt?: string | null }) => ({
-                label:
-                  item?.progHeroAlt?.trim() ||
-                  "Hero image (add alt text to name this row)",
-              }),
+              itemProps: () => ({ label: "Hero image" }),
             },
             fields: [
               {
@@ -138,9 +134,7 @@ export default defineConfig({
             label: "Hero buttons",
             list: true,
             ui: {
-              itemProps: (item: { progCtaLabel?: string | null }) => ({
-                label: item?.progCtaLabel?.trim() || "Button",
-              }),
+              itemProps: () => ({ label: "Button" }),
             },
             fields: [
               {
@@ -214,11 +208,7 @@ export default defineConfig({
             label: "Gallery marquee images",
             list: true,
             ui: {
-              itemProps: (item: { progGalAlt?: string | null }) => ({
-                label:
-                  item?.progGalAlt?.trim() ||
-                  "Marquee image (optional alt names this row)",
-              }),
+              itemProps: () => ({ label: "Marquee image" }),
             },
             fields: [
               {
@@ -403,11 +393,7 @@ export default defineConfig({
                     label: "Objectives",
                     list: true,
                     ui: {
-                      itemProps: (item: { objLineTitle?: string | null }) => ({
-                        label:
-                          item?.objLineTitle?.trim() ||
-                          "Objective (add a bold label)",
-                      }),
+                      itemProps: () => ({ label: "List item" }),
                     },
                     fields: [
                       {
@@ -439,9 +425,7 @@ export default defineConfig({
                     ui: {
                       description:
                         "Call-to-action buttons (label, link, style).",
-                      itemProps: (item: { objCtaLabel?: string | null }) => ({
-                        label: item?.objCtaLabel?.trim() || "Button",
-                      }),
+                      itemProps: () => ({ label: "Button" }),
                     },
                     fields: [
                       {
@@ -725,9 +709,7 @@ export default defineConfig({
                     ui: {
                       description:
                         "Primary calls to action below the hero copy (0–4 buttons).",
-                      itemProps: (item: { hhbLabel?: string | null }) => ({
-                        label: item?.hhbLabel?.trim() || "Hero button",
-                      }),
+                      itemProps: () => ({ label: "Button" }),
                     },
                     fields: [
                       {
@@ -815,9 +797,7 @@ export default defineConfig({
                     ui: {
                       description:
                         "Extra buttons shown under the main button (optional).",
-                      itemProps: (item: { habsLabel?: string | null }) => ({
-                        label: item?.habsLabel?.trim() || "Aside button",
-                      }),
+                      itemProps: () => ({ label: "Button" }),
                     },
                     fields: [
                       {
@@ -1074,9 +1054,7 @@ export default defineConfig({
                     ui: {
                       description:
                         "Three program feature cards (images, copy, buttons).",
-                      itemProps: (item: { hpiCardTitle?: string | null }) => ({
-                        label: item?.hpiCardTitle?.trim() || "Program card",
-                      }),
+                      itemProps: () => ({ label: "Card" }),
                     },
                     fields: [
                       {
@@ -1125,9 +1103,7 @@ export default defineConfig({
                         list: true,
                         ui: {
                           description: "Up to four buttons per card.",
-                          itemProps: (item: { hpcbLabel?: string | null }) => ({
-                            label: item?.hpcbLabel?.trim() || "Card button",
-                          }),
+                          itemProps: () => ({ label: "Button" }),
                         },
                         fields: [
                           {
@@ -1335,9 +1311,7 @@ export default defineConfig({
                     label: "Cards",
                     list: true,
                     ui: {
-                      itemProps: (item: { hmgCardTitle?: string | null }) => ({
-                        label: item?.hmgCardTitle?.trim() || "Card",
-                      }),
+                      itemProps: () => ({ label: "Card" }),
                     },
                     fields: [
                       {
@@ -1426,9 +1400,7 @@ export default defineConfig({
                     label: "Buttons",
                     list: true,
                     ui: {
-                      itemProps: (item: { hcbBtnLabel?: string | null }) => ({
-                        label: item?.hcbBtnLabel?.trim() || "Button",
-                      }),
+                      itemProps: () => ({ label: "Button" }),
                     },
                     fields: [
                       {
@@ -1486,15 +1458,7 @@ export default defineConfig({
             label: "Categories",
             list: true,
             ui: {
-              itemProps: (item: {
-                eqCatTitle?: string | null;
-                eqCatId?: string | null;
-              }) => ({
-                label:
-                  item?.eqCatTitle?.trim() ||
-                  item?.eqCatId?.trim() ||
-                  "Category",
-              }),
+              itemProps: () => ({ label: "Category" }),
             },
             fields: [
               {
@@ -1560,9 +1524,7 @@ export default defineConfig({
             ui: {
               description:
                 "Add, remove, or reorder. Order matches the arc: left → top → right on desktop; stacked on small screens.",
-              itemProps: (item: { label?: string | null }) => ({
-                label: item?.label?.trim() || "Menu link",
-              }),
+              itemProps: () => ({ label: "Menu link" }),
             },
             fields: [
               {
