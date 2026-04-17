@@ -69,6 +69,8 @@ export default defineConfig({
         path: "src/content/programs",
         format: "mdx",
         ui: {
+          description:
+            "Program pages (Brick City Glam, Storytelling Knights, Maker Collective, etc.). Use the live preview while editing; save sends changes to Git and the public site rebuilds in a minute or two.",
           router: ({ document }) => {
             const base = document._sys.basename.replace(/\.mdx?$/i, "");
             return `/tina-preview/programs/${base}`;
@@ -109,6 +111,13 @@ export default defineConfig({
             name: "progHeroSlides",
             label: "Hero images",
             list: true,
+            ui: {
+              itemProps: (item: { progHeroAlt?: string | null }) => ({
+                label:
+                  item?.progHeroAlt?.trim() ||
+                  "Hero image (add alt text to name this row)",
+              }),
+            },
             fields: [
               {
                 type: "image",
@@ -128,6 +137,11 @@ export default defineConfig({
             name: "progCtaRows",
             label: "Hero buttons",
             list: true,
+            ui: {
+              itemProps: (item: { progCtaLabel?: string | null }) => ({
+                label: item?.progCtaLabel?.trim() || "Button",
+              }),
+            },
             fields: [
               {
                 type: "string",
@@ -159,6 +173,10 @@ export default defineConfig({
             name: "body",
             label: "Page content",
             isBody: true,
+            ui: {
+              description:
+                "Main program page copy. Use headings and paragraphs as usual; avoid pasting from Word with heavy formatting.",
+            },
           },
           {
             type: "boolean",
@@ -195,6 +213,13 @@ export default defineConfig({
             name: "progGalleryStrip",
             label: "Gallery marquee images",
             list: true,
+            ui: {
+              itemProps: (item: { progGalAlt?: string | null }) => ({
+                label:
+                  item?.progGalAlt?.trim() ||
+                  "Marquee image (optional alt names this row)",
+              }),
+            },
             fields: [
               {
                 type: "image",
@@ -217,6 +242,8 @@ export default defineConfig({
         path: "src/content/pages",
         format: "json",
         ui: {
+          description:
+            "Each file is one page (home.json is the homepage). Build the page from Sections below—pick a block type for each, then drag to reorder. URL slug must match the filename (without .json). Live preview opens when you edit from here.",
           /**
            * Tina passes `document._sys` for routing — not top-level form fields.
            * Using `document.slug` is usually undefined here, so `/${""}` became
@@ -263,12 +290,20 @@ export default defineConfig({
             type: "string",
             name: "metaTitle",
             label: "Meta title",
+            ui: {
+              description:
+                "Shown in the browser tab and when this page is shared (Google, social). Keep it short and clear.",
+            },
           },
           {
             type: "string",
             name: "metaDescription",
             label: "Meta description",
-            ui: { component: "textarea" },
+            ui: {
+              component: "textarea",
+              description:
+                "Short summary for search results and link previews (plain text; no HTML).",
+            },
           },
           {
             type: "object",
@@ -367,6 +402,13 @@ export default defineConfig({
                     name: "objLines",
                     label: "Objectives",
                     list: true,
+                    ui: {
+                      itemProps: (item: { objLineTitle?: string | null }) => ({
+                        label:
+                          item?.objLineTitle?.trim() ||
+                          "Objective (add a bold label)",
+                      }),
+                    },
                     fields: [
                       {
                         type: "string",
@@ -397,6 +439,9 @@ export default defineConfig({
                     ui: {
                       description:
                         "Call-to-action buttons (label, link, style).",
+                      itemProps: (item: { objCtaLabel?: string | null }) => ({
+                        label: item?.objCtaLabel?.trim() || "Button",
+                      }),
                     },
                     fields: [
                       {
@@ -680,6 +725,9 @@ export default defineConfig({
                     ui: {
                       description:
                         "Primary calls to action below the hero copy (0–4 buttons).",
+                      itemProps: (item: { hhbLabel?: string | null }) => ({
+                        label: item?.hhbLabel?.trim() || "Hero button",
+                      }),
                     },
                     fields: [
                       {
@@ -767,6 +815,9 @@ export default defineConfig({
                     ui: {
                       description:
                         "Buttons in the aside column (e.g. Learn more, Wish list, Membership).",
+                      itemProps: (item: { habsLabel?: string | null }) => ({
+                        label: item?.habsLabel?.trim() || "Aside button",
+                      }),
                     },
                     fields: [
                       {
@@ -1030,6 +1081,9 @@ export default defineConfig({
                     ui: {
                       description:
                         "Three program feature cards (images, copy, buttons).",
+                      itemProps: (item: { hpiCardTitle?: string | null }) => ({
+                        label: item?.hpiCardTitle?.trim() || "Program card",
+                      }),
                     },
                     fields: [
                       {
@@ -1078,6 +1132,9 @@ export default defineConfig({
                         list: true,
                         ui: {
                           description: "Up to four buttons per card.",
+                          itemProps: (item: { hpcbLabel?: string | null }) => ({
+                            label: item?.hpcbLabel?.trim() || "Card button",
+                          }),
                         },
                         fields: [
                           {
@@ -1284,6 +1341,11 @@ export default defineConfig({
                     name: "hmgCards",
                     label: "Cards",
                     list: true,
+                    ui: {
+                      itemProps: (item: { hmgCardTitle?: string | null }) => ({
+                        label: item?.hmgCardTitle?.trim() || "Card",
+                      }),
+                    },
                     fields: [
                       {
                         type: "string",
@@ -1370,6 +1432,11 @@ export default defineConfig({
                     name: "hcbButtons",
                     label: "Buttons",
                     list: true,
+                    ui: {
+                      itemProps: (item: { hcbBtnLabel?: string | null }) => ({
+                        label: item?.hcbBtnLabel?.trim() || "Button",
+                      }),
+                    },
                     fields: [
                       {
                         type: "string",
@@ -1415,12 +1482,27 @@ export default defineConfig({
         match: {
           include: "wishlist",
         },
+        ui: {
+          description:
+            "One wish list document (categories and plain-text lines). No live preview—save and check the equipment page on the site after deploy.",
+        },
         fields: [
           {
             type: "object",
             name: "categories",
             label: "Categories",
             list: true,
+            ui: {
+              itemProps: (item: {
+                eqCatTitle?: string | null;
+                eqCatId?: string | null;
+              }) => ({
+                label:
+                  item?.eqCatTitle?.trim() ||
+                  item?.eqCatId?.trim() ||
+                  "Category",
+              }),
+            },
             fields: [
               {
                 type: "string",
@@ -1485,6 +1567,9 @@ export default defineConfig({
             ui: {
               description:
                 "Add, remove, or reorder. Order matches the arc: left → top → right on desktop; stacked on small screens.",
+              itemProps: (item: { label?: string | null }) => ({
+                label: item?.label?.trim() || "Menu link",
+              }),
             },
             fields: [
               {
