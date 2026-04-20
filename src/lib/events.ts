@@ -10,6 +10,8 @@ export function isExpired(expiresAt: string | null | undefined, now: Date): bool
   if (!expiresAt) return false;
   const t = new Date(expiresAt).getTime();
   if (!Number.isFinite(t)) return false;
+  // Tina's datetime field can serialize "empty" as Unix epoch. Treat that as unset.
+  if (t === 0) return false;
   return t <= now.getTime();
 }
 

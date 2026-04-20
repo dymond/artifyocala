@@ -19,6 +19,16 @@ describe("events expiry", () => {
     );
   });
 
+  it("treats unix epoch expiry as unset (Tina empty datetime)", () => {
+    const now = new Date("2026-04-17T12:00:00.000Z");
+    expect(isExpired("1970-01-01T00:00:00.000Z", now)).toBe(false);
+    expect(
+      filterActiveEventTiles([{ id: "a", expiresAt: "1970-01-01T00:00:00.000Z" }], now, (t) =>
+        t.expiresAt,
+      ),
+    ).toHaveLength(1);
+  });
+
   it("expires tiles at or before now", () => {
     const now = new Date("2026-04-17T12:00:00.000Z");
     expect(isExpired("2026-04-17T12:00:00.000Z", now)).toBe(true);
