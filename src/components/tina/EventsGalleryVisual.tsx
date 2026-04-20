@@ -63,7 +63,49 @@ export default function EventsGalleryVisual({
                 const frame =
                   "group relative block overflow-hidden rounded-2xl border-[3px] border-ink bg-white shadow-[10px_10px_0_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1";
 
-                return (
+                const media = (
+                  <div
+                    className="relative h-full w-full overflow-hidden"
+                    style={
+                      {
+                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                        ["--artify-events-bg" as any]: `url(${t.evtImage})`,
+                      } as React.CSSProperties
+                    }
+                  >
+                    <div
+                      className="pointer-events-none absolute inset-0 scale-[1.5] bg-[image:var(--artify-events-bg)] bg-cover bg-center blur-2xl opacity-80"
+                      aria-hidden="true"
+                    />
+                    <div className="pointer-events-none absolute inset-0 bg-black/10" aria-hidden="true" />
+                    <div className="relative z-[1] h-full w-full">
+                      <ResponsiveImage
+                        src={t.evtImage}
+                        alt={alt}
+                        width={2400}
+                        height={1350}
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(min-width: 1024px) min(980px, 92vw), 92vw"
+                        className="block h-full w-full bg-transparent object-contain transition-transform duration-500 group-hover:scale-[1.01]"
+                      />
+                    </div>
+                  </div>
+                );
+
+                return href ? (
+                  <a
+                    key={t.evtImage}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${frame} cursor-pointer`}
+                    aria-label="Open event in a new tab"
+                    data-tina-field={tinaField(t, "evtHref")}
+                  >
+                    {media}
+                  </a>
+                ) : (
                   <button
                     key={t.evtImage}
                     type="button"
@@ -71,40 +113,10 @@ export default function EventsGalleryVisual({
                     data-artify-lightbox-open="1"
                     data-artify-src={t.evtImage}
                     data-artify-alt={alt}
-                    data-artify-href={href ?? ""}
                     aria-label="Expand image"
                     data-tina-field={tinaField(t, "evtImage")}
                   >
-                    <div
-                      className="relative h-full w-full overflow-hidden"
-                      style={
-                        {
-                          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                          ["--artify-events-bg" as any]: `url(${t.evtImage})`,
-                        } as React.CSSProperties
-                      }
-                    >
-                      <div
-                        className="pointer-events-none absolute inset-0 scale-[1.5] bg-[image:var(--artify-events-bg)] bg-cover bg-center blur-2xl opacity-80"
-                        aria-hidden="true"
-                      />
-                      <div
-                        className="pointer-events-none absolute inset-0 bg-black/10"
-                        aria-hidden="true"
-                      />
-                      <div className="relative z-[1] h-full w-full">
-                        <ResponsiveImage
-                          src={t.evtImage}
-                          alt={alt}
-                          width={2400}
-                          height={1350}
-                          loading="lazy"
-                          decoding="async"
-                          sizes="(min-width: 1024px) min(980px, 92vw), 92vw"
-                          className="block h-full w-full bg-transparent object-contain transition-transform duration-500 group-hover:scale-[1.01]"
-                        />
-                      </div>
-                    </div>
+                    {media}
                   </button>
                 );
               })}
