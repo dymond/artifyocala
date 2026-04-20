@@ -29,6 +29,11 @@ function rewriteTinaAssetCdnUrl(v: string): string | null {
     const idx = p.indexOf("/images/");
     if (idx !== -1) return p.slice(idx);
 
+    // Support nested media paths like `/events/<file>` when mediaRoot points to a
+    // subfolder of `/public/images/` (e.g. `/public/images/events`).
+    const idxEvents = p.indexOf("/events/");
+    if (idxEvents !== -1) return `/images${p.slice(idxEvents)}`;
+
     // Some Tina URLs omit the /images/ segment (older uploads / different mediaRoot).
     // In this project we want repo-served images under /images/<filename>.
     const parts = p.split("/").filter(Boolean);

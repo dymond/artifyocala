@@ -1,7 +1,7 @@
 import { tinaField } from "tinacms/dist/react";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import { imageAlt } from "../../lib/image-alt";
-import ResponsiveImage from "../ui/ResponsiveImage";
+import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
 
 function IconExt() {
   return (
@@ -60,14 +60,13 @@ export default function WhoScrollArchVisual({ section }: Props) {
             />
           </div>
           <div className="artify-who-arch-frame relative z-[2] bg-ink">
-            <ResponsiveImage
-              src={s.wscImage}
+            <img
+              src={normalizeTinaRepoMediaSrc(s.wscImage)}
               alt={imageAlt(s.wscImageAlt, `${s.wscHeading} — background`)}
               width={1317}
               height={1756}
               loading="lazy"
               decoding="async"
-              sizes="(min-width: 1536px) min(90vw, 1280px), 100vw"
               className="absolute inset-0 z-0 h-full max-h-none w-full object-cover object-[center_30%]"
               data-tina-field={tinaField(s, "wscImage")}
             />
