@@ -64,7 +64,7 @@
           "evtExpiresAt": "1970-01-01T00:00:00.000Z"
         },
         {
-          "evtImage": "",
+          "evtImage": "/images/events/event9.png",
           "evtAlt": "Event placeholder image 9",
           "evtDate": "2026-08-02T17:00:00.000Z",
           "evtHref": "https://www.facebook.com/share/14YnYap1cC4/",
