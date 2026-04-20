@@ -1,0 +1,85 @@
+{
+  "slug": "events",
+  "metaTitle": "Events",
+  "metaDescription": "Upcoming events and announcements.",
+  "sections": [
+    {
+      "evgHeading": "Events",
+      "evgLedeHtml": "<p class=\"m-0\">Tap an image to view the event details.</p>",
+      "evgTiles": [
+        {
+          "evtImage": "/images/events/event1.png",
+          "evtAlt": "Event placeholder image 1",
+          "evtDate": "2026-04-20T18:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event2.png",
+          "evtAlt": "Event placeholder image 2",
+          "evtDate": "2026-04-26T16:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event3.png",
+          "evtAlt": "Event placeholder image 3",
+          "evtDate": "2026-05-03T17:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event4.png",
+          "evtAlt": "Event placeholder image 4",
+          "evtDate": "2026-05-16T19:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event5.png",
+          "evtAlt": "Event placeholder image 5",
+          "evtDate": "2026-06-07T15:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event6.png",
+          "evtAlt": "Event placeholder image 6",
+          "evtDate": "2026-06-21T18:30:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event7.png",
+          "evtAlt": "Event placeholder image 7",
+          "evtDate": "2026-07-04T14:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event8.png",
+          "evtAlt": "Event placeholder image 8",
+          "evtDate": "2026-07-18T19:30:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event9.png",
+          "evtAlt": "Event placeholder image 9",
+          "evtDate": "2026-08-02T17:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        },
+        {
+          "evtImage": "/images/events/event1.png",
+          "evtAlt": "Event placeholder image 1 (tall)",
+          "evtDate": "2026-08-03T17:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": null
+        }
+      ],
+      "_template": "eventsGallery"
+    }
+  ]
+}
+

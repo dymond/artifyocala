@@ -1435,6 +1435,106 @@ export default defineConfig({
                   },
                 ],
               },
+              {
+                name: "eventsGallery",
+                label: "Events — image links (full-width tiles)",
+                fields: [
+                  {
+                    type: "string",
+                    name: "evgHeading",
+                    label: "Page heading (h1)",
+                    required: true,
+                  },
+                  {
+                    type: "string",
+                    name: "evgLedeHtml",
+                    label: "Intro text (optional, HTML)",
+                    ui: {
+                      component: "textarea",
+                      description:
+                        "Optional short intro above the event images. Keep it brief.",
+                    },
+                  },
+                  {
+                    type: "object",
+                    name: "evgTiles",
+                    label: "Event tiles",
+                    list: true,
+                    ui: {
+                      description:
+                        "Each tile is a full-width image that links out (e.g. to a Facebook event). Expired tiles are hidden automatically after the expiration date/time.",
+                      itemProps: () => ({ label: "Event tile" }),
+                    },
+                    fields: [
+                      {
+                        type: "image",
+                        name: "evtImage",
+                        label: "Image",
+                        required: true,
+                        ui: {
+                          description:
+                            "Upload an image under /images/events/ for consistency.",
+                          validate: (val: string | undefined) => {
+                            if (!val) return undefined;
+                            return val && !val.startsWith("/images/events/")
+                              ? "Please use an image path under /images/events/ (upload there in Media)."
+                              : undefined;
+                          },
+                        },
+                      },
+                      {
+                        type: "string",
+                        name: "evtAlt",
+                        label: "Image description (for screen readers)",
+                        ui: {
+                          description:
+                            "Short description of the image content (recommended).",
+                        },
+                      },
+                      {
+                        type: "datetime",
+                        name: "evtDate",
+                        label: "Event date/time",
+                        required: true,
+                        ui: {
+                          description:
+                            "Used to automatically group events by month and year on the Events page.",
+                        },
+                      },
+                      {
+                        type: "string",
+                        name: "evtHref",
+                        label: "Link (Facebook event URL)",
+                        ui: {
+                          description:
+                            "Optional: paste the Facebook event link for this image. If blank, the image still shows but won’t link out.",
+                          validate: (val: string | undefined) => {
+                            if (!val) return undefined;
+                            try {
+                              const u = new URL(val);
+                              if (u.protocol !== "https:" && u.protocol !== "http:") {
+                                return "Link must start with http:// or https://";
+                              }
+                              return undefined;
+                            } catch {
+                              return "Please enter a valid URL";
+                            }
+                          },
+                        },
+                      },
+                      {
+                        type: "datetime",
+                        name: "evtExpiresAt",
+                        label: "Expiration date/time (optional)",
+                        ui: {
+                          description:
+                            "After this moment, the tile is hidden from the Events page. Leave blank to keep it indefinitely.",
+                        },
+                      },
+                    ],
+                  },
+                ],
+              },
             ],
           },
         ],

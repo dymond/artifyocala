@@ -232,6 +232,18 @@ fragment PageParts on Page {
         hcbBtnExternal
       }
     }
+    ... on PageSectionsEventsGallery {
+      evgHeading
+      evgLedeHtml
+      evgTiles {
+        __typename
+        evtImage
+        evtAlt
+        evtDate
+        evtHref
+        evtExpiresAt
+      }
+    }
   }
 }
 

@@ -17,6 +17,7 @@ import HomeMeetupsSection from "./HomeMeetupsSection.astro";
 import HomeSupportBandSection from "./HomeSupportBandSection.astro";
 import HomeMoreGridSection from "./HomeMoreGridSection.astro";
 import HomeCtaBandSection from "./HomeCtaBandSection.astro";
+import EventsGallerySection from "./EventsGallerySection.astro";
 
 interface Props {
   section: unknown;
@@ -47,3 +48,4 @@ const t = section._template;
 {t === "homeSupportBand" && <HomeSupportBandSection section={section} />}
 {t === "homeMoreGrid" && <HomeMoreGridSection section={section} />}
 {t === "homeCtaBand" && <HomeCtaBandSection section={section} />}
+{t === "eventsGallery" && <EventsGallerySection section={section} />}

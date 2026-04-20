@@ -432,7 +432,21 @@ type PageSectionsHomeCtaBand {
   hcbButtons: [PageSectionsHomeCtaBandHcbButtons]
 }
 
-union PageSections = PageSectionsPageIntro | PageSectionsProseBand | PageSectionsMissionQuote | PageSectionsObjectivesList | PageSectionsContactSection | PageSectionsTwoColumnDonateHero | PageSectionsBulletBand | PageSectionsSplitImageText | PageSectionsHomeHeroFull | PageSectionsHomeMarquee | PageSectionsWhoScroll | PageSectionsHomeProgramsIntro | PageSectionsHomeMeetups | PageSectionsHomeSupportBand | PageSectionsHomeMoreGrid | PageSectionsHomeCtaBand
+type PageSectionsEventsGalleryEvgTiles {
+  evtImage: String!
+  evtAlt: String
+  evtDate: String!
+  evtHref: String
+  evtExpiresAt: String
+}
+
+type PageSectionsEventsGallery {
+  evgHeading: String!
+  evgLedeHtml: String
+  evgTiles: [PageSectionsEventsGalleryEvgTiles]
+}
+
+union PageSections = PageSectionsPageIntro | PageSectionsProseBand | PageSectionsMissionQuote | PageSectionsObjectivesList | PageSectionsContactSection | PageSectionsTwoColumnDonateHero | PageSectionsBulletBand | PageSectionsSplitImageText | PageSectionsHomeHeroFull | PageSectionsHomeMarquee | PageSectionsWhoScroll | PageSectionsHomeProgramsIntro | PageSectionsHomeMeetups | PageSectionsHomeSupportBand | PageSectionsHomeMoreGrid | PageSectionsHomeCtaBand | PageSectionsEventsGallery
 
 type Page implements Node & Document {
   slug: String!
@@ -665,6 +679,28 @@ input PageSectionsHomeCtaBandFilter {
   hcbButtons: PageSectionsHomeCtaBandHcbButtonsFilter
 }
 
+input DatetimeFilter {
+  after: String
+  before: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input PageSectionsEventsGalleryEvgTilesFilter {
+  evtImage: ImageFilter
+  evtAlt: StringFilter
+  evtDate: DatetimeFilter
+  evtHref: StringFilter
+  evtExpiresAt: DatetimeFilter
+}
+
+input PageSectionsEventsGalleryFilter {
+  evgHeading: StringFilter
+  evgLedeHtml: StringFilter
+  evgTiles: PageSectionsEventsGalleryEvgTilesFilter
+}
+
 input PageSectionsFilter {
   pageIntro: PageSectionsPageIntroFilter
   proseBand: PageSectionsProseBandFilter
@@ -682,6 +718,7 @@ input PageSectionsFilter {
   homeSupportBand: PageSectionsHomeSupportBandFilter
   homeMoreGrid: PageSectionsHomeMoreGridFilter
   homeCtaBand: PageSectionsHomeCtaBandFilter
+  eventsGallery: PageSectionsEventsGalleryFilter
 }
 
 input PageFilter {
@@ -1097,6 +1134,20 @@ input PageSectionsHomeCtaBandMutation {
   hcbButtons: [PageSectionsHomeCtaBandHcbButtonsMutation]
 }
 
+input PageSectionsEventsGalleryEvgTilesMutation {
+  evtImage: String
+  evtAlt: String
+  evtDate: String
+  evtHref: String
+  evtExpiresAt: String
+}
+
+input PageSectionsEventsGalleryMutation {
+  evgHeading: String
+  evgLedeHtml: String
+  evgTiles: [PageSectionsEventsGalleryEvgTilesMutation]
+}
+
 input PageSectionsMutation {
   pageIntro: PageSectionsPageIntroMutation
   proseBand: PageSectionsProseBandMutation
@@ -1114,6 +1165,7 @@ input PageSectionsMutation {
   homeSupportBand: PageSectionsHomeSupportBandMutation
   homeMoreGrid: PageSectionsHomeMoreGridMutation
   homeCtaBand: PageSectionsHomeCtaBandMutation
+  eventsGallery: PageSectionsEventsGalleryMutation
 }
 
 input PageMutation {

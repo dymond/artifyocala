@@ -19,14 +19,14 @@
       "ariaLabel": ""
     },
     {
+      "href": "/events",
+      "label": "Events",
+      "ariaLabel": ""
+    },
+    {
       "href": "/programs/maker-collective",
       "label": "Makers",
       "ariaLabel": "Marion County Maker Collective"
-    },
-    {
-      "href": "/programs/brick-city-glam",
-      "label": "Glam",
-      "ariaLabel": "Brick City Glam"
     },
     {
       "href": "/programs/storytelling-knights",
@@ -34,9 +34,9 @@
       "ariaLabel": "Storytelling Knights"
     },
     {
-      "href": "/programs/maker-collective/equipment",
-      "label": "Wish list",
-      "ariaLabel": "Equipment wish list"
+      "href": "/programs/brick-city-glam",
+      "label": "Glam",
+      "ariaLabel": "Brick City Glam"
     }
   ],
   "islandHomeAriaLabel": "Home",

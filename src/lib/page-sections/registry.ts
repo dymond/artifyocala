@@ -16,6 +16,7 @@ export const KNOWN_SECTION_TEMPLATES = [
   "homeSupportBand",
   "homeMoreGrid",
   "homeCtaBand",
+  "eventsGallery",
 ] as const;
 
 export type KnownSectionTemplate = (typeof KNOWN_SECTION_TEMPLATES)[number];

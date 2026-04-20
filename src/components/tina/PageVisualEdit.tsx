@@ -14,6 +14,7 @@ import HomeHeroFullVisual from "./HomeHeroFullVisual";
 import HomeProgramsCardsVisual from "./HomeProgramsCardsVisual";
 import MarqueeStripVisual from "./MarqueeStripVisual";
 import WhoScrollArchVisual from "./WhoScrollArchVisual";
+import EventsGalleryVisual from "./EventsGalleryVisual";
 
 function IconExt() {
   return (
@@ -737,6 +738,9 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
           </div>
         </section>
       );
+    }
+    case "PageSectionsEventsGallery": {
+      return <EventsGalleryVisual section={section} />;
     }
     default:
       return null;

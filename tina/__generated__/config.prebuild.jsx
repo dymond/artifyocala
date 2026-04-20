@@ -86,6 +86,7 @@ var config_default = defineConfig({
         path: "src/content/programs",
         format: "mdx",
         ui: {
+          description: "Program pages for the site (one per program). Use the live preview while editing; save sends changes to Git and the public site rebuilds in a minute or two.",
           router: ({ document }) => {
             const base = document._sys.basename.replace(/\.mdx?$/i, "");
             return `/tina-preview/programs/${base}`;
@@ -126,6 +127,9 @@ var config_default = defineConfig({
             name: "progHeroSlides",
             label: "Hero images",
             list: true,
+            ui: {
+              itemProps: () => ({ label: "Hero image" })
+            },
             fields: [
               {
                 type: "image",
@@ -145,6 +149,9 @@ var config_default = defineConfig({
             name: "progCtaRows",
             label: "Hero buttons",
             list: true,
+            ui: {
+              itemProps: () => ({ label: "Button" })
+            },
             fields: [
               {
                 type: "string",
@@ -175,7 +182,10 @@ var config_default = defineConfig({
             type: "rich-text",
             name: "body",
             label: "Page content",
-            isBody: true
+            isBody: true,
+            ui: {
+              description: "Main program page copy. Use headings and paragraphs as usual; avoid pasting from Word with heavy formatting."
+            }
           },
           {
             type: "boolean",
@@ -212,6 +222,9 @@ var config_default = defineConfig({
             name: "progGalleryStrip",
             label: "Gallery marquee images",
             list: true,
+            ui: {
+              itemProps: () => ({ label: "Marquee image" })
+            },
             fields: [
               {
                 type: "image",
@@ -234,6 +247,7 @@ var config_default = defineConfig({
         path: "src/content/pages",
         format: "json",
         ui: {
+          description: "Each file is one page (home.json is the homepage). Build the page from Sections below\u2014pick a block type for each, then drag to reorder. URL slug must match the filename (without .json). Live preview opens when you edit from here.",
           /**
            * Tina passes `document._sys` for routing — not top-level form fields.
            * Using `document.slug` is usually undefined here, so `/${""}` became
@@ -262,13 +276,19 @@ var config_default = defineConfig({
           {
             type: "string",
             name: "metaTitle",
-            label: "Meta title"
+            label: "Meta title",
+            ui: {
+              description: "Shown in the browser tab and when this page is shared (Google, social). Keep it short and clear."
+            }
           },
           {
             type: "string",
             name: "metaDescription",
             label: "Meta description",
-            ui: { component: "textarea" }
+            ui: {
+              component: "textarea",
+              description: "Short summary for search results and link previews (plain text; no HTML)."
+            }
           },
           {
             type: "object",
@@ -366,6 +386,9 @@ var config_default = defineConfig({
                     name: "objLines",
                     label: "Objectives",
                     list: true,
+                    ui: {
+                      itemProps: () => ({ label: "List item" })
+                    },
                     fields: [
                       {
                         type: "string",
@@ -394,7 +417,8 @@ var config_default = defineConfig({
                     label: "Buttons",
                     list: true,
                     ui: {
-                      description: "Call-to-action buttons (label, link, style)."
+                      description: "Call-to-action buttons (label, link, style).",
+                      itemProps: () => ({ label: "Button" })
                     },
                     fields: [
                       {
@@ -639,66 +663,67 @@ var config_default = defineConfig({
               },
               {
                 name: "homeHeroFull",
-                label: "Home \u2014 hero + aside + hiring image",
+                label: "Home \u2014 top section (headline, buttons, collage, feature card)",
                 fields: [
                   {
                     type: "string",
                     name: "hhfEyebrow",
-                    label: "Eyebrow (small line above headline)",
+                    label: "Small line above headline",
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfTitle",
-                    label: "Headline (h1)",
+                    label: "Main headline",
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfLede",
-                    label: "Supporting paragraph",
+                    label: "Supporting paragraph (short)",
                     ui: { component: "textarea" },
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfRotatorWords",
-                    label: "Word rotator lines",
+                    label: "Rotating words/phrases (optional)",
                     list: true,
                     ui: {
-                      description: "Phrases that cycle in the hero (one per line)."
+                      description: "Optional: short phrases that cycle under the headline (one per line)."
                     }
                   },
                   {
                     type: "object",
                     name: "hhfHeroButtons",
-                    label: "Hero buttons (under headline)",
+                    label: "Buttons under the headline",
                     list: true,
                     ui: {
-                      description: "Primary calls to action below the hero copy (0\u20134 buttons)."
+                      description: "Primary calls to action below the hero copy (0\u20134 buttons).",
+                      itemProps: () => ({ label: "Button" })
                     },
                     fields: [
                       {
                         type: "string",
                         name: "hhbLabel",
-                        label: "Label",
+                        label: "Button text",
                         required: true
                       },
                       {
                         type: "string",
                         name: "hhbHref",
-                        label: "Link URL",
+                        label: "Link",
                         required: true
                       },
                       {
                         type: "boolean",
                         name: "hhbExternal",
-                        label: "Open in new tab"
+                        label: "Open in a new tab"
                       },
                       {
                         type: "string",
                         name: "hhbTone",
-                        label: "Button style",
+                        label: "Button style (look)",
                         options: [
                           { label: "Primary", value: "primary" },
                           { label: "Outline", value: "outline" },
@@ -711,43 +736,43 @@ var config_default = defineConfig({
                   {
                     type: "string",
                     name: "hhfAsideBadge",
-                    label: "Aside \u2014 badge text",
+                    label: "Feature card \u2014 badge",
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfAsideTitle",
-                    label: "Aside \u2014 title",
+                    label: "Feature card \u2014 title",
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfAsideDescription",
-                    label: "Aside \u2014 description",
+                    label: "Feature card \u2014 description",
                     ui: { component: "textarea" },
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsLabel",
-                    label: "Aside \u2014 meetups button label",
+                    label: "Feature card \u2014 main button text",
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsHref",
-                    label: "Aside \u2014 meetups button URL",
+                    label: "Feature card \u2014 main button link",
                     required: true
                   },
                   {
                     type: "boolean",
                     name: "hhfAsideMeetupsExternal",
-                    label: "Aside \u2014 meetups opens in new tab"
+                    label: "Feature card \u2014 main button opens new tab"
                   },
                   {
                     type: "string",
                     name: "hhfAsideMeetupsTone",
-                    label: "Aside \u2014 meetups button style",
+                    label: "Feature card \u2014 main button style",
                     options: [
                       { label: "Primary", value: "primary" },
                       { label: "Outline", value: "outline" },
@@ -758,33 +783,34 @@ var config_default = defineConfig({
                   {
                     type: "object",
                     name: "hhfAsideStackButtons",
-                    label: "Aside \u2014 stacked buttons",
+                    label: "Feature card \u2014 extra buttons",
                     list: true,
                     ui: {
-                      description: "Buttons in the aside column (e.g. Learn more, Wish list, Membership)."
+                      description: "Extra buttons shown under the main button (optional).",
+                      itemProps: () => ({ label: "Button" })
                     },
                     fields: [
                       {
                         type: "string",
                         name: "habsLabel",
-                        label: "Label",
+                        label: "Button text",
                         required: true
                       },
                       {
                         type: "string",
                         name: "habsHref",
-                        label: "Link URL",
+                        label: "Link",
                         required: true
                       },
                       {
                         type: "boolean",
                         name: "habsExternal",
-                        label: "Open in new tab"
+                        label: "Open in a new tab"
                       },
                       {
                         type: "string",
                         name: "habsTone",
-                        label: "Button style",
+                        label: "Button style (look)",
                         options: [
                           { label: "Primary", value: "primary" },
                           { label: "Outline", value: "outline" },
@@ -797,13 +823,13 @@ var config_default = defineConfig({
                   {
                     type: "image",
                     name: "hhfHiringImage",
-                    label: "Hiring poster image",
+                    label: "Right-side poster image",
                     required: true
                   },
                   {
                     type: "string",
                     name: "hhfHiringImageAlt",
-                    label: "Hiring poster alt text",
+                    label: "Right-side poster \u2014 short description",
                     required: true
                   },
                   {
@@ -822,12 +848,9 @@ var config_default = defineConfig({
                     ui: {
                       description: "Four animated cards on the home hero (fixed spots on the page). Each card has two sides: Side A is what people see first; Side B appears when the card flips. Tip: while editing the live preview, click the collage once to jump to this hero section in the sidebar.",
                       max: 4,
-                      itemProps: (item) => {
-                        const cap = item?.hccFrontCaption?.trim();
-                        return {
-                          label: cap ? `Card \u2014 ${cap}` : "Card \u2014 (add a Side A caption to name this row)"
-                        };
-                      }
+                      itemProps: () => ({
+                        label: "Collage card"
+                      })
                     },
                     fields: [
                       {
@@ -998,7 +1021,8 @@ var config_default = defineConfig({
                     label: "Program cards",
                     list: true,
                     ui: {
-                      description: "Three program feature cards (images, copy, buttons)."
+                      description: "Three program feature cards (images, copy, buttons).",
+                      itemProps: () => ({ label: "Card" })
                     },
                     fields: [
                       {
@@ -1046,7 +1070,8 @@ var config_default = defineConfig({
                         label: "Buttons",
                         list: true,
                         ui: {
-                          description: "Up to four buttons per card."
+                          description: "Up to four buttons per card.",
+                          itemProps: () => ({ label: "Button" })
                         },
                         fields: [
                           {
@@ -1085,7 +1110,7 @@ var config_default = defineConfig({
               },
               {
                 name: "homeMeetups",
-                label: "Home \u2014 maker meetups",
+                label: "Home \u2014 events spotlight (time/place + photos)",
                 fields: [
                   {
                     type: "string",
@@ -1253,6 +1278,9 @@ var config_default = defineConfig({
                     name: "hmgCards",
                     label: "Cards",
                     list: true,
+                    ui: {
+                      itemProps: () => ({ label: "Card" })
+                    },
                     fields: [
                       {
                         type: "string",
@@ -1339,6 +1367,9 @@ var config_default = defineConfig({
                     name: "hcbButtons",
                     label: "Buttons",
                     list: true,
+                    ui: {
+                      itemProps: () => ({ label: "Button" })
+                    },
                     fields: [
                       {
                         type: "string",
@@ -1371,6 +1402,97 @@ var config_default = defineConfig({
                     ]
                   }
                 ]
+              },
+              {
+                name: "eventsGallery",
+                label: "Events \u2014 image links (full-width tiles)",
+                fields: [
+                  {
+                    type: "string",
+                    name: "evgHeading",
+                    label: "Page heading (h1)",
+                    required: true
+                  },
+                  {
+                    type: "string",
+                    name: "evgLedeHtml",
+                    label: "Intro text (optional, HTML)",
+                    ui: {
+                      component: "textarea",
+                      description: "Optional short intro above the event images. Keep it brief."
+                    }
+                  },
+                  {
+                    type: "object",
+                    name: "evgTiles",
+                    label: "Event tiles",
+                    list: true,
+                    ui: {
+                      description: "Each tile is a full-width image that links out (e.g. to a Facebook event). Expired tiles are hidden automatically after the expiration date/time.",
+                      itemProps: () => ({ label: "Event tile" })
+                    },
+                    fields: [
+                      {
+                        type: "image",
+                        name: "evtImage",
+                        label: "Image",
+                        required: true,
+                        ui: {
+                          description: "Upload an image under /images/events/ for consistency.",
+                          validate: (val) => {
+                            if (!val) return void 0;
+                            return val && !val.startsWith("/images/events/") ? "Please use an image path under /images/events/ (upload there in Media)." : void 0;
+                          }
+                        }
+                      },
+                      {
+                        type: "string",
+                        name: "evtAlt",
+                        label: "Image description (for screen readers)",
+                        ui: {
+                          description: "Short description of the image content (recommended)."
+                        }
+                      },
+                      {
+                        type: "datetime",
+                        name: "evtDate",
+                        label: "Event date/time",
+                        required: true,
+                        ui: {
+                          description: "Used to automatically group events by month and year on the Events page."
+                        }
+                      },
+                      {
+                        type: "string",
+                        name: "evtHref",
+                        label: "Link (Facebook event URL)",
+                        ui: {
+                          description: "Optional: paste the Facebook event link for this image. If blank, the image still shows but won\u2019t link out.",
+                          validate: (val) => {
+                            if (!val) return void 0;
+                            try {
+                              const u = new URL(val);
+                              if (u.protocol !== "https:" && u.protocol !== "http:") {
+                                return "Link must start with http:// or https://";
+                              }
+                              return void 0;
+                            } catch {
+                              return "Please enter a valid URL";
+                            }
+                          }
+                        }
+                      },
+                      {
+                        type: "datetime",
+                        name: "evtExpiresAt",
+                        label: "Expiration date/time (optional)",
+                        ui: {
+                          description: "After this moment, the tile is hidden from the Events page. Leave blank to keep it indefinitely."
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
@@ -1384,12 +1506,18 @@ var config_default = defineConfig({
         match: {
           include: "wishlist"
         },
+        ui: {
+          description: "One wish list document (categories and plain-text lines). No live preview\u2014save and check the equipment page on the site after deploy."
+        },
         fields: [
           {
             type: "object",
             name: "categories",
             label: "Categories",
             list: true,
+            ui: {
+              itemProps: () => ({ label: "Category" })
+            },
             fields: [
               {
                 type: "string",
@@ -1449,7 +1577,8 @@ var config_default = defineConfig({
             label: "Wheel menu links",
             list: true,
             ui: {
-              description: "Add, remove, or reorder. Order matches the arc: left \u2192 top \u2192 right on desktop; stacked on small screens."
+              description: "Add, remove, or reorder. Order matches the arc: left \u2192 top \u2192 right on desktop; stacked on small screens.",
+              itemProps: () => ({ label: "Menu link" })
             },
             fields: [
               {
@@ -1546,17 +1675,17 @@ var config_default = defineConfig({
           {
             type: "string",
             name: "meetupUrl",
-            label: "Footer \u2014 Maker meetups URL"
+            label: "Footer \u2014 community meetup URL"
           },
           {
             type: "string",
             name: "meetupLabel",
-            label: "Footer \u2014 Maker meetups link text"
+            label: "Footer \u2014 community meetup link text"
           },
           {
             type: "string",
             name: "meetupAriaLabel",
-            label: "Footer \u2014 Maker meetups accessible name"
+            label: "Footer \u2014 community meetup accessible name"
           },
           {
             type: "string",

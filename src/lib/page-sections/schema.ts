@@ -297,6 +297,24 @@ const homeCtaBandSchema = z.object({
     .nullable(),
 });
 
+const eventsGallerySchema = z.object({
+  _template: z.literal("eventsGallery"),
+  evgHeading: z.string(),
+  evgLedeHtml: z.string().optional().nullable(),
+  evgTiles: z
+    .array(
+      z.object({
+        evtImage: z.string(),
+        evtAlt: z.string().optional().nullable(),
+        evtDate: z.string(),
+        evtHref: z.string().optional().nullable(),
+        evtExpiresAt: z.string().optional().nullable(),
+      })
+    )
+    .optional()
+    .nullable(),
+});
+
 export const pageSectionSchema = z.discriminatedUnion("_template", [
   pageIntroSchema,
   proseBandSchema,
@@ -314,6 +332,7 @@ export const pageSectionSchema = z.discriminatedUnion("_template", [
   homeSupportBandSchema,
   homeMoreGridSchema,
   homeCtaBandSchema,
+  eventsGallerySchema,
 ]);
 
 export const sitePageSchema = z.object({
