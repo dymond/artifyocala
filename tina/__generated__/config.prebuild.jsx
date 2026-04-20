@@ -1438,11 +1438,7 @@ var config_default = defineConfig({
                         label: "Image",
                         required: true,
                         ui: {
-                          description: "Upload an image under /images/events/ for consistency.",
-                          validate: (val) => {
-                            if (!val) return void 0;
-                            return val && !val.startsWith("/images/events/") ? "Please use an image path under /images/events/ (upload there in Media)." : void 0;
-                          }
+                          description: "Recommendation: upload under /images/events/ for consistency (not required)."
                         }
                       },
                       {

@@ -1473,13 +1473,7 @@ export default defineConfig({
                         required: true,
                         ui: {
                           description:
-                            "Upload an image under /images/events/ for consistency.",
-                          validate: (val: string | undefined) => {
-                            if (!val) return undefined;
-                            return val && !val.startsWith("/images/events/")
-                              ? "Please use an image path under /images/events/ (upload there in Media)."
-                              : undefined;
-                          },
+                            "Recommendation: upload under /images/events/ for consistency (not required).",
                         },
                       },
                       {
