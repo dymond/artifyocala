@@ -13,6 +13,15 @@ const EXT_OK = new Set([".jpg", ".jpeg", ".png"]);
 const TARGET_WIDTHS = [320, 480, 768, 1024, 1280, 1600];
 const DEBUG = process.env.ARTIFY_IMAGES_DEBUG === "1";
 
+export function filterChangedImagePaths(paths) {
+  return (paths ?? [])
+    .map((p) => String(p ?? "").trim())
+    .filter(Boolean)
+    .filter((p) => p.startsWith("public/images/"))
+    .filter((p) => !p.startsWith("public/images/_gen/"))
+    .filter((p) => EXT_OK.has(path.extname(p).toLowerCase()));
+}
+
 function relPublic(p) {
   return "/" + path.relative(path.join(ROOT, "public"), p).replaceAll(path.sep, "/");
 }
@@ -73,32 +82,76 @@ function uniqStrings(list) {
   return [...new Set(list)];
 }
 
-async function build() {
+function parseArgs(argv) {
+  const args = argv.slice(2);
+  const out = { mode: "auto", changed: [] };
+  for (let i = 0; i < args.length; i++) {
+    const a = args[i];
+    if (a === "--all") {
+      out.mode = "all";
+      continue;
+    }
+    if (a === "--changed") {
+      out.mode = "changed";
+      for (let j = i + 1; j < args.length; j++) {
+        const v = args[j];
+        if (String(v).startsWith("--")) break;
+        out.changed.push(v);
+        i = j;
+      }
+      continue;
+    }
+  }
+  return out;
+}
+
+async function build({ mode, changed }) {
   await mkdir(OUT_DIR, { recursive: true });
 
-  const files = (await listImagesRecursive(SRC_DIR))
-    .filter((f) => EXT_OK.has(path.extname(f).toLowerCase()))
-    .filter((f) => !isInOutDir(f));
+  const changedImagePaths = filterChangedImagePaths(changed);
+  const useChangedOnly = mode === "changed" && changedImagePaths.length > 0;
+
+  const files = useChangedOnly
+    ? changedImagePaths.map((p) => path.join(ROOT, p))
+    : (await listImagesRecursive(SRC_DIR))
+        .filter((f) => EXT_OK.has(path.extname(f).toLowerCase()))
+        .filter((f) => !isInOutDir(f));
 
   /** Manifest: original public path -> variants */
   const oldManifest = (await readJsonIfExists(MANIFEST_PATH)) ?? {};
   /** Cache: original public path -> { mtimeMs, size, variants: "yes" | "no" } */
   const oldCache = (await readJsonIfExists(CACHE_PATH)) ?? {};
-  const manifest = {};
-  const cache = {};
+  const manifest = { ...oldManifest };
+  const cache = { ...oldCache };
   let regenerated = 0;
   let written = 0;
   let reused = 0;
   const regeneratedKeys = [];
 
-  const currentKeys = new Set();
-  for (const srcFile of files) {
-    const srcPublic = relPublic(srcFile);
-    currentKeys.add(srcPublic);
-  }
-
   // Clean up variants for deleted source images.
-  {
+  // - Full build: compare against current filesystem.
+  // - Changed build: only process deletions included in `--changed` list.
+  if (useChangedOnly) {
+    for (const srcFile of files) {
+      if (await exists(srcFile)) continue;
+      const srcPublic = relPublic(srcFile);
+      const prevManifestEntry = oldManifest[srcPublic];
+      if (prevManifestEntry?.length) {
+        const removedVariantSrcs = uniqStrings(prevManifestEntry.map((v) => v.src).filter(Boolean));
+        for (const vs of removedVariantSrcs) {
+          const outPath = path.join(ROOT, "public", vs.replace(/^\//, ""));
+          await rm(outPath, { force: true });
+        }
+      }
+      delete manifest[srcPublic];
+      delete cache[srcPublic];
+    }
+  } else {
+    const currentKeys = new Set();
+    for (const srcFile of files) {
+      const srcPublic = relPublic(srcFile);
+      currentKeys.add(srcPublic);
+    }
     const removedKeys = Object.keys(oldManifest).filter((k) => !currentKeys.has(k));
     const removedVariantSrcs = uniqStrings(
       removedKeys.flatMap((k) => (oldManifest[k] ?? []).map((v) => v.src).filter(Boolean))
@@ -107,9 +160,14 @@ async function build() {
       const outPath = path.join(ROOT, "public", vs.replace(/^\//, ""));
       await rm(outPath, { force: true });
     }
+    for (const k of removedKeys) {
+      delete manifest[k];
+      delete cache[k];
+    }
   }
 
   for (const srcFile of files) {
+    if (!(await exists(srcFile))) continue;
     const srcPublic = relPublic(srcFile);
     const st = await stat(srcFile);
     const mtimeMs = Math.trunc(st.mtimeMs);
@@ -239,6 +297,9 @@ async function build() {
         cache[srcPublic].variants = "yes";
         reused++;
       }
+    } else {
+      // No variants: clear any stale manifest entry for this source.
+      delete manifest[srcPublic];
     }
 
     // Remove any stale old variants for this src (if names/layout changed).
@@ -262,11 +323,13 @@ async function build() {
     );
   }
   process.stdout.write(
-    `images-build: wrote ${Object.keys(manifest).length} entries to ${relPublic(MANIFEST_PATH)} (reused ${reused}, regenerated ${regenerated}, wrote ${written} files)\n`
+    `images-build: wrote ${Object.keys(manifest).length} entries to ${relPublic(MANIFEST_PATH)} (reused ${reused}, regenerated ${regenerated}, wrote ${written} files${useChangedOnly ? `; changed-only=${changedImagePaths.length}` : ""})\n`
   );
 }
 
-build().catch((err) => {
+const args = parseArgs(process.argv);
+const mode = args.mode === "auto" ? (process.env.NETLIFY === "true" ? "all" : "all") : args.mode;
+build({ mode, changed: args.changed }).catch((err) => {
   console.error(err);
   process.exitCode = 1;
 });

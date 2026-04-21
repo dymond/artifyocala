@@ -70,7 +70,17 @@ function runTinaPipeline(changedPaths = []) {
   // `images:build` is incremental *within the workspace* via `public/images/_gen/cache.json`.
   // Netlify workspaces are ephemeral, so we also cache `public/images/_gen/` via a Netlify plugin.
   if (shouldRunImagesBuild(changedPaths)) {
-    run("pnpm", ["run", "images:build"]);
+    const changedImages = changedPaths.filter(
+      (p) =>
+        p.startsWith("public/images/") &&
+        !p.startsWith("public/images/_gen/") &&
+        /\.(png|jpe?g)$/i.test(p)
+    );
+    if (changedImages.length) {
+      run("node", ["scripts/images-build.mjs", "--changed", ...changedImages]);
+    } else {
+      run("pnpm", ["run", "images:build"]);
+    }
   } else {
     console.log("[netlify-build] images:build SKIPPED (no image changes)");
   }
@@ -85,7 +95,17 @@ function runAstroOnly(changedPaths = []) {
   run("node", ["scripts/remove-tina-generated-client.mjs"]);
   // See note in `runTinaPipeline()` about caching `public/images/_gen/` on Netlify.
   if (shouldRunImagesBuild(changedPaths)) {
-    run("pnpm", ["run", "images:build"]);
+    const changedImages = changedPaths.filter(
+      (p) =>
+        p.startsWith("public/images/") &&
+        !p.startsWith("public/images/_gen/") &&
+        /\.(png|jpe?g)$/i.test(p)
+    );
+    if (changedImages.length) {
+      run("node", ["scripts/images-build.mjs", "--changed", ...changedImages]);
+    } else {
+      run("pnpm", ["run", "images:build"]);
+    }
   } else {
     console.log("[netlify-build] images:build SKIPPED (no image changes)");
   }
