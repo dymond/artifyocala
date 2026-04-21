@@ -61,7 +61,10 @@ export default function EventsGalleryVisual({
               {g.items.map((t) => {
                 const href = t.evtHref ?? null;
                 const alt = imageAlt(t.evtAlt, "Event image");
-                const src = normalizeTinaRepoMediaSrc(t.evtImage);
+                const rawSrc = (t.evtImage ?? "").trim();
+                const src = /^https?:\/\//i.test(rawSrc)
+                  ? rawSrc
+                  : normalizeTinaRepoMediaSrc(rawSrc);
                 const frame =
                   "group relative block overflow-hidden rounded-2xl border-[3px] border-ink bg-white shadow-[10px_10px_0_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1";
 

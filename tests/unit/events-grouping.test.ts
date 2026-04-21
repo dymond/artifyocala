@@ -11,6 +11,8 @@ describe("events grouping", () => {
 
     expect(groups.map((g) => g.key)).toEqual(["2026-05", "2026-04"]);
     expect(groups[0]?.items.map((x: any) => x.id).sort()).toEqual(["a", "c"]);
+    expect(groups[0]?.heading).toBe("May 2026");
+    expect(groups[1]?.heading).toBe("April 2026");
   });
 
   it("groups by UTC month/year (avoids timezone drift in Tina preview)", () => {

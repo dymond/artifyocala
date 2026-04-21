@@ -13,7 +13,9 @@ export default function ResponsiveImage({
   sizes,
   ...imgProps
 }: Props) {
-  const normalizedSrc = normalizeTinaRepoMediaSrc(src);
+  // Tina can provide absolute CDN URLs for newly uploaded media. In visual editing,
+  // rewriting those to repo paths can break preview before a deploy publishes the asset.
+  const normalizedSrc = /^https?:\/\//i.test(src) ? src : normalizeTinaRepoMediaSrc(src);
   const vars = imageVariants(normalizedSrc);
   if (!vars) return <img src={normalizedSrc} {...imgProps} />;
 

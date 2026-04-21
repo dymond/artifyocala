@@ -19,7 +19,12 @@ function yyyymm(d: Date): string {
 function monthHeadingFromKey(key: string): string {
   const [y, m] = key.split("-").map((x) => Number(x));
   const d = new Date(Date.UTC(y, m - 1, 1));
-  return new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(d);
+  // Force UTC so headings don't drift by timezone (e.g. UTC midnight is prior day in US timezones).
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(d);
 }
 
 export function groupByMonthYear<T extends EventsTileInput>(
