@@ -296,30 +296,30 @@
 @keyframes artify-hero-flip-cycle-c {
   0%,
   22% {
-    transform: rotate(-5deg) rotateY(0deg) translateZ(0.01px);
+    transform: rotate(5deg) rotateY(0deg) translateZ(0.01px);
   }
   28%,
   72% {
-    transform: rotate(-5deg) rotateY(180deg) translateZ(0.01px);
+    transform: rotate(5deg) rotateY(180deg) translateZ(0.01px);
   }
   78%,
   100% {
-    transform: rotate(-5deg) rotateY(0deg) translateZ(0.01px);
+    transform: rotate(5deg) rotateY(0deg) translateZ(0.01px);
   }
 }
 
 @keyframes artify-hero-flip-cycle-d {
   0%,
   22% {
-    transform: rotate(-9deg) rotateY(0deg) translateZ(0.01px);
+    transform: rotate(-6deg) rotateY(0deg) translateZ(0.01px);
   }
   28%,
   72% {
-    transform: rotate(-9deg) rotateY(180deg) translateZ(0.01px);
+    transform: rotate(-6deg) rotateY(180deg) translateZ(0.01px);
   }
   78%,
   100% {
-    transform: rotate(-9deg) rotateY(0deg) translateZ(0.01px);
+    transform: rotate(-6deg) rotateY(0deg) translateZ(0.01px);
   }
 }
 
