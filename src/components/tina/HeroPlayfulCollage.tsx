@@ -331,7 +331,7 @@ export default function HeroPlayfulCollage({
       >
         {/* Lottie disco ball replaces the static one (top-right). */}
         <div
-          className="pointer-events-auto absolute right-0 top-0 z-[30] w-[5.5rem] aspect-square sm:w-[6.25rem]"
+          className="pointer-events-auto absolute right-0 top-0 z-[30] w-[5.5rem] aspect-square sm:w-[6.25rem] lg:w-[7.1rem] xl:w-[7.75rem]"
           style={{ animationDelay: "-1.4s" }}
           role="img"
           aria-label="Decorative disco ball"
@@ -349,7 +349,7 @@ export default function HeroPlayfulCollage({
 
         {/* Maker-esque sticker: bedazzled glue gun (animated). */}
         <div
-          className="pointer-events-auto absolute bottom-[-0.65rem] left-[-0.45rem] z-[26] w-[5.15rem] aspect-square drop-shadow-[5px_5px_0_var(--color-ink)] sm:bottom-[-0.8rem] sm:left-[-0.6rem] sm:w-[5.8rem]"
+          className="pointer-events-auto absolute bottom-[-0.65rem] left-[-0.45rem] z-[26] w-[5.15rem] aspect-square drop-shadow-[5px_5px_0_var(--color-ink)] sm:bottom-[-0.8rem] sm:left-[-0.6rem] sm:w-[5.8rem] lg:bottom-[-0.95rem] lg:left-[-0.75rem] lg:w-[6.7rem] xl:bottom-[-1.05rem] xl:left-[-0.85rem] xl:w-[7.3rem]"
           style={{ animationDelay: "-2.7s", transform: "rotate(-12deg)" }}
           role="img"
           aria-label="Decorative bedazzled glue gun"
@@ -367,7 +367,7 @@ export default function HeroPlayfulCollage({
 
         {/* Bottom-right Lottie sticker (rotated). */}
         <div
-          className="pointer-events-auto absolute bottom-[-0.9rem] right-[-0.9rem] z-[30] w-[5.5rem] aspect-square sm:bottom-[-1.15rem] sm:right-[-1.15rem] sm:w-[6.25rem]"
+          className="pointer-events-auto absolute bottom-[-0.9rem] right-[-0.9rem] z-[30] w-[5.5rem] aspect-square sm:bottom-[-1.15rem] sm:right-[-1.15rem] sm:w-[6.25rem] lg:bottom-[-1.35rem] lg:right-[-1.35rem] lg:w-[7.1rem] xl:bottom-[-1.5rem] xl:right-[-1.5rem] xl:w-[7.75rem]"
           data-dotlottie-rotate-wrapper
           role="img"
           aria-label="Decorative bottom-right lottie sticker"
