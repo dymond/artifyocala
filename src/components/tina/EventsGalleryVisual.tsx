@@ -4,7 +4,7 @@ import type React from "react";
 import type { PageSectionsEventsGallery } from "../../../tina/__generated__/types";
 import ResponsiveImage from "../ui/ResponsiveImage";
 import { imageAlt } from "../../lib/image-alt";
-import { filterActiveEventTiles } from "../../lib/events";
+import { filterActiveEventTiles, sortEventGalleryTilesByExpiryAsc } from "../../lib/events";
 import { groupByMonthYear } from "../../lib/events-grouping";
 import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
 
@@ -35,7 +35,9 @@ export default function EventsGalleryVisual({
   section: PageSectionsEventsGallery;
 }) {
   const rows = (section.evgTiles ?? []).filter((t): t is EventRow => Boolean(t));
-  const tiles = filterActiveEventTiles(rows, new Date(), (t) => t.evtExpiresAt);
+  const tiles = sortEventGalleryTilesByExpiryAsc(
+    filterActiveEventTiles(rows, new Date(), (t) => t.evtExpiresAt),
+  );
   const groups = useMemo(() => groupByMonthYear(tiles), [tiles]);
 
   return (

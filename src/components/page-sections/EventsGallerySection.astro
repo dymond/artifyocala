@@ -1,7 +1,7 @@
 ---
 import type { PageSection } from "../../lib/page-sections/schema";
 import ResponsiveImage from "../ui/ResponsiveImage.astro";
-import { filterActiveEventTiles } from "../../lib/events";
+import { filterActiveEventTiles, sortEventGalleryTilesByExpiryAsc } from "../../lib/events";
 import { imageAlt } from "../../lib/image-alt";
 import { groupByMonthYear } from "../../lib/events-grouping";
 import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
@@ -12,7 +12,9 @@ interface Props {
 
 const { section } = Astro.props;
 const meta = section.evgTiles ?? [];
-const tiles = filterActiveEventTiles(meta.filter(Boolean), new Date(), (t) => t.evtExpiresAt);
+const tiles = sortEventGalleryTilesByExpiryAsc(
+  filterActiveEventTiles(meta.filter(Boolean), new Date(), (t) => t.evtExpiresAt),
+);
 const groups = groupByMonthYear(tiles);
 ---
 
