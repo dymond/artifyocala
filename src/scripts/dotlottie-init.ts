@@ -8,6 +8,10 @@ type DotLottieCanvasEl = HTMLCanvasElement & {
   __artifyDotLottieLastRotateAt?: number;
 };
 
+// Self-host the WASM runtime so the public site doesn't depend on external CDNs
+// (and stays compatible with our strict CSP).
+DotLottie.setWasmUrl("/vendor/dotlottie-player.wasm");
+
 function pickTriangularCentered(min: number, max: number): number {
   // Triangular distribution centered on midpoint:
   // average of two uniforms peaks at 0.5.
