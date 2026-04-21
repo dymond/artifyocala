@@ -333,7 +333,7 @@ export default function HeroPlayfulCollage({
           aria-hidden
         >
           <div
-            className="inline-flex rotate-[-8deg] items-center gap-2.5 rounded-full border-[3px] border-ink bg-white px-3.5 py-2 shadow-[4px_4px_0_0_var(--color-ink)]"
+            className="relative inline-flex rotate-[-8deg] items-center gap-2.5 rounded-full border-[3px] border-ink bg-white px-3.5 py-2 shadow-[4px_4px_0_0_var(--color-ink)]"
             data-artify-hero-eyes
           >
             <span className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-mist">
@@ -413,6 +413,41 @@ export default function HeroPlayfulCollage({
                   />
                 </svg>
               </span>
+            </span>
+
+            {/* Decorative lipstick lips (playful collage "eyes" character). */}
+            <span
+              className="pointer-events-none absolute left-1/2 top-full z-[3] -translate-x-1/2 -translate-y-[30%]"
+              aria-hidden
+            >
+              <svg
+                width="28"
+                height="14"
+                viewBox="0 0 56 28"
+                fill="none"
+                className="drop-shadow-[2px_2px_0_var(--color-ink)]"
+                aria-hidden
+              >
+                <path
+                  d="M6 14c6.5-7.8 14.6-11.5 22-11.5S43.5 6.2 50 14c-6.5 8.2-14.6 12-22 12S12.5 22.2 6 14Z"
+                  fill="var(--color-accent-soft)"
+                  stroke="var(--color-ink)"
+                  strokeWidth="3"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M16.5 14c3.4 2.8 7.2 4.2 11.5 4.2S36.1 16.8 39.5 14"
+                  stroke="var(--color-ink)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M28 2.6c-4.2 0-7.3 2.2-9.3 5.2M28 2.6c4.2 0 7.3 2.2 9.3 5.2"
+                  stroke="rgba(255,255,255,0.65)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
             </span>
           </div>
         </div>
