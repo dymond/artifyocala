@@ -9,8 +9,10 @@ export type MonthGroup<T> = {
 };
 
 function yyyymm(d: Date): string {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
+  // Use UTC so month/year grouping is stable across viewer timezones
+  // (Tina preview runs in the editor's browser; production grouping runs server-side).
+  const y = d.getUTCFullYear();
+  const m = String(d.getUTCMonth() + 1).padStart(2, "0");
   return `${y}-${m}`;
 }
 

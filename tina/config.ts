@@ -1523,6 +1523,18 @@ export default defineConfig({
                         ui: {
                           description:
                             "After this moment, the tile is hidden from the Events page. Leave blank to keep it indefinitely.",
+                          // Tina can serialize "cleared" datetimes as Unix epoch, which is confusing
+                          // in the editor UI (1969/1970) and for users. Normalize to empty.
+                          format: (val: unknown) => {
+                            const v = typeof val === "string" ? val : "";
+                            if (!v) return "";
+                            if (v === "1970-01-01T00:00:00.000Z") return "";
+                            return v;
+                          },
+                          parse: (val: unknown) => {
+                            const v = typeof val === "string" ? val.trim() : "";
+                            return v ? v : null;
+                          },
                         },
                       },
                     ],

@@ -4,6 +4,7 @@ import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import { filterActiveEventTiles } from "../../lib/events";
 import { imageAlt } from "../../lib/image-alt";
 import { groupByMonthYear } from "../../lib/events-grouping";
+import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
 
 interface Props {
   section: Extract<PageSection, { _template: "eventsGallery" }>;
@@ -32,12 +33,13 @@ const groups = groupByMonthYear(tiles);
           {g.items.map((t) => {
             const href = t.evtHref ?? null;
             const alt = imageAlt(t.evtAlt, "Event image");
+            const src = normalizeTinaRepoMediaSrc(t.evtImage);
             const frame =
               "group block cursor-pointer overflow-hidden rounded-2xl border-[3px] border-ink bg-white shadow-[10px_10px_0_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1";
             const img = (
               <div
                 class="relative h-full w-full overflow-hidden"
-                style={`--artify-events-bg: url(${t.evtImage});`}
+                style={`--artify-events-bg: url(${src});`}
               >
                 <div
                   class="pointer-events-none absolute inset-0 scale-[1.5] bg-[image:var(--artify-events-bg)] bg-cover bg-center blur-2xl opacity-80"
@@ -46,7 +48,7 @@ const groups = groupByMonthYear(tiles);
                 <div class="pointer-events-none absolute inset-0 bg-black/10" aria-hidden="true" />
                 <div class="relative z-[1] h-full w-full">
                   <ResponsiveImage
-                    src={t.evtImage}
+                    src={src}
                     alt={alt}
                     width={2400}
                     height={1350}

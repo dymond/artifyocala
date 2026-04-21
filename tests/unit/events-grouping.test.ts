@@ -13,6 +13,17 @@ describe("events grouping", () => {
     expect(groups[0]?.items.map((x: any) => x.id).sort()).toEqual(["a", "c"]);
   });
 
+  it("groups by UTC month/year (avoids timezone drift in Tina preview)", () => {
+    // If the viewer is behind UTC, this instant may be the prior local date/month.
+    // Grouping must still match the intended UTC month.
+    const groups = groupByMonthYear([
+      { id: "a", evtDate: "2026-05-01T00:30:00.000Z" },
+      { id: "b", evtDate: "2026-04-30T23:30:00.000Z" },
+    ] as any);
+
+    expect(groups.map((g) => g.key)).toEqual(["2026-05", "2026-04"]);
+  });
+
   it("puts missing/invalid dates into Other", () => {
     const groups = groupByMonthYear([
       { id: "a", evtDate: null },

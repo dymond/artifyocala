@@ -6,6 +6,7 @@ import ResponsiveImage from "../ui/ResponsiveImage";
 import { imageAlt } from "../../lib/image-alt";
 import { filterActiveEventTiles } from "../../lib/events";
 import { groupByMonthYear } from "../../lib/events-grouping";
+import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
 
 type EventRow = NonNullable<NonNullable<PageSectionsEventsGallery["evgTiles"]>[number]>;
 
@@ -60,6 +61,7 @@ export default function EventsGalleryVisual({
               {g.items.map((t) => {
                 const href = t.evtHref ?? null;
                 const alt = imageAlt(t.evtAlt, "Event image");
+                const src = normalizeTinaRepoMediaSrc(t.evtImage);
                 const frame =
                   "group relative block overflow-hidden rounded-2xl border-[3px] border-ink bg-white shadow-[10px_10px_0_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1";
 
@@ -69,7 +71,7 @@ export default function EventsGalleryVisual({
                     style={
                       {
                         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-                        ["--artify-events-bg" as any]: `url(${t.evtImage})`,
+                        ["--artify-events-bg" as any]: `url(${src})`,
                       } as React.CSSProperties
                     }
                   >
@@ -80,7 +82,7 @@ export default function EventsGalleryVisual({
                     <div className="pointer-events-none absolute inset-0 bg-black/10" aria-hidden="true" />
                     <div className="relative z-[1] h-full w-full">
                       <ResponsiveImage
-                        src={t.evtImage}
+                        src={src}
                         alt={alt}
                         width={2400}
                         height={1350}
@@ -95,7 +97,7 @@ export default function EventsGalleryVisual({
 
                 return href ? (
                   <a
-                    key={t.evtImage}
+                    key={src}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -107,11 +109,11 @@ export default function EventsGalleryVisual({
                   </a>
                 ) : (
                   <button
-                    key={t.evtImage}
+                    key={src}
                     type="button"
                     className={`${frame} cursor-pointer`}
                     data-artify-lightbox-open="1"
-                    data-artify-src={t.evtImage}
+                    data-artify-src={src}
                     data-artify-alt={alt}
                     aria-label="Expand image"
                     data-tina-field={tinaField(t, "evtImage")}
