@@ -28,6 +28,8 @@ export default function WordRotator({ words, className = "" }: Props) {
   return (
     <span
       className={className}
+      data-artify-word-rotator="1"
+      data-artify-words={JSON.stringify(list)}
       role="status"
       aria-live="polite"
       aria-atomic="true"

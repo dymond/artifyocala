@@ -26,6 +26,12 @@
           "hhbHref": "/donate",
           "hhbExternal": false,
           "hhbTone": "outline"
+        },
+        {
+          "hhbLabel": "Events",
+          "hhbHref": "/events",
+          "hhbExternal": false,
+          "hhbTone": "primary"
         }
       ],
       "hhfAsideBadge": "Now open for members",
