@@ -31,7 +31,8 @@
         {
           "evtImage": "/images/event3.png",
           "evtAlt": "Cory's Birthday Event",
-          "evtDate": "2026-05-15T18:18:36.736Z"
+          "evtDate": "2026-05-15T18:18:36.736Z",
+          "evtExpiresAt": "2026-05-15T18:24:33.939Z"
         }
       ],
       "_template": "eventsGallery"
