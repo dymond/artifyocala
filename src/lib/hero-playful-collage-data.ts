@@ -69,10 +69,10 @@ export const heroPlayfulCollageCards: ReadonlyArray<CardConfig> = [
     },
     frontCaption: "Wings & glitter & grit",
     frontStripClass:
-      "bg-buzz/95 font-display text-[0.58rem] font-extrabold leading-tight text-ink",
+      "bg-buzz/95 font-display text-[0.58rem] font-extrabold leading-tight text-ink lg:text-[0.68rem] xl:text-[0.74rem]",
     backCaption: "Totally different frame",
     backStripClass:
-      "bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist",
+      "bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist lg:text-[0.62rem] xl:text-[0.68rem]",
     bob: "artify-hero-card-bob-1",
     flip: "artify-hero-flip-a",
     box: "left-[5%] top-[5%] w-[min(94%,11.5rem)] sm:left-[7%] sm:top-[5%] sm:w-[min(88%,13rem)] lg:left-[6%] lg:top-[6%] lg:w-[min(46%,17.5rem)] xl:left-[6%] xl:top-[6%] xl:w-[min(46%,19.25rem)]",
@@ -96,10 +96,10 @@ export const heroPlayfulCollageCards: ReadonlyArray<CardConfig> = [
     },
     frontCaption: "Main character energy",
     frontStripClass:
-      "bg-surge font-display text-[0.62rem] font-bold leading-tight tracking-tight text-mist sm:text-[0.65rem]",
+      "bg-surge font-display text-[0.62rem] font-bold leading-tight tracking-tight text-mist sm:text-[0.65rem] lg:text-[0.74rem] xl:text-[0.8rem]",
     backCaption: "Back side, different photo",
     backStripClass:
-      "bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist",
+      "bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist lg:text-[0.62rem] xl:text-[0.68rem]",
     bob: "artify-hero-card-bob-2",
     flip: "artify-hero-flip-b",
     box: "right-[-2%] top-[11%] w-[min(94%,14.25rem)] sm:right-[0%] sm:top-[13%] sm:w-[min(88%,16.25rem)] lg:right-[2%] lg:top-[10%] lg:w-[min(52%,21.5rem)] xl:right-[2%] xl:top-[10%] xl:w-[min(52%,23.5rem)]",
@@ -123,10 +123,10 @@ export const heroPlayfulCollageCards: ReadonlyArray<CardConfig> = [
     },
     frontCaption: "Ok who brought snacks",
     frontStripClass:
-      "bg-mist font-display text-[0.56rem] font-bold italic leading-tight text-ink",
+      "bg-mist font-display text-[0.56rem] font-bold italic leading-tight text-ink lg:text-[0.66rem] xl:text-[0.72rem]",
     backCaption: "Another moment entirely",
     backStripClass:
-      "bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist",
+      "bg-ink font-display text-[0.54rem] font-extrabold uppercase tracking-[0.12em] text-mist lg:text-[0.62rem] xl:text-[0.68rem]",
     bob: "artify-hero-card-bob-3",
     flip: "artify-hero-flip-c",
     box: "left-[3%] bottom-[2%] w-[min(92%,13.25rem)] sm:left-[5%] sm:bottom-[4%] sm:w-[min(86%,14.75rem)] lg:left-[5%] lg:bottom-[6%] lg:w-[min(50%,20.5rem)] xl:left-[5%] xl:bottom-[6%] xl:w-[min(50%,22.5rem)]",
@@ -150,10 +150,10 @@ export const heroPlayfulCollageCards: ReadonlyArray<CardConfig> = [
     },
     frontCaption: "Standing O pending",
     frontStripClass:
-      "bg-club font-display text-[0.56rem] font-extrabold uppercase tracking-wide text-mist",
+      "bg-club font-display text-[0.56rem] font-extrabold uppercase tracking-wide text-mist lg:text-[0.66rem] xl:text-[0.72rem]",
     backCaption: "Yep — new pic back here",
     backStripClass:
-      "bg-surge font-display text-[0.54rem] font-extrabold uppercase tracking-[0.1em] text-mist",
+      "bg-surge font-display text-[0.54rem] font-extrabold uppercase tracking-[0.1em] text-mist lg:text-[0.62rem] xl:text-[0.68rem]",
     bob: "artify-hero-card-bob-4",
     flip: "artify-hero-flip-d",
     box: "right-[1%] bottom-[3%] w-[min(88%,12.25rem)] sm:right-[3%] sm:bottom-[4%] sm:w-[min(82%,13.75rem)] lg:right-[4%] lg:bottom-[6%] lg:w-[min(46%,18.75rem)] xl:right-[4%] xl:bottom-[6%] xl:w-[min(46%,20.5rem)]",
