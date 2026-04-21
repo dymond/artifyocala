@@ -66,16 +66,16 @@
         {
           "evtImage": "/images/events/event9.png",
           "evtAlt": "Event placeholder image 9",
-          "evtDate": "2026-08-02T17:00:00.000Z",
+          "evtDate": "2026-04-25T17:00:00.000Z",
           "evtHref": "https://www.facebook.com/share/14YnYap1cC4",
           "evtExpiresAt": "1970-01-01T00:00:00.000Z"
         },
         {
-          "evtImage": "/images/events/event1.png",
+          "evtImage": "/images/638856470_17866134717571907_1176992445232475479_n.jpg",
           "evtAlt": "Event placeholder image 1 (tall)",
-          "evtDate": "2026-08-03T17:00:00.000Z",
-          "evtHref": "",
-          "evtExpiresAt": "1970-01-01T00:00:00.000Z"
+          "evtDate": "2026-04-25T17:00:00.000Z",
+          "evtHref": "https://www.facebook.com/share/18Q7gz9mcU/",
+          "evtExpiresAt": "2026-05-01T23:00:00.000Z"
         }
       ],
       "_template": "eventsGallery"
