@@ -129,6 +129,10 @@ function CardFaces({ c }: { c: CardConfig }) {
   const r = faceRound(c.variant);
   const a = aspectInner(c.variant);
   const bRound = photoRoundBleed(c.variant);
+  const backStripNoBg = c.backStripClass.replace(
+    /\bbg-\[[^\]]+\]|\bbg-[^\s]+\b/g,
+    "",
+  );
 
   return (
     <div className={cn("relative w-full origin-center", a)}>
@@ -178,7 +182,7 @@ function CardFaces({ c }: { c: CardConfig }) {
                   r,
                 )}
               >
-                <div className="relative min-h-0 flex-1 p-1 sm:p-1.5">
+                <div className="relative min-h-0 flex-1 bg-white p-1 sm:p-1.5">
                   <ResponsiveImage
                     src={c.back.src}
                     alt={c.back.alt}
@@ -188,21 +192,16 @@ function CardFaces({ c }: { c: CardConfig }) {
                     decoding="async"
                     sizes="(min-width: 1024px) 260px, 44vw"
                     className={cn(
-                      "box-border h-full w-full max-h-full border-[3px] border-mist/35 object-cover object-center",
+                      "box-border h-full w-full max-h-full border-[3px] border-ink bg-white object-cover object-center",
                       bRound,
                     )}
                   />
-                  <div
-                    className="pointer-events-none absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-ink bg-surge text-[0.5rem] font-bold leading-none text-mist shadow-[2px_2px_0_0_var(--color-ink)]"
-                    aria-hidden
-                  >
-                    ★
-                  </div>
                 </div>
                 <div
                   className={cn(
                     "shrink-0 border-t-[3px] border-ink px-1.5 py-1 text-center text-[0.7rem] leading-snug sm:py-0.5 sm:text-[0.56rem] lg:text-[0.68rem] xl:text-[0.74rem]",
-                    c.backStripClass,
+                    backStripNoBg,
+                    "bg-[color:var(--color-cta-fill)]",
                   )}
                 >
                   {c.backCaption}
@@ -276,7 +275,8 @@ function CardFaces({ c }: { c: CardConfig }) {
                 <div
                   className={cn(
                     "shrink-0 px-1.5 py-1 text-center text-[0.7rem] leading-snug sm:py-0.5 sm:text-[0.56rem] lg:text-[0.68rem] xl:text-[0.74rem]",
-                    c.backStripClass,
+                    backStripNoBg,
+                    "bg-[color:var(--color-cta-fill)]",
                   )}
                 >
                   {c.backCaption}
