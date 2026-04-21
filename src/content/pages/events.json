@@ -13,6 +13,11 @@
           "evtDate": "2026-04-25T18:00:00.000Z",
           "evtHref": "",
           "evtExpiresAt": "2026-04-26T23:00:00.000Z"
+        },
+        {
+          "evtImage": "/images/670634064_122133285657016024_4389432573612884366_n.jpg",
+          "evtDate": "2026-05-24T19:52:29.609Z",
+          "evtHref": "https://www.facebook.com/share/1bFf5CQakZ/"
         }
       ],
       "_template": "eventsGallery"
