@@ -29,6 +29,42 @@ function getTinaGitBranch() {
   return fromEnv ?? "main";
 }
 
+// tina/event-tile-label.ts
+function collapseWhitespace(s) {
+  return s.replace(/\s+/g, " ").trim();
+}
+function firstWords(s, maxWords, maxChars) {
+  const words = collapseWhitespace(s).split(" ").filter(Boolean);
+  if (!words.length) return "";
+  const limited = words.slice(0, maxWords);
+  let out = limited.join(" ");
+  const clippedByWords = words.length > maxWords;
+  if (out.length > maxChars) {
+    out = out.slice(0, maxChars).trimEnd();
+    return `${out}\u2026`;
+  }
+  return clippedByWords ? `${out}\u2026` : out;
+}
+function formatEvtDateUtcLabel(raw) {
+  if (!raw) return null;
+  const t = new Date(raw).getTime();
+  if (!Number.isFinite(t)) return null;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "short",
+    day: "numeric"
+  }).format(new Date(t));
+}
+function labelEventTileListItem(item) {
+  const alt = typeof item.evtAlt === "string" ? item.evtAlt : "";
+  const altPreview = firstWords(alt, 8, 72);
+  if (altPreview) return altPreview;
+  const dateLabel = formatEvtDateUtcLabel(item.evtDate);
+  if (dateLabel) return `Event - ${dateLabel}`;
+  return "Event tile";
+}
+
 // tina/config.ts
 var branch = getTinaGitBranch();
 var netlifyDeploysUrl = process.env.PUBLIC_NETLIFY_DEPLOYS_URL?.trim() || "https://app.netlify.com/sites/incredible-tarsier-9abffe/deploys";
@@ -1429,7 +1465,9 @@ var config_default = defineConfig({
                     list: true,
                     ui: {
                       description: "Each tile is a full-width image that links out (e.g. to a Facebook event). Expired tiles are hidden automatically after the expiration date/time.",
-                      itemProps: () => ({ label: "Event tile" })
+                      itemProps: (item) => ({
+                        label: labelEventTileListItem(item)
+                      })
                     },
                     fields: [
                       {
@@ -1483,7 +1521,19 @@ var config_default = defineConfig({
                         name: "evtExpiresAt",
                         label: "Expiration date/time (optional)",
                         ui: {
-                          description: "After this moment, the tile is hidden from the Events page. Leave blank to keep it indefinitely."
+                          description: "After this moment, the tile is hidden from the Events page. Leave blank to keep it indefinitely.",
+                          // Tina can serialize "cleared" datetimes as Unix epoch, which is confusing
+                          // in the editor UI (1969/1970) and for users. Normalize to empty.
+                          format: (val) => {
+                            const v = typeof val === "string" ? val : "";
+                            if (!v) return "";
+                            if (v === "1970-01-01T00:00:00.000Z") return "";
+                            return v;
+                          },
+                          parse: (val) => {
+                            const v = typeof val === "string" ? val.trim() : "";
+                            return v ? v : null;
+                          }
                         }
                       }
                     ]

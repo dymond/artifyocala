@@ -1,6 +1,7 @@
 import { defineConfig } from "tinacms";
 
 import { getTinaGitBranch } from "./branch";
+import { labelEventTileListItem } from "./event-tile-label";
 
 const branch = getTinaGitBranch();
 
@@ -1463,7 +1464,9 @@ export default defineConfig({
                     ui: {
                       description:
                         "Each tile is a full-width image that links out (e.g. to a Facebook event). Expired tiles are hidden automatically after the expiration date/time.",
-                      itemProps: () => ({ label: "Event tile" }),
+                      itemProps: (item) => ({
+                        label: labelEventTileListItem(item),
+                      }),
                     },
                     fields: [
                       {
