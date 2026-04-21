@@ -27,6 +27,23 @@ function monthHeadingFromKey(key: string): string {
   }).format(d);
 }
 
+function parseEvtDateMs(raw: string | null | undefined): number | null {
+  if (!raw) return null;
+  const t = new Date(raw).getTime();
+  if (!Number.isFinite(t)) return null;
+  return t;
+}
+
+function compareEvtDateAsc<T extends EventsTileInput>(a: T, b: T): number {
+  const am = parseEvtDateMs(a.evtDate);
+  const bm = parseEvtDateMs(b.evtDate);
+  if (am !== null && bm !== null && am !== bm) return am - bm;
+  if (am === null && bm === null) return 0;
+  if (am === null) return 1;
+  if (bm === null) return -1;
+  return 0;
+}
+
 export function groupByMonthYear<T extends EventsTileInput>(
   items: readonly T[],
 ): MonthGroup<T>[] {
@@ -50,12 +67,17 @@ export function groupByMonthYear<T extends EventsTileInput>(
     else buckets.set(key, [it]);
   }
 
-  const keys = Array.from(buckets.keys()).sort((a, b) => b.localeCompare(a)); // newest first
-  const groups = keys.map((key) => ({
-    key,
-    heading: monthHeadingFromKey(key),
-    items: buckets.get(key) ?? [],
-  }));
+  // YYYY-MM sorts lexicographically in calendar order — soonest month first.
+  const keys = Array.from(buckets.keys()).sort((a, b) => a.localeCompare(b));
+  const groups = keys.map((key) => {
+    const itemsInMonth = [...(buckets.get(key) ?? [])];
+    itemsInMonth.sort(compareEvtDateAsc);
+    return {
+      key,
+      heading: monthHeadingFromKey(key),
+      items: itemsInMonth,
+    };
+  });
 
   if (undated.length) {
     groups.push({ key: "undated", heading: "Other", items: undated });
