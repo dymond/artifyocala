@@ -50,11 +50,31 @@ function mergeCollageCards(
 }
 
 function bindHeroEyes(): () => void {
-  const root = document.querySelector("[data-artify-hero-eyes]");
+  const root = document.querySelector<HTMLElement>("[data-artify-hero-eyes]");
   if (!root) return () => {};
 
   const pupils = root.querySelectorAll<HTMLElement>(".artify-hero-pupil");
   if (pupils.length === 0) return () => {};
+
+  const hoverClass = "artify-hero-eyes--hover";
+  let hoverOffTimer: number | undefined;
+
+  const setHover = (on: boolean): void => {
+    if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
+    hoverOffTimer = undefined;
+    if (on) {
+      // Re-add to restart hover-triggered animations deterministically.
+      root.classList.remove(hoverClass);
+      void root.getBoundingClientRect();
+      root.classList.add(hoverClass);
+    } else {
+      // Let kiss/blink finish instead of snapping mid-animation.
+      hoverOffTimer = window.setTimeout(() => {
+        root.classList.remove(hoverClass);
+        hoverOffTimer = undefined;
+      }, 1200);
+    }
+  };
 
   const move = (clientX: number, clientY: number): void => {
     const rect = root.getBoundingClientRect();
@@ -84,11 +104,24 @@ function bindHeroEyes(): () => void {
   window.addEventListener("pointermove", onPointer, { passive: true });
   window.addEventListener("blur", reset);
   root.addEventListener("pointerleave", reset);
+  const onEnter = (): void => setHover(true);
+  const onLeave = (): void => setHover(false);
+  root.addEventListener("pointerenter", onEnter);
+  root.addEventListener("pointerleave", onLeave);
+  // Mouse events as a fallback when pointer events behave oddly.
+  root.addEventListener("mouseenter", onEnter);
+  root.addEventListener("mouseleave", onLeave);
 
   return () => {
     window.removeEventListener("pointermove", onPointer);
     window.removeEventListener("blur", reset);
     root.removeEventListener("pointerleave", reset);
+    root.removeEventListener("pointerenter", onEnter);
+    root.removeEventListener("pointerleave", onLeave);
+    root.removeEventListener("mouseenter", onEnter);
+    root.removeEventListener("mouseleave", onLeave);
+    if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
+    root.classList.remove(hoverClass);
   };
 }
 
@@ -296,40 +329,67 @@ export default function HeroPlayfulCollage({
             : undefined
         }
       >
+        {/* Lottie disco ball replaces the static one (top-right). */}
         <div
-          className="pointer-events-none absolute bottom-[34%] left-[38%] w-[3.35rem] sm:bottom-[32%] sm:left-[40%] sm:w-[3.85rem]"
-          style={{ animationDelay: "-2.7s" }}
-          aria-hidden
+          className="pointer-events-auto absolute right-0 top-0 z-[30] w-[5.5rem] aspect-square sm:w-[6.25rem]"
+          style={{ animationDelay: "-1.4s" }}
+          role="img"
+          aria-label="Decorative disco ball"
         >
-          <svg
-            className="artify-hero-goofy-wobble h-full w-full drop-shadow-[2px_2px_0_var(--color-ink)]"
-            viewBox="0 0 40 40"
-            fill="none"
-            role="img"
-          >
-            <title>Decorative smiley face</title>
-            <circle
-              cx="20"
-              cy="20"
-              r="17.5"
-              fill="var(--color-mist)"
-              stroke="var(--color-ink)"
-              strokeWidth="2.5"
+          <div className="h-full w-full">
+            <canvas
+              className="h-full w-full artify-hero-disco-lottie"
+              data-dotlottie-src="/lottie/kiss-sparkles.lottie"
+              data-dotlottie-autoplay="1"
+              data-dotlottie-loop="1"
+              aria-hidden
             />
-            <circle cx="13" cy="17" r="2.8" fill="var(--color-ink)" />
-            <circle cx="27" cy="17" r="2.8" fill="var(--color-ink)" />
-            <path
-              d="M11 25q9 10 18 0"
-              stroke="var(--color-ink)"
-              strokeWidth="2.75"
-              strokeLinecap="round"
-              fill="none"
+          </div>
+        </div>
+
+        {/* Maker-esque sticker: bedazzled glue gun (animated). */}
+        <div
+          className="pointer-events-auto absolute bottom-[-0.65rem] left-[-0.45rem] z-[26] w-[5.15rem] aspect-square drop-shadow-[5px_5px_0_var(--color-ink)] sm:bottom-[-0.8rem] sm:left-[-0.6rem] sm:w-[5.8rem]"
+          style={{ animationDelay: "-2.7s", transform: "rotate(-12deg)" }}
+          role="img"
+          aria-label="Decorative bedazzled glue gun"
+        >
+          <div className="h-full w-full">
+            <canvas
+              className="h-full w-full"
+              data-dotlottie-src="/lottie/glue-gun.lottie"
+              data-dotlottie-autoplay="1"
+              data-dotlottie-loop="1"
+              aria-hidden
             />
-          </svg>
+          </div>
+        </div>
+
+        {/* Bottom-right Lottie sticker (rotated). */}
+        <div
+          className="pointer-events-auto absolute bottom-[-0.9rem] right-[-0.9rem] z-[30] w-[5.5rem] aspect-square sm:bottom-[-1.15rem] sm:right-[-1.15rem] sm:w-[6.25rem]"
+          data-dotlottie-rotate-wrapper
+          role="img"
+          aria-label="Decorative bottom-right lottie sticker"
+        >
+          <div className="h-full w-full">
+            <canvas
+              className="h-full w-full"
+              data-dotlottie-src="/lottie/bottom-right.lottie"
+              data-dotlottie-autoplay="1"
+              data-dotlottie-loop="1"
+              data-dotlottie-speed="0.75"
+              data-dotlottie-mode="bounce"
+              data-dotlottie-random-rotate="1"
+              data-dotlottie-rotate-min="-15"
+              data-dotlottie-rotate-max="45"
+              aria-hidden
+            />
+          </div>
         </div>
 
         <div
-          className="pointer-events-auto absolute left-[46%] top-[8%] z-[25] -translate-x-1/2 sm:left-[48%] sm:top-[10%]"
+          className="pointer-events-auto absolute left-0 top-0 z-[30] sm:left-0 sm:top-0"
           aria-hidden
         >
           <div
@@ -396,7 +456,7 @@ export default function HeroPlayfulCollage({
                 </svg>
               </span>
               <span
-                className="artify-hero-eye-lid artify-hero-eye-shutter artify-hero-eye-shutter--blink artify-hero-eye-shutter--blink-delay pointer-events-none absolute inset-0 z-[4] origin-top"
+                className="artify-hero-eye-lid artify-hero-eye-shutter artify-hero-eye-shutter--blink pointer-events-none absolute inset-0 z-[4] origin-top"
                 aria-hidden
               >
                 <svg
@@ -417,37 +477,62 @@ export default function HeroPlayfulCollage({
 
             {/* Decorative lipstick lips (playful collage "eyes" character). */}
             <span
-              className="pointer-events-none absolute left-1/2 top-full z-[3] -translate-x-1/2 -translate-y-[30%]"
+              className="artify-hero-lips pointer-events-none absolute left-1/2 top-full z-[3] -translate-x-1/2 -translate-y-[30%]"
               aria-hidden
             >
-              <svg
-                width="28"
-                height="14"
-                viewBox="0 0 56 28"
-                fill="none"
-                className="drop-shadow-[2px_2px_0_var(--color-ink)]"
-                aria-hidden
-              >
-                <path
-                  d="M6 14c6.5-7.8 14.6-11.5 22-11.5S43.5 6.2 50 14c-6.5 8.2-14.6 12-22 12S12.5 22.2 6 14Z"
-                  fill="var(--color-accent-soft)"
-                  stroke="var(--color-ink)"
-                  strokeWidth="3"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M16.5 14c3.4 2.8 7.2 4.2 11.5 4.2S36.1 16.8 39.5 14"
-                  stroke="var(--color-ink)"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M28 2.6c-4.2 0-7.3 2.2-9.3 5.2M28 2.6c4.2 0 7.3 2.2 9.3 5.2"
-                  stroke="rgba(255,255,255,0.65)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
+              {/* Sparkle burst inspired by Lottie (emulated; one-shot on hover). */}
+              <span className="artify-hero-kiss-sparkles pointer-events-none absolute left-1/2 top-1/2">
+                <span className="artify-hero-kiss-sparkle artify-hero-kiss-sparkle--a" />
+                <span className="artify-hero-kiss-sparkle artify-hero-kiss-sparkle--b" />
+                <span className="artify-hero-kiss-sparkle artify-hero-kiss-sparkle--c" />
+                <span className="artify-hero-kiss-sparkle artify-hero-kiss-sparkle--d" />
+                <span className="artify-hero-kiss-sparkle artify-hero-kiss-sparkle--e" />
+                <span className="artify-hero-kiss-sparkle artify-hero-kiss-sparkle--f" />
+              </span>
+              <span className="artify-hero-lips-inner pointer-events-none relative block">
+                <span className="artify-hero-kiss-heart pointer-events-none absolute left-1/2 top-1/2">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    aria-hidden
+                  >
+                    <path
+                      d="M12 21s-7.3-4.5-9.8-8.5C.2 9 2.3 5.8 5.7 5.4c1.9-.2 3.5.7 4.5 2 1-1.3 2.6-2.2 4.5-2 3.4.4 5.5 3.6 3.5 7.1C19.3 16.5 12 21 12 21Z"
+                      fill="var(--color-kiss-heart)"
+                    />
+                  </svg>
+                </span>
+                <svg
+                  width="28"
+                  height="14"
+                  viewBox="0 0 56 28"
+                  fill="none"
+                  className="drop-shadow-[2px_2px_0_var(--color-ink)]"
+                  aria-hidden
+                >
+                  <path
+                    d="M6 14c6.5-7.8 14.6-11.5 22-11.5S43.5 6.2 50 14c-6.5 8.2-14.6 12-22 12S12.5 22.2 6 14Z"
+                    fill="var(--color-accent-soft)"
+                    stroke="var(--color-ink)"
+                    strokeWidth="3"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M16.5 14c3.4 2.8 7.2 4.2 11.5 4.2S36.1 16.8 39.5 14"
+                    stroke="var(--color-ink)"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M28 2.6c-4.2 0-7.3 2.2-9.3 5.2M28 2.6c4.2 0 7.3 2.2 9.3 5.2"
+                    stroke="rgba(255,255,255,0.65)"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
             </span>
           </div>
         </div>

@@ -37,6 +37,7 @@
     var(--color-ink)
   );
   --color-club: #a59eff;
+  --color-kiss-heart: #ff4d8d;
 
   --spacing-xs: 0.35rem;
   --spacing-sm: 0.75rem;
@@ -359,6 +360,8 @@
   }
 }
 
+/* (removed) glitter orbit around stickers */
+
 @keyframes artify-hero-squiggle-drift {
   0%,
   100% {
@@ -442,6 +445,144 @@
   }
 }
 
+/* Hero googly eyes: kiss on hover (animate inner wrapper so positioning transform stays stable). */
+@keyframes artify-hero-kiss-pop {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  30% {
+    transform: translate3d(0, -2px, 0) scaleX(0.9) scaleY(1.16);
+  }
+  65% {
+    transform: translate3d(0, -1px, 0) scaleX(0.95) scaleY(1.08);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+[data-artify-hero-eyes]:is(.artify-hero-eyes--hover, :hover) .artify-hero-lips-inner {
+  animation: artify-hero-kiss-pop 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) 1;
+  will-change: transform;
+}
+
+@keyframes artify-hero-kiss-heart-float {
+  0% {
+    transform: translate3d(-50%, -25%, 0) rotate(-14deg) scale(0.25);
+    opacity: 0;
+  }
+  16% {
+    opacity: 1;
+  }
+  22% {
+    transform: translate3d(-30%, -55%, 0) rotate(8deg) scale(1.15);
+    opacity: 1;
+  }
+  55% {
+    transform: translate3d(10%, -90%, 0) rotate(-6deg) scale(1.22);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(42%, -135%, 0) rotate(16deg) scale(1.28);
+    opacity: 0;
+  }
+}
+
+.artify-hero-kiss-heart {
+  opacity: 0;
+  transform: translate3d(-50%, -25%, 0) scale(0.65);
+  will-change: transform, opacity;
+  z-index: 2;
+}
+
+[data-artify-hero-eyes]:is(.artify-hero-eyes--hover, :hover) .artify-hero-kiss-heart {
+  animation: artify-hero-kiss-heart-float 1100ms ease-out 1;
+}
+
+/* Emulated Lottie-style sparkles (one-shot on hover). */
+.artify-hero-kiss-sparkles {
+  width: 1px;
+  height: 1px;
+  transform: translate3d(-50%, -55%, 0);
+  z-index: 1;
+}
+
+.artify-hero-kiss-sparkle {
+  --dx: 0px;
+  --dy: 0px;
+  --d: 0ms;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.98), transparent 55%),
+    radial-gradient(circle at 50% 50%, var(--color-buzz), transparent 70%);
+  box-shadow:
+    0 0 10px rgba(176, 184, 255, 0.55),
+    0 0 18px rgba(255, 255, 255, 0.22);
+  opacity: 0;
+  transform: translate3d(0, 0, 0) scale(0.25);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+@keyframes artify-hero-kiss-sparkle-pop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.15);
+  }
+  18% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 1;
+    transform: translate3d(var(--dx), var(--dy), 0) scale(1.12);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--dx) * 1.35), calc(var(--dy) * 1.35), 0)
+      scale(0.9);
+  }
+}
+
+[data-artify-hero-eyes]:is(.artify-hero-eyes--hover, :hover) .artify-hero-kiss-sparkle {
+  animation: artify-hero-kiss-sparkle-pop 900ms ease-out var(--d) 1;
+}
+
+.artify-hero-kiss-sparkle--a {
+  --dx: -18px;
+  --dy: -16px;
+  --d: 0ms;
+}
+.artify-hero-kiss-sparkle--b {
+  --dx: 16px;
+  --dy: -14px;
+  --d: 60ms;
+}
+.artify-hero-kiss-sparkle--c {
+  --dx: -22px;
+  --dy: 6px;
+  --d: 120ms;
+}
+.artify-hero-kiss-sparkle--d {
+  --dx: 22px;
+  --dy: 8px;
+  --d: 160ms;
+}
+.artify-hero-kiss-sparkle--e {
+  --dx: -4px;
+  --dy: -26px;
+  --d: 90ms;
+}
+.artify-hero-kiss-sparkle--f {
+  --dx: 5px;
+  --dy: 22px;
+  --d: 200ms;
+}
+
 /* Eyelid fill: sassy purple — reads on white sticker + mist sclera (not flat white). */
 .artify-hero-eye-lid {
   background-color: color-mix(
@@ -454,15 +595,11 @@
 .artify-hero-eye-shutter {
   transform-origin: top center;
   will-change: transform;
+  transform: scaleY(0.4);
 }
 
 .artify-hero-eye-shutter--blink {
   animation: artify-hero-eye-blink 5.8s ease-in-out infinite;
-}
-
-.artify-hero-eye-shutter--blink-delay {
-  animation: artify-hero-eye-blink 5.8s ease-in-out infinite;
-  animation-delay: -2.9s;
 }
 
 .artify-hero-scene-grid {
@@ -578,6 +715,11 @@
   animation: artify-hero-goofy-wobble 5.5s ease-in-out infinite;
 }
 
+/* Lottie bundle is authored to fit the sticker box. */
+.artify-hero-disco-lottie {
+  transform: none;
+}
+
 .artify-hero-squiggle-drift {
   animation: artify-hero-squiggle-drift 14s ease-in-out infinite;
 }
@@ -633,6 +775,12 @@
   .artify-hero-eye-shutter--blink-delay {
     animation: none !important;
     transform: scaleY(0.4) !important;
+  }
+
+  [data-artify-hero-eyes].artify-hero-eyes--hover .artify-hero-lips-inner,
+  [data-artify-hero-eyes].artify-hero-eyes--hover .artify-hero-kiss-heart,
+  [data-artify-hero-eyes].artify-hero-eyes--hover .artify-hero-kiss-sparkle {
+    animation: none !important;
   }
 
   .artify-hero-flip-inner {

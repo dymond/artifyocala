@@ -7,7 +7,19 @@ import { createClient } from "tinacms/dist/client";
 import { getTinaGitBranch } from "../../tina/branch";
 import { queries } from "../../tina/__generated__/types";
 
-const clientId = process.env.PUBLIC_TINA_CLIENT_ID?.trim();
+type EnvLike = Record<string, string | undefined>;
+
+const viteEnv: EnvLike =
+  typeof import.meta !== "undefined" && (import.meta as any).env
+    ? ((import.meta as any).env as EnvLike)
+    : {};
+
+const nodeEnv: EnvLike =
+  typeof process !== "undefined" && process.env ? (process.env as EnvLike) : {};
+
+const env = { ...nodeEnv, ...viteEnv };
+
+const clientId = env.PUBLIC_TINA_CLIENT_ID?.trim();
 const branch = getTinaGitBranch();
 
 if (!clientId) {
@@ -18,12 +30,13 @@ if (!clientId) {
 
 // Dev: use local Tina GraphQL server (started by `tinacms dev`).
 // Prod/CI: use Tina Content API.
-const localUrl = process.env.TINA_LOCAL_GRAPHQL_URL?.trim() || "http://localhost:4001/graphql";
+const localUrl = env.TINA_LOCAL_GRAPHQL_URL?.trim() || "http://localhost:4001/graphql";
 const cloudUrl = `https://content.tinajs.io/2.2/content/${clientId}/github/${branch}`;
-const url = process.env.NODE_ENV === "development" ? localUrl : cloudUrl;
+const url =
+  env.NODE_ENV === "development" || env.DEV === "true" ? localUrl : cloudUrl;
 
 const tinaToken =
-  process.env.TINA_TOKEN?.trim() || process.env.TINA_TOKEN_LOCAL?.trim() || "";
+  env.TINA_TOKEN?.trim() || env.TINA_TOKEN_LOCAL?.trim() || "";
 
 export const client = createClient({
   url,
