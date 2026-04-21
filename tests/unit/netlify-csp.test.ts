@@ -10,6 +10,8 @@ describe("buildContentSecurityPolicy (public)", () => {
     const csp = buildContentSecurityPolicy({ allowEval: true });
     expect(csp).toContain("connect-src");
     expect(csp).toContain("https://www.google-analytics.com");
+    expect(csp).toContain("https://cdn.jsdelivr.net");
+    expect(csp).toContain("https://unpkg.com");
     expect(csp).not.toContain("content.tinajs.io");
     expect(csp).not.toContain("api.github.com");
     expect(csp).not.toContain("s3.us-east-1.amazonaws.com");

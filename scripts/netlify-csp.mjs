@@ -21,6 +21,10 @@ export function buildContentSecurityPolicy({ allowEval }) {
     "https://www.google-analytics.com",
     "https://region1.google-analytics.com",
     "https://www.googletagmanager.com",
+    // dotlottie-web loads its WASM from these CDNs by default.
+    // Allowlist them so Lottie stickers can render on the public site.
+    "https://cdn.jsdelivr.net",
+    "https://unpkg.com",
   ].join(" ");
 
   const frameSrc = "'self'";
