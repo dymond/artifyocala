@@ -8,11 +8,9 @@
       "evgLedeHtml": "Tap an image to view the event details.",
       "evgTiles": [
         {
-          "evtImage": "/images/638856470_17866134717571907_1176992445232475479_n.jpg",
-          "evtAlt": "Marion Maker Fest",
-          "evtDate": "2026-04-25T18:00:00.000Z",
-          "evtHref": "",
-          "evtExpiresAt": "2026-04-26T23:00:00.000Z"
+          "evtImage": "/images/671829837_122133294621016024_504737554691515561_n.jpg",
+          "evtDate": "2026-06-03T20:02:07.285Z",
+          "evtHref": "https://www.facebook.com/share/1EBJZ5C12f/"
         },
         {
           "evtImage": "/images/670634064_122133285657016024_4389432573612884366_n.jpg",
@@ -20,9 +18,11 @@
           "evtHref": "https://www.facebook.com/share/1bFf5CQakZ/"
         },
         {
-          "evtImage": "/images/671829837_122133294621016024_504737554691515561_n.jpg",
-          "evtDate": "2026-06-03T20:02:07.285Z",
-          "evtHref": "https://www.facebook.com/share/1EBJZ5C12f/"
+          "evtImage": "/images/638856470_17866134717571907_1176992445232475479_n.jpg",
+          "evtAlt": "Marion Maker Fest",
+          "evtDate": "2026-04-25T18:00:00.000Z",
+          "evtHref": "",
+          "evtExpiresAt": "2026-04-26T23:00:00.000Z"
         }
       ],
       "_template": "eventsGallery"
