@@ -249,68 +249,62 @@ export default function HeroPlayfulCollage({
             : undefined
         }
       >
-        {/* Lottie disco ball (mobile top-left; sm+ original top-right). */}
+        {/* Lottie disco ball (mobile top-left; sm+ top-right). */}
         <div
-          className="pointer-events-auto absolute left-[-0.55rem] top-[-0.55rem] z-[30] w-[5.5rem] aspect-square sm:left-auto sm:top-0 sm:right-0 sm:w-[6.25rem] lg:w-[7.1rem] xl:w-[7.75rem]"
+          className="artify-hero-scene-sticker pointer-events-auto absolute left-0 top-0 z-[30] aspect-square w-[min(28vw,7.75rem)] sm:left-auto sm:top-0 sm:right-0 sm:w-[6.25rem] lg:w-[7.1rem] xl:w-[7.75rem]"
           style={{ animationDelay: "-1.4s" }}
           role="img"
           aria-label="Decorative disco ball"
         >
-          <div className="h-full w-full">
-            <canvas
-              className="h-full w-full artify-hero-disco-lottie"
-              data-dotlottie-src="/lottie/kiss-sparkles.lottie"
-              data-dotlottie-autoplay="1"
-              data-dotlottie-loop="1"
-              aria-hidden
-            />
-          </div>
+          <canvas
+            className="h-full w-full artify-hero-disco-lottie"
+            data-dotlottie-src="/lottie/kiss-sparkles.lottie"
+            data-dotlottie-autoplay="1"
+            data-dotlottie-loop="1"
+            aria-hidden
+          />
         </div>
 
-        {/* Maker-esque sticker: bedazzled glue gun (mobile left ~2/3 down; sm+ original bottom-left). */}
+        {/* Maker-esque sticker: bedazzled glue gun (mobile left ~2/3 down; sm+ bottom-left). */}
         <div
-          className="pointer-events-auto absolute left-[-0.45rem] top-[66%] z-[26] w-[5.15rem] aspect-square -translate-y-1/2 drop-shadow-[5px_5px_0_var(--color-ink)] sm:top-auto sm:bottom-[-0.8rem] sm:left-[-0.6rem] sm:translate-y-0 sm:w-[5.8rem] lg:bottom-[-0.95rem] lg:left-[-0.75rem] lg:w-[6.7rem] xl:bottom-[-1.05rem] xl:left-[-0.85rem] xl:w-[7.3rem]"
-          style={{ animationDelay: "-2.7s", transform: "rotate(-12deg)" }}
+          className="artify-hero-scene-sticker pointer-events-auto absolute left-[-0.25rem] top-[66%] z-[26] w-[min(28vw,7.5rem)] aspect-square -translate-y-1/2 rotate-[-12deg] drop-shadow-[5px_5px_0_var(--color-ink)] sm:top-auto sm:bottom-[-0.8rem] sm:left-[-0.6rem] sm:translate-y-0 sm:rotate-[-12deg] sm:w-[5.8rem] lg:bottom-[-0.95rem] lg:left-[-0.75rem] lg:w-[6.7rem] xl:bottom-[-1.05rem] xl:left-[-0.85rem] xl:w-[7.3rem]"
+          style={{ animationDelay: "-2.7s" }}
           role="img"
           aria-label="Decorative bedazzled glue gun"
         >
-          <div className="h-full w-full">
-            <canvas
-              className="h-full w-full"
-              data-dotlottie-src="/lottie/glue-gun.lottie"
-              data-dotlottie-autoplay="1"
-              data-dotlottie-loop="1"
-              aria-hidden
-            />
-          </div>
+          <canvas
+            className="h-full w-full"
+            data-dotlottie-src="/lottie/glue-gun.lottie"
+            data-dotlottie-autoplay="1"
+            data-dotlottie-loop="1"
+            aria-hidden
+          />
         </div>
 
         {/* Paint roller stamp (bottom-right). */}
         <div
-          className="pointer-events-auto absolute bottom-[-0.9rem] right-[-0.9rem] z-[30] w-[5.5rem] aspect-square sm:bottom-[-1.15rem] sm:right-[-1.15rem] sm:w-[6.25rem] lg:bottom-[-1.35rem] lg:right-[-1.35rem] lg:w-[7.1rem] xl:bottom-[-1.5rem] xl:right-[-1.5rem] xl:w-[7.75rem]"
+          className="artify-hero-scene-sticker pointer-events-auto absolute bottom-[-0.65rem] right-[-0.65rem] z-[30] aspect-square w-[min(28vw,7.75rem)] sm:bottom-[-1.15rem] sm:right-[-1.15rem] sm:w-[6.25rem] lg:bottom-[-1.35rem] lg:right-[-1.35rem] lg:w-[7.1rem] xl:bottom-[-1.5rem] xl:right-[-1.5rem] xl:w-[7.75rem]"
           data-dotlottie-rotate-wrapper
           role="img"
           aria-label="Decorative paint roller stamp"
         >
-          <div className="h-full w-full">
-            <canvas
-              className="h-full w-full"
-              data-dotlottie-src="/lottie/bottom-right.lottie"
-              data-dotlottie-autoplay="1"
-              data-dotlottie-loop="1"
-              data-dotlottie-speed="0.75"
-              data-dotlottie-mode="bounce"
-              data-dotlottie-random-rotate="1"
-              data-dotlottie-rotate-min="-15"
-              data-dotlottie-rotate-max="45"
-              aria-hidden
-            />
-          </div>
+          <canvas
+            className="h-full w-full"
+            data-dotlottie-src="/lottie/bottom-right.lottie"
+            data-dotlottie-autoplay="1"
+            data-dotlottie-loop="1"
+            data-dotlottie-speed="0.75"
+            data-dotlottie-mode="bounce"
+            data-dotlottie-random-rotate="1"
+            data-dotlottie-rotate-min="-15"
+            data-dotlottie-rotate-max="45"
+            aria-hidden
+          />
         </div>
 
-        {/* Eyes character (mobile right ~1/3 down; sm+ original top-left). */}
+        {/* Eyes character — same layout as sm+; mobile uses uniform scale (no width stretch). */}
         <div
-          className="pointer-events-auto absolute right-[-0.55rem] top-[33%] z-[30] -translate-y-1/2 sm:left-0 sm:top-0 sm:right-auto sm:translate-y-0"
+          className="artify-hero-scene-sticker pointer-events-auto absolute right-0 top-[38%] z-[30] w-auto -translate-y-1/2 max-sm:origin-top-right max-sm:scale-105 max-sm:max-[30rem]:scale-100 max-sm:max-[25rem]:scale-95 max-sm:max-[22.5rem]:scale-90 max-sm:max-[20.5rem]:scale-86 sm:left-0 sm:top-0 sm:right-auto sm:translate-y-0 sm:scale-100"
           aria-hidden
         >
           <div
@@ -398,7 +392,7 @@ export default function HeroPlayfulCollage({
 
             {/* Decorative lipstick lips (playful collage "eyes" character). */}
             <span
-              className="artify-hero-lips pointer-events-none absolute left-1/2 top-full z-[3] -translate-x-1/2 -translate-y-[30%]"
+              className="artify-hero-lips pointer-events-none absolute left-1/2 top-full z-[3] -translate-x-1/2 -translate-y-[30%] origin-top"
               aria-hidden
             >
               {/* Sparkle burst inspired by Lottie (emulated; one-shot on hover). */}

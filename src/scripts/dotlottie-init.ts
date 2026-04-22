@@ -69,12 +69,31 @@ function setCanvasSize(canvas: HTMLCanvasElement): void {
   if (canvas.height !== h) canvas.height = h;
 }
 
-function initDotLottieCanvas(canvas: DotLottieCanvasEl): void {
+const layoutWaitObservers = new WeakMap<DotLottieCanvasEl, ResizeObserver>();
+
+function canLayoutLottieCanvas(canvas: HTMLCanvasElement): boolean {
+  const r = canvas.getBoundingClientRect();
+  return r.width >= 2 && r.height >= 2;
+}
+
+function clearLayoutWait(canvas: DotLottieCanvasEl): void {
+  const ro = layoutWaitObservers.get(canvas);
+  if (ro) {
+    ro.disconnect();
+    layoutWaitObservers.delete(canvas);
+  }
+}
+
+function mountDotLottieCanvas(canvas: DotLottieCanvasEl): void {
   const src = canvas.dataset.dotlottieSrc;
   if (!src) return;
 
   // Idempotent.
   if (canvas.__artifyDotLottie) return;
+
+  clearLayoutWait(canvas);
+
+  if (!canLayoutLottieCanvas(canvas)) return;
 
   setCanvasSize(canvas);
 
@@ -149,6 +168,35 @@ function initDotLottieCanvas(canvas: DotLottieCanvasEl): void {
   canvas.__artifyDotLottieRO = ro;
 }
 
+function initDotLottieCanvas(canvas: DotLottieCanvasEl): void {
+  const src = canvas.dataset.dotlottieSrc;
+  if (!src) return;
+  if (canvas.__artifyDotLottie) {
+    clearLayoutWait(canvas);
+    return;
+  }
+
+  if (canLayoutLottieCanvas(canvas)) {
+    mountDotLottieCanvas(canvas);
+    return;
+  }
+
+  if (layoutWaitObservers.has(canvas)) return;
+
+  const ro = new ResizeObserver(() => {
+    if (!canLayoutLottieCanvas(canvas)) return;
+    mountDotLottieCanvas(canvas);
+  });
+  ro.observe(canvas);
+  layoutWaitObservers.set(canvas, ro);
+
+  requestAnimationFrame(() => {
+    if (canLayoutLottieCanvas(canvas)) {
+      mountDotLottieCanvas(canvas);
+    }
+  });
+}
+
 function initAll(): void {
   const canvases = document.querySelectorAll<DotLottieCanvasEl>(
     "canvas[data-dotlottie-src]",
@@ -156,10 +204,59 @@ function initAll(): void {
   for (const canvas of canvases) initDotLottieCanvas(canvas);
 }
 
+function collectLottieCanvasesFromNode(node: Node): DotLottieCanvasEl[] {
+  if (node instanceof HTMLCanvasElement && node.dataset.dotlottieSrc) {
+    return [node];
+  }
+  if (node instanceof Element) {
+    return Array.from(
+      node.querySelectorAll<DotLottieCanvasEl>("canvas[data-dotlottie-src]"),
+    );
+  }
+  return [];
+}
+
+let mutationFlushPending = false;
+function requestInitFromMutations(): void {
+  if (mutationFlushPending) return;
+  mutationFlushPending = true;
+  requestAnimationFrame(() => {
+    mutationFlushPending = false;
+    initAll();
+  });
+}
+
+/** Catch canvases that mount or resize after the first `initAll` (common on mobile + dev HMR). */
+function observeLottieCanvases(): void {
+  const mo = new MutationObserver((muts) => {
+    for (const m of muts) {
+      for (const n of m.addedNodes) {
+        if (collectLottieCanvasesFromNode(n).length) {
+          requestInitFromMutations();
+          return;
+        }
+      }
+    }
+  });
+  mo.observe(document.documentElement, { childList: true, subtree: true });
+}
+
 document.addEventListener("astro:page-load", initAll);
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initAll);
 } else {
   initAll();
+}
+
+if (typeof window !== "undefined") {
+  // Full load: fonts, late layout, async chunks (Vite / islands) may settle after `DOMContentLoaded`.
+  window.addEventListener("load", initAll, { once: true });
+  // Two rAFs: catch first paint + layout for canvases in responsive/flex grids.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      initAll();
+    });
+  });
+  observeLottieCanvases();
 }
 

@@ -1,14 +1,14 @@
 /** Horizontal pupil travel (px) — strip is wide. */
-export const HERO_EYE_MAX_OFFSET_X = 8;
+export const HERO_EYE_MAX_OFFSET_X = 5;
 
 /**
  * Upward pupil travel (px, negative in math / negative translate) — tight so pupils
  * stay visible below the upper eyelid when the cursor is above the eyes.
  */
-export const HERO_EYE_MAX_OFFSET_Y_UP = 0.65;
+export const HERO_EYE_MAX_OFFSET_Y_UP = 0.45;
 
 /** Downward pupil travel (px) — more room above the lower lid. */
-export const HERO_EYE_MAX_OFFSET_Y_DOWN = 7.5;
+export const HERO_EYE_MAX_OFFSET_Y_DOWN = 5.5;
 
 /** Extra translateY (px) so pupils sit slightly low in the socket under the upper lid. */
 export const HERO_EYE_PUPIL_Y_BIAS_PX = 1.75;

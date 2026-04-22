@@ -26,6 +26,10 @@ export function bindHeroEyes(root?: HTMLElement | null): () => void {
   const hoverClass = "artify-hero-eyes--hover";
   let hoverOffTimer: number | undefined;
 
+  /** Real hover: mouse/trackpad. Touch uses click-only kiss so we avoid sticky :hover. */
+  const prefersFinePointerHover = (): boolean =>
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
   const setHover = (on: boolean): void => {
     if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
     hoverOffTimer = undefined;
@@ -68,22 +72,34 @@ export function bindHeroEyes(root?: HTMLElement | null): () => void {
 
   window.addEventListener("pointermove", onPointer, { passive: true });
   window.addEventListener("blur", reset);
-  host.addEventListener("pointerleave", reset);
-  const onEnter = (): void => setHover(true);
-  const onLeave = (): void => setHover(false);
+  const onEnter = (): void => {
+    if (prefersFinePointerHover()) setHover(true);
+  };
+  const onPointerLeave = (): void => {
+    reset();
+    if (prefersFinePointerHover()) setHover(false);
+  };
   host.addEventListener("pointerenter", onEnter);
-  host.addEventListener("pointerleave", onLeave);
-  host.addEventListener("mouseenter", onEnter);
-  host.addEventListener("mouseleave", onLeave);
+  host.addEventListener("pointerleave", onPointerLeave);
+
+  /** Kiss animation on phones/tablets (no hover) — one-shot, matches CSS length ~1.1s. */
+  const onKissClick = (): void => {
+    if (prefersFinePointerHover()) return;
+    if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
+    setHover(true);
+    hoverOffTimer = window.setTimeout(() => {
+      host.classList.remove(hoverClass);
+      hoverOffTimer = undefined;
+    }, 1300);
+  };
+  host.addEventListener("click", onKissClick);
 
   const teardown = () => {
     window.removeEventListener("pointermove", onPointer);
     window.removeEventListener("blur", reset);
-    host.removeEventListener("pointerleave", reset);
     host.removeEventListener("pointerenter", onEnter);
-    host.removeEventListener("pointerleave", onLeave);
-    host.removeEventListener("mouseenter", onEnter);
-    host.removeEventListener("mouseleave", onLeave);
+    host.removeEventListener("pointerleave", onPointerLeave);
+    host.removeEventListener("click", onKissClick);
     if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
     host.classList.remove(hoverClass);
     delete (host as any)[key];

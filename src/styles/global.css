@@ -461,7 +461,8 @@
   }
 }
 
-[data-artify-hero-eyes]:is(.artify-hero-eyes--hover, :hover) .artify-hero-lips-inner {
+/* Class only (from hero-eyes-dom) — :hover is omitted so touch taps are not “sticky” on mobile. */
+[data-artify-hero-eyes].artify-hero-eyes--hover .artify-hero-lips-inner {
   animation: artify-hero-kiss-pop 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) 1;
   will-change: transform;
 }
@@ -495,7 +496,7 @@
   z-index: 2;
 }
 
-[data-artify-hero-eyes]:is(.artify-hero-eyes--hover, :hover) .artify-hero-kiss-heart {
+[data-artify-hero-eyes].artify-hero-eyes--hover .artify-hero-kiss-heart {
   animation: artify-hero-kiss-heart-float 1100ms ease-out 1;
 }
 
@@ -548,7 +549,7 @@
   }
 }
 
-[data-artify-hero-eyes]:is(.artify-hero-eyes--hover, :hover) .artify-hero-kiss-sparkle {
+[data-artify-hero-eyes].artify-hero-eyes--hover .artify-hero-kiss-sparkle {
   animation: artify-hero-kiss-sparkle-pop 900ms ease-out var(--d) 1;
 }
 
@@ -804,6 +805,11 @@
   .artify-hero-scene-grid > div.pointer-events-none.absolute,
   .artify-hero-scene-grid > div.pointer-events-auto.absolute {
     display: none;
+  }
+
+  /* Scene stamps (Lotties + eyes): must stay visible; rule above also matched their wrappers. */
+  .artify-hero-scene-grid > div.pointer-events-auto.absolute.artify-hero-scene-sticker {
+    display: block;
   }
 
   /* Turn the absolute-position collage into a stacked list. */
