@@ -9,11 +9,7 @@ import {
 } from "../../lib/hero-playful-collage-data";
 import { cn } from "../../lib/cn";
 import ResponsiveImage from "../ui/ResponsiveImage";
-import {
-  HERO_EYE_CLAMP,
-  HERO_EYE_PUPIL_Y_BIAS_PX,
-  offsetTowardPointClamped,
-} from "../../lib/hero-eyes";
+import { bindHeroEyes } from "../../lib/hero-eyes-dom";
 
 export type CollageCardOverride = {
   hccFrontImage?: string | null;
@@ -47,82 +43,6 @@ function mergeCollageCards(
       ...(o.hccBackCaption ? { backCaption: o.hccBackCaption } : {}),
     };
   });
-}
-
-function bindHeroEyes(): () => void {
-  const root = document.querySelector<HTMLElement>("[data-artify-hero-eyes]");
-  if (!root) return () => {};
-
-  const pupils = root.querySelectorAll<HTMLElement>(".artify-hero-pupil");
-  if (pupils.length === 0) return () => {};
-
-  const hoverClass = "artify-hero-eyes--hover";
-  let hoverOffTimer: number | undefined;
-
-  const setHover = (on: boolean): void => {
-    if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
-    hoverOffTimer = undefined;
-    if (on) {
-      // Re-add to restart hover-triggered animations deterministically.
-      root.classList.remove(hoverClass);
-      void root.getBoundingClientRect();
-      root.classList.add(hoverClass);
-    } else {
-      // Let kiss/blink finish instead of snapping mid-animation.
-      hoverOffTimer = window.setTimeout(() => {
-        root.classList.remove(hoverClass);
-        hoverOffTimer = undefined;
-      }, 1200);
-    }
-  };
-
-  const move = (clientX: number, clientY: number): void => {
-    const rect = root.getBoundingClientRect();
-    const { x, y } = offsetTowardPointClamped(
-      clientX,
-      clientY,
-      rect,
-      HERO_EYE_CLAMP,
-    );
-    const yb = y + HERO_EYE_PUPIL_Y_BIAS_PX;
-    for (const el of pupils) {
-      el.style.transform = `translate3d(calc(-50% + ${x}px), calc(-50% + ${yb}px), 0)`;
-    }
-  };
-
-  const onPointer = (e: PointerEvent): void => {
-    move(e.clientX, e.clientY);
-  };
-
-  const reset = (): void => {
-    const b = HERO_EYE_PUPIL_Y_BIAS_PX;
-    for (const el of pupils) {
-      el.style.transform = `translate3d(-50%, calc(-50% + ${b}px), 0)`;
-    }
-  };
-
-  window.addEventListener("pointermove", onPointer, { passive: true });
-  window.addEventListener("blur", reset);
-  root.addEventListener("pointerleave", reset);
-  const onEnter = (): void => setHover(true);
-  const onLeave = (): void => setHover(false);
-  root.addEventListener("pointerenter", onEnter);
-  root.addEventListener("pointerleave", onLeave);
-  // Mouse events as a fallback when pointer events behave oddly.
-  root.addEventListener("mouseenter", onEnter);
-  root.addEventListener("mouseleave", onLeave);
-
-  return () => {
-    window.removeEventListener("pointermove", onPointer);
-    window.removeEventListener("blur", reset);
-    root.removeEventListener("pointerleave", reset);
-    root.removeEventListener("pointerenter", onEnter);
-    root.removeEventListener("pointerleave", onLeave);
-    root.removeEventListener("mouseenter", onEnter);
-    root.removeEventListener("mouseleave", onLeave);
-    if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
-    root.classList.remove(hoverClass);
-  };
 }
 
 function CardFaces({ c }: { c: CardConfig }) {

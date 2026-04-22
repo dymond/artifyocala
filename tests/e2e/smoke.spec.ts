@@ -54,12 +54,12 @@ test.describe('public pages', () => {
     expect(await storyGallery.locator('img').filter({ visible: true }).count()).toBe(10);
   });
 
-  test('equipment wish list page shows marquee makerspace strip', async ({ page }) => {
+  test('equipment wish list page renders equipment sections', async ({ page }) => {
     await page.goto('/programs/maker-collective/equipment');
     await expect(page.getByRole('heading', { level: 1 })).toContainText(/Equipment wish list/i);
-    const gallery = page.getByTestId('makerspace-equipment-gallery-marquee');
-    await expect(gallery).toBeVisible();
-    expect(await gallery.locator('img').filter({ visible: true }).count()).toBe(8);
+    // Content is a structured list of equipment areas (no marquee gallery on this route).
+    const h2s = page.getByRole('heading', { level: 2 });
+    expect(await h2s.count()).toBeGreaterThan(3);
   });
 
   test('floating wheel menu opens and lists program links', async ({ page }) => {
