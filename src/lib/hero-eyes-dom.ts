@@ -9,6 +9,17 @@ export function bindHeroEyes(root?: HTMLElement | null): () => void {
     root ?? document.querySelector<HTMLElement>("[data-artify-hero-eyes]");
   if (!host) return () => {};
 
+  const key = "__artifyHeroEyesInit";
+  const prev = (host as any)[key] as (() => void) | true | undefined;
+  if (typeof prev === "function") {
+    // Re-init: tear down previous listeners first so hover/kiss animations
+    // don't fight each other (Tina preview + public init can overlap).
+    prev();
+  } else if (prev === true) {
+    // Already bound, no teardown handle available (shouldn't happen, but safe).
+    return () => {};
+  }
+
   const pupils = host.querySelectorAll<HTMLElement>(".artify-hero-pupil");
   if (pupils.length === 0) return () => {};
 
@@ -65,7 +76,7 @@ export function bindHeroEyes(root?: HTMLElement | null): () => void {
   host.addEventListener("mouseenter", onEnter);
   host.addEventListener("mouseleave", onLeave);
 
-  return () => {
+  const teardown = () => {
     window.removeEventListener("pointermove", onPointer);
     window.removeEventListener("blur", reset);
     host.removeEventListener("pointerleave", reset);
@@ -75,6 +86,10 @@ export function bindHeroEyes(root?: HTMLElement | null): () => void {
     host.removeEventListener("mouseleave", onLeave);
     if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
     host.classList.remove(hoverClass);
+    delete (host as any)[key];
   };
+
+  (host as any)[key] = teardown;
+  return teardown;
 }
 

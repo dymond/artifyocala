@@ -8,7 +8,7 @@ describe("HeroPlayfulCollage stickers", () => {
     const html = renderToStaticMarkup(<HeroPlayfulCollage />);
     expect(html).toContain("Decorative disco ball");
     expect(html).toContain("Decorative bedazzled glue gun");
-    expect(html).toContain("Decorative bottom-right lottie sticker");
+    expect(html).toContain("Decorative paint roller stamp");
   });
 });
 

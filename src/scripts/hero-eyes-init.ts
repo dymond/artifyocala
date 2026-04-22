@@ -1,7 +1,10 @@
 import { bindHeroEyes } from "../lib/hero-eyes-dom";
 
 function init(): void {
-  bindHeroEyes();
+  const nodes = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-artify-hero-eyes]"),
+  );
+  for (const el of nodes) bindHeroEyes(el);
 }
 
 if (typeof window !== "undefined") {

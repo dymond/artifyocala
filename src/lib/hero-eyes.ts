@@ -5,7 +5,7 @@ export const HERO_EYE_MAX_OFFSET_X = 8;
  * Upward pupil travel (px, negative in math / negative translate) — tight so pupils
  * stay visible below the upper eyelid when the cursor is above the eyes.
  */
-export const HERO_EYE_MAX_OFFSET_Y_UP = 1.15;
+export const HERO_EYE_MAX_OFFSET_Y_UP = 0.65;
 
 /** Downward pupil travel (px) — more room above the lower lid. */
 export const HERO_EYE_MAX_OFFSET_Y_DOWN = 7.5;
