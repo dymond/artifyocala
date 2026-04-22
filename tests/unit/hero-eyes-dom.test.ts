@@ -77,9 +77,30 @@ describe("hero-eyes-dom", () => {
     teardown();
   });
 
-  it("applies kiss hover class on click when the device is not fine-pointer hover", () => {
+  it("applies kiss animation class on click (touch / no fine hover)", () => {
     vi.useFakeTimers();
     stubMatchMedia({ finePointerHover: false });
+    document.body.innerHTML = `
+      <div data-artify-hero-eyes>
+        <span class="artify-hero-pupil"></span>
+        <span class="artify-hero-pupil"></span>
+      </div>
+    `;
+    const root = document.querySelector<HTMLElement>("[data-artify-hero-eyes]")!;
+
+    const teardown = bindHeroEyes(root);
+    expect(root.classList.contains("artify-hero-eyes--hover")).toBe(false);
+    root.click();
+    expect(root.classList.contains("artify-hero-eyes--hover")).toBe(true);
+    vi.advanceTimersByTime(1300);
+    expect(root.classList.contains("artify-hero-eyes--hover")).toBe(false);
+    teardown();
+    vi.useRealTimers();
+  });
+
+  it("applies kiss animation class on click with fine pointer + hover", () => {
+    vi.useFakeTimers();
+    stubMatchMedia({ finePointerHover: true });
     document.body.innerHTML = `
       <div data-artify-hero-eyes>
         <span class="artify-hero-pupil"></span>

@@ -82,9 +82,8 @@ export function bindHeroEyes(root?: HTMLElement | null): () => void {
   host.addEventListener("pointerenter", onEnter);
   host.addEventListener("pointerleave", onPointerLeave);
 
-  /** Kiss animation on phones/tablets (no hover) — one-shot, matches CSS length ~1.1s. */
+  /** Kiss on tap/click (all devices) — one-shot; CSS ~1.1s. Fine pointers also get hover-on-enter above. */
   const onKissClick = (): void => {
-    if (prefersFinePointerHover()) return;
     if (hoverOffTimer !== undefined) window.clearTimeout(hoverOffTimer);
     setHover(true);
     hoverOffTimer = window.setTimeout(() => {
