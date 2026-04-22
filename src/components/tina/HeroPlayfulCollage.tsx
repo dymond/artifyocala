@@ -249,9 +249,9 @@ export default function HeroPlayfulCollage({
             : undefined
         }
       >
-        {/* Lottie disco ball (top-left). */}
+        {/* Lottie disco ball (mobile top-left; sm+ original top-right). */}
         <div
-          className="pointer-events-auto absolute left-[-0.55rem] top-[-0.55rem] z-[30] w-[5.5rem] aspect-square sm:left-[-0.7rem] sm:top-[-0.7rem] sm:w-[6.25rem] lg:left-[-0.85rem] lg:top-[-0.85rem] lg:w-[7.1rem] xl:left-[-0.95rem] xl:top-[-0.95rem] xl:w-[7.75rem]"
+          className="pointer-events-auto absolute left-[-0.55rem] top-[-0.55rem] z-[30] w-[5.5rem] aspect-square sm:left-auto sm:top-0 sm:right-0 sm:w-[6.25rem] lg:w-[7.1rem] xl:w-[7.75rem]"
           style={{ animationDelay: "-1.4s" }}
           role="img"
           aria-label="Decorative disco ball"
@@ -267,9 +267,9 @@ export default function HeroPlayfulCollage({
           </div>
         </div>
 
-        {/* Maker-esque sticker: bedazzled glue gun (animated) — left, ~2/3 down. */}
+        {/* Maker-esque sticker: bedazzled glue gun (mobile left ~2/3 down; sm+ original bottom-left). */}
         <div
-          className="pointer-events-auto absolute left-[-0.45rem] top-[66%] z-[26] w-[5.15rem] aspect-square -translate-y-1/2 drop-shadow-[5px_5px_0_var(--color-ink)] sm:left-[-0.6rem] sm:w-[5.8rem] lg:left-[-0.75rem] lg:w-[6.7rem] xl:left-[-0.85rem] xl:w-[7.3rem]"
+          className="pointer-events-auto absolute left-[-0.45rem] top-[66%] z-[26] w-[5.15rem] aspect-square -translate-y-1/2 drop-shadow-[5px_5px_0_var(--color-ink)] sm:top-auto sm:bottom-[-0.8rem] sm:left-[-0.6rem] sm:translate-y-0 sm:w-[5.8rem] lg:bottom-[-0.95rem] lg:left-[-0.75rem] lg:w-[6.7rem] xl:bottom-[-1.05rem] xl:left-[-0.85rem] xl:w-[7.3rem]"
           style={{ animationDelay: "-2.7s", transform: "rotate(-12deg)" }}
           role="img"
           aria-label="Decorative bedazzled glue gun"
@@ -308,9 +308,9 @@ export default function HeroPlayfulCollage({
           </div>
         </div>
 
-        {/* Eyes character — right side, ~1/3 down. */}
+        {/* Eyes character (mobile right ~1/3 down; sm+ original top-left). */}
         <div
-          className="pointer-events-auto absolute right-[-0.55rem] top-[33%] z-[30] -translate-y-1/2 sm:right-[-0.7rem] lg:right-[-0.85rem] xl:right-[-0.95rem]"
+          className="pointer-events-auto absolute right-[-0.55rem] top-[33%] z-[30] -translate-y-1/2 sm:left-0 sm:top-0 sm:right-auto sm:translate-y-0"
           aria-hidden
         >
           <div
