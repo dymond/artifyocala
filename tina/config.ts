@@ -1090,6 +1090,10 @@ export default defineConfig({
                           { label: "Buzz (lavender)", value: "buzz" },
                           { label: "Club (purple)", value: "club" },
                           { label: "Surge (violet)", value: "surge" },
+                          {
+                            label: "Surge ink (button-edge purple)",
+                            value: "surgeInk",
+                          },
                         ],
                       },
                       {
