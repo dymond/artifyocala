@@ -70,8 +70,6 @@ export default defineConfig({
         path: "src/content/programs",
         format: "mdx",
         ui: {
-          description:
-            "Program pages for the site (one per program). Use the live preview while editing; save sends changes to Git and the public site rebuilds in a minute or two.",
           router: ({ document }) => {
             const base = document._sys.basename.replace(/\.mdx?$/i, "");
             return `/tina-preview/programs/${base}`;
@@ -233,8 +231,6 @@ export default defineConfig({
         path: "src/content/pages",
         format: "json",
         ui: {
-          description:
-            "Each file is one page (home.json is the homepage). Build the page from Sections below—pick a block type for each, then drag to reorder. URL slug must match the filename (without .json). Live preview opens when you edit from here.",
           /**
            * Tina passes `document._sys` for routing — not top-level form fields.
            * Using `document.slug` is usually undefined here, so `/${""}` became
@@ -1530,18 +1526,6 @@ export default defineConfig({
                         ui: {
                           description:
                             "After this moment, the tile is hidden from the Events page. Leave blank to keep it indefinitely.",
-                          // Tina can serialize "cleared" datetimes as Unix epoch, which is confusing
-                          // in the editor UI (1969/1970) and for users. Normalize to empty.
-                          format: (val: unknown) => {
-                            const v = typeof val === "string" ? val : "";
-                            if (!v) return "";
-                            if (v === "1970-01-01T00:00:00.000Z") return "";
-                            return v;
-                          },
-                          parse: (val: unknown) => {
-                            const v = typeof val === "string" ? val.trim() : "";
-                            return v ? v : null;
-                          },
                         },
                       },
                     ],
@@ -1559,10 +1543,6 @@ export default defineConfig({
         format: "json",
         match: {
           include: "wishlist",
-        },
-        ui: {
-          description:
-            "One wish list document (categories and plain-text lines). No live preview—save and check the equipment page on the site after deploy.",
         },
         fields: [
           {
@@ -1598,10 +1578,6 @@ export default defineConfig({
         format: "json",
         match: {
           include: "chrome",
-        },
-        ui: {
-          description:
-            "Global header, wheel menu, and footer (chrome.json). Edit in the form below—no live preview. For logos: upload in Tina Media, then paste the public path (e.g. /images/your-logo.png).",
         },
         fields: [
           {

@@ -33,7 +33,9 @@ type Props = { section: PageSectionsHomeProgramsIntro };
 
 export default function HomeProgramsCardsVisual({ section }: Props) {
   const s = section;
-  const cards = (s.hpiCards ?? []).filter(Boolean);
+  const cards = (s.hpiCards ?? []).filter(
+    (c): c is NonNullable<typeof c> => Boolean(c),
+  );
 
   return (
     <section className="dark-surface bg-void py-2xl text-mist" id="programs">
@@ -59,7 +61,7 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
           {cards.map((card, ci) => {
             const theme = (card.hpiCardTheme ?? "buzz") as ProgramCardTheme;
             const frame = programCardThemeFraming[theme] ?? programCardThemeFraming.buzz;
-            return card ? (
+            return (
               <article
                 key={`${card.hpiCardTitle}-${ci}`}
                 data-artify-program-tilt
@@ -118,7 +120,7 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
                   )}
                 </div>
               </article>
-            ) : null;
+            );
           })}
         </div>
       </div>

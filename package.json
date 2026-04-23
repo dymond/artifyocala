@@ -19,6 +19,7 @@
     "build:netlify:online": "netlify build",
     "preview": "astro preview",
     "astro": "astro",
+    "check": "NODE_OPTIONS=--max-old-space-size=8192 astro check",
     "generate:hal404-audio": "python3 scripts/generate-hal-404-audio.py",
     "test": "vitest run",
     "test:e2e": "playwright test",
@@ -53,23 +54,27 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp",
       "@parcel/watcher",
       "better-sqlite3",
       "core-js",
+      "esbuild",
+      "lefthook",
       "protobufjs",
+      "sharp",
       "unix-dgram"
     ]
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.8",
     "@fontsource-variable/instrument-sans": "^5.2.8",
     "@fontsource-variable/syne": "^5.2.7",
     "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.59.1",
     "@squoosh/lib": "^0.5.3",
     "@tailwindcss/vite": "^4.2.2",
+    "@types/three": "^0.184.0",
     "jsdom": "^29.0.1",
+    "lefthook": "^2.1.6",
     "netlify-cli": "^24.9.0",
     "serve": "^14.2.6",
     "sharp": "^0.34.5",

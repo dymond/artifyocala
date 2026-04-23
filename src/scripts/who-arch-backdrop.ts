@@ -559,7 +559,7 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
   };
 
   const ro = sizeRoot ? new ResizeObserver(() => scheduleResize()) : null;
-  ro?.observe(sizeRoot);
+  if (ro && sizeRoot) ro.observe(sizeRoot);
   applyResize(true);
 
   const tick = () => {

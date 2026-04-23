@@ -8,6 +8,9 @@
   # Drop Vite’s dep cache so we never merge stale pre-bundles with a new config (see cache-astro-vite plugin).
   command = "rm -rf node_modules/.vite && pnpm rebuild esbuild && pnpm run build:netlify:ci"
   publish = "dist"
+  # Skip Netlify’s build (saves build minutes) when the git diff is only non-site files (e.g. README, .github).
+  # See scripts/netlify-ignore-build.mjs. Set Netlify env NETLIFY_IGNORE_BUILD=0 to always build.
+  ignore = "node scripts/netlify-ignore-build.mjs"
 
 # Restore/save `node_modules/.astro` and `node_modules/.vite` across deploys (install step recreates node_modules).
 [[plugins]]

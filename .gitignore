@@ -53,3 +53,6 @@ public/_headers
 
 # Tina generated artifacts (do not commit)
 tina/__generated__/
+
+# Local scratch (e.g. lottie processing)
+tmp/
