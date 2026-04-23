@@ -12,6 +12,8 @@
 
 After `pnpm install`, Lefthook is set up to run `pnpm run check` and `pnpm test` on **git push**. Fix failures locally or CI will block merges that depend on the same checks.
 
+On GitHub Actions, the workflow runs `pnpm run check:ci` (a smaller Node heap) instead of `pnpm run check` so `astro check` does not get killed on standard runners. Locally you can keep using `pnpm run check` if you have enough RAM.
+
 ## Netlify (production)
 
 `netlify.toml` can **skip a production build** when the only files changed are non-site metadata (for example, README, `.github` workflows, `lefthook.yml`). See `scripts/netlify-ignore-build.mjs`. To always run a Netlify build regardless, set the site environment variable `NETLIFY_IGNORE_BUILD=0` in the Netlify UI.
