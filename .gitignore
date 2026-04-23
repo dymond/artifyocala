@@ -46,7 +46,11 @@ tina/__generated__/client.ts
 .lighthouseci-live/
 
 # Generated responsive image variants (built in CI via `pnpm run images:build`)
-public/images/_gen/
+# `manifest.json` is committed as `{}` so `astro check` and fresh clones have a
+# resolvable `src/lib/image-variants.ts` import; `pnpm run images:build` overwrites it.
+public/images/_gen/**
+!public/images/_gen/
+!public/images/_gen/manifest.json
 
 # Netlify headers file (generated at build time)
 public/_headers
