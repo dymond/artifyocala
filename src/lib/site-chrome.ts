@@ -44,11 +44,23 @@ function publicImageSrc(raw: string): string {
   return v.startsWith("/") ? v : `/${v}`;
 }
 
+/** Subpage + home: hollow wordmark when `html` is in light / non-dark site mode. */
 export function headerLogoSrc(chrome: SiteChrome): string {
   const v = chrome.headerLogoImage?.trim();
   return v ? publicImageSrc(v) : img.logoOnLightHollow;
 }
 
+/** Subpage + home: hollow wordmark on dark-tinted top areas (`html.dark`). */
+export function headerHollowOnDarkDefault(): string {
+  return img.logoOnDarkHollow;
+}
+
+/** Footer: full wordmark in light site mode. */
+export function footerFullOnLightDefault(): string {
+  return img.logoOnLightFull;
+}
+
+/** Footer: full wordmark in dark site mode (Tina or default on-dark). */
 export function footerLogoSrc(chrome: SiteChrome): string {
   const v = chrome.footerLogoImage?.trim();
   return v ? publicImageSrc(v) : img.logoOnDarkFull;

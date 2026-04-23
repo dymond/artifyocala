@@ -4,6 +4,7 @@ import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import { filterActiveEventTiles, sortEventGalleryTilesByEvtDateAsc } from "../../lib/events";
 import { imageAlt } from "../../lib/image-alt";
 import { groupByMonthYear } from "../../lib/events-grouping";
+import { eventGalleryTileFrameAstro } from "../../lib/event-gallery-frames";
 import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
 
 interface Props {
@@ -18,26 +19,27 @@ const tiles = sortEventGalleryTilesByEvtDateAsc(
 const groups = groupByMonthYear(tiles);
 ---
 
-<section class="bg-mist py-2xl">
+<section class="artify-canvas py-2xl">
   <div class="site-container">
     <h1 class="type-display-xl">{section.evgHeading}</h1>
     {section.evgLedeHtml && (
       <div
-        class="prose-inner max-w-[52rem] [&_p]:mb-md [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+        class="artify-rte prose-inner max-w-[52rem] [&_p]:mb-md [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline dark:[&_a]:text-accent"
         set:html={section.evgLedeHtml}
       />
     )}
 
     {groups.map((g) => (
       <div class="mt-xl">
-        <h2 class="type-display-lg mb-md border-b-2 border-ink/15 pb-sm">{g.heading}</h2>
+        <h2 class="type-display-lg mb-md border-b-2 border-ink/15 pb-sm dark:border-buzz/20">
+          {g.heading}
+        </h2>
         <div class="grid grid-cols-1 gap-lg sm:grid-cols-2 lg:grid-cols-3">
           {g.items.map((t) => {
             const href = t.evtHref ?? null;
             const alt = imageAlt(t.evtAlt, "Event image");
             const src = normalizeTinaRepoMediaSrc(t.evtImage);
-            const frame =
-              "group block cursor-pointer overflow-hidden rounded-2xl border-[3px] border-ink bg-white shadow-[10px_10px_0_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1";
+            const frame = eventGalleryTileFrameAstro;
             const img = (
               <div
                 class="relative h-full w-full overflow-hidden"

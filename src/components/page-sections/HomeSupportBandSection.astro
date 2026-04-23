@@ -3,6 +3,10 @@ import Section from "../ui/Section.astro";
 import Button from "../ui/Button.astro";
 import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
+import {
+  homeFigureFrameInkBorderBuzzShadow,
+  homeFigureImageClip,
+} from "../../lib/home-section-figure-frames";
 import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
@@ -15,19 +19,19 @@ const hsbAlt = imageAlt(section.hsbImageAlt, `${section.hsbHeading} — photo`);
 
 <Section variant="dark" id="support">
   <div class="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_1.1fr]">
-    <figure
-      class="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-buzz/40 shadow-[8px_8px_0_0_rgba(176,184,255,0.18)]"
-    >
-      <ResponsiveImage
-        src={section.hsbImage}
-        alt={hsbAlt}
-        width={1080}
-        height={1080}
-        loading="lazy"
-        decoding="async"
-        sizes="(min-width: 1024px) 40vw, 92vw"
-        class="block w-full"
-      />
+    <figure class={homeFigureFrameInkBorderBuzzShadow}>
+      <div class={homeFigureImageClip}>
+        <ResponsiveImage
+          src={section.hsbImage}
+          alt={hsbAlt}
+          width={1080}
+          height={1080}
+          loading="lazy"
+          decoding="async"
+          sizes="(min-width: 1024px) 40vw, 92vw"
+          class="block w-full"
+        />
+      </div>
     </figure>
     <div class="min-w-0">
       <p
@@ -37,7 +41,7 @@ const hsbAlt = imageAlt(section.hsbImageAlt, `${section.hsbHeading} — photo`);
       </p>
       <h2 class="type-display-lg">{section.hsbHeading}</h2>
       <p
-        class="type-lede text-mist/75"
+        class="artify-rte type-lede text-mist/75 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
         set:html={section.hsbLedeHtml}
       />
       <Button

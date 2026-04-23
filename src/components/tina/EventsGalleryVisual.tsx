@@ -6,6 +6,11 @@ import ResponsiveImage from "../ui/ResponsiveImage";
 import { imageAlt } from "../../lib/image-alt";
 import { filterActiveEventTiles, sortEventGalleryTilesByEvtDateAsc } from "../../lib/events";
 import { groupByMonthYear } from "../../lib/events-grouping";
+import {
+  eventGalleryLightboxCloseClass,
+  eventGalleryLightboxImageClass,
+  eventGalleryTileFrameReact,
+} from "../../lib/event-gallery-frames";
 import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
 
 type EventRow = NonNullable<NonNullable<PageSectionsEventsGallery["evgTiles"]>[number]>;
@@ -41,14 +46,14 @@ export default function EventsGalleryVisual({
   const groups = useMemo(() => groupByMonthYear(tiles), [tiles]);
 
   return (
-    <section className="bg-mist py-2xl">
+    <section className="artify-canvas py-2xl">
       <div className="site-container">
         <h1 className="type-display-xl" data-tina-field={tinaField(section, "evgHeading")}>
           {section.evgHeading}
         </h1>
         {section.evgLedeHtml ? (
           <div
-            className="prose-inner max-w-[52rem] [&_p]:mb-md [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+            className="artify-rte prose-inner max-w-[52rem] [&_p]:mb-md [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline dark:[&_a]:text-accent"
             data-tina-field={tinaField(section, "evgLedeHtml")}
             dangerouslySetInnerHTML={{ __html: section.evgLedeHtml }}
           />
@@ -56,7 +61,7 @@ export default function EventsGalleryVisual({
 
         {groups.map((g) => (
           <div key={g.key} className="mt-xl">
-            <h2 className="type-display-lg mb-md border-b-2 border-ink/15 pb-sm">
+            <h2 className="type-display-lg mb-md border-b-2 border-ink/15 pb-sm dark:border-buzz/20">
               {g.heading}
             </h2>
             <div className="grid grid-cols-1 gap-lg sm:grid-cols-2 lg:grid-cols-3">
@@ -67,8 +72,7 @@ export default function EventsGalleryVisual({
                 const src = /^https?:\/\//i.test(rawSrc)
                   ? rawSrc
                   : normalizeTinaRepoMediaSrc(rawSrc);
-                const frame =
-                  "group relative block overflow-hidden rounded-2xl border-[3px] border-ink bg-white shadow-[10px_10px_0_0_var(--color-ink)] transition-transform duration-300 hover:-translate-y-1";
+                const frame = eventGalleryTileFrameReact;
 
                 const media = (
                   <div
@@ -145,13 +149,13 @@ export default function EventsGalleryVisual({
             <img
               id="artify-events-lightbox-img"
               alt=""
-              className="absolute rounded-xl border-[3px] border-ink bg-white shadow-[10px_10px_0_0_var(--color-ink)]"
+              className={eventGalleryLightboxImageClass}
             />
           </div>
           <button
             type="button"
             id="artify-events-lightbox-closebtn"
-            className="pointer-events-auto fixed inline-flex cursor-pointer items-center gap-2 rounded-full border-[3px] border-ink bg-white px-4 py-2 font-display text-sm text-ink shadow-[6px_6px_0_0_var(--color-ink)] transition-all duration-150 hover:-translate-y-[1px] hover:bg-accent-soft hover:text-ink hover:shadow-[8px_8px_0_0_var(--color-ink)] active:translate-y-0 active:shadow-[4px_4px_0_0_var(--color-ink)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent-soft/50"
+            className={eventGalleryLightboxCloseClass}
           >
             <IconX />
             Close

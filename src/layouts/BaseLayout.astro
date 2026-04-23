@@ -141,8 +141,16 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={pageDescription} />
     <meta name="robots" content={metaRobots} />
-    <meta name="theme-color" content="#1c1c33" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#12122a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" id="artify-theme-color" content="#f4f5fc" />
+    <script is:inline>
+      try {
+        var k = "artify-theme";
+        var s = localStorage.getItem(k);
+        var m = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var d = s === "dark" || (s !== "light" && m);
+        document.documentElement.classList.toggle("dark", d);
+      } catch (e) {}
+    </script>
     <meta name="color-scheme" content="light dark" />
     <meta name="application-name" content={SITE.name} />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -217,6 +225,8 @@ const analyticsId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
     <script src="/src/scripts/who-scroll-site-init.ts"></script>
     <script src="/src/scripts/hero-eyes-init.ts"></script>
     <script src="/src/scripts/dotlottie-init.ts"></script>
+    <script src="/src/scripts/gallery-marquee-init.ts"></script>
+    <script src="/src/scripts/theme-init.ts"></script>
     <Header chrome={siteChrome} />
     <main class="w-full min-w-0 flex-1">
       <slot />

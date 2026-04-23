@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageVisualEdit from "../../components/tina/PageVisualEdit";
 import { getCollection } from "astro:content";
+import type { SiteChrome } from "../../lib/site-chrome";
 import client from "../../lib/tina-graphql-client";
 import { breadcrumbListJsonLd, resolvePageDescription } from "../../lib/seo";
 
@@ -32,6 +33,12 @@ const structuredData = [
     { name: metaTitle ?? page.slug, path: `/${page.slug}` },
   ]),
 ];
+const siteChromeList = await getCollection("siteChrome");
+const siteChromeEntry = siteChromeList[0];
+if (!siteChromeEntry) {
+  throw new Error("Missing site settings: add src/content/site/chrome.json (Tina: Site settings).");
+}
+const siteChrome = siteChromeEntry.data as SiteChrome;
 ---
 
 <BaseLayout
@@ -46,6 +53,7 @@ const structuredData = [
     variables={tina.variables}
     data={tina.data}
     pageSlug={page.slug}
+    siteChrome={siteChrome}
   />
 </BaseLayout>
 

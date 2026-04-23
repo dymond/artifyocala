@@ -5,6 +5,9 @@
 
 @import "tailwindcss";
 
+/* Class-based dark mode; sync with `html.dark` in `src/lib/site-theme`. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans:
     "Instrument Sans Variable", "Instrument Sans", ui-sans-serif, system-ui,
@@ -78,14 +81,18 @@
   backface-visibility: hidden;
 }
 
-/** Slower loop for wide image strips (Brick City Glam gallery, etc.). */
+/**
+ * One loop = translate -50% (one unduplicated image strip). Duration is set per track
+ * by script as width ÷ 28px/s so linear speed is consistent (fixed seconds looked
+ * fast on long strips). Fallback matches the old 72s default.
+ */
 .artify-marquee-track--gallery {
-  animation-duration: 72s;
+  animation-duration: var(--gallery-marquee-duration, 72s);
 }
 
-/** Opposite-direction row; slightly different duration so rows don’t stay locked in phase. */
 .artify-marquee-track--gallery-reverse {
-  animation: artify-marquee-reverse 84s linear infinite;
+  animation: artify-marquee-reverse var(--gallery-marquee-duration, 72s) linear
+    infinite;
 }
 
 /**
@@ -104,8 +111,9 @@
 
 /**
  * Gallery strip: `clip-path` on the viewport caps how far shadows paint (so they
- * don’t sit over prose above). The old `mask-image` caused thin horizontal seams
- * on hover; edge fades use `::before`/`::after` gradients instead — no mask.
+ * don’t sit over prose above). Edge fade uses a horizontal alpha **mask** on the
+ * track clip so the strip fades to true transparency (section bg can be mist,
+ * void, twilight, or gradient — no color-matched overlay).
  * Horizontal overflow stays clipped on `.gallery-marquee-track-clip`.
  */
 .gallery-marquee-shell {
@@ -134,40 +142,53 @@
   min-width: 0;
   max-width: 100%;
   overflow-x: clip;
+  /**
+   * Space inside the clip for hover transforms + box-shadow. `overflow-x: clip`
+   * uses a clip box; vertical padding makes room without widening the track.
+   */
+  padding-block: 3.5rem;
   transform: translateZ(0);
+  -webkit-mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0,
+    #000 min(8vw, 4.5rem),
+    #000 max(
+      min(8vw, 4.5rem),
+      calc(100% - min(8vw, 4.5rem))
+    ),
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0) 0,
+    #000 min(8vw, 4.5rem),
+    #000 max(
+      min(8vw, 4.5rem),
+      calc(100% - min(8vw, 4.5rem))
+    ),
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/** Two-row desktop layout: remove stacked vertical padding between rows. */
+.gallery-marquee-dsk-dual .gallery-marquee-track-clip {
+  padding-block: var(--spacing-md);
 }
 
 /**
- * Left/right edge fades (no mask — avoids 1px seams when cards lift). Uses
- * --gallery-marquee-edge from the shell.
+ * Rounded image clip: `overflow:hidden` on the photo only, not the card — so the
+ * figure can paint the hover box-shadow outside its border.
  */
-.gallery-marquee-viewport::before,
-.gallery-marquee-viewport::after {
-  content: '';
-  position: absolute;
-  z-index: 2;
-  top: -4rem;
-  bottom: -9rem;
-  width: min(8vw, 4.5rem);
-  pointer-events: none;
-}
-
-.gallery-marquee-viewport::before {
-  left: 0;
-  background: linear-gradient(
-    to right,
-    var(--gallery-marquee-edge, var(--color-void)),
-    transparent
-  );
-}
-
-.gallery-marquee-viewport::after {
-  right: 0;
-  background: linear-gradient(
-    to left,
-    var(--gallery-marquee-edge, var(--color-void)),
-    transparent
-  );
+.gallery-marquee-item-inner {
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -593,6 +614,13 @@
   );
 }
 
+/* Lower lashes layer only (not blink shutter): extend fill to the bottom of the
+   eye so the purple meets the sclera with no subpixel gap or ink border line. */
+.artify-hero-eye-lid:not(.artify-hero-eye-shutter) {
+  bottom: -0.5px;
+  height: calc(20% + 1px);
+}
+
 .artify-hero-eye-shutter {
   transform-origin: top center;
   will-change: transform;
@@ -610,6 +638,13 @@
     linear-gradient(rgba(28, 28, 51, 0.055) 1px, transparent 1px),
     linear-gradient(90deg, rgba(28, 28, 51, 0.055) 1px, transparent 1px);
   background-size: 22px 22px;
+}
+
+html.dark .artify-hero-scene-grid {
+  background-color: color-mix(in srgb, var(--color-twilight) 94%, var(--color-ink));
+  background-image:
+    linear-gradient(rgba(200, 206, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 206, 255, 0.08) 1px, transparent 1px);
 }
 
 /* Squiggles / stickers: above flip cards (z-22), below googly eyes (z-25). */
@@ -1055,6 +1090,29 @@
   margin-block: 0 var(--spacing-md);
 }
 
+/**
+ * Home hero H1: scale display size with the *text column* (container), not the viewport.
+ * Pairs with `.artify-hero-h1-bucket` so `cqi` tracks the column width in the 2-col layout.
+ * Tuned to keep ~3 lines for the default home title across breakpoints.
+ */
+@utility artify-hero-h1-bucket {
+  container-type: inline-size;
+  width: 100%;
+  min-width: 0;
+}
+
+@utility artify-hero-home-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  /* Min must stay below the fluid `calc` on narrow columns (~400px and under); otherwise
+     `clamp` pins to the floor, oversizes the type, and the default title can hit 4 lines. */
+  font-size: clamp(1.625rem, calc(0.2rem + 9.2cqi), 4.25rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-block: 0 var(--spacing-md);
+  text-wrap: balance;
+}
+
 @utility type-section-yell {
   font-family: var(--font-display);
   font-size: 0.7rem;
@@ -1078,6 +1136,13 @@
     -0.04em -0.04em 0 var(--color-accent-soft);
 }
 
+html.dark .artify-hero-word-rotator {
+  color: color-mix(in srgb, var(--color-buzz) 94%, white);
+  text-shadow:
+    0.08em 0.08em 0 color-mix(in srgb, var(--color-surge) 55%, var(--color-ink)),
+    -0.04em -0.04em 0 var(--color-accent);
+}
+
 @utility type-display-lg {
   font-family: var(--font-display);
   font-weight: 700;
@@ -1096,17 +1161,44 @@
   margin-inline: 0;
 }
 
+html.dark .type-lede,
+html.dark .type-muted {
+  color: color-mix(in srgb, var(--color-buzz) 52%, #a8a3c4);
+}
+
 @utility type-muted {
   color: var(--color-stone);
 }
 
+/** Light-canvas section shell: mist in light, twilight + buzz text in site dark mode. */
+@utility artify-canvas {
+  @apply bg-mist text-ink dark:bg-twilight dark:text-buzz/95;
+}
+
+/**
+ * Mark wrappers of CMS / Tina HTML (dangerouslySetInnerHTML, set:html) so we can
+ * fix `text-ink` on <a> in site dark mode. Ink on twilight/void is illegible, but we
+ * must not use a global `a.text-ink` rule — outline CTAs in the same section also
+ * carry `text-ink` in their class list. Scope: .artify-rte only.
+ */
+@layer components {
+  html.dark .artify-rte a.text-ink {
+    color: var(--color-accent-soft);
+  }
+}
+
 @layer base {
   :root {
-    color-scheme: dark light;
+    color-scheme: light;
   }
 
   html {
+    color-scheme: light;
     scroll-behavior: smooth;
+  }
+
+  html.dark {
+    color-scheme: dark;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1142,6 +1234,28 @@
       ),
       linear-gradient(180deg, #eef0fc 0%, var(--color-mist) 42%, #e8eaf8 100%);
     -webkit-font-smoothing: antialiased;
+  }
+
+  html.dark body {
+    color: color-mix(in srgb, var(--color-buzz) 92%, white);
+    background-color: var(--color-twilight);
+    background-image:
+      radial-gradient(
+        ellipse 115% 75% at 100% -18%,
+        rgba(99, 92, 200, 0.18),
+        transparent 55%
+      ),
+      radial-gradient(
+        ellipse 95% 65% at -8% 105%,
+        rgba(42, 38, 88, 0.45),
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse 70% 50% at 50% 0%,
+        rgba(28, 28, 42, 0.55),
+        transparent 60%
+      ),
+      linear-gradient(180deg, #14142a 0%, var(--color-twilight) 45%, #101028 100%);
   }
 
   img {

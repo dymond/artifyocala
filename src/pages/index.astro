@@ -2,7 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageVisualEdit from "../components/tina/PageVisualEdit";
 import PageStatic from "../components/tina/PageStatic";
-import { img } from "../lib/site-images";
+import { getCollection } from "astro:content";
+import { headerLogoSrc, type SiteChrome } from "../lib/site-chrome";
 import client from "../lib/tina-graphql-client";
 import { resolvePageDescription } from "../lib/seo";
 
@@ -13,12 +14,18 @@ if (!page) {
 }
 const { metaTitle, metaDescription } = page;
 const visualEditingEnabled = import.meta.env.PUBLIC_ARTIFY_VISUAL_EDITING === "1";
+const siteChromeList = await getCollection("siteChrome");
+const siteChromeEntry = siteChromeList[0];
+if (!siteChromeEntry) {
+  throw new Error("Missing site settings: add src/content/site/chrome.json (Tina: Site settings).");
+}
+const siteChrome = siteChromeEntry.data as SiteChrome;
 ---
 
 <BaseLayout
   title={metaTitle ?? "Home"}
   description={resolvePageDescription(metaDescription)}
-  preloadLcpImage={img.logoOnLightHollow}
+  preloadLcpImage={headerLogoSrc(siteChrome)}
 >
   {
     visualEditingEnabled ? (
@@ -28,9 +35,10 @@ const visualEditingEnabled = import.meta.env.PUBLIC_ARTIFY_VISUAL_EDITING === "1
         variables={tina.variables}
         data={tina.data}
         pageSlug="home"
+        siteChrome={siteChrome}
       />
     ) : (
-      <PageStatic data={tina.data} />
+      <PageStatic data={tina.data} siteChrome={siteChrome} />
     )
   }
 </BaseLayout>

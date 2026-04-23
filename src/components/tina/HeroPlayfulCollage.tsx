@@ -242,7 +242,7 @@ export default function HeroPlayfulCollage({
       aria-label="Collage of Artify programs and community"
     >
       <div
-        className="artify-hero-scene-grid relative mx-auto min-h-[26.5rem] w-full flex-1 overflow-visible rounded-2xl border-[3px] border-ink p-4 shadow-[8px_8px_0_0_var(--color-ink)] sm:min-h-[31rem] sm:p-5 lg:h-full lg:min-h-0"
+        className="artify-hero-scene-grid relative mx-auto min-h-[26.5rem] w-full flex-1 overflow-visible rounded-2xl border-[3px] border-ink p-4 shadow-[8px_8px_0_0_var(--color-ink)] dark:border-[color-mix(in_srgb,var(--color-surge)_70%,var(--color-club)_30%)] dark:shadow-[8px_8px_0_0_color-mix(in_srgb,var(--color-surge)_70%,var(--color-club)_30%)] sm:min-h-[31rem] sm:p-5 lg:h-full lg:min-h-0"
         data-tina-field={
           tinaSection
             ? tinaField(tinaSection, "hhfShowCollage")
@@ -308,13 +308,13 @@ export default function HeroPlayfulCollage({
           aria-hidden
         >
           <div
-            className="relative inline-flex rotate-[-8deg] items-center gap-2.5 rounded-full border-[3px] border-ink bg-white px-3.5 py-2 shadow-[4px_4px_0_0_var(--color-ink)]"
+            className="relative inline-flex rotate-[-8deg] items-center gap-2.5 rounded-full border-[3px] border-ink bg-white px-3.5 py-2 shadow-[4px_4px_0_0_var(--color-ink)] dark:bg-[color-mix(in_srgb,var(--color-buzz)_32%,var(--color-panel)_68%)]"
             data-artify-hero-eyes
           >
-            <span className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-mist">
+            <span className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-mist dark:bg-white">
               <span className="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 z-[1] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink" />
               <span
-                className="artify-hero-eye-lid pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[20%] w-[118%] -translate-x-1/2 rounded-t-[9999px] border-x-2 border-b-2 border-ink"
+                className="artify-hero-eye-lid pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[20%] w-[118%] -translate-x-1/2 rounded-t-[9999px] border-x-2 border-ink border-b-0"
                 aria-hidden
               >
                 <svg
@@ -350,10 +350,10 @@ export default function HeroPlayfulCollage({
                 </svg>
               </span>
             </span>
-            <span className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-mist">
+            <span className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-mist dark:bg-white">
               <span className="artify-hero-pupil pointer-events-none absolute left-1/2 top-1/2 z-[1] h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ink" />
               <span
-                className="artify-hero-eye-lid pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[20%] w-[118%] -translate-x-1/2 rounded-t-[9999px] border-x-2 border-b-2 border-ink"
+                className="artify-hero-eye-lid pointer-events-none absolute bottom-0 left-1/2 z-[2] h-[20%] w-[118%] -translate-x-1/2 rounded-t-[9999px] border-x-2 border-ink border-b-0"
                 aria-hidden
               >
                 <svg

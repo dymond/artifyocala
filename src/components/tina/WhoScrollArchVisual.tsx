@@ -1,6 +1,8 @@
+import type { CSSProperties } from "react";
 import { tinaField } from "tinacms/dist/react";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import { imageAlt } from "../../lib/image-alt";
+import { COLORS_DARK } from "../../lib/who-arch-backdrop-palette";
 import { normalizeTinaRepoMediaSrc } from "../../lib/tina-media";
 
 function IconExt() {
@@ -45,18 +47,23 @@ export default function WhoScrollArchVisual({ section }: Props) {
   return (
     <section
       id="who"
-      className="overflow-x-clip bg-mist text-ink"
+      className="artify-canvas overflow-x-clip"
       aria-labelledby="who-heading"
     >
       <div className="artify-who-driver min-h-[280vh] w-full max-w-none">
-        <div className="artify-who-sticky sticky top-0 z-0 flex h-dvh min-h-[26rem] w-full items-end justify-center overflow-hidden bg-mist">
+        <div
+          className="artify-who-sticky sticky top-0 z-0 flex h-dvh min-h-[26rem] w-full items-end justify-center overflow-hidden bg-mist dark:bg-[color:var(--artify-who-backdrop-surface)]"
+          style={
+            { "--artify-who-backdrop-surface": COLORS_DARK.base } as CSSProperties
+          }
+        >
           <div
-            className="artify-who-webgl-wrap pointer-events-none absolute inset-0 z-[1] opacity-[0.92]"
+            className="artify-who-webgl-wrap pointer-events-none absolute inset-0 z-[1] opacity-[0.92] dark:opacity-100"
             aria-hidden
           >
             <canvas
               id="artify-who-canvas"
-              className="min-h-0 min-w-0 bg-[#f4f5fc]"
+              className="min-h-0 min-w-0 bg-mist dark:bg-[color:var(--artify-who-backdrop-surface)]"
             />
           </div>
           <div className="artify-who-arch-frame relative z-[2] bg-ink">
@@ -98,7 +105,7 @@ export default function WhoScrollArchVisual({ section }: Props) {
                   {s.wscHeading}
                 </h2>
                 <div
-                  className="artify-who-lede mb-lg max-w-none text-balance text-[1.22rem] font-medium leading-[1.62] text-mist sm:text-[1.32rem] md:text-[1.38rem]"
+                  className="artify-rte artify-who-lede mb-lg max-w-none text-balance text-[1.22rem] font-medium leading-[1.62] text-mist sm:text-[1.32rem] md:text-[1.38rem] [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
                   data-tina-field={tinaField(s, "wscLedeHtml")}
                   dangerouslySetInnerHTML={{ __html: s.wscLedeHtml }}
                 />

@@ -2,8 +2,10 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  footerFullOnLightDefault,
   footerLogoSrc,
   formatCopyright,
+  headerHollowOnDarkDefault,
   headerLogoSrc,
   siteChromeSchema,
 } from "../../src/lib/site-chrome";
@@ -32,6 +34,8 @@ describe("site settings (chrome.json)", () => {
     );
     expect(headerLogoSrc(base)).toBe(img.logoOnLightHollow);
     expect(footerLogoSrc(base)).toBe(img.logoOnDarkFull);
+    expect(headerHollowOnDarkDefault()).toBe(img.logoOnDarkHollow);
+    expect(footerFullOnLightDefault()).toBe(img.logoOnLightFull);
     const withPaths = { ...base, headerLogoImage: "images/a.png", footerLogoImage: "/images/b.png" };
     expect(headerLogoSrc(withPaths)).toBe("/images/a.png");
     expect(footerLogoSrc(withPaths)).toBe("/images/b.png");

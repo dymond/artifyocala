@@ -2,6 +2,11 @@
 import Button from "../ui/Button.astro";
 import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import type { PageSection } from "../../lib/page-sections/schema";
+import {
+  homeCtaBandFigureTilt,
+  homeFigureFrameInkBorderSurgeShadow,
+  homeFigureImageClip,
+} from "../../lib/home-section-figure-frames";
 import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
@@ -20,16 +25,22 @@ const hcbAlt = imageAlt(section.hcbImageAlt, `${section.hcbHeading} — photo`);
   <div
     class="site-container grid grid-cols-1 items-center gap-xl lg:grid-cols-[0.9fr_1.1fr]"
   >
-    <ResponsiveImage
-      src={section.hcbImage}
-      alt={hcbAlt}
-      width={1125}
-      height={1138}
-      loading="lazy"
-      decoding="async"
-      sizes="(min-width: 1024px) 40vw, 92vw"
-      class="max-h-[22rem] w-full min-w-0 rotate-[0.4deg] rounded-xl border-[3px] border-buzz/35 object-cover shadow-[8px_8px_0_0_rgba(176,184,255,0.16)]"
-    />
+    <figure
+      class:list={[homeFigureFrameInkBorderSurgeShadow, homeCtaBandFigureTilt]}
+    >
+      <div class={homeFigureImageClip}>
+        <ResponsiveImage
+          src={section.hcbImage}
+          alt={hcbAlt}
+          width={1125}
+          height={1138}
+          loading="lazy"
+          decoding="async"
+          sizes="(min-width: 1024px) 40vw, 92vw"
+          class="max-h-[22rem] w-full min-w-0 object-cover"
+        />
+      </div>
+    </figure>
     <div class="min-w-0">
       <p
         class="mb-0 text-buzz font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em]"
@@ -40,7 +51,7 @@ const hcbAlt = imageAlt(section.hcbImageAlt, `${section.hcbHeading} — photo`);
         {section.hcbHeading}
       </h2>
       <p
-        class="mb-md max-w-[40rem] text-[1.2rem] leading-[1.55] text-mist/75"
+        class="artify-rte mb-md max-w-[40rem] text-[1.2rem] leading-[1.55] text-mist/75 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
         set:html={section.hcbBodyHtml}
       />
       <div class="flex max-w-[40rem] flex-col gap-sm">

@@ -1,5 +1,5 @@
 ---
-import { headerLogoSrc, type SiteChrome } from '../../lib/site-chrome';
+import { headerHollowOnDarkDefault, headerLogoSrc, type SiteChrome } from '../../lib/site-chrome';
 import ResponsiveImage from "../ui/ResponsiveImage.astro";
 
 interface Props {
@@ -8,7 +8,8 @@ interface Props {
 
 const { chrome } = Astro.props;
 const pathname = Astro.url.pathname;
-const headerLogo = headerLogoSrc(chrome);
+const headerLogoHollowLight = headerLogoSrc(chrome);
+const headerLogoHollowDark = headerHollowOnDarkDefault();
 
 /** Menu arc only — Home lives on the island. */
 const menuArcItems = chrome.navItems;
@@ -63,7 +64,7 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
 {
   !homeActive && (
     <header
-      class="relative z-[50] w-full overflow-hidden border-b border-ink/10 bg-mist"
+      class="relative z-[50] w-full overflow-hidden border-b border-ink/10 bg-mist dark:border-buzz/10 dark:bg-twilight"
       style="padding-top: max(0.65rem, env(safe-area-inset-top, 0px));"
     >
       <div
@@ -73,16 +74,24 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
       <div class="site-container relative z-[1] flex justify-start pb-3 pt-1 md:pb-4 md:pt-1.5">
         <a
           href="/"
-          class="group block w-[min(42vw,9.25rem)] shrink-0 outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist sm:w-[10rem] md:w-[10.75rem]"
+          class="group block w-[min(42vw,9.25rem)] shrink-0 outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist dark:focus-visible:ring-offset-twilight sm:w-[10rem] md:w-[10.75rem]"
           aria-label={chrome.headerLogoAriaLabel}
         >
           <ResponsiveImage
-            src={headerLogo}
+            src={headerLogoHollowLight}
             alt=""
             width={1600}
             height={1260}
             decoding="async"
-            class="h-auto w-full object-contain object-left"
+            class="h-auto w-full object-contain object-left dark:hidden"
+          />
+          <ResponsiveImage
+            src={headerLogoHollowDark}
+            alt=""
+            width={1600}
+            height={1260}
+            decoding="async"
+            class="hidden h-auto w-full object-contain object-left dark:block"
           />
         </a>
       </div>
@@ -150,8 +159,8 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
                   rel={ext ? "noopener noreferrer" : undefined}
                   class:list={[
                     'flex min-h-[2.75rem] w-full items-center justify-center rounded-full border px-3 py-2 text-center text-[0.78rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                    'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
-                    isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist',
+                    'border-2 border-ink bg-mist text-ink shadow-[4px_4px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none dark:border-[color:var(--color-surge-ink)] dark:bg-panel/90 dark:text-buzz/95 dark:shadow-[4px_4px_0_0_var(--color-surge-ink)] dark:hover:bg-panel dark:hover:shadow-[2px_2px_0_0_var(--color-surge-ink)]',
+                    isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist dark:ring-buzz/50 dark:ring-offset-panel',
                   ]}
                   aria-label={a11y}
                   @click="closeWheelNav()"
@@ -201,8 +210,8 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
                     rel={ext ? "noopener noreferrer" : undefined}
                     class:list={[
                       'flex min-h-[2.75rem] w-[5rem] max-w-[5rem] items-center justify-center rounded-full border px-1.5 py-2 text-center text-[0.75rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[5.35rem] sm:max-w-[5.35rem] sm:text-[0.78rem]',
-                      'border-2 border-ink bg-mist text-ink shadow-[3px_3px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none',
-                      isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist',
+                      'border-2 border-ink bg-mist text-ink shadow-[4px_4px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none dark:border-[color:var(--color-surge-ink)] dark:bg-panel/90 dark:text-buzz/95 dark:shadow-[4px_4px_0_0_var(--color-surge-ink)] dark:hover:bg-panel dark:hover:shadow-[2px_2px_0_0_var(--color-surge-ink)]',
+                      isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist dark:ring-buzz/50 dark:ring-offset-panel',
                     ]}
                     aria-label={a11y}
                     @click="closeWheelNav()"
@@ -217,7 +226,7 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
       </div>
     </nav>
 
-    <!-- iOS-style island: Home | Menu -->
+    <!-- iOS-style island: Home | Menu | theme -->
     <div
       class="relative z-[100] flex items-center gap-1 rounded-[2rem] border-2 border-white/18 bg-void/95 px-2 py-2 shadow-[0_12px_48px_rgba(0,0,0,0.45)] ring-2 ring-buzz/30 backdrop-blur-xl"
       role="toolbar"
@@ -227,8 +236,8 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
         href="/"
         class:list={[
           'flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-mist no-underline transition-colors',
-          'bg-white/10 hover:bg-white/18 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-          homeActive && 'bg-buzz text-ink ring-2 ring-white/40',
+          'bg-white/14 hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          homeActive && 'bg-buzz text-ink',
         ]}
         aria-label={chrome.islandHomeAriaLabel}
         aria-current={homeActive ? 'page' : undefined}
@@ -242,7 +251,7 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
 
       <button
         type="button"
-        class="flex h-12 min-w-[5.5rem] shrink-0 items-center justify-center gap-2 rounded-full bg-white/14 px-4 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="flex h-12 min-w-[5.5rem] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full bg-white/14 px-4 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         @click="toggleWheelNav()"
         x-bind:aria-expanded="navShellOpen"
         aria-haspopup="true"
@@ -253,6 +262,29 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
           <path d="M4 6h16M4 12h16M4 18h10" />
         </svg>
         <span x-text="menuOpen ? closeLabel : openLabel"></span>
+      </button>
+
+      <div class="mx-1 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></div>
+
+      <button
+        type="button"
+        id="artify-theme-toggle"
+        class="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/14 text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        aria-label="Color theme. Click to switch between light and dark."
+      >
+        <span id="artify-theme-icon-light" class="" aria-hidden="true">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg>
+        </span>
+        <span id="artify-theme-icon-dark" class="hidden" aria-hidden="true">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+            <path
+              d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+            />
+          </svg>
+        </span>
       </button>
     </div>
   </div>

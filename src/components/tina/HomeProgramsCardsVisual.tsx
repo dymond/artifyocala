@@ -1,6 +1,10 @@
 import { tinaField } from "tinacms/dist/react";
 import type { PageSectionsHomeProgramsIntro } from "../../../tina/__generated__/types";
 import { cn } from "../../lib/cn";
+import {
+  type ProgramCardTheme,
+  programCardThemeFraming,
+} from "../../lib/program-card-theme-frames";
 import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import ResponsiveImage from "../ui/ResponsiveImage";
@@ -25,12 +29,6 @@ function IconExt() {
   );
 }
 
-const themeClass: Record<string, string> = {
-  buzz: "border-buzz/55 shadow-[8px_8px_0_0_rgba(176,184,255,0.28)]",
-  club: "border-club/50 shadow-[8px_8px_0_0_rgba(165,158,255,0.3)]",
-  surge: "border-surge/45 shadow-[8px_8px_0_0_rgba(107,100,201,0.28)]",
-};
-
 type Props = { section: PageSectionsHomeProgramsIntro };
 
 export default function HomeProgramsCardsVisual({ section }: Props) {
@@ -53,21 +51,24 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
           {s.hpiHeading}
         </h2>
         <p
-          className="type-lede text-mist/70"
+          className="artify-rte type-lede text-mist/70 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
           data-tina-field={tinaField(s, "hpiLedeHtml")}
           dangerouslySetInnerHTML={{ __html: s.hpiLedeHtml }}
         />
         <div className="artify-program-card-grid mt-lg grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-lg md:gap-xl [perspective:1200px]">
-          {cards.map((card, ci) =>
-            card ? (
+          {cards.map((card, ci) => {
+            const theme = (card.hpiCardTheme ?? "buzz") as ProgramCardTheme;
+            const frame = programCardThemeFraming[theme] ?? programCardThemeFraming.buzz;
+            return card ? (
               <article
                 key={`${card.hpiCardTitle}-${ci}`}
                 data-artify-program-tilt
                 data-tilt-base-z={card.hpiCardTiltBaseZ ?? "0"}
                 data-tilt-theme={card.hpiCardTheme ?? "buzz"}
                 className={cn(
-                  "artify-program-card-tilt flex min-h-[18rem] flex-col overflow-hidden rounded-xl border-[3px] bg-panel p-0 transform-gpu transition-[box-shadow] duration-300 ease-out [transform-style:preserve-3d] will-change-transform",
-                  themeClass[card.hpiCardTheme ?? "buzz"] ?? themeClass.buzz
+                  "artify-program-card-tilt flex min-h-[18rem] flex-col overflow-hidden rounded-xl bg-panel p-0 transform-gpu transition-[box-shadow] duration-300 ease-out [transform-style:preserve-3d] will-change-transform",
+                  frame.border,
+                  frame.shadow
                 )}
               >
                 <div className="aspect-[16/10] overflow-hidden">
@@ -93,7 +94,7 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
                   {card.hpiCardTitle}
                 </h3>
                 <div
-                  className="mx-lg mb-md text-[0.98rem] text-mist/80 [&_strong]:font-semibold"
+                  className="artify-rte mx-lg mb-md text-[0.98rem] text-mist/80 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline [&_strong]:font-semibold"
                   data-tina-field={tinaField(card, "hpiCardBodyHtml")}
                   dangerouslySetInnerHTML={{ __html: card.hpiCardBodyHtml }}
                 />
@@ -117,8 +118,8 @@ export default function HomeProgramsCardsVisual({ section }: Props) {
                   )}
                 </div>
               </article>
-            ) : null
-          )}
+            ) : null;
+          })}
         </div>
       </div>
     </section>

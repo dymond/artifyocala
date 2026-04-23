@@ -43,4 +43,9 @@ describe('Tailwind CSS + Astro integration', () => {
     const css = readFileSync(resolve(root, 'src/styles/global.css'), 'utf8');
     expect(css).toMatch(/--color-cta-fill:\s*color-mix/);
   });
+
+  it('scopes CMS link ink override to .artify-rte (not outline CTAs)', () => {
+    const css = readFileSync(resolve(root, 'src/styles/global.css'), 'utf8');
+    expect(css).toMatch(/html\.dark\s*\.artify-rte\s+a\.text-ink/);
+  });
 });

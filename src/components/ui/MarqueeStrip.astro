@@ -12,7 +12,7 @@ const { text, class: className = '' } = Astro.props;
   class:list={[
     /* w-screen / 100vw is wider than the layout by ~scrollbar width and causes horizontal scroll */
     'w-full min-w-0 overflow-x-clip',
-    'border-y-[3px] border-ink bg-buzz text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.35)]',
+    'border-y-[3px] border-ink bg-buzz text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:border-buzz/50 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]',
     className,
   ]}
   role="presentation"

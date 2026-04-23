@@ -197,7 +197,10 @@ const homeProgramsIntroSchema = z.object({
         hpiCardImageAlt: z.string().optional().nullable(),
         hpiCardTitle: z.string(),
         hpiCardBodyHtml: z.string(),
-        hpiCardTheme: z.enum(["buzz", "club", "surge"]).optional().nullable(),
+        hpiCardTheme: z
+          .enum(["buzz", "club", "surge", "surgeInk"])
+          .optional()
+          .nullable(),
         hpiCardTiltBaseZ: z.string().optional().nullable(),
         hpiCardButtons: z
           .array(

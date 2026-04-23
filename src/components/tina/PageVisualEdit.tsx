@@ -4,7 +4,19 @@ import type {
   PageQuery,
   PageQueryVariables,
 } from "../../../tina/__generated__/types";
+import {
+  headerHollowOnDarkDefault,
+  headerLogoSrc,
+  type SiteChrome,
+} from "../../lib/site-chrome";
 import { cn } from "../../lib/cn";
+import { homeMoreGridCardFrames } from "../../lib/home-more-grid-card-frames";
+import {
+  homeCtaBandFigureTilt,
+  homeFigureFrameInkBorderBuzzShadow,
+  homeFigureFrameInkBorderSurgeShadow,
+  homeFigureImageClip,
+} from "../../lib/home-section-figure-frames";
 import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
 import { btnOutline } from "../../lib/tina-ui-buttons";
@@ -52,7 +64,7 @@ function SectionWrap({
         "py-2xl",
         variant === "dark"
           ? "dark-surface bg-void text-mist"
-          : "bg-mist text-ink"
+          : "artify-canvas"
       )}
     >
       <div className="site-container">{children}</div>
@@ -67,13 +79,20 @@ type Props = {
   variables: PageQueryVariables;
   data: PageQuery;
   pageSlug: string;
+  siteChrome?: SiteChrome;
 };
 
 type PageSectionItem = NonNullable<
   NonNullable<NonNullable<PageQuery["page"]>["sections"]>[number]
 >;
 
-function PageSectionView({ section }: { section: PageSectionItem }) {
+function PageSectionView({
+  section,
+  siteChrome,
+}: {
+  section: PageSectionItem;
+  siteChrome?: SiteChrome;
+}) {
   if (!section) return null;
 
   switch (section.__typename) {
@@ -100,7 +119,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               ) : null}
             </div>
             {src ? (
-              <figure className="m-0 max-w-full overflow-hidden rounded-lg border border-line lg:sticky lg:top-6">
+              <figure className="m-0 max-w-full overflow-hidden rounded-lg lg:sticky lg:top-6">
                 <ResponsiveImage
                   src={src}
                   alt={imageAlt(s.introImageAlt, `${s.introTitle} — photo`)}
@@ -136,7 +155,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               ) : null}
               {s.pbBodyHtml ? (
                 <div
-                  className="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+                  className="artify-rte prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline dark:[&_a]:text-accent"
                   data-tina-field={tinaField(s, "pbBodyHtml")}
                   dangerouslySetInnerHTML={{ __html: s.pbBodyHtml }}
                 />
@@ -155,10 +174,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                   loading="lazy"
                   decoding="async"
                   sizes="(min-width: 1024px) 22rem, 92vw"
-                  className={cn(
-                    "w-full max-h-[26rem] rounded-lg border object-cover",
-                    variant === "dark" ? "border-white/[0.12]" : "border-line"
-                  )}
+                  className="w-full max-h-[26rem] rounded-lg object-cover"
                   data-tina-field={tinaField(s, "pbTopImage")}
                 />
               </div>
@@ -216,7 +232,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
           </ul>
           {s.objFooterHtml ? (
             <p
-              className="type-muted max-w-[40rem]"
+              className="artify-rte type-muted max-w-[40rem] [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline dark:[&_a]:text-accent"
               data-tina-field={tinaField(s, "objFooterHtml")}
               dangerouslySetInnerHTML={{ __html: s.objFooterHtml }}
             />
@@ -264,14 +280,14 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             ) : null}
             {s.ctAddressHtml ? (
               <p
-                className="m-0"
+                className="artify-rte m-0 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
                 data-tina-field={tinaField(s, "ctAddressHtml")}
                 dangerouslySetInnerHTML={{ __html: s.ctAddressHtml }}
               />
             ) : null}
             {s.ctNoteHtml ? (
               <p
-                className="m-0 text-mist/70"
+                className="artify-rte m-0 text-mist/70 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
                 data-tina-field={tinaField(s, "ctNoteHtml")}
                 dangerouslySetInnerHTML={{ __html: s.ctNoteHtml }}
               />
@@ -329,7 +345,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 </a>
               </div>
             </div>
-            <figure className="m-0 aspect-[4/3] min-w-0 overflow-hidden rounded-lg border border-line lg:aspect-auto lg:h-full lg:min-h-0">
+            <figure className="m-0 aspect-[4/3] min-w-0 overflow-hidden rounded-lg lg:aspect-auto lg:h-full lg:min-h-0">
               <ResponsiveImage
                 src={s.dchImage}
                 alt={imageAlt(s.dchImageAlt, `${s.dchTitle} — photo`)}
@@ -377,10 +393,6 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
       const s = section;
       const variant = s.sitVariant === "dark" ? "dark" : "light";
       const imageLeft = s.sitImagePosition === "left";
-      const borderImg =
-        variant === "dark"
-          ? "border border-white/[0.12]"
-          : "border border-line";
       return (
         <SectionWrap variant={variant === "dark" ? "dark" : "light"}>
           <div className="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_0.9fr]">
@@ -393,8 +405,8 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               </h2>
               <p
                 className={cn(
-                  "mb-md max-w-[40rem]",
-                  variant === "dark" ? "text-mist/80" : "type-muted"
+                  "artify-rte mb-md max-w-[40rem] [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline",
+                  variant === "dark" ? "text-mist/80 dark:[&_a]:text-accent" : "type-muted dark:[&_a]:text-accent"
                 )}
                 data-tina-field={tinaField(s, "sitBody")}
                 dangerouslySetInnerHTML={{ __html: s.sitBody }}
@@ -415,7 +427,6 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             <figure
               className={cn(
                 "m-0 max-h-[22rem] min-w-0 overflow-hidden rounded-lg",
-                borderImg,
                 imageLeft && "lg:order-1"
               )}
             >
@@ -436,7 +447,15 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
       );
     }
     case "PageSectionsHomeHeroFull":
-      return <HomeHeroFullVisual section={section} />;
+      return (
+        <HomeHeroFullVisual
+          section={section}
+          headerHollowLightSrc={
+            siteChrome ? headerLogoSrc(siteChrome) : undefined
+          }
+          headerHollowDarkSrc={headerHollowOnDarkDefault()}
+        />
+      );
     case "PageSectionsHomeMarquee":
       return <MarqueeStripVisual text={section.hmrText} />;
     case "PageSectionsWhoScroll":
@@ -462,16 +481,16 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             {s.hmuHeading}
           </h2>
           <p
-            className="type-lede"
+            className="artify-rte type-lede [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline dark:[&_a]:text-accent"
             data-tina-field={tinaField(s, "hmuLedeHtml")}
             dangerouslySetInnerHTML={{ __html: s.hmuLedeHtml }}
           />
           <div className="my-lg grid grid-cols-1 items-start gap-md md:grid-cols-[1.4fr_1fr]">
             <figure
-              className="m-0 min-w-0 rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-buzz)]"
+              className={homeFigureFrameInkBorderBuzzShadow}
               data-tina-field={tinaField(s, "hmuImageLeft")}
             >
-              <div className="overflow-hidden rounded-[inherit]">
+              <div className={homeFigureImageClip}>
                 <ResponsiveImage
                   src={s.hmuImageLeft}
                   alt={imageAlt(s.hmuImageLeftAlt, `${s.hmuHeading} — photo`)}
@@ -485,10 +504,10 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
               </div>
             </figure>
             <figure
-              className="m-0 min-w-0 rounded-xl border-[3px] border-ink shadow-[6px_6px_0_0_var(--color-surge)]"
+              className={homeFigureFrameInkBorderSurgeShadow}
               data-tina-field={tinaField(s, "hmuImageRight")}
             >
-              <div className="overflow-hidden rounded-[inherit]">
+              <div className={homeFigureImageClip}>
                 <ResponsiveImage
                   src={s.hmuImageRight}
                   alt={imageAlt(s.hmuImageRightAlt, `${s.hmuHeading} — photo`)}
@@ -497,7 +516,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                   loading="lazy"
                   decoding="async"
                   sizes="(min-width: 768px) 40vw, 92vw"
-                  className="w-full bg-mist object-contain"
+                  className="w-full bg-mist object-contain dark:bg-panel/40"
                 />
               </div>
             </figure>
@@ -520,18 +539,20 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
       return (
         <SectionWrap variant="dark" id="support">
           <div className="grid grid-cols-1 items-center gap-xl lg:grid-cols-[1fr_1.1fr]">
-            <figure className="m-0 min-w-0 overflow-hidden rounded-xl border-[3px] border-buzz/40 shadow-[8px_8px_0_0_rgba(176,184,255,0.18)]">
-              <ResponsiveImage
-                src={s.hsbImage}
-                alt={imageAlt(s.hsbImageAlt, `${s.hsbHeading} — photo`)}
-                width={1080}
-                height={1080}
-                loading="lazy"
-                decoding="async"
-                sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
-                className="block w-full"
-                data-tina-field={tinaField(s, "hsbImage")}
-              />
+            <figure className={homeFigureFrameInkBorderBuzzShadow}>
+              <div className={homeFigureImageClip}>
+                <ResponsiveImage
+                  src={s.hsbImage}
+                  alt={imageAlt(s.hsbImageAlt, `${s.hsbHeading} — photo`)}
+                  width={1080}
+                  height={1080}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
+                  className="block w-full"
+                  data-tina-field={tinaField(s, "hsbImage")}
+                />
+              </div>
             </figure>
             <div className="min-w-0">
               <p
@@ -547,7 +568,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 {s.hsbHeading}
               </h2>
               <p
-                className="type-lede text-mist/75"
+                className="artify-rte type-lede text-mist/75 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
                 data-tina-field={tinaField(s, "hsbLedeHtml")}
                 dangerouslySetInnerHTML={{ __html: s.hsbLedeHtml }}
               />
@@ -569,11 +590,6 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
     case "PageSectionsHomeMoreGrid": {
       const s = section;
       const cards = (s.hmgCards ?? []).filter(Boolean);
-      const shadows = [
-        "shadow-[6px_6px_0_0_var(--color-ink)]",
-        "shadow-[6px_6px_0_0_var(--color-club)]",
-        "shadow-[6px_6px_0_0_var(--color-surge)]",
-      ];
       return (
         <SectionWrap id="more">
           <p
@@ -589,7 +605,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
             {s.hmgHeading}
           </h2>
           <p
-            className="type-lede"
+            className="artify-rte type-lede [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline dark:[&_a]:text-accent"
             data-tina-field={tinaField(s, "hmgLedeHtml")}
             dangerouslySetInnerHTML={{ __html: s.hmgLedeHtml }}
           />
@@ -599,8 +615,9 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 <article
                   key={`${card.hmgCardTitle}-${i}`}
                   className={cn(
-                    "flex flex-col overflow-hidden rounded-xl border-[3px] border-ink bg-white/40 p-0 transition-transform duration-300 hover:-translate-y-1",
-                    shadows[i % 3]
+                    "flex flex-col overflow-hidden rounded-xl bg-white/40 p-0 transition-transform duration-300 hover:-translate-y-1 dark:bg-panel/55",
+                    homeMoreGridCardFrames[i % 3].border,
+                    homeMoreGridCardFrames[i % 3].shadow
                   )}
                 >
                   <div className="aspect-[4/3] overflow-hidden">
@@ -659,17 +676,26 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
           aria-labelledby="cta-band-title"
         >
           <div className="site-container grid grid-cols-1 items-center gap-xl lg:grid-cols-[0.9fr_1.1fr]">
-            <ResponsiveImage
-              src={s.hcbImage}
-              alt={imageAlt(s.hcbImageAlt, `${s.hcbHeading} — photo`)}
-              width={1125}
-              height={1138}
-              loading="lazy"
-              decoding="async"
-              sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
-              className="max-h-[22rem] w-full min-w-0 rotate-[0.4deg] rounded-xl border-[3px] border-buzz/35 object-cover shadow-[8px_8px_0_0_rgba(176,184,255,0.16)]"
-              data-tina-field={tinaField(s, "hcbImage")}
-            />
+            <figure
+              className={cn(
+                homeFigureFrameInkBorderSurgeShadow,
+                homeCtaBandFigureTilt
+              )}
+            >
+              <div className={homeFigureImageClip}>
+                <ResponsiveImage
+                  src={s.hcbImage}
+                  alt={imageAlt(s.hcbImageAlt, `${s.hcbHeading} — photo`)}
+                  width={1125}
+                  height={1138}
+                  loading="lazy"
+                  decoding="async"
+                  sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
+                  className="max-h-[22rem] w-full min-w-0 object-cover"
+                  data-tina-field={tinaField(s, "hcbImage")}
+                />
+              </div>
+            </figure>
             <div className="min-w-0">
               <p
                 className="mb-0 text-buzz font-display text-[0.7rem] font-extrabold uppercase tracking-[0.28em]"
@@ -685,7 +711,7 @@ function PageSectionView({ section }: { section: PageSectionItem }) {
                 {s.hcbHeading}
               </h2>
               <p
-                className="mb-md max-w-[40rem] text-[1.2rem] leading-[1.55] text-mist/75"
+                className="artify-rte mb-md max-w-[40rem] text-[1.2rem] leading-[1.55] text-mist/75 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
                 data-tina-field={tinaField(s, "hcbBodyHtml")}
                 dangerouslySetInnerHTML={{ __html: s.hcbBodyHtml }}
               />
@@ -752,6 +778,7 @@ export default function PageVisualEdit({
   variables,
   data: initialData,
   pageSlug,
+  siteChrome,
 }: Props) {
   const { data } = useTina({ query, variables, data: initialData });
   const page = data.page;
@@ -768,7 +795,11 @@ export default function PageVisualEdit({
   return (
     <>
       {sections.map((sec, i) => (
-        <PageSectionView key={`${sec.__typename}-${i}`} section={sec} />
+        <PageSectionView
+          key={`${sec.__typename}-${i}`}
+          section={sec}
+          siteChrome={siteChrome}
+        />
       ))}
     </>
   );

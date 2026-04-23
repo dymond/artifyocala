@@ -30,8 +30,8 @@ const rowB = images.slice(mid);
 
 const cellClass =
   surface === 'light'
-    ? 'gallery-marquee-item pointer-events-auto relative m-0 h-[clamp(220px,36vh,300px)] w-[clamp(10.5rem,22vw,13.75rem)] shrink-0 [transform-style:preserve-3d] overflow-hidden rounded-xl border border-line/70 bg-ink/[0.03] shadow-none transition-[transform,box-shadow] duration-[1350ms] ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:[transform:translateZ(0)] motion-safe:hover:z-30 motion-safe:hover:[transform:translateY(-0.5rem)_translateZ(2.25rem)_rotateX(7deg)_rotateY(-6deg)_scale(1.05)] motion-safe:hover:shadow-[0_32px_64px_-12px_rgba(28,28,51,0.42),0_16px_32px_-10px_rgba(28,28,51,0.22)]'
-    : 'gallery-marquee-item pointer-events-auto relative m-0 h-[clamp(220px,36vh,300px)] w-[clamp(10.5rem,22vw,13.75rem)] shrink-0 [transform-style:preserve-3d] overflow-hidden rounded-xl border border-white/12 bg-black/25 shadow-none transition-[transform,box-shadow] duration-[1350ms] ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:[transform:translateZ(0)] motion-safe:hover:z-30 motion-safe:hover:[transform:translateY(-0.5rem)_translateZ(2.25rem)_rotateX(7deg)_rotateY(-6deg)_scale(1.05)] motion-safe:hover:shadow-[0_36px_72px_-14px_rgba(0,0,0,0.78),0_18px_36px_-12px_rgba(0,0,0,0.48)]';
+    ? 'gallery-marquee-item pointer-events-auto relative m-0 h-[clamp(220px,36vh,300px)] w-[clamp(10.5rem,22vw,13.75rem)] shrink-0 [transform-style:preserve-3d] rounded-xl border border-line/70 bg-ink/[0.03] shadow-none transition-[transform,box-shadow] duration-[1350ms] ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:[transform:translateZ(0)] motion-safe:hover:z-30 motion-safe:hover:[transform:translateY(-0.5rem)_translateZ(2.25rem)_rotateX(7deg)_rotateY(-6deg)_scale(1.05)] motion-safe:hover:shadow-[0_32px_64px_-12px_rgba(28,28,51,0.42),0_16px_32px_-10px_rgba(28,28,51,0.22)]'
+    : 'gallery-marquee-item pointer-events-auto relative m-0 h-[clamp(220px,36vh,300px)] w-[clamp(10.5rem,22vw,13.75rem)] shrink-0 [transform-style:preserve-3d] rounded-xl border border-white/12 bg-black/25 shadow-none transition-[transform,box-shadow] duration-[1350ms] ease-[cubic-bezier(0.19,1,0.22,1)] motion-safe:[transform:translateZ(0)] motion-safe:hover:z-30 motion-safe:hover:[transform:translateY(-0.5rem)_translateZ(2.25rem)_rotateX(7deg)_rotateY(-6deg)_scale(1.05)] motion-safe:hover:shadow-[0_36px_72px_-14px_rgba(0,0,0,0.78),0_18px_36px_-12px_rgba(0,0,0,0.48)]';
 
 const imgClass = 'h-full w-full object-cover';
 
@@ -45,13 +45,7 @@ const shellAttrs = {
 ---
 
 <div
-  class:list={[
-    'gallery-marquee-shell w-full min-w-0',
-    surface === 'light'
-      ? '[--gallery-marquee-edge:var(--color-mist)]'
-      : '[--gallery-marquee-edge:var(--color-void)]',
-    className,
-  ]}
+  class:list={['gallery-marquee-shell w-full min-w-0', className]}
   {...shellAttrs}
   data-testid={dataTestId}
 >
@@ -65,6 +59,7 @@ const shellAttrs = {
                 <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                   {images.map((src, i) => (
                     <figure class={cellClass}>
+                      <div class="gallery-marquee-item-inner">
                       <ResponsiveImage
                         src={src}
                         alt={`${alt} ${i + 1}`}
@@ -73,6 +68,7 @@ const shellAttrs = {
                         sizes="min(44vw, 14rem)"
                         class={imgClass}
                       />
+                    </div>
                     </figure>
                   ))}
                 </div>
@@ -82,6 +78,7 @@ const shellAttrs = {
                 >
                   {images.map((src) => (
                     <figure class={cellClass}>
+                      <div class="gallery-marquee-item-inner">
                       <ResponsiveImage
                         src={src}
                         alt=""
@@ -90,6 +87,7 @@ const shellAttrs = {
                         decoding="async"
                         sizes="min(44vw, 14rem)"
                       />
+                    </div>
                     </figure>
                   ))}
                 </div>
@@ -108,6 +106,7 @@ const shellAttrs = {
                   <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                     {images.map((src, i) => (
                       <figure class={cellClass}>
+                        <div class="gallery-marquee-item-inner">
                         <ResponsiveImage
                           src={src}
                           alt={`${alt} ${i + 1}`}
@@ -116,6 +115,7 @@ const shellAttrs = {
                           sizes="min(22vw, 14rem)"
                           class={imgClass}
                         />
+                      </div>
                       </figure>
                     ))}
                   </div>
@@ -125,6 +125,7 @@ const shellAttrs = {
                   >
                     {images.map((src) => (
                       <figure class={cellClass}>
+                        <div class="gallery-marquee-item-inner">
                         <ResponsiveImage
                           src={src}
                           alt=""
@@ -133,6 +134,7 @@ const shellAttrs = {
                           decoding="async"
                           sizes="min(22vw, 14rem)"
                         />
+                      </div>
                       </figure>
                     ))}
                   </div>
@@ -150,6 +152,7 @@ const shellAttrs = {
                   <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                     {rowA.map((src, i) => (
                       <figure class={cellClass}>
+                        <div class="gallery-marquee-item-inner">
                         <ResponsiveImage
                           src={src}
                           alt={`${alt} ${i + 1}`}
@@ -158,6 +161,7 @@ const shellAttrs = {
                           decoding="async"
                           sizes="min(22vw, 14rem)"
                         />
+                      </div>
                       </figure>
                     ))}
                   </div>
@@ -167,6 +171,7 @@ const shellAttrs = {
                   >
                     {rowA.map((src) => (
                       <figure class={cellClass}>
+                        <div class="gallery-marquee-item-inner">
                         <ResponsiveImage
                           src={src}
                           alt=""
@@ -175,6 +180,7 @@ const shellAttrs = {
                           decoding="async"
                           sizes="min(22vw, 14rem)"
                         />
+                      </div>
                       </figure>
                     ))}
                   </div>
@@ -190,6 +196,7 @@ const shellAttrs = {
                   <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
                     {rowB.map((src, i) => (
                       <figure class={cellClass}>
+                        <div class="gallery-marquee-item-inner">
                         <ResponsiveImage
                           src={src}
                           alt={`${alt} ${rowA.length + i + 1}`}
@@ -198,6 +205,7 @@ const shellAttrs = {
                           decoding="async"
                           sizes="min(22vw, 14rem)"
                         />
+                      </div>
                       </figure>
                     ))}
                   </div>
@@ -207,6 +215,7 @@ const shellAttrs = {
                   >
                     {rowB.map((src) => (
                       <figure class={cellClass}>
+                        <div class="gallery-marquee-item-inner">
                         <ResponsiveImage
                           src={src}
                           alt=""
@@ -215,6 +224,7 @@ const shellAttrs = {
                           decoding="async"
                           sizes="min(22vw, 14rem)"
                         />
+                      </div>
                       </figure>
                     ))}
                   </div>
@@ -231,6 +241,7 @@ const shellAttrs = {
             <div class="pointer-events-none flex shrink-0 items-center gap-[var(--spacing-md)] pr-[var(--spacing-md)]">
               {images.map((src, i) => (
                 <figure class={cellClass}>
+                  <div class="gallery-marquee-item-inner">
                   <ResponsiveImage
                     src={src}
                     alt={`${alt} ${i + 1}`}
@@ -239,6 +250,7 @@ const shellAttrs = {
                     decoding="async"
                     sizes="(min-width: 1024px) min(22vw, 14rem), min(44vw, 14rem)"
                   />
+                </div>
                 </figure>
               ))}
             </div>
@@ -248,6 +260,7 @@ const shellAttrs = {
             >
               {images.map((src) => (
                 <figure class={cellClass}>
+                  <div class="gallery-marquee-item-inner">
                   <ResponsiveImage
                     src={src}
                     alt=""
@@ -256,6 +269,7 @@ const shellAttrs = {
                     decoding="async"
                     sizes="(min-width: 1024px) min(22vw, 14rem), min(44vw, 14rem)"
                   />
+                </div>
                 </figure>
               ))}
             </div>
@@ -266,17 +280,4 @@ const shellAttrs = {
   }
 </div>
 
-{
-  desktopSplitCapable ? (
-    <script>
-      import {
-        mountGalleryMarqueeDesktop,
-        destroyGalleryMarqueeDesktop,
-      } from '../../scripts/gallery-marquee-desktop.ts';
-
-      mountGalleryMarqueeDesktop();
-      document.addEventListener('astro:page-load', mountGalleryMarqueeDesktop);
-      document.addEventListener('astro:before-swap', destroyGalleryMarqueeDesktop);
-    </script>
-  ) : null
-}
+<!-- Gallery marquee JS is initialized globally in BaseLayout.astro. -->

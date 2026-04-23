@@ -4,14 +4,23 @@ import WordRotator from "../ui/WordRotator.astro";
 import HeroPlayfulCollage from "../sections/HeroPlayfulCollage.astro";
 import ResponsiveImage from "../ui/ResponsiveImage.astro";
 import { img } from "../../lib/site-images";
+import { headerHollowOnDarkDefault, headerLogoSrc, type SiteChrome } from "../../lib/site-chrome";
 import type { PageSection } from "../../lib/page-sections/schema";
+import {
+  homeFigureImageClip,
+  homeHeroHiringPosterFigure,
+} from "../../lib/home-section-figure-frames";
 import { imageAlt } from "../../lib/image-alt";
 
 interface Props {
   section: Extract<PageSection, { _template: "homeHeroFull" }>;
+  /** When set, top hollow logos use Tina paths (light) + default dark hollow. */
+  siteChrome?: SiteChrome;
 }
 
-const { section } = Astro.props;
+const { section, siteChrome } = Astro.props;
+const topHollowLight = siteChrome ? headerLogoSrc(siteChrome) : img.logoOnLightHollow;
+const topHollowDark = headerHollowOnDarkDefault();
 const hiringAlt = imageAlt(
   section.hhfHiringImageAlt,
   `${section.hhfAsideTitle} — community photo`,
@@ -23,7 +32,7 @@ const asideStack = section.hhfAsideStackButtons?.filter(Boolean) ?? [];
 ---
 
 <section
-  class="bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))]"
+  class="bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))] dark:bg-[linear-gradient(165deg,#12122a_0%,var(--color-twilight)_42%,#0d0d1a_100%)]"
 >
   <div class="site-container">
     <div
@@ -37,23 +46,33 @@ const asideStack = section.hhfAsideStackButtons?.filter(Boolean) ?? [];
         >
           <a
             href="/"
-            class="group relative z-[1] block w-[min(44vw,9.75rem)] max-w-full shrink-0 self-start outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist sm:w-[10.25rem] md:w-[11rem] lg:-mb-1 lg:w-[11.25rem]"
+            class="group relative z-[1] block w-[min(44vw,9.75rem)] max-w-full shrink-0 self-start outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist dark:focus-visible:ring-offset-twilight sm:w-[10.25rem] md:w-[11rem] lg:-mb-1 lg:w-[11.25rem]"
             aria-label="Artify Ocala — Home"
           >
             <ResponsiveImage
-              src={img.logoOnLightHollow}
+              src={topHollowLight}
               alt=""
               width={1600}
               height={1260}
               decoding="async"
               fetchpriority="high"
               sizes="(max-width: 1023px) min(44vw, 12rem), 11.25rem"
-              class="h-auto w-full object-contain object-left"
+              class="h-auto w-full object-contain object-left dark:hidden"
+            />
+            <ResponsiveImage
+              src={topHollowDark}
+              alt=""
+              width={1600}
+              height={1260}
+              decoding="async"
+              fetchpriority="high"
+              sizes="(max-width: 1023px) min(44vw, 12rem), 11.25rem"
+              class="hidden h-auto w-full object-contain object-left dark:block"
             />
           </a>
-          <div>
+          <div class="artify-hero-h1-bucket">
             <p class="type-section-yell">{section.hhfEyebrow}</p>
-            <h1 class="type-display-xl">{section.hhfTitle}</h1>
+            <h1 class="artify-hero-home-title">{section.hhfTitle}</h1>
             {
               words.length > 0 && (
                 <p class="mb-md uppercase leading-none">
@@ -94,7 +113,7 @@ const asideStack = section.hhfAsideStackButtons?.filter(Boolean) ?? [];
         class="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl"
       >
         <aside
-          class="min-w-0 max-lg:order-2 rotate-[-0.35deg] rounded-xl border-[3px] border-ink bg-mist p-lg shadow-[10px_10px_0_0_var(--color-buzz)] lg:min-w-0"
+          class="min-w-0 max-lg:order-2 rotate-[-0.35deg] rounded-xl border-[3px] border-ink bg-mist p-lg shadow-[10px_10px_0_0_var(--color-buzz)] dark:border-surge dark:bg-panel/80 dark:shadow-[6px_6px_0_0_var(--color-surge)] lg:min-w-0"
         >
           <div
             class="mb-md flex flex-col gap-sm sm:flex-row sm:items-start sm:justify-between sm:gap-md"
@@ -137,16 +156,20 @@ const asideStack = section.hhfAsideStackButtons?.filter(Boolean) ?? [];
             )
           }
         </aside>
-        <ResponsiveImage
-          src={section.hhfHiringImage}
-          alt={hiringAlt}
-          width={1080}
-          height={1350}
-          loading="eager"
-          decoding="async"
-          sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
-          class="h-auto w-full min-w-0 max-lg:order-4 -rotate-[0.5deg] rounded-xl border-[3px] border-ink object-contain shadow-[6px_6px_0_0_var(--color-surge)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
-        />
+        <figure class={homeHeroHiringPosterFigure}>
+          <div class={homeFigureImageClip}>
+            <ResponsiveImage
+              src={section.hhfHiringImage}
+              alt={hiringAlt}
+              width={1080}
+              height={1350}
+              loading="eager"
+              decoding="async"
+              sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
+              class="h-auto w-full min-w-0 object-contain"
+            />
+          </div>
+        </figure>
       </div>
     </div>
   </div>

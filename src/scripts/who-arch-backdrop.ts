@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 import { attachWhoArchBackdropDebug } from './who-arch-backdrop-debug-gui';
+import { COLORS_DARK } from '../lib/who-arch-backdrop-palette';
 
 /**
  * Who-section backdrop: Stripe-style animated mesh gradient (whatamesh pattern —
@@ -29,6 +30,36 @@ const COLORS = {
   layer2: '#bec7f2',
   layer3: '#adb8ec',
 } as const;
+
+function isSiteDarkMode(): boolean {
+  if (typeof document === 'undefined') return false;
+  return document.documentElement.classList.contains('dark');
+}
+
+function applyWhoArchColorTheme(
+  renderer: THREE.WebGLRenderer,
+  uniforms: {
+    u_baseColor: { value: THREE.Vector3 };
+    u_layerColor0: { value: THREE.Vector3 };
+    u_layerColor1: { value: THREE.Vector3 };
+    u_layerColor2: { value: THREE.Vector3 };
+    u_layerBlendWeight: { value: number };
+  },
+  dark: boolean,
+): void {
+  if (dark) {
+    renderer.setClearColor(new THREE.Color(COLORS_DARK.base), 1);
+  } else {
+    renderer.setClearColor(MIST_BG, 1);
+  }
+  const p = dark ? COLORS_DARK : COLORS;
+  uniforms.u_baseColor.value.copy(hexToLinearRgb(p.base));
+  uniforms.u_layerColor0.value.copy(hexToLinearRgb(p.layer1));
+  uniforms.u_layerColor1.value.copy(hexToLinearRgb(p.layer2));
+  uniforms.u_layerColor2.value.copy(hexToLinearRgb(p.layer3));
+  /** Stronger layer tints in dark so surge-tinted noise reads (lighter palette + blend). */
+  uniforms.u_layerBlendWeight.value = dark ? .3 : 0.6;
+}
 
 /**
  * Ortho frustum is expanded by `pad` so displaced vertices stay in view; the plane
@@ -334,7 +365,6 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
     powerPreference: 'high-performance',
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setClearColor(MIST_BG, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NoToneMapping;
 
@@ -395,6 +425,27 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
     u_darken_top: { value: 0 },
     u_shadow_power: { value: 6 },
   };
+
+  const applyTheme = (): void => {
+    applyWhoArchColorTheme(
+      renderer,
+      {
+        u_baseColor: uniforms.u_baseColor,
+        u_layerColor0: uniforms.u_layerColor0,
+        u_layerColor1: uniforms.u_layerColor1,
+        u_layerColor2: uniforms.u_layerColor2,
+        u_layerBlendWeight: uniforms.u_layerBlendWeight,
+      },
+      isSiteDarkMode(),
+    );
+  };
+  applyTheme();
+
+  const themeMo = new MutationObserver(applyTheme);
+  themeMo.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  });
 
   const material = new THREE.ShaderMaterial({
     uniforms,
@@ -588,6 +639,7 @@ function createRuntime(canvas: HTMLCanvasElement): WhoArchRuntime {
         clearTimeout(pauseAfterHidden);
         pauseAfterHidden = null;
       }
+      themeMo.disconnect();
       debugGui?.destroy();
       debugGui = null;
       io.disconnect();

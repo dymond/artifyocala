@@ -1,5 +1,9 @@
 import { tinaField } from "tinacms/dist/react";
 import type { PageSectionsHomeHeroFull } from "../../../tina/__generated__/types";
+import {
+  homeFigureImageClip,
+  homeHeroHiringPosterFigure,
+} from "../../lib/home-section-figure-frames";
 import { img } from "../../lib/site-images";
 import { imageAlt } from "../../lib/image-alt";
 import { btnClassForTone } from "../../lib/tina-button-tone";
@@ -27,38 +31,60 @@ function IconExt() {
   );
 }
 
-type Props = { section: PageSectionsHomeHeroFull };
+type Props = {
+  section: PageSectionsHomeHeroFull;
+  /** Subpage header and home: hollow on light; defaults to `img.logoOnLightHollow`. */
+  headerHollowLightSrc?: string;
+  /** Hollow on `html.dark`; defaults to `img.logoOnDarkHollow`. */
+  headerHollowDarkSrc?: string;
+};
 
-export default function HomeHeroFullVisual({ section }: Props) {
+export default function HomeHeroFullVisual({
+  section,
+  headerHollowLightSrc,
+  headerHollowDarkSrc,
+}: Props) {
   const s = section;
+  const topHollowLight = headerHollowLightSrc ?? img.logoOnLightHollow;
+  const topHollowDark = headerHollowDarkSrc ?? img.logoOnDarkHollow;
   const words = (s.hhfRotatorWords ?? []).filter(Boolean) as string[];
   const showCollage = s.hhfShowCollage !== false;
   const heroButtons = (s.hhfHeroButtons ?? []).filter(Boolean);
   const asideStack = (s.hhfAsideStackButtons ?? []).filter(Boolean);
 
   return (
-    <section className="bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))]">
+    <section className="bg-[linear-gradient(165deg,#e8ebfa_0%,var(--color-mist)_40%,#dde2f8_100%)] pb-2xl pt-[max(0.75rem,env(safe-area-inset-top,0px))] dark:bg-[linear-gradient(165deg,#12122a_0%,var(--color-twilight)_42%,#0d0d1a_100%)]">
       <div className="site-container">
         <div className="flex flex-col gap-y-xl lg:flex-row lg:items-stretch lg:gap-x-xl lg:gap-y-0">
           <div className="contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl">
             <div className="flex min-w-0 flex-col gap-y-5 max-lg:order-1 md:gap-y-6 lg:min-w-0">
               <a
                 href="/"
-                className="group relative z-[1] block w-[min(44vw,9.75rem)] max-w-full shrink-0 self-start outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist sm:w-[10.25rem] md:w-[11rem] lg:-mb-1 lg:w-[11.25rem]"
+                className="group relative z-[1] block w-[min(44vw,9.75rem)] max-w-full shrink-0 self-start outline-none transition-opacity duration-200 hover:opacity-[0.88] focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-mist dark:focus-visible:ring-offset-twilight sm:w-[10.25rem] md:w-[11rem] lg:-mb-1 lg:w-[11.25rem]"
                 aria-label="Artify Ocala — Home"
               >
                 <ResponsiveImage
-                  src={img.logoOnLightHollow}
+                  src={topHollowLight}
                   alt=""
                   width={1600}
                   height={1260}
                   decoding="async"
                   fetchPriority="high"
                   sizes="(max-width: 1023px) min(44vw, 12rem), 11.25rem"
-                  className="h-auto w-full object-contain object-left"
+                  className="h-auto w-full object-contain object-left dark:hidden"
+                />
+                <ResponsiveImage
+                  src={topHollowDark}
+                  alt=""
+                  width={1600}
+                  height={1260}
+                  decoding="async"
+                  fetchPriority="high"
+                  sizes="(max-width: 1023px) min(44vw, 12rem), 11.25rem"
+                  className="hidden h-auto w-full object-contain object-left dark:block"
                 />
               </a>
-              <div>
+              <div className="artify-hero-h1-bucket">
                 <p
                   className="type-section-yell"
                   data-tina-field={tinaField(s, "hhfEyebrow")}
@@ -66,7 +92,7 @@ export default function HomeHeroFullVisual({ section }: Props) {
                   {s.hhfEyebrow}
                 </p>
                 <h1
-                  className="type-display-xl"
+                  className="artify-hero-home-title"
                   data-tina-field={tinaField(s, "hhfTitle")}
                 >
                   {s.hhfTitle}
@@ -121,7 +147,7 @@ export default function HomeHeroFullVisual({ section }: Props) {
             ) : null}
           </div>
           <div className="contents lg:flex lg:min-w-0 lg:flex-1 lg:flex-col lg:gap-y-xl">
-            <aside className="min-w-0 max-lg:order-2 rotate-[-0.35deg] rounded-xl border-[3px] border-ink bg-mist p-lg shadow-[10px_10px_0_0_var(--color-buzz)] lg:min-w-0">
+            <aside className="min-w-0 max-lg:order-2 rotate-[-0.35deg] rounded-xl border-[3px] border-ink bg-mist p-lg shadow-[10px_10px_0_0_var(--color-buzz)] dark:border-surge dark:bg-panel/80 dark:shadow-[6px_6px_0_0_var(--color-surge)] lg:min-w-0">
               <div className="mb-md flex flex-col gap-sm sm:flex-row sm:items-start sm:justify-between sm:gap-md">
                 <div className="min-w-0 flex-1">
                   <p
@@ -180,20 +206,24 @@ export default function HomeHeroFullVisual({ section }: Props) {
                 </div>
               ) : null}
             </aside>
-            <ResponsiveImage
-              src={s.hhfHiringImage ?? ""}
-              alt={imageAlt(
-                s.hhfHiringImageAlt,
-                `${s.hhfAsideTitle} — community photo`,
-              )}
-              width={1080}
-              height={1350}
-              loading="eager"
-              decoding="async"
-              sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
-              className="h-auto w-full min-w-0 max-lg:order-4 -rotate-[0.5deg] rounded-xl border-[3px] border-ink object-contain shadow-[6px_6px_0_0_var(--color-surge)] transition-transform duration-300 hover:rotate-0 lg:min-w-0"
-              data-tina-field={tinaField(s, "hhfHiringImage")}
-            />
+            <figure className={homeHeroHiringPosterFigure}>
+              <div className={homeFigureImageClip}>
+                <ResponsiveImage
+                  src={s.hhfHiringImage ?? ""}
+                  alt={imageAlt(
+                    s.hhfHiringImageAlt,
+                    `${s.hhfAsideTitle} — community photo`,
+                  )}
+                  width={1080}
+                  height={1350}
+                  loading="eager"
+                  decoding="async"
+                  sizes="(min-width: 1024px) min(520px, 42vw), 92vw"
+                  className="h-auto w-full min-w-0 object-contain"
+                  data-tina-field={tinaField(s, "hhfHiringImage")}
+                />
+              </div>
+            </figure>
           </div>
         </div>
       </div>

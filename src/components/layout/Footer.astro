@@ -1,5 +1,6 @@
 ---
 import {
+  footerFullOnLightDefault,
   footerLogoSrc,
   formatCopyright,
   type SiteChrome,
@@ -13,7 +14,8 @@ interface Props {
 }
 
 const { chrome } = Astro.props;
-const footerLogo = footerLogoSrc(chrome);
+const footerLogoFullLight = footerFullOnLightDefault();
+const footerLogoFullDark = footerLogoSrc(chrome);
 const telHref = chrome.footerPhoneTel.trim().startsWith("tel:")
   ? chrome.footerPhoneTel.trim()
   : `tel:${chrome.footerPhoneTel.replace(/\s/g, "")}`;
@@ -31,12 +33,20 @@ const copyrightText = formatCopyright(chrome.footerCopyright);
         aria-label={chrome.headerLogoAriaLabel}
       >
         <ResponsiveImage
-          src={footerLogo}
+          src={footerLogoFullLight}
           alt="Artify Ocala"
           width={1600}
           height={1259}
           decoding="async"
-          class="h-auto w-full object-contain object-left"
+          class="h-auto w-full object-contain object-left dark:hidden"
+        />
+        <ResponsiveImage
+          src={footerLogoFullDark}
+          alt="Artify Ocala"
+          width={1600}
+          height={1259}
+          decoding="async"
+          class="hidden h-auto w-full object-contain object-left dark:block"
         />
       </a>
       <p class="m-0 leading-normal">{chrome.footerTagline}</p>

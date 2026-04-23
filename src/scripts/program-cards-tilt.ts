@@ -3,6 +3,11 @@
  * follow cursor, straighten when approaching, full upright + lift on hover.
  */
 
+import {
+  type ProgramCardTheme,
+  programCardThemeShadowColor,
+} from '../lib/program-card-theme-frames';
+
 export type ProgramCardsTiltHandle = {
   destroy: () => void;
 };
@@ -16,19 +21,20 @@ const MOUSE_NORM_X = 0.82;
 const MOUSE_NORM_Y = 0.82;
 const MOUSE_NORM_MIN = 220;
 
+function shadowRestHover(theme: ProgramCardTheme): { rest: string; hover: string } {
+  const c = programCardThemeShadowColor[theme];
+  return {
+    rest: `8px 8px 0 0 ${c}`,
+    /** Same color as rest — only offset grows (matches solid border, no muddier “idle” look). */
+    hover: `14px 22px 0 0 ${c}`,
+  };
+}
+
 const SHADOW: Record<string, { rest: string; hover: string }> = {
-  buzz: {
-    rest: '8px 8px 0 0 rgba(176, 184, 255, 0.28)',
-    hover: '14px 22px 0 0 rgba(176, 184, 255, 0.5)',
-  },
-  club: {
-    rest: '8px 8px 0 0 rgba(165, 158, 255, 0.3)',
-    hover: '14px 22px 0 0 rgba(165, 158, 255, 0.48)',
-  },
-  surge: {
-    rest: '8px 8px 0 0 rgba(107, 100, 201, 0.28)',
-    hover: '14px 22px 0 0 rgba(107, 100, 201, 0.42)',
-  },
+  buzz: shadowRestHover('buzz'),
+  club: shadowRestHover('club'),
+  surge: shadowRestHover('surge'),
+  surgeInk: shadowRestHover('surgeInk'),
 };
 
 function clamp(n: number, a: number, b: number): number {

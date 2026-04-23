@@ -7,9 +7,13 @@ const b = '/images';
 export const img = {
   /** Open Graph / Twitter / iMessage-style link preview (2400×1260). */
   socialShareCard: `${b}/artify-ocala-social-share.png`,
-  /** Wordmark for light backgrounds (outlined / hollow treatment). */
+  /** Top bar / home hero: hollow on light-tinted backgrounds. */
   logoOnLightHollow: `${b}/logo-on-light-hollow.png`,
-  /** Full wordmark for dark backgrounds (filled). */
+  /** Top bar / home hero: hollow on dark-tinted backgrounds. */
+  logoOnDarkHollow: `${b}/logo-on-dark-hollow.png`,
+  /** Footer: full mark on light site chrome (e.g. light footer). */
+  logoOnLightFull: `${b}/logo-on-light-full.png`,
+  /** Footer: full mark on dark surfaces (default footer band). */
   logoOnDarkFull: `${b}/logo-on-dark-full.png`,
   logoMark: `${b}/artify-mark-logo-icon.png`,
   homeMakerCollage: `${b}/maker-collective-logo.png`,

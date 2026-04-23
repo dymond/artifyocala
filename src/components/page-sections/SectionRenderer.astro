@@ -10,6 +10,7 @@ import TwoColumnDonateHero from "./TwoColumnDonateHero.astro";
 import BulletBand from "./BulletBand.astro";
 import SplitImageText from "./SplitImageText.astro";
 import HomeHeroBand from "./HomeHeroBand.astro";
+import type { SiteChrome } from "../../lib/site-chrome";
 import HomeMarqueeSection from "./HomeMarqueeSection.astro";
 import WhoScrollSection from "./WhoScrollSection.astro";
 import HomeProgramsWithCards from "./HomeProgramsWithCards.astro";
@@ -21,8 +22,10 @@ import EventsGallerySection from "./EventsGallerySection.astro";
 
 interface Props {
   section: unknown;
+  siteChrome?: SiteChrome;
 }
 
+const { siteChrome } = Astro.props;
 const section = parsePageSection(Astro.props.section);
 getSectionTemplateKey(section);
 const t = section._template;
@@ -40,7 +43,7 @@ const t = section._template;
 {t === "twoColumnDonateHero" && <TwoColumnDonateHero section={section} />}
 {t === "bulletBand" && <BulletBand section={section} />}
 {t === "splitImageText" && <SplitImageText section={section} />}
-{t === "homeHeroFull" && <HomeHeroBand section={section} />}
+{t === "homeHeroFull" && <HomeHeroBand section={section} siteChrome={siteChrome} />}
 {t === "homeMarquee" && <HomeMarqueeSection section={section} />}
 {t === "whoScroll" && <WhoScrollSection section={section} />}
 {t === "homeProgramsIntro" && <HomeProgramsWithCards section={section} />}

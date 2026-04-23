@@ -13,8 +13,6 @@ const { section } = Astro.props;
 const sitAlt = imageAlt(section.sitImageAlt, `${section.sitHeading} — photo`);
 const variant = section.sitVariant === "dark" ? "dark" : undefined;
 const imageLeft = section.sitImagePosition === "left";
-const borderImg =
-  variant === "dark" ? "border border-white/[0.12]" : "border border-line";
 ---
 
 <Section variant={variant}>
@@ -25,8 +23,10 @@ const borderImg =
       <h2 class="type-display-lg">{section.sitHeading}</h2>
       <p
         class:list={[
-          "mb-md max-w-[40rem]",
-          variant === "dark" ? "text-mist/80" : "type-muted",
+          "artify-rte mb-md max-w-[40rem] [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline",
+          variant === "dark"
+            ? "text-mist/80 dark:[&_a]:text-accent"
+            : "type-muted dark:[&_a]:text-accent",
         ]}
         set:html={section.sitBody}
       />
@@ -46,7 +46,6 @@ const borderImg =
     <figure
       class:list={[
         "m-0 max-h-[22rem] min-w-0 overflow-hidden rounded-lg",
-        borderImg,
         imageLeft && "lg:order-1",
       ]}
     >

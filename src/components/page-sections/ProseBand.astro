@@ -28,7 +28,7 @@ const pbAlt = imageAlt(
       {
         section.pbBodyHtml && (
           <div
-            class="prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+            class="artify-rte prose-inner max-w-[48rem] [&_p]:mb-md [&_strong]:font-semibold [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline dark:[&_a]:text-accent"
             set:html={section.pbBodyHtml}
           />
         )
@@ -45,10 +45,7 @@ const pbAlt = imageAlt(
             loading="lazy"
             decoding="async"
             sizes="(min-width: 1024px) 22rem, 92vw"
-            class:list={[
-              "w-full max-h-[26rem] rounded-lg border object-cover",
-              variant === "dark" ? "border-white/[0.12]" : "border-line",
-            ]}
+            class="w-full max-h-[26rem] rounded-lg object-cover"
           />
         </div>
       )

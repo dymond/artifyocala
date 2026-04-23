@@ -12,19 +12,14 @@ import GalleryMarqueeIsland, {
 import ResponsiveImage from "../ui/ResponsiveImage";
 
 import {
+  btnGhost,
   btnOutline,
+  btnPrimary,
   btnSurge,
 } from "../../lib/tina-ui-buttons";
 
-const btnBase =
-  "inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3.5 font-display text-xs font-extrabold uppercase tracking-[0.14em] no-underline cursor-pointer transition-all duration-200 ease-out";
-
-const btnPrimary = `${btnBase} border-2 border-ink bg-[color:var(--color-cta-fill)] text-mist shadow-[4px_4px_0_0_var(--color-ink)] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_var(--color-ink)] active:translate-x-1 active:translate-y-1 active:shadow-none`;
-
-const btnGhost = `${btnBase} border-2 border-transparent bg-transparent text-ink shadow-[3px_3px_0_0_var(--color-ink)] hover:border-ink/20 hover:bg-ink/[0.05] hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_0_var(--color-ink)] active:translate-x-1 active:translate-y-1 active:shadow-none`;
-
 const proseDark =
-  "prose-inner max-w-[48rem] [&_h2]:font-display [&_h2]:text-[1.65rem] [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:mt-xl [&_h2]:mb-sm [&_h2:first-child]:mt-0 [&_h3]:text-[1.15rem] [&_h3]:font-semibold [&_h3]:mt-lg [&_h3]:mb-xs [&_p]:mb-md [&_ul]:mb-md [&_ul]:pl-5 [&_li]:mb-xs [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline [&_strong]:font-semibold";
+  "artify-rte prose-inner max-w-[48rem] [&_h2]:font-display [&_h2]:text-[1.65rem] [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:mt-xl [&_h2]:mb-sm [&_h2:first-child]:mt-0 [&_h3]:text-[1.15rem] [&_h3]:font-semibold [&_h3]:mt-lg [&_h3]:mb-xs [&_p]:mb-md [&_ul]:mb-md [&_ul]:pl-5 [&_li]:mb-xs [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline [&_strong]:font-semibold";
 
 type Props = {
   /** Astro custom client directive typing shim (not forwarded as a React prop). */
@@ -166,7 +161,7 @@ function slugDefaults(slug: string): SlugDefaults | null {
       galleryHeading: "Photo gallery",
       galleryDekHtml:
         "<p>Moments from performances, collaborations, and community events.</p>",
-      gallerySurface: "dark",
+      gallerySurface: "light",
       galleryMarqueeAlt: "Brick City Glam",
       gallerySlides: [...brickGlamGallery].map((src, i) => ({
         src,
@@ -197,7 +192,7 @@ function slugDefaults(slug: string): SlugDefaults | null {
       ],
       galleryEnable: true,
       galleryHeading: "Photo gallery",
-      galleryDekHtml: `<p class="type-muted mb-0 max-w-[40rem]">Scenes from our tables and events. Follow <a class="font-medium text-ink underline decoration-ink/35 underline-offset-2 hover:decoration-ink" href="${LINKS.storytellingKnightsInstagram}" rel="noopener noreferrer" target="_blank">@storytellingknights on Instagram</a> for the latest photos and announcements.</p>`,
+      galleryDekHtml: `<p class="type-muted mb-0 max-w-[40rem]">Scenes from our tables and events. Follow <a class="font-medium" href="${LINKS.storytellingKnightsInstagram}" rel="noopener noreferrer" target="_blank">@storytellingknights on Instagram</a> for the latest photos and announcements.</p>`,
       gallerySurface: "light",
       galleryMarqueeAlt: "Storytelling Knights",
       gallerySlides: [...storytellingKnightsGallery].map((src, i) => ({
@@ -230,7 +225,7 @@ function HeroImages({
             alt={a.alt}
             width={2048}
             height={1365}
-            className="w-full min-w-0 rounded-lg border border-line"
+            className="w-full min-w-0 rounded-lg"
             loading="eager"
             decoding="async"
             sizes="(min-width: 768px) 65vw, 92vw"
@@ -247,7 +242,7 @@ function HeroImages({
             alt={b.alt}
             width={303}
             height={479}
-            className="max-h-80 w-full min-w-0 rounded-lg border border-line object-cover"
+            className="max-h-80 w-full min-w-0 rounded-lg object-cover"
             loading="eager"
             decoding="async"
             sizes="(min-width: 768px) 25vw, 92vw"
@@ -267,8 +262,8 @@ function HeroImages({
 
   const imgClass =
     layout === "singleTall"
-      ? "max-h-[28rem] w-full min-w-0 rounded-lg border border-line object-cover"
-      : "w-full min-w-0 rounded-lg border border-line";
+      ? "max-h-[28rem] w-full min-w-0 rounded-lg object-cover"
+      : "w-full min-w-0 rounded-lg";
 
   return (
     <ResponsiveImage
@@ -376,12 +371,12 @@ export default function ProgramVisualEdit({
 
   const dekClass =
     gallerySurface === "dark"
-      ? "relative z-20 type-muted mb-lg text-mist/70 [&_a]:text-mist [&_a]:decoration-mist/40 [&_a]:hover:decoration-mist"
-      : "relative z-20 type-muted mb-lg max-w-[40rem]";
+      ? "artify-rte relative z-20 type-muted mb-lg text-mist/70 [&_a]:text-mist [&_a]:decoration-mist/40 [&_a]:hover:decoration-mist"
+      : "artify-rte relative z-20 type-muted mb-lg max-w-[40rem] text-stone dark:[&_p]:text-buzz/80 [&_a]:font-medium [&_a]:text-ink [&_a]:underline [&_a]:decoration-ink/35 [&_a]:underline-offset-2 hover:[&_a]:decoration-ink dark:[&_a]:text-accent-soft dark:[&_a]:decoration-accent-soft/50 dark:hover:[&_a]:decoration-accent";
 
   return (
     <>
-      <section className="bg-mist py-2xl text-ink">
+      <section className="artify-canvas py-2xl">
         <div className="site-container">
           <div
             className={`grid grid-cols-1 items-start gap-xl ${heroGridCols}`}
@@ -446,7 +441,7 @@ export default function ProgramVisualEdit({
           className={`py-2xl ${
             gallerySurface === "dark"
               ? "dark-surface bg-void text-mist"
-              : "bg-mist text-ink"
+              : "artify-canvas"
           }`}
         >
           <div className="site-container">

@@ -19,10 +19,20 @@ const { section } = Astro.props;
         <p class="font-display text-lg font-bold text-mist">{section.ctSubheading}</p>
       )
     }
-    {section.ctAddressHtml && <p class="m-0" set:html={section.ctAddressHtml} />}
+    {
+      section.ctAddressHtml && (
+        <p
+          class="artify-rte m-0 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+          set:html={section.ctAddressHtml}
+        />
+      )
+    }
     {
       section.ctNoteHtml && (
-        <p class="m-0 text-mist/70" set:html={section.ctNoteHtml} />
+        <p
+          class="artify-rte m-0 text-mist/70 [&_a]:font-medium [&_a]:text-accent-soft [&_a]:no-underline hover:[&_a]:underline"
+          set:html={section.ctNoteHtml}
+        />
       )
     }
     <p class="m-0">

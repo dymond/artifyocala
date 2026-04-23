@@ -3,7 +3,7 @@ type Props = { text: string; className?: string };
 export default function MarqueeStripVisual({ text, className = "" }: Props) {
   return (
     <div
-      className={`w-full min-w-0 overflow-x-clip border-y-[3px] border-ink bg-buzz text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] ${className}`}
+      className={`w-full min-w-0 overflow-x-clip border-y-[3px] border-ink bg-buzz text-ink shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] dark:border-buzz/50 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] ${className}`}
       role="presentation"
       aria-hidden
     >

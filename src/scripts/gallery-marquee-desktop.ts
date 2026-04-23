@@ -3,17 +3,14 @@
  * is wide enough to fill the gallery shell; otherwise keep one track with all images.
  */
 
+import { syncGalleryMarqueeSpeedsInShell } from "./gallery-marquee-speed";
+import { measureMarqueeTrackSegmentWidth } from "./gallery-marquee-measure";
+
+export { measureMarqueeTrackSegmentWidth } from "./gallery-marquee-measure";
+
 const LG = "(min-width: 1024px)";
 
 const mediaMq = typeof window !== "undefined" ? window.matchMedia(LG) : null;
-
-export function measureMarqueeTrackSegmentWidth(
-  trackEl: HTMLElement | null,
-): number {
-  if (!trackEl) return 0;
-  const first = trackEl.querySelector(":scope > div.pointer-events-none");
-  return (first as HTMLElement | null)?.scrollWidth ?? 0;
-}
 
 export function segmentFillsContainer(
   segmentWidth: number,
@@ -36,55 +33,63 @@ export function shouldUseDualDesktopRows(
 }
 
 function updateShell(shell: HTMLElement): void {
-  const root = shell.querySelector<HTMLElement>(
-    "[data-gallery-marquee-desktop-root]",
-  );
-  if (!root) return;
+  try {
+    const root = shell.querySelector<HTMLElement>(
+      "[data-gallery-marquee-desktop-root]",
+    );
+    if (!root) {
+      return;
+    }
 
-  const single = root.querySelector<HTMLElement>(".gallery-marquee-dsk-single");
-  const dual = root.querySelector<HTMLElement>(".gallery-marquee-dsk-dual");
-  const trackA = dual?.querySelector<HTMLElement>('[data-marquee-row="a"]');
-  const trackB = dual?.querySelector<HTMLElement>('[data-marquee-row="b"]');
+    const single = root.querySelector<HTMLElement>(".gallery-marquee-dsk-single");
+    const dual = root.querySelector<HTMLElement>(".gallery-marquee-dsk-dual");
+    const trackA = dual?.querySelector<HTMLElement>('[data-marquee-row="a"]');
+    const trackB = dual?.querySelector<HTMLElement>('[data-marquee-row="b"]');
 
-  if (!single || !dual || !trackA || !trackB) return;
+    if (!single || !dual || !trackA || !trackB) {
+      return;
+    }
 
-  if (!window.matchMedia(LG).matches) {
-    single.classList.remove("hidden");
-    dual.classList.add("hidden");
-    return;
-  }
+    if (!window.matchMedia(LG).matches) {
+      single.classList.remove("hidden");
+      dual.classList.add("hidden");
+      return;
+    }
 
-  const shellW = shell.clientWidth;
-  if (shellW <= 0) return;
+    const shellW = shell.clientWidth;
+    if (shellW <= 0) return;
 
-  dual.classList.remove("hidden");
-  dual.setAttribute("aria-hidden", "true");
-  const prevVis = dual.style.visibility;
-  const prevPos = dual.style.position;
-  const prevLeft = dual.style.left;
-  const prevWidth = dual.style.width;
-  dual.style.visibility = "hidden";
-  dual.style.position = "absolute";
-  dual.style.left = "-200vw";
-  dual.style.width = `${shellW}px`;
-
-  const wA = measureMarqueeTrackSegmentWidth(trackA);
-  const wB = measureMarqueeTrackSegmentWidth(trackB);
-
-  dual.style.visibility = prevVis;
-  dual.style.position = prevPos;
-  dual.style.left = prevLeft;
-  dual.style.width = prevWidth;
-  dual.removeAttribute("aria-hidden");
-
-  const useDual = shouldUseDualDesktopRows(wA, wB, shellW);
-
-  if (useDual) {
-    single.classList.add("hidden");
     dual.classList.remove("hidden");
-  } else {
-    single.classList.remove("hidden");
-    dual.classList.add("hidden");
+    dual.setAttribute("aria-hidden", "true");
+    const prevVis = dual.style.visibility;
+    const prevPos = dual.style.position;
+    const prevLeft = dual.style.left;
+    const prevWidth = dual.style.width;
+    dual.style.visibility = "hidden";
+    dual.style.position = "absolute";
+    dual.style.left = "-200vw";
+    dual.style.width = `${shellW}px`;
+
+    const wA = measureMarqueeTrackSegmentWidth(trackA);
+    const wB = measureMarqueeTrackSegmentWidth(trackB);
+
+    dual.style.visibility = prevVis;
+    dual.style.position = prevPos;
+    dual.style.left = prevLeft;
+    dual.style.width = prevWidth;
+    dual.removeAttribute("aria-hidden");
+
+    const useDual = shouldUseDualDesktopRows(wA, wB, shellW);
+
+    if (useDual) {
+      single.classList.add("hidden");
+      dual.classList.remove("hidden");
+    } else {
+      single.classList.remove("hidden");
+      dual.classList.add("hidden");
+    }
+  } finally {
+    syncGalleryMarqueeSpeedsInShell(shell);
   }
 }
 
