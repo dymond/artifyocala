@@ -6,6 +6,11 @@ on:
   push:
     branches: [main]
 
+# GitHub: run action plugins with Node 24+ (avoids Node 20 deprecation; see
+# https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/ )
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   check-and-test:
     runs-on: ubuntu-latest
@@ -29,7 +34,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Astro check
-        run: pnpm run check
+        # `pnpm run check` uses 8GB heap; standard runners are ~7GB RAM — use a smaller
+        # heap in CI to avoid the process being killed (exit 1) under memory pressure.
+        run: pnpm run check:ci
 
       - name: Unit tests
         run: pnpm test

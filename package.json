@@ -20,6 +20,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "NODE_OPTIONS=--max-old-space-size=8192 astro check",
+    "check:ci": "NODE_OPTIONS=--max-old-space-size=4096 astro check",
     "generate:hal404-audio": "python3 scripts/generate-hal-404-audio.py",
     "test": "vitest run",
     "test:e2e": "playwright test",
