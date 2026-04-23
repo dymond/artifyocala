@@ -41,3 +41,21 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
+  # Netlify starts git-based builds in parallel with this workflow; production `main` uses
+  # `netlify.toml` ignore to skip those and only run a full build from a build hook after CI passes.
+  trigger-netlify:
+    name: Trigger Netlify build hook
+    needs: check-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: POST build hook
+        env:
+          NETLIFY_BUILD_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
+        run: |
+          if [ -z "$NETLIFY_BUILD_HOOK_URL" ]; then
+            echo "::error::Repository secret NETLIFY_BUILD_HOOK_URL is not set. In Netlify: Site configuration → Build & deploy → Build hooks → add hook for branch main, then add the URL in GitHub → Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          curl -fsS -X POST -d '{}' "$NETLIFY_BUILD_HOOK_URL"
+
