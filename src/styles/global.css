@@ -1176,6 +1176,15 @@ html.dark .type-muted {
 }
 
 /**
+ * Bottom “menu island” surface: unique tone so it reads on any background without
+ * relying on outlines/rings.
+ */
+@utility artify-menu-island {
+  @apply bg-[rgba(244,245,252,0.88)] text-ink shadow-[0_10px_34px_rgba(28,28,51,0.18)] backdrop-blur-xl;
+  @apply dark:bg-[rgba(30,30,56,0.90)] dark:text-buzz/95 dark:shadow-[0_14px_48px_rgba(0,0,0,0.38)];
+}
+
+/**
  * Mark wrappers of CMS / Tina HTML (dangerouslySetInnerHTML, set:html) so we can
  * fix `text-ink` on <a> in site dark mode. Ink on twilight/void is illegible, but we
  * must not use a global `a.text-ink` rule — outline CTAs in the same section also

@@ -159,7 +159,7 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
                   rel={ext ? "noopener noreferrer" : undefined}
                   class:list={[
                     'flex min-h-[2.75rem] w-full items-center justify-center rounded-full border px-3 py-2 text-center text-[0.78rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
-                    'border-2 border-ink bg-mist text-ink shadow-[4px_4px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none dark:border-[color:var(--color-surge-ink)] dark:bg-panel/90 dark:text-buzz/95 dark:shadow-[4px_4px_0_0_var(--color-surge-ink)] dark:hover:bg-panel dark:hover:shadow-[2px_2px_0_0_var(--color-surge-ink)]',
+                      'border-2 border-ink bg-mist text-ink shadow-[4px_4px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none dark:border-[color:var(--color-surge-ink)] dark:bg-panel dark:text-buzz/95 dark:shadow-[4px_4px_0_0_var(--color-surge-ink)] dark:hover:bg-panel dark:hover:shadow-[2px_2px_0_0_var(--color-surge-ink)] dark:hover:text-surge',
                     isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist dark:ring-buzz/50 dark:ring-offset-panel',
                   ]}
                   aria-label={a11y}
@@ -210,7 +210,7 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
                     rel={ext ? "noopener noreferrer" : undefined}
                     class:list={[
                       'flex min-h-[2.75rem] w-[5rem] max-w-[5rem] items-center justify-center rounded-full border px-1.5 py-2 text-center text-[0.75rem] font-semibold leading-snug transition-all duration-200 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-[5.35rem] sm:max-w-[5.35rem] sm:text-[0.78rem]',
-                      'border-2 border-ink bg-mist text-ink shadow-[4px_4px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none dark:border-[color:var(--color-surge-ink)] dark:bg-panel/90 dark:text-buzz/95 dark:shadow-[4px_4px_0_0_var(--color-surge-ink)] dark:hover:bg-panel dark:hover:shadow-[2px_2px_0_0_var(--color-surge-ink)]',
+                    'border-2 border-ink bg-mist text-ink shadow-[4px_4px_0_0_var(--color-ink)] no-underline hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0_0_var(--color-ink)] hover:bg-buzz hover:text-ink active:translate-x-1 active:translate-y-1 active:shadow-none dark:border-[color:var(--color-surge-ink)] dark:bg-panel dark:text-buzz/95 dark:shadow-[4px_4px_0_0_var(--color-surge-ink)] dark:hover:bg-panel dark:hover:shadow-[2px_2px_0_0_var(--color-surge-ink)] dark:hover:text-surge',
                       isActive && 'border-surge bg-buzz ring-2 ring-surge ring-offset-2 ring-offset-mist dark:ring-buzz/50 dark:ring-offset-panel',
                     ]}
                     aria-label={a11y}
@@ -228,58 +228,58 @@ const wheelNavAlpineData = `{ menuOpen:false,navShellOpen:false,shellHoldMs:780,
 
     <!-- iOS-style island: Home | Menu | theme -->
     <div
-      class="relative z-[100] flex items-center gap-1 rounded-[2rem] border-2 border-white/18 bg-void/95 px-2 py-2 shadow-[0_12px_48px_rgba(0,0,0,0.45)] ring-2 ring-buzz/30 backdrop-blur-xl"
+      class="relative z-[100] flex items-center gap-1.5 rounded-[2rem] px-2.5 py-1.5 artify-menu-island"
       role="toolbar"
       aria-label="Quick navigation"
     >
       <a
         href="/"
         class:list={[
-          'flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-mist no-underline transition-colors',
-          'bg-white/14 hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+          'flex h-10 w-10 shrink-0 items-center justify-center rounded-full no-underline transition-colors',
+          'bg-ink/[0.06] hover:bg-ink/[0.10] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent dark:bg-white/10 dark:hover:bg-white/16 text-ink dark:text-mist',
           homeActive && 'bg-buzz text-ink',
         ]}
         aria-label={chrome.islandHomeAriaLabel}
         aria-current={homeActive ? 'page' : undefined}
       >
-        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" />
         </svg>
       </a>
 
-      <div class="mx-1 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></div>
+      <div class="mx-1 h-6 w-px shrink-0 bg-ink/10 dark:bg-white/12" aria-hidden="true"></div>
 
       <button
         type="button"
-        class="flex h-12 min-w-[5.5rem] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full bg-white/14 px-4 text-sm font-bold tracking-wide text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="flex h-10 min-w-[5rem] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-full px-3 text-[0.85rem] font-bold tracking-wide transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent bg-ink/[0.06] hover:bg-ink/[0.10] text-ink dark:bg-white/10 dark:hover:bg-white/16 dark:text-mist"
         @click="toggleWheelNav()"
         x-bind:aria-expanded="navShellOpen"
         aria-haspopup="true"
         aria-controls="wheel-nav-panel"
         x-bind:aria-label="menuOpen ? ('Close menu (' + closeLabel + ')') : ('Open menu (' + openLabel + ')')"
       >
-        <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <svg class="h-4.5 w-4.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <path d="M4 6h16M4 12h16M4 18h10" />
         </svg>
         <span x-text="menuOpen ? closeLabel : openLabel"></span>
       </button>
 
-      <div class="mx-1 h-8 w-px shrink-0 bg-white/15" aria-hidden="true"></div>
+      <div class="mx-1 h-6 w-px shrink-0 bg-ink/10 dark:bg-white/12" aria-hidden="true"></div>
 
       <button
         type="button"
         id="artify-theme-toggle"
-        class="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full bg-white/14 text-mist transition-colors hover:bg-white/22 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        class="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent bg-ink/[0.06] hover:bg-ink/[0.10] text-ink dark:bg-white/10 dark:hover:bg-white/16 dark:text-mist"
         aria-label="Color theme. Click to switch between light and dark."
       >
         <span id="artify-theme-icon-light" class="" aria-hidden="true">
-          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4" />
             <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
           </svg>
         </span>
         <span id="artify-theme-icon-dark" class="hidden" aria-hidden="true">
-          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
             <path
               d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
             />
