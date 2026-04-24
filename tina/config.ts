@@ -36,7 +36,7 @@ export default defineConfig({
     previewUrl: (ctx) => {
       const b = ctx.branch?.replace(/\//g, "-") || "main";
       if (b === "main") {
-        return { url: tinaPreviewUrl || "https://www.artifyocala.org" };
+        return { url: tinaPreviewUrl || "https://artifyocala.org" };
       }
       return {
         url: `https://${b}--${netlifySiteSlug}.netlify.app`,

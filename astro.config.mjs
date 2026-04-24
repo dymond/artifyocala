@@ -60,7 +60,7 @@ const astroBuildConcurrency = Math.min(
 
 export default defineConfig({
   /** Must match the Netlify primary custom domain (canonical URLs, sitemap). */
-  site: "https://www.artifyocala.org",
+  site: "https://artifyocala.org",
   output: "static",
   compressHTML: isNetlifyBuild,
   build: {

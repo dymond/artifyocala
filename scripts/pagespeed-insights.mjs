@@ -13,10 +13,10 @@
 import process from "node:process";
 
 const DEFAULT_URLS = [
-  "https://www.artifyocala.org/",
-  "https://www.artifyocala.org/about/",
-  "https://www.artifyocala.org/donate/",
-  "https://www.artifyocala.org/volunteer/",
+  "https://artifyocala.org/",
+  "https://artifyocala.org/about/",
+  "https://artifyocala.org/donate/",
+  "https://artifyocala.org/volunteer/",
 ];
 
 function parseArgs(argv) {

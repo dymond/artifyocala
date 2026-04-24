@@ -19,15 +19,15 @@ describe("resolvePageDescription", () => {
   });
 });
 
-const siteOrigin = "https://www.artifyocala.org";
+const siteOrigin = "https://artifyocala.org";
 
 describe("absoluteUrl", () => {
   it("joins origin and root-relative paths", () => {
     expect(absoluteUrl(siteOrigin, "/programs/foo")).toBe(
-      "https://www.artifyocala.org/programs/foo"
+      "https://artifyocala.org/programs/foo"
     );
     expect(absoluteUrl(siteOrigin, "programs/foo")).toBe(
-      "https://www.artifyocala.org/programs/foo"
+      "https://artifyocala.org/programs/foo"
     );
   });
 
@@ -50,12 +50,12 @@ describe("breadcrumbListJsonLd", () => {
     expect(items[0]).toMatchObject({
       position: 1,
       name: "Home",
-      item: "https://www.artifyocala.org/",
+      item: "https://artifyocala.org/",
     });
     expect(items[1]).toMatchObject({
       position: 2,
       name: "Programs",
-      item: "https://www.artifyocala.org/programs/x",
+      item: "https://artifyocala.org/programs/x",
     });
   });
 });
@@ -64,13 +64,13 @@ describe("programArticleJsonLd", () => {
   it("includes headline and optional image", () => {
     const a = programArticleJsonLd({
       siteOrigin,
-      pageUrl: "https://www.artifyocala.org/programs/maker-collective",
+      pageUrl: "https://artifyocala.org/programs/maker-collective",
       headline: "Maker Collective",
       description: "A makerspace.",
-      imageUrl: "https://www.artifyocala.org/images/hero.png",
+      imageUrl: "https://artifyocala.org/images/hero.png",
     });
     expect(a["@type"]).toBe("Article");
     expect(a.headline).toBe("Maker Collective");
-    expect(a.image).toBe("https://www.artifyocala.org/images/hero.png");
+    expect(a.image).toBe("https://artifyocala.org/images/hero.png");
   });
 });
