@@ -1,10 +1,5 @@
 ---
-import {
-  footerFullOnLightDefault,
-  footerLogoSrc,
-  formatCopyright,
-  type SiteChrome,
-} from "../../lib/site-chrome";
+import { footerLogoSrc, formatCopyright, type SiteChrome } from "../../lib/site-chrome";
 import IconFacebook from "../ui/icons/IconFacebook.astro";
 import IconInstagram from "../ui/icons/IconInstagram.astro";
 import ResponsiveImage from "../ui/ResponsiveImage.astro";
@@ -14,8 +9,7 @@ interface Props {
 }
 
 const { chrome } = Astro.props;
-const footerLogoFullLight = footerFullOnLightDefault();
-const footerLogoFullDark = footerLogoSrc(chrome);
+const footerLogoSrcOnDark = footerLogoSrc(chrome);
 const telHref = chrome.footerPhoneTel.trim().startsWith("tel:")
   ? chrome.footerPhoneTel.trim()
   : `tel:${chrome.footerPhoneTel.replace(/\s/g, "")}`;
@@ -33,20 +27,12 @@ const copyrightText = formatCopyright(chrome.footerCopyright);
         aria-label={chrome.headerLogoAriaLabel}
       >
         <ResponsiveImage
-          src={footerLogoFullLight}
+          src={footerLogoSrcOnDark}
           alt="Artify Ocala"
           width={1600}
           height={1259}
           decoding="async"
-          class="h-auto w-full object-contain object-left dark:hidden"
-        />
-        <ResponsiveImage
-          src={footerLogoFullDark}
-          alt="Artify Ocala"
-          width={1600}
-          height={1259}
-          decoding="async"
-          class="hidden h-auto w-full object-contain object-left dark:block"
+          class="h-auto w-full object-contain object-left"
         />
       </a>
       <p class="m-0 leading-normal">{chrome.footerTagline}</p>
