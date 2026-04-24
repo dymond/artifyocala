@@ -24,6 +24,11 @@
           "evtDate": "2026-04-25T18:00:00.000Z",
           "evtHref": "",
           "evtExpiresAt": "2026-04-26T23:00:00.000Z"
+        },
+        {
+          "evtImage": "/images/671002512_122133281229016024_4799893423233970748_n%20(1).jpg",
+          "evtAlt": "Workshop: Artist Trading Cards at 3650 NE 25th St, 1A, Ocala, FL",
+          "evtDate": "2026-05-20T22:24:02.643Z"
         }
       ],
       "_template": "eventsGallery"
