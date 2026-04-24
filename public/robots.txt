@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://artify.diy/sitemap-index.xml
+Sitemap: https://www.artifyocala.org/sitemap-index.xml

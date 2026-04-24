@@ -1,7 +1,7 @@
 import { chromium } from "@playwright/test";
 
 const URLS = [
-  "https://artify.diy/",
+  "https://www.artifyocala.org/",
   "https://edit.artify.diy/",
   "https://edit.artify.diy/admin/",
 ];

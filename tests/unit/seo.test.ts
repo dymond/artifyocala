@@ -19,26 +19,28 @@ describe("resolvePageDescription", () => {
   });
 });
 
+const siteOrigin = "https://www.artifyocala.org";
+
 describe("absoluteUrl", () => {
   it("joins origin and root-relative paths", () => {
-    expect(absoluteUrl("https://artify.diy", "/programs/foo")).toBe(
-      "https://artify.diy/programs/foo"
+    expect(absoluteUrl(siteOrigin, "/programs/foo")).toBe(
+      "https://www.artifyocala.org/programs/foo"
     );
-    expect(absoluteUrl("https://artify.diy", "programs/foo")).toBe(
-      "https://artify.diy/programs/foo"
+    expect(absoluteUrl(siteOrigin, "programs/foo")).toBe(
+      "https://www.artifyocala.org/programs/foo"
     );
   });
 
   it("passes through absolute URLs", () => {
     expect(
-      absoluteUrl("https://artify.diy", "https://cdn.example.com/x.jpg")
+      absoluteUrl(siteOrigin, "https://cdn.example.com/x.jpg")
     ).toBe("https://cdn.example.com/x.jpg");
   });
 });
 
 describe("breadcrumbListJsonLd", () => {
   it("builds ListItem entries with positions", () => {
-    const j = breadcrumbListJsonLd("https://artify.diy", [
+    const j = breadcrumbListJsonLd(siteOrigin, [
       { name: "Home", path: "/" },
       { name: "Programs", path: "/programs/x" },
     ]);
@@ -48,12 +50,12 @@ describe("breadcrumbListJsonLd", () => {
     expect(items[0]).toMatchObject({
       position: 1,
       name: "Home",
-      item: "https://artify.diy/",
+      item: "https://www.artifyocala.org/",
     });
     expect(items[1]).toMatchObject({
       position: 2,
       name: "Programs",
-      item: "https://artify.diy/programs/x",
+      item: "https://www.artifyocala.org/programs/x",
     });
   });
 });
@@ -61,14 +63,14 @@ describe("breadcrumbListJsonLd", () => {
 describe("programArticleJsonLd", () => {
   it("includes headline and optional image", () => {
     const a = programArticleJsonLd({
-      siteOrigin: "https://artify.diy",
-      pageUrl: "https://artify.diy/programs/maker-collective",
+      siteOrigin,
+      pageUrl: "https://www.artifyocala.org/programs/maker-collective",
       headline: "Maker Collective",
       description: "A makerspace.",
-      imageUrl: "https://artify.diy/images/hero.png",
+      imageUrl: "https://www.artifyocala.org/images/hero.png",
     });
     expect(a["@type"]).toBe("Article");
     expect(a.headline).toBe("Maker Collective");
-    expect(a.image).toBe("https://artify.diy/images/hero.png");
+    expect(a.image).toBe("https://www.artifyocala.org/images/hero.png");
   });
 });
