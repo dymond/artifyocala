@@ -59,7 +59,6 @@
       "better-sqlite3",
       "core-js",
       "esbuild",
-      "lefthook",
       "protobufjs",
       "sharp",
       "unix-dgram"
@@ -75,7 +74,6 @@
     "@tailwindcss/vite": "^4.2.2",
     "@types/three": "^0.184.0",
     "jsdom": "^29.0.1",
-    "lefthook": "^2.1.6",
     "netlify-cli": "^24.9.0",
     "serve": "^14.2.6",
     "sharp": "^0.34.5",

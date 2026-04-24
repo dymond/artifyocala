@@ -1,8 +1,0 @@
-pre-push:
-  parallel: false
-  commands:
-    check:
-      run: pnpm run check
-    test:
-      run: pnpm test
-

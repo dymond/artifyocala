@@ -2,41 +2,16 @@
 
 ## Git workflow (code vs content)
 
-- **App / schema / most code changes:** use a feature branch, open a **pull request** into `main`, and wait for the **CI** check (**CI / check-and-test** — `pnpm run check` and `pnpm test`) to pass before merging. That keeps `main` healthy for Netlify and for Tina.
+- **App / schema / most code changes:** use a feature branch and open a **pull request** into `main` when you want review before it ships.
 
-- **Tina Cloud / editors** typically **commit and push directly to `main`** when they save in the CMS. That flow is expected here; it must keep working in production.
+- **Tina Cloud / editors** typically **commit and push directly to `main`** when they save in the CMS (including media). That flow is expected here.
 
-- **If you add GitHub “require a pull request before merging” to `main` (or a ruleset that blocks direct pushes)**, the Tina integration may no longer be able to push the same way. Before enabling that, either **configure Tina to open PRs** instead of pushing to `main`, or **add a bypass** for the Tina GitHub app / bot in your branch or ruleset settings.
+- **If you add GitHub “require a pull request before merging” to `main`**, the Tina integration may no longer be able to push the same way. Before enabling that, either **configure Tina to open PRs** instead of pushing to `main`, or **add a bypass** for the Tina GitHub app / bot in your branch or ruleset settings.
 
-## Local checks (pre-push)
+## Local checks (optional)
 
-After `pnpm install`, Lefthook is set up to run `pnpm run check` and `pnpm test` on **git push**. Fix failures locally or CI will block merges that depend on the same checks.
-
-On GitHub Actions, the workflow runs `pnpm run check:ci` (a smaller Node heap) instead of `pnpm run check` so `astro check` does not get killed on standard runners. Locally you can keep using `pnpm run check` if you have enough RAM.
+Run **`pnpm run check`** and **`pnpm test`** before merging larger code changes if you want the same confidence as before; nothing in this repo runs them automatically on push.
 
 ## Netlify (production)
 
-`netlify.toml` can **skip a production build** when the only files changed are non-site metadata (for example, README, `.github` workflows, `lefthook.yml`). See `scripts/netlify-ignore-build.mjs`. To always run a Netlify build on every git push regardless, set the site environment variable `NETLIFY_IGNORE_BUILD=0` in the Netlify UI (for example if you need an emergency deploy without waiting for GitHub Actions).
-
-### Deploy only after CI (saves Netlify build minutes)
-
-Netlify cannot wait for GitHub Checks on its own: a **push to `main` still notifies Netlify and GitHub in parallel**. This repo wires the rest in two places:
-
-1. **`netlify.toml` `ignore`** — For **production** and branch **`main`**, when there are **site-relevant** file changes, the ignore step **ends the build early** (exit 0) so Netlify does not run a full production build from that git event. [Netlify’s docs](https://docs.netlify.com/build/configure-builds/ignore-builds/) state that the ignore command **does not cancel** a deploy that was started by a **[build hook](https://docs.netlify.com/configure-builds/build-hooks/)**, so hook-triggered builds still run.
-
-2. **GitHub Actions** — After **`CI / check-and-test`** succeeds on a **push to `main`**, the workflow **POSTs** the Netlify build hook URL so the real site build runs once. Add a repository secret **`NETLIFY_BUILD_HOOK_URL`** with the full hook URL.
-
-**What you set up in Netlify (one-time):**
-
-- **Build status** must stay **Active** (not “Stopped builds”). If builds are stopped site-wide, **build hooks do not run** either; see [Stop or activate builds](https://docs.netlify.com/configure-builds/stop-or-activate-builds/).
-- **Build hooks:** Site configuration → Build & deploy → **Build hooks** → add a hook targeting branch **`main`** → copy the **POST** URL into the GitHub secret **`NETLIFY_BUILD_HOOK_URL`**.
-
-The **`ignore`** script is what stops the **full** `pnpm` / site build for that first git event on `main`. Netlify runs the `ignore` command **before** the main project install (the ignore script can’t use your `node_modules` — see the [“Ignore builds”](https://docs.netlify.com/build/configure-builds/ignore-builds/) note about dependencies). So the first row is a **canceled or skipped** deploy, not a second full `build:netlify:ci`. You will still see **two deploy rows** (git + hook): that is the tradeoff of keeping the **Git** connection so **Deploy Previews** and branch flows keep working. **Netlify’s usage dashboard** is the place to confirm how many **build minutes** the canceled run used (it should be a small slice compared to a full build).
-
-**Do not use “Unlink repository” to “fix” this** if you deploy production via a **build hook** after CI: [Netlify deletes existing build hooks when a repo is unlinked](https://docs.netlify.com/build/git-workflows/repo-permissions-linking/#unlink-a-git-repository) (along with deploy keys and continuous deployment). Unlinking is for **troubleshooting** or moving to **CLI / drag-and-drop** deploys, not a drop-in replacement for this pattern.
-
-**If you truly need a single build trigger and no push notification:** the older approach is to remove only the **repository webhook** (common on GitLab) so Git no longer tells Netlify to build on every push, while the hook or API still runs builds — the [Netlify support guide](https://answers.netlify.com/t/support-guide-how-can-i-disable-automatic-git-deploys/166) notes that **repositories using the [Netlify GitHub app](https://github.com/apps/netlify) often can’t do that** the same way. A heavier alternative is to **build in GitHub Actions** and run **`netlify deploy --prod --dir=dist`** with a personal access / deploy token, so Netlify only receives an upload, but you must copy every required build env var into GitHub. None of that is set up in this repo by default.
-
-### Netlify vs GitHub Actions (order of operations)
-
-On **`main`**, GitHub Actions still runs in parallel with Netlify’s git notification, but production no longer relies on the **full** Netlify build from that first git event for site changes: that run is skipped, and the workflow triggers the build hook after **`CI / check-and-test`** is green. **Deploy previews** for pull requests use a different Netlify context and are unchanged.
+`netlify.toml` can **skip a production build** when the only files changed are non-site metadata (for example, README, `.github` workflows). See `scripts/netlify-ignore-build.mjs`. To always run a Netlify build regardless, set the site environment variable `NETLIFY_IGNORE_BUILD=0` in the Netlify UI.

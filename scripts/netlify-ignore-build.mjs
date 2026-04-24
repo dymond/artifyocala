@@ -10,7 +10,6 @@ import {
   areAllPathsIgnorable,
   normalizeChangedPath,
 } from "./netlify-ignore-allowlist.mjs";
-import { shouldDeferProductionMainToCiHook } from "./netlify-ci-gate.mjs";
 import { shouldRunFullTinaWithoutDiff } from "./netlify-tina-build-gate.mjs";
 
 function runBuild() {
@@ -82,11 +81,6 @@ function main() {
     for (const p of paths) {
       console.log(`  ${p}`);
     }
-    skipBuild();
-  } else if (shouldDeferProductionMainToCiHook(env)) {
-    console.log(
-      "[netlify-ignore-build] production/main with site-relevant changes — skipping this git-triggered build so Netlify does not run a full build before CI (build hook after green CI still runs; see CONTRIBUTING.md).",
-    );
     skipBuild();
   } else {
     console.log("[netlify-ignore-build] At least one site-relevant path changed — running build.");

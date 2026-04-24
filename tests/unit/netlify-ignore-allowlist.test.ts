@@ -16,7 +16,6 @@ describe("netlify-ignore-allowlist", () => {
     expect(isIgnorablePathOnly("lefthook.yml")).toBe(true);
     expect(isIgnorablePathOnly("AGENTS.md")).toBe(true);
     expect(isIgnorablePathOnly("scripts/netlify-ignore-build.mjs")).toBe(true);
-    expect(isIgnorablePathOnly("scripts/netlify-ci-gate.mjs")).toBe(true);
   });
 
   it("rejects site-relevant paths", () => {

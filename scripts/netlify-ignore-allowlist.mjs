@@ -41,11 +41,7 @@ export function isIgnorablePathOnly(raw) {
   if (p === "lefthook.yml") {
     return true;
   }
-  if (
-    p === "scripts/netlify-ignore-build.mjs" ||
-    p === "scripts/netlify-ignore-allowlist.mjs" ||
-    p === "scripts/netlify-ci-gate.mjs"
-  ) {
+  if (p === "scripts/netlify-ignore-build.mjs" || p === "scripts/netlify-ignore-allowlist.mjs") {
     return true;
   }
   if (isRootAgentOrEditorDoc(p)) {
