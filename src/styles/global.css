@@ -1,7 +1,13 @@
 /* Self-hosted (Fontsource) — avoids render-blocking Google Fonts CSS on the critical path. */
 @import "@fontsource-variable/instrument-sans/wght.css";
 @import "@fontsource-variable/instrument-sans/wght-italic.css";
-@import "@fontsource-variable/syne/wght.css";
+@font-face {
+  font-family: "Reem Kufi Fun Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url("/fonts/reem-kufi-fun-latin-wght-normal-surge-v2.woff2") format("woff2-variations");
+}
 
 @import "tailwindcss";
 
@@ -12,7 +18,8 @@
   --font-sans:
     "Instrument Sans Variable", "Instrument Sans", ui-sans-serif, system-ui,
     sans-serif;
-  --font-display: "Syne Variable", "Syne", var(--font-sans);
+  --font-display:
+    "Reem Kufi Fun Variable", "Reem Kufi Fun", ui-sans-serif, var(--font-sans);
 
   /* Hollow logo on light: navy type + periwinkle strokes (#1c1c33 / #8c92e3 / #b0b8ff) */
   --color-ink: #1c1c33;
@@ -40,6 +47,7 @@
     var(--color-ink)
   );
   --color-club: #a59eff;
+  /* Hero kiss SVG (googly eyes), not the Reem Kufi Fun COLR i-dots */
   --color-kiss-heart: #ff4d8d;
 
   --spacing-xs: 0.35rem;
@@ -51,6 +59,50 @@
 
   --radius-md: 0.5rem;
   --radius-lg: 1.25rem;
+}
+
+/**
+ * Reem Kufi Fun: lowercase `i` (and other “Fun” marks) use COLR + CPAL. Palette index 0
+ * tints the heart / accent shapes; colorID 65535 layers follow `color` (stem, etc.).
+ * Remap 0 → surge so i-dots match brand (also affects other glyphs that use index 0,
+ * e.g. decorated combining marks). Unsupported browsers keep the font default.
+ */
+@font-palette-values --artify-reem-display {
+  font-family: "Reem Kufi Fun Variable", "Reem Kufi Fun";
+  base-palette: 0;
+  /* Note: CSS vars are not reliably accepted in override-colors across engines. */
+  override-colors: 0 #6b64c9;
+}
+
+@font-palette-values --artify-reem-display-dark {
+  font-family: "Reem Kufi Fun Variable", "Reem Kufi Fun";
+  base-palette: 0;
+  override-colors: 0 #8c92e3;
+}
+
+@supports (font-palette: normal) {
+  /* Apply broadly so any Reem Kufi Fun usage inherits the palette. */
+  :root {
+    font-palette: --artify-reem-display;
+  }
+
+  html.dark {
+    font-palette: --artify-reem-display-dark;
+  }
+
+  /* Also pin on display-heavy utilities/components so local `font` shorthands
+     (if ever introduced) won’t accidentally reset palette selection. */
+  :where(
+    .font-display,
+    .type-display-xl,
+    .artify-hero-home-title,
+    .type-section-yell,
+    .artify-hero-word-rotator,
+    .type-display-lg,
+    .artify-rte h2
+  ) {
+    font-palette: inherit;
+  }
 }
 
 @keyframes artify-marquee {
