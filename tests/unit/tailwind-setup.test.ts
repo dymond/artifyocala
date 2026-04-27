@@ -55,4 +55,9 @@ describe('Tailwind CSS + Astro integration', () => {
     expect(css).toMatch(/override-colors:\s*0 #6b64c9/);
     expect(css).toMatch(/font-palette:\s*--artify-reem-display/);
   });
+
+  it('uses font-size-adjust so display font reads like body x-height', () => {
+    const css = readFileSync(resolve(root, 'src/styles/global.css'), 'utf8');
+    expect(css).toMatch(/font-size-adjust:\s*0\.51/);
+  });
 });

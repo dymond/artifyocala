@@ -105,6 +105,25 @@
   }
 }
 
+/*
+ * Reem Kufi Fun has a shorter x-height than our body font. Use `font-size-adjust`
+ * so display text (buttons, section heads, etc.) doesn’t read smaller at the
+ * same CSS `font-size`.
+ *
+ * Target aspect ratio matches Instrument Sans (sxHeight 510 / upem 1000 = 0.51).
+ */
+:where(
+  .font-display,
+  .type-display-xl,
+  .artify-hero-home-title,
+  .type-section-yell,
+  .artify-hero-word-rotator,
+  .type-display-lg,
+  .artify-rte h2
+) {
+  font-size-adjust: 0.51;
+}
+
 @keyframes artify-marquee {
   from {
     transform: translate3d(0, 0, 0);
