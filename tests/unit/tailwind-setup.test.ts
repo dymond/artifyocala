@@ -48,4 +48,11 @@ describe('Tailwind CSS + Astro integration', () => {
     const css = readFileSync(resolve(root, 'src/styles/global.css'), 'utf8');
     expect(css).toMatch(/html\.dark\s*\.artify-rte\s+a\.text-ink/);
   });
+
+  it('maps Reem Kufi Fun COLR palette 0 to surge for i-dot / accent color', () => {
+    const css = readFileSync(resolve(root, 'src/styles/global.css'), 'utf8');
+    expect(css).toMatch(/@font-palette-values --artify-reem-display/);
+    expect(css).toMatch(/override-colors:\s*0 #6b64c9/);
+    expect(css).toMatch(/font-palette:\s*--artify-reem-display/);
+  });
 });
