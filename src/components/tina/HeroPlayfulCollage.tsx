@@ -431,19 +431,19 @@ export default function HeroPlayfulCollage({
                     d="M6 14c6.5-7.8 14.6-11.5 22-11.5S43.5 6.2 50 14c-6.5 8.2-14.6 12-22 12S12.5 22.2 6 14Z"
                     fill="var(--color-accent-soft)"
                     stroke="var(--color-ink)"
-                    strokeWidth="3"
+                    strokeWidth="4"
                     strokeLinejoin="round"
                   />
                   <path
                     d="M16.5 14c3.4 2.8 7.2 4.2 11.5 4.2S36.1 16.8 39.5 14"
                     stroke="var(--color-ink)"
-                    strokeWidth="2.5"
+                    strokeWidth="3"
                     strokeLinecap="round"
                   />
                   <path
                     d="M28 2.6c-4.2 0-7.3 2.2-9.3 5.2M28 2.6c4.2 0 7.3 2.2 9.3 5.2"
-                    stroke="rgba(255,255,255,0.65)"
-                    strokeWidth="2"
+                    stroke="var(--color-ink)"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                   />
                 </svg>
