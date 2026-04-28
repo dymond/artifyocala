@@ -534,12 +534,12 @@ function PageSectionView({
                 <article
                   key={`${card.hmgCardTitle}-${i}`}
                   className={cn(
-                    "flex flex-col overflow-hidden rounded-xl bg-white/40 p-0 transition-transform duration-300 hover:-translate-y-1 dark:bg-panel/55",
+                    "flex h-full min-h-0 flex-col overflow-hidden rounded-xl bg-white/40 p-0 transition-transform duration-300 hover:-translate-y-1 dark:bg-panel/55",
                     homeMoreGridCardFrames[i % 3].border,
                     homeMoreGridCardFrames[i % 3].shadow
                   )}
                 >
-                  <div className="aspect-[4/3] overflow-hidden">
+                  <div className="aspect-[4/3] shrink-0 overflow-hidden">
                     <ResponsiveImage
                       src={card.hmgCardImage}
                       alt={imageAlt(
@@ -554,23 +554,25 @@ function PageSectionView({
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <h3 className="mx-lg mb-xs mt-md font-display text-[1.15rem]">
-                    {card.hmgCardTitle}
-                  </h3>
-                  <p className="type-muted mx-lg mb-md">
-                    {card.hmgCardDescription}
-                  </p>
-                  <a
-                    href={card.hmgCardButtonHref}
-                    className={`${btnOutline} mb-lg ml-lg self-start`}
-                    target={card.hmgCardExternal ? "_blank" : undefined}
-                    rel={
-                      card.hmgCardExternal ? "noopener noreferrer" : undefined
-                    }
-                  >
-                    {card.hmgCardExternal ? <IconExt /> : null}
-                    {card.hmgCardButtonLabel}
-                  </a>
+                  <div className="flex min-h-0 flex-1 flex-col gap-md px-lg pb-lg pt-md">
+                    <h3 className="mb-xs font-display text-[1.15rem]">
+                      {card.hmgCardTitle}
+                    </h3>
+                    <p className="type-muted mb-0 flex-1">
+                      {card.hmgCardDescription}
+                    </p>
+                    <a
+                      href={card.hmgCardButtonHref}
+                      className={`${btnOutline} mt-auto w-full shrink-0`}
+                      target={card.hmgCardExternal ? "_blank" : undefined}
+                      rel={
+                        card.hmgCardExternal ? "noopener noreferrer" : undefined
+                      }
+                    >
+                      {card.hmgCardExternal ? <IconExt /> : null}
+                      {card.hmgCardButtonLabel}
+                    </a>
+                  </div>
                 </article>
               ) : null
             )}

@@ -28,12 +28,12 @@ const cards = section.hmgCards ?? [];
       cards.map((card, i) => (
         <article
           class:list={[
-            "flex flex-col overflow-hidden rounded-xl bg-white/40 p-0 transition-transform duration-300 hover:-translate-y-1 dark:bg-panel/55",
+            "flex h-full min-h-0 flex-col overflow-hidden rounded-xl bg-white/40 p-0 transition-transform duration-300 hover:-translate-y-1 dark:bg-panel/55",
             homeMoreGridCardFrames[i % 3].border,
             homeMoreGridCardFrames[i % 3].shadow,
           ]}
         >
-          <div class="aspect-[4/3] overflow-hidden">
+          <div class="aspect-[4/3] shrink-0 overflow-hidden">
             <ResponsiveImage
               src={card.hmgCardImage}
               alt={imageAlt(
@@ -48,18 +48,22 @@ const cards = section.hmgCards ?? [];
               class="h-full w-full object-cover"
             />
           </div>
-          <h3 class="mx-lg mb-xs mt-md font-display text-[1.15rem]">
-            {card.hmgCardTitle}
-          </h3>
-          <p class="type-muted mx-lg mb-md">{card.hmgCardDescription}</p>
-          <Button
-            class="mb-lg ml-lg self-start"
-            href={card.hmgCardButtonHref}
-            tone="outline"
-            external={Boolean(card.hmgCardExternal)}
+          <div
+            class="flex min-h-0 flex-1 flex-col gap-md px-lg pb-lg pt-md"
           >
-            {card.hmgCardButtonLabel}
-          </Button>
+            <h3 class="mb-xs font-display text-[1.15rem]">
+              {card.hmgCardTitle}
+            </h3>
+            <p class="type-muted mb-0 flex-1">{card.hmgCardDescription}</p>
+            <Button
+              class="mt-auto w-full shrink-0"
+              href={card.hmgCardButtonHref}
+              tone="outline"
+              external={Boolean(card.hmgCardExternal)}
+            >
+              {card.hmgCardButtonLabel}
+            </Button>
+          </div>
         </article>
       ))
     }
