@@ -37,6 +37,13 @@
           "evtDate": "2026-05-18T00:09:51.129Z",
           "evtHref": "https://www.facebook.com/share/1G6UAGWMR5/",
           "evtExpiresAt": "2026-05-19T00:10:00.425Z"
+        },
+        {
+          "evtImage": "/images/0c4d4a04-a1dd-4442-aea1-a0d3b0008454.jpg",
+          "evtAlt": "Heroes Wanted ",
+          "evtDate": "2026-06-20T14:14:23.436Z",
+          "evtHref": "https://www.facebook.com/share/1BHvWNJBqM/",
+          "evtExpiresAt": "2026-06-21T14:16:32.031Z"
         }
       ],
       "_template": "eventsGallery"
