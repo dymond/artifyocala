@@ -19,6 +19,12 @@
           "evtDate": "2026-06-28T14:18:17.923Z",
           "evtHref": "https://www.facebook.com/share/1EdEDLK7WV/",
           "evtExpiresAt": "2026-06-29T14:18:20.669Z"
+        },
+        {
+          "evtImage": "/images/725060392_122140689231016024_1328182756635139789_n.jpg",
+          "evtAlt": "Working TItle: a Writer's Workshop",
+          "evtDate": "2026-06-20T14:22:51.186Z",
+          "evtExpiresAt": "2026-06-21T14:24:50.969Z"
         }
       ],
       "_template": "eventsGallery"
