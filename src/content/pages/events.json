@@ -32,6 +32,12 @@
           "evtDate": "2026-06-29T19:42:25.690Z",
           "evtHref": "https://www.facebook.com/share/1AKe61CuYf/",
           "evtExpiresAt": "2026-06-30T19:43:31.256Z"
+        },
+        {
+          "evtImage": "/images/adas.jpg",
+          "evtAlt": "Master Model Builders",
+          "evtDate": "2026-07-29T19:43:57.106Z",
+          "evtExpiresAt": "2026-08-04T19:44:08.893Z"
         }
       ],
       "_template": "eventsGallery"
