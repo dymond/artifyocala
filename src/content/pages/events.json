@@ -44,6 +44,11 @@
           "evtAlt": "Maker Meetup",
           "evtDate": "2026-07-01T19:46:29.172Z",
           "evtExpiresAt": "2026-07-02T19:46:54.730Z"
+        },
+        {
+          "evtImage": "/images/222.jpg",
+          "evtDate": "2026-07-08T19:47:52.765Z",
+          "evtExpiresAt": "2026-07-09T19:47:55.996Z"
         }
       ],
       "_template": "eventsGallery"
