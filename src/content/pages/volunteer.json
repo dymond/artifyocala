@@ -4,12 +4,22 @@
   "metaDescription": "Volunteer with Brick City Glam, Storytelling Knights, or the Marion County Maker Collective.",
   "sections": [
     {
-      "_template": "pageIntro",
       "introTitle": "Volunteer",
-      "introLede": "Show your support for the arts with your time. Below are ways to plug in across our programs."
+      "introLede": "Show your support for the arts with your time. Below are ways to plug in across our programs.",
+      "_template": "pageIntro"
     },
     {
-      "_template": "splitImageText",
+      "sitHeading": "Apply To Join Our Board of Directors",
+      "sitBody": "We're looking for board members like you!\n\nShare your skills.  Guide our mission.  Make an impact..  Apply now!",
+      "sitButtonLabel": "Apply Here",
+      "sitButtonHref": "https://docs.google.com/forms/d/e/1FAIpQLSft9qbC5DPUj8G23GnlLA87_0MSV6SlrAbtw7VCtP6HuAU09A/viewform",
+      "sitButtonTone": "primary",
+      "sitExternal": true,
+      "sitImage": "/images/Board of Diretors Applications (1).jpg",
+      "sitImageAlt": "Brick City Glam volunteers and performance",
+      "_template": "splitImageText"
+    },
+    {
       "sitVariant": "dark",
       "sitHeading": "Brick City Glam",
       "sitBody": "Onstage or behind the scenes — audio and lighting technicians, merch, marketing (digital and street team), stage management, and production assistant roles.",
@@ -18,10 +28,10 @@
       "sitExternal": false,
       "sitImage": "/images/volunteer-brick-city-glam.jpg",
       "sitImageAlt": "Brick City Glam volunteers and performance",
-      "sitImagePosition": "right"
+      "sitImagePosition": "right",
+      "_template": "splitImageText"
     },
     {
-      "_template": "splitImageText",
       "sitVariant": "default",
       "sitHeading": "Storytelling Knights",
       "sitBody": "Marketing, event assistants (setup, strike, check-in), program development (help shape the next adventure), and a training path for official storytellers.",
@@ -30,10 +40,10 @@
       "sitExternal": false,
       "sitImage": "/images/volunteer-storytelling-knights.jpg",
       "sitImageAlt": "Storytelling Knights community event",
-      "sitImagePosition": "left"
+      "sitImagePosition": "left",
+      "_template": "splitImageText"
     },
     {
-      "_template": "splitImageText",
       "sitVariant": "dark",
       "sitHeading": "Marion County Maker Collective",
       "sitBody": "Lead maker meetups, instruct classes and workshops, assist with team builds, marketing (digital and in-person events), and check-in / gift shop.",
@@ -42,16 +52,17 @@
       "sitExternal": false,
       "sitImage": "/images/volunteer-maker-collective.jpg",
       "sitImageAlt": "Makers and tools at the collective",
-      "sitImagePosition": "right"
+      "sitImagePosition": "right",
+      "_template": "splitImageText"
     },
     {
-      "_template": "splitImageText",
       "sitVariant": "default",
       "sitHeading": "Why it matters",
       "sitBody": "Volunteers keep performances on stage, tables set for storytelling, and the makerspace welcoming. Every hour you give helps neighbors access creative programs across Marion County.",
       "sitImage": "/images/volunteer-community-outreach.jpg",
       "sitImageAlt": "Community gathered for arts programming",
-      "sitImagePosition": "left"
+      "sitImagePosition": "left",
+      "_template": "splitImageText"
     }
   ]
 }
