@@ -36,18 +36,8 @@
         {
           "evtImage": "/images/709588485_17882994849571907_6720083935054360070_n.jpg",
           "evtAlt": "Maker Meetup",
-          "evtDate": "2026-07-31T19:46:29.172Z",
+          "evtDate": "2026-08-31T19:46:29.172Z",
           "evtExpiresAt": "2026-08-31T19:46:54.730Z"
-        },
-        {
-          "evtImage": "/images/222.jpg",
-          "evtDate": "2026-07-31T19:47:52.765Z",
-          "evtExpiresAt": "2026-07-09T19:47:55.996Z"
-        },
-        {
-          "evtImage": "/images/Copy of Collage collective flyer.jpg.jpeg",
-          "evtDate": "2026-07-27T01:14:14.753Z",
-          "evtExpiresAt": "2026-07-28T01:15:42.925Z"
         }
       ],
       "_template": "eventsGallery"
