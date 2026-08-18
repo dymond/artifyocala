@@ -38,6 +38,12 @@
           "evtAlt": "Maker Meetup",
           "evtDate": "2026-08-31T19:46:29.172Z",
           "evtExpiresAt": "2026-08-31T19:46:54.730Z"
+        },
+        {
+          "evtImage": "/images/769175276_1369159752087036_1493858075106988998_n.jpg",
+          "evtDate": "2026-09-10T00:32:30.965Z",
+          "evtHref": "https://www.facebook.com/share/1F6bdtxrTL/",
+          "evtExpiresAt": "2026-10-01T00:33:02.381Z"
         }
       ],
       "_template": "eventsGallery"
