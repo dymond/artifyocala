@@ -44,6 +44,13 @@
           "evtDate": "2026-09-10T00:32:30.965Z",
           "evtHref": "https://www.facebook.com/share/1F6bdtxrTL/",
           "evtExpiresAt": "2026-10-01T00:33:02.381Z"
+        },
+        {
+          "evtImage": "/images/764777656_122144814747016024_2920378530361430727_n.jpg",
+          "evtAlt": "Collage collective",
+          "evtDate": "2026-08-30T17:53:39.697Z",
+          "evtHref": "https://www.facebook.com/share/19hSH2vwEG/",
+          "evtExpiresAt": "2026-08-30T17:53:22.395Z"
         }
       ],
       "_template": "eventsGallery"
