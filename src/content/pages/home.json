@@ -32,6 +32,12 @@
           "hhbHref": "/events",
           "hhbExternal": false,
           "hhbTone": "primary"
+        },
+        {
+          "hhbLabel": "VOCAL Mural Project INFO",
+          "hhbHref": "https://ocalametroartscene.com/event/bark-brushes-vocal-mural-project-artify-ocala-x-lilac/",
+          "hhbExternal": true,
+          "hhbTone": "primary"
         }
       ],
       "hhfAsideBadge": "Now open for members",
