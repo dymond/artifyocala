@@ -38,6 +38,12 @@
           "evtDate": "2026-10-31T17:53:39.697Z",
           "evtHref": "https://www.facebook.com/share/19hSH2vwEG/",
           "evtExpiresAt": "2026-12-31T18:53:22.395Z"
+        },
+        {
+          "evtImage": "/images/832232045_1560777596082306_7943047789163429672_n.jpg",
+          "evtDate": "2026-10-23T15:25:05.198Z",
+          "evtHref": "https://www.facebook.com/share/1ZuiiUQd7v/",
+          "evtExpiresAt": "2026-10-31T15:25:15.629Z"
         }
       ],
       "_template": "eventsGallery"
