@@ -49,6 +49,12 @@
           "evtImage": "/images/832997726_122150226123016024_7496713701744158741_n.jpg",
           "evtDate": "2026-10-11T15:27:52.332Z",
           "evtExpiresAt": "2026-10-31T15:27:56.313Z"
+        },
+        {
+          "evtImage": "/images/773093634_122145379479016024_1987030319807209225_n.jpg",
+          "evtDate": "2026-10-09T15:29:56.661Z",
+          "evtHref": "https://www.facebook.com/share/1857c8swys/",
+          "evtExpiresAt": "2026-10-09T15:29:49.224Z"
         }
       ],
       "_template": "eventsGallery"
