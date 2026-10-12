@@ -72,6 +72,11 @@
           "evtDate": "2026-10-17T16:58:53.729Z",
           "evtHref": "https://www.facebook.com/share/1JVupoY7dR/",
           "evtExpiresAt": "2026-10-18T16:59:05.786Z"
+        },
+        {
+          "evtImage": "/images/f445994d-3996-4dd7-aaca-27a35fd6a788.jpeg",
+          "evtAlt": "Heroes Wanted: Seasons",
+          "evtDate": "2026-11-21T18:01:20.996Z"
         }
       ],
       "_template": "eventsGallery"
