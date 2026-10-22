@@ -9,13 +9,13 @@
       "_template": "pageIntro"
     },
     {
-      "sitHeading": "Apply To Join Our Board of Directors",
-      "sitBody": "We're looking for board members like you!\n\nShare your skills.  Guide our mission.  Make an impact..  Apply now!",
-      "sitButtonLabel": "Apply Here",
-      "sitButtonHref": "https://docs.google.com/forms/d/e/1FAIpQLSft9qbC5DPUj8G23GnlLA87_0MSV6SlrAbtw7VCtP6HuAU09A/viewform",
+      "sitHeading": "Join our volunteer roster!",
+      "sitBody": "We always have so many opportunities to volunteer for our organization such as event help, art projects, and performance opportunities.  Join the roster to get notified when new calls for help go out!",
+      "sitButtonLabel": "Joinn Here",
+      "sitButtonHref": "https://portal.artifyocala.org/apply/volunteer",
       "sitButtonTone": "primary",
       "sitExternal": true,
-      "sitImage": "/images/Board of Diretors Applications (1).jpg",
+      "sitImage": "/images/PXL_20260115_010244762.jpg",
       "sitImageAlt": "Brick City Glam volunteers and performance",
       "_template": "splitImageText"
     },
