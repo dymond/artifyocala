@@ -48,7 +48,14 @@
           "evtImage": "/images/f445994d-3996-4dd7-aaca-27a35fd6a788.jpeg",
           "evtAlt": "Heroes Wanted: Seasons",
           "evtDate": "2026-11-21T18:01:20.996Z"
-        }
+        },
+        {
+          "evtImage": "/images/887094330_122153757363016024_8149861024418009600_n.jpg",
+          "evtAlt": "Whole Month",
+          "evtDate": "2026-11-30T15:13:38.892Z",
+          "evtExpiresAt": "2026-11-30T15:13:33.415Z"
+        },
+        {}
       ],
       "_template": "eventsGallery"
     }
