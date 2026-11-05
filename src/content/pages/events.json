@@ -61,6 +61,12 @@
           "evtDate": "2026-11-12T15:20:02.430Z",
           "evtHref": "https://www.facebook.com/share/19YbuRqDUJ/",
           "evtExpiresAt": "2026-11-13T15:20:03.970Z"
+        },
+        {
+          "evtImage": "/images/871223900_1447527810916896_7939835503867564671_n.jpg",
+          "evtAlt": "Barks and Brushes",
+          "evtDate": "2026-11-14T15:21:12.090Z",
+          "evtHref": "https://www.facebook.com/share/1BJhWkK9q4/"
         }
       ],
       "_template": "eventsGallery"
