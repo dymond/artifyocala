@@ -98,6 +98,12 @@
           "evtAlt": "Build a Bot",
           "evtDate": "2027-01-09T15:32:49.070Z",
           "evtHref": "https://www.facebook.com/share/1CUh8aR1TT/"
+        },
+        {
+          "evtImage": "/images/835874574_122150572227016024_8856602314708536777_n.jpg",
+          "evtDate": "2027-02-13T15:34:54.684Z",
+          "evtHref": "https://www.facebook.com/share/1C8hiHnWp1/",
+          "evtExpiresAt": "2027-02-14T15:34:13.840Z"
         }
       ],
       "_template": "eventsGallery"
