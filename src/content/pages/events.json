@@ -67,6 +67,13 @@
           "evtAlt": "Barks and Brushes",
           "evtDate": "2026-11-14T15:21:12.090Z",
           "evtHref": "https://www.facebook.com/share/1BJhWkK9q4/"
+        },
+        {
+          "evtImage": "/images/868386790_122152991499016024_1204530610665577874_n (1).jpg",
+          "evtAlt": "Learn to Solder",
+          "evtDate": "2026-11-15T15:23:37.338Z",
+          "evtHref": "https://www.facebook.com/share/1DVL3YpahZ/",
+          "evtExpiresAt": "2026-11-15T15:23:49.800Z"
         }
       ],
       "_template": "eventsGallery"
