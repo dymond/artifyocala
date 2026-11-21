@@ -117,6 +117,12 @@
           "evtDate": "2027-02-20T18:24:48.748Z",
           "evtHref": "https://www.facebook.com/share/19zNK6WhrT/",
           "evtExpiresAt": "2027-02-21T18:24:18.752Z"
+        },
+        {
+          "evtImage": "/images/844219716_122151637023016024_8590662478141914992_n%20(1).jpg",
+          "evtDate": "2027-03-13T18:26:13.006Z",
+          "evtHref": "https://www.facebook.com/share/19sJMtjBjA/",
+          "evtExpiresAt": "2027-03-14T17:26:26.610Z"
         }
       ],
       "_template": "eventsGallery"
