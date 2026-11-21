@@ -7,13 +7,13 @@
     })
     return str
   }
-  export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+  import type { TinaMarkdownContent } from 'tinacms/dist/rich-text';
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -24,6 +24,8 @@ export type Scalars = {
   /** References another document, used as a foreign key */
   Reference: { input: any; output: any; }
   JSON: { input: any; output: any; }
+  /** A rich-text document, renderable by TinaMarkdown */
+  RichText: { input: TinaMarkdownContent; output: TinaMarkdownContent; }
 };
 
 export type SystemInfo = {
@@ -247,7 +249,7 @@ export type Program = Node & Document & {
   progHeroLayout?: Maybe<Scalars['String']['output']>;
   progHeroSlides?: Maybe<Array<Maybe<ProgramProgHeroSlides>>>;
   progCtaRows?: Maybe<Array<Maybe<ProgramProgCtaRows>>>;
-  body?: Maybe<Scalars['JSON']['output']>;
+  body?: Maybe<Scalars['RichText']['output']>;
   progGalleryEnable?: Maybe<Scalars['Boolean']['output']>;
   progGalleryHeading?: Maybe<Scalars['String']['output']>;
   progGalleryDekHtml?: Maybe<Scalars['String']['output']>;
@@ -1153,7 +1155,7 @@ export type ProgramMutation = {
   progHeroLayout?: InputMaybe<Scalars['String']['input']>;
   progHeroSlides?: InputMaybe<Array<InputMaybe<ProgramProgHeroSlidesMutation>>>;
   progCtaRows?: InputMaybe<Array<InputMaybe<ProgramProgCtaRowsMutation>>>;
-  body?: InputMaybe<Scalars['JSON']['input']>;
+  body?: InputMaybe<Scalars['RichText']['input']>;
   progGalleryEnable?: InputMaybe<Scalars['Boolean']['input']>;
   progGalleryHeading?: InputMaybe<Scalars['String']['input']>;
   progGalleryDekHtml?: InputMaybe<Scalars['String']['input']>;
@@ -1465,89 +1467,522 @@ export type SiteChromeMutation = {
   footerCopyright?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type ProgramPartsFragment = { __typename: 'Program', title: string, description: string, order?: number | null, progHeroLayout?: string | null, body?: any | null, progGalleryEnable?: boolean | null, progGalleryHeading?: string | null, progGalleryDekHtml?: string | null, progGallerySurface?: string | null, progGalleryMarqueeAlt?: string | null, progHeroSlides?: Array<{ __typename: 'ProgramProgHeroSlides', progHeroImage: string, progHeroAlt?: string | null } | null> | null, progCtaRows?: Array<{ __typename: 'ProgramProgCtaRows', progCtaLabel: string, progCtaHref: string, progCtaExternal?: boolean | null, progCtaTone?: string | null } | null> | null, progGalleryStrip?: Array<{ __typename: 'ProgramProgGalleryStrip', progGalImage: string, progGalAlt?: string | null } | null> | null };
+export type StringFilter = {
+  startsWith?: string | null | undefined;
+  eq?: string | null | undefined;
+  exists?: boolean | null | undefined;
+  in?: Array<string | null | undefined> | null | undefined;
+};
 
-export type PagePartsFragment = { __typename: 'Page', slug: string, metaTitle?: string | null, metaDescription?: string | null, sections?: Array<{ __typename: 'PageSectionsPageIntro', introTitle: string, introLede?: string | null, introImage?: string | null, introImageAlt?: string | null } | { __typename: 'PageSectionsProseBand', pbVariant?: string | null, pbTopImage?: string | null, pbTopImageAlt?: string | null, pbHeading?: string | null, pbBodyHtml?: string | null } | { __typename: 'PageSectionsMissionQuote', mqQuoteText?: string | null } | { __typename: 'PageSectionsObjectivesList', objHeading?: string | null, objFooterHtml?: string | null, objLines?: Array<{ __typename: 'PageSectionsObjectivesListObjLines', objLineTitle: string, objLineBody: string } | null> | null, objCtas?: Array<{ __typename: 'PageSectionsObjectivesListObjCtas', objCtaLabel: string, objCtaHref: string, objCtaTone?: string | null, objCtaExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsContactSection', ctHeading: string, ctSubheading?: string | null, ctAddressHtml?: string | null, ctNoteHtml?: string | null, ctEmail: string, ctPhoneDisplay: string, ctPhoneTel: string } | { __typename: 'PageSectionsTwoColumnDonateHero', dchTitle: string, dchLede: string, dchButtonLabel: string, dchButtonHref: string, dchButtonTone?: string | null, dchExternal?: boolean | null, dchImage: string, dchImageAlt: string } | { __typename: 'PageSectionsBulletBand', bbVariant?: string | null, bbHeading: string, bbLines?: Array<string | null> | null } | { __typename: 'PageSectionsSplitImageText', sitVariant?: string | null, sitHeading: string, sitBody: string, sitButtonLabel?: string | null, sitButtonHref?: string | null, sitButtonTone?: string | null, sitExternal?: boolean | null, sitImage: string, sitImageAlt: string, sitImagePosition?: string | null } | { __typename: 'PageSectionsHomeHeroFull', hhfEyebrow: string, hhfTitle: string, hhfLede: string, hhfRotatorWords?: Array<string | null> | null, hhfAsideBadge: string, hhfAsideTitle: string, hhfAsideDescription: string, hhfAsideMeetupsLabel: string, hhfAsideMeetupsHref: string, hhfAsideMeetupsExternal?: boolean | null, hhfAsideMeetupsTone?: string | null, hhfHiringImage: string, hhfHiringImageAlt: string, hhfShowCollage?: boolean | null, hhfHeroButtons?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfHeroButtons', hhbLabel: string, hhbHref: string, hhbExternal?: boolean | null, hhbTone?: string | null } | null> | null, hhfAsideStackButtons?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfAsideStackButtons', habsLabel: string, habsHref: string, habsExternal?: boolean | null, habsTone?: string | null } | null> | null, hhfCollageCards?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfCollageCards', hccFrontImage?: string | null, hccFrontAlt?: string | null, hccFrontCaption?: string | null, hccBackImage?: string | null, hccBackAlt?: string | null, hccBackCaption?: string | null } | null> | null } | { __typename: 'PageSectionsHomeMarquee', hmrText: string } | { __typename: 'PageSectionsWhoScroll', wscShowWhoScroll?: boolean | null, wscEyebrow: string, wscHeading: string, wscLedeHtml: string, wscImage: string, wscImageAlt: string, wscButtonLabel: string, wscButtonHref: string, wscButtonExternal?: boolean | null, wscButtonTone?: string | null } | { __typename: 'PageSectionsHomeProgramsIntro', hpiEyebrow: string, hpiHeading: string, hpiLedeHtml: string, hpiCards?: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCards', hpiCardImage: string, hpiCardImageAlt?: string | null, hpiCardTitle: string, hpiCardBodyHtml: string, hpiCardTheme?: string | null, hpiCardTiltBaseZ?: string | null, hpiCardButtons?: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCardsHpiCardButtons', hpcbLabel: string, hpcbHref: string, hpcbExternal?: boolean | null, hpcbTone?: string | null } | null> | null } | null> | null } | { __typename: 'PageSectionsHomeMeetups', hmuEyebrow: string, hmuHeading: string, hmuLedeHtml: string, hmuImageLeft: string, hmuImageLeftAlt: string, hmuImageRight: string, hmuImageRightAlt: string, hmuButtonLabel: string, hmuButtonHref: string, hmuExternal?: boolean | null, hmuButtonTone?: string | null } | { __typename: 'PageSectionsHomeSupportBand', hsbImage: string, hsbImageAlt: string, hsbEyebrow: string, hsbHeading: string, hsbLedeHtml: string, hsbButtonLabel: string, hsbButtonHref: string, hsbButtonExternal?: boolean | null, hsbButtonTone?: string | null } | { __typename: 'PageSectionsHomeMoreGrid', hmgEyebrow: string, hmgHeading: string, hmgLedeHtml: string, hmgCards?: Array<{ __typename: 'PageSectionsHomeMoreGridHmgCards', hmgCardTitle: string, hmgCardDescription: string, hmgCardImage: string, hmgCardImageAlt?: string | null, hmgCardButtonLabel: string, hmgCardButtonHref: string, hmgCardExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsHomeCtaBand', hcbImage: string, hcbImageAlt: string, hcbEyebrow: string, hcbHeading: string, hcbBodyHtml: string, hcbButtons?: Array<{ __typename: 'PageSectionsHomeCtaBandHcbButtons', hcbBtnLabel: string, hcbBtnHref: string, hcbBtnTone?: string | null, hcbBtnExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsEventsGallery', evgHeading: string, evgLedeHtml?: string | null, evgTiles?: Array<{ __typename: 'PageSectionsEventsGalleryEvgTiles', evtImage: string, evtAlt?: string | null, evtDate: string, evtHref?: string | null, evtExpiresAt?: string | null } | null> | null } | null> | null };
+export type NumberFilter = {
+  lt?: number | null | undefined;
+  lte?: number | null | undefined;
+  gte?: number | null | undefined;
+  gt?: number | null | undefined;
+  eq?: number | null | undefined;
+  exists?: boolean | null | undefined;
+  in?: Array<number | null | undefined> | null | undefined;
+};
 
-export type EquipmentWishlistPartsFragment = { __typename: 'EquipmentWishlist', categories?: Array<{ __typename: 'EquipmentWishlistCategories', eqCatId: string, eqCatTitle: string, eqCatLines?: Array<string | null> | null } | null> | null };
+export type ImageFilter = {
+  startsWith?: string | null | undefined;
+  eq?: string | null | undefined;
+  exists?: boolean | null | undefined;
+  in?: Array<string | null | undefined> | null | undefined;
+};
 
-export type SiteChromePartsFragment = { __typename: 'SiteChrome', headerLogoImage?: string | null, footerLogoImage?: string | null, headerLogoAriaLabel: string, islandHomeAriaLabel?: string | null, islandMenuOpenText?: string | null, islandMenuCloseText?: string | null, footerTagline?: string | null, footerConnectHeading?: string | null, footerCommunityHeading?: string | null, footerEmail?: string | null, footerPhoneDisplay?: string | null, footerPhoneTel?: string | null, instagramUrl?: string | null, instagramLabel?: string | null, facebookUrl?: string | null, facebookLabel?: string | null, meetupUrl?: string | null, meetupLabel?: string | null, meetupAriaLabel?: string | null, footerCopyright?: string | null, navItems?: Array<{ __typename: 'SiteChromeNavItems', href: string, label: string, ariaLabel?: string | null, external?: boolean | null } | null> | null };
+export type ProgramProgHeroSlidesFilter = {
+  progHeroImage?: ImageFilter | null | undefined;
+  progHeroAlt?: StringFilter | null | undefined;
+};
+
+export type BooleanFilter = {
+  eq?: boolean | null | undefined;
+  exists?: boolean | null | undefined;
+};
+
+export type ProgramProgCtaRowsFilter = {
+  progCtaLabel?: StringFilter | null | undefined;
+  progCtaHref?: StringFilter | null | undefined;
+  progCtaExternal?: BooleanFilter | null | undefined;
+  progCtaTone?: StringFilter | null | undefined;
+};
+
+export type RichTextFilter = {
+  startsWith?: string | null | undefined;
+  eq?: string | null | undefined;
+  exists?: boolean | null | undefined;
+};
+
+export type ProgramProgGalleryStripFilter = {
+  progGalImage?: ImageFilter | null | undefined;
+  progGalAlt?: StringFilter | null | undefined;
+};
+
+export type ProgramFilter = {
+  title?: StringFilter | null | undefined;
+  description?: StringFilter | null | undefined;
+  order?: NumberFilter | null | undefined;
+  progHeroLayout?: StringFilter | null | undefined;
+  progHeroSlides?: ProgramProgHeroSlidesFilter | null | undefined;
+  progCtaRows?: ProgramProgCtaRowsFilter | null | undefined;
+  body?: RichTextFilter | null | undefined;
+  progGalleryEnable?: BooleanFilter | null | undefined;
+  progGalleryHeading?: StringFilter | null | undefined;
+  progGalleryDekHtml?: StringFilter | null | undefined;
+  progGallerySurface?: StringFilter | null | undefined;
+  progGalleryMarqueeAlt?: StringFilter | null | undefined;
+  progGalleryStrip?: ProgramProgGalleryStripFilter | null | undefined;
+};
+
+export type PageSectionsPageIntroFilter = {
+  introTitle?: StringFilter | null | undefined;
+  introLede?: StringFilter | null | undefined;
+  introImage?: ImageFilter | null | undefined;
+  introImageAlt?: StringFilter | null | undefined;
+};
+
+export type PageSectionsProseBandFilter = {
+  pbVariant?: StringFilter | null | undefined;
+  pbTopImage?: ImageFilter | null | undefined;
+  pbTopImageAlt?: StringFilter | null | undefined;
+  pbHeading?: StringFilter | null | undefined;
+  pbBodyHtml?: StringFilter | null | undefined;
+};
+
+export type PageSectionsMissionQuoteFilter = {
+  mqQuoteText?: StringFilter | null | undefined;
+};
+
+export type PageSectionsObjectivesListObjLinesFilter = {
+  objLineTitle?: StringFilter | null | undefined;
+  objLineBody?: StringFilter | null | undefined;
+};
+
+export type PageSectionsObjectivesListObjCtasFilter = {
+  objCtaLabel?: StringFilter | null | undefined;
+  objCtaHref?: StringFilter | null | undefined;
+  objCtaTone?: StringFilter | null | undefined;
+  objCtaExternal?: BooleanFilter | null | undefined;
+};
+
+export type PageSectionsObjectivesListFilter = {
+  objHeading?: StringFilter | null | undefined;
+  objLines?: PageSectionsObjectivesListObjLinesFilter | null | undefined;
+  objFooterHtml?: StringFilter | null | undefined;
+  objCtas?: PageSectionsObjectivesListObjCtasFilter | null | undefined;
+};
+
+export type PageSectionsContactSectionFilter = {
+  ctHeading?: StringFilter | null | undefined;
+  ctSubheading?: StringFilter | null | undefined;
+  ctAddressHtml?: StringFilter | null | undefined;
+  ctNoteHtml?: StringFilter | null | undefined;
+  ctEmail?: StringFilter | null | undefined;
+  ctPhoneDisplay?: StringFilter | null | undefined;
+  ctPhoneTel?: StringFilter | null | undefined;
+};
+
+export type PageSectionsTwoColumnDonateHeroFilter = {
+  dchTitle?: StringFilter | null | undefined;
+  dchLede?: StringFilter | null | undefined;
+  dchButtonLabel?: StringFilter | null | undefined;
+  dchButtonHref?: StringFilter | null | undefined;
+  dchButtonTone?: StringFilter | null | undefined;
+  dchExternal?: BooleanFilter | null | undefined;
+  dchImage?: ImageFilter | null | undefined;
+  dchImageAlt?: StringFilter | null | undefined;
+};
+
+export type PageSectionsBulletBandFilter = {
+  bbVariant?: StringFilter | null | undefined;
+  bbHeading?: StringFilter | null | undefined;
+  bbLines?: StringFilter | null | undefined;
+};
+
+export type PageSectionsSplitImageTextFilter = {
+  sitVariant?: StringFilter | null | undefined;
+  sitHeading?: StringFilter | null | undefined;
+  sitBody?: StringFilter | null | undefined;
+  sitButtonLabel?: StringFilter | null | undefined;
+  sitButtonHref?: StringFilter | null | undefined;
+  sitButtonTone?: StringFilter | null | undefined;
+  sitExternal?: BooleanFilter | null | undefined;
+  sitImage?: ImageFilter | null | undefined;
+  sitImageAlt?: StringFilter | null | undefined;
+  sitImagePosition?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeHeroFullHhfHeroButtonsFilter = {
+  hhbLabel?: StringFilter | null | undefined;
+  hhbHref?: StringFilter | null | undefined;
+  hhbExternal?: BooleanFilter | null | undefined;
+  hhbTone?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeHeroFullHhfAsideStackButtonsFilter = {
+  habsLabel?: StringFilter | null | undefined;
+  habsHref?: StringFilter | null | undefined;
+  habsExternal?: BooleanFilter | null | undefined;
+  habsTone?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeHeroFullHhfCollageCardsFilter = {
+  hccFrontImage?: ImageFilter | null | undefined;
+  hccFrontAlt?: StringFilter | null | undefined;
+  hccFrontCaption?: StringFilter | null | undefined;
+  hccBackImage?: ImageFilter | null | undefined;
+  hccBackAlt?: StringFilter | null | undefined;
+  hccBackCaption?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeHeroFullFilter = {
+  hhfEyebrow?: StringFilter | null | undefined;
+  hhfTitle?: StringFilter | null | undefined;
+  hhfLede?: StringFilter | null | undefined;
+  hhfRotatorWords?: StringFilter | null | undefined;
+  hhfHeroButtons?: PageSectionsHomeHeroFullHhfHeroButtonsFilter | null | undefined;
+  hhfAsideBadge?: StringFilter | null | undefined;
+  hhfAsideTitle?: StringFilter | null | undefined;
+  hhfAsideDescription?: StringFilter | null | undefined;
+  hhfAsideMeetupsLabel?: StringFilter | null | undefined;
+  hhfAsideMeetupsHref?: StringFilter | null | undefined;
+  hhfAsideMeetupsExternal?: BooleanFilter | null | undefined;
+  hhfAsideMeetupsTone?: StringFilter | null | undefined;
+  hhfAsideStackButtons?: PageSectionsHomeHeroFullHhfAsideStackButtonsFilter | null | undefined;
+  hhfHiringImage?: ImageFilter | null | undefined;
+  hhfHiringImageAlt?: StringFilter | null | undefined;
+  hhfShowCollage?: BooleanFilter | null | undefined;
+  hhfCollageCards?: PageSectionsHomeHeroFullHhfCollageCardsFilter | null | undefined;
+};
+
+export type PageSectionsHomeMarqueeFilter = {
+  hmrText?: StringFilter | null | undefined;
+};
+
+export type PageSectionsWhoScrollFilter = {
+  wscShowWhoScroll?: BooleanFilter | null | undefined;
+  wscEyebrow?: StringFilter | null | undefined;
+  wscHeading?: StringFilter | null | undefined;
+  wscLedeHtml?: StringFilter | null | undefined;
+  wscImage?: ImageFilter | null | undefined;
+  wscImageAlt?: StringFilter | null | undefined;
+  wscButtonLabel?: StringFilter | null | undefined;
+  wscButtonHref?: StringFilter | null | undefined;
+  wscButtonExternal?: BooleanFilter | null | undefined;
+  wscButtonTone?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeProgramsIntroHpiCardsHpiCardButtonsFilter = {
+  hpcbLabel?: StringFilter | null | undefined;
+  hpcbHref?: StringFilter | null | undefined;
+  hpcbExternal?: BooleanFilter | null | undefined;
+  hpcbTone?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeProgramsIntroHpiCardsFilter = {
+  hpiCardImage?: ImageFilter | null | undefined;
+  hpiCardImageAlt?: StringFilter | null | undefined;
+  hpiCardTitle?: StringFilter | null | undefined;
+  hpiCardBodyHtml?: StringFilter | null | undefined;
+  hpiCardTheme?: StringFilter | null | undefined;
+  hpiCardTiltBaseZ?: StringFilter | null | undefined;
+  hpiCardButtons?: PageSectionsHomeProgramsIntroHpiCardsHpiCardButtonsFilter | null | undefined;
+};
+
+export type PageSectionsHomeProgramsIntroFilter = {
+  hpiEyebrow?: StringFilter | null | undefined;
+  hpiHeading?: StringFilter | null | undefined;
+  hpiLedeHtml?: StringFilter | null | undefined;
+  hpiCards?: PageSectionsHomeProgramsIntroHpiCardsFilter | null | undefined;
+};
+
+export type PageSectionsHomeMeetupsFilter = {
+  hmuEyebrow?: StringFilter | null | undefined;
+  hmuHeading?: StringFilter | null | undefined;
+  hmuLedeHtml?: StringFilter | null | undefined;
+  hmuImageLeft?: ImageFilter | null | undefined;
+  hmuImageLeftAlt?: StringFilter | null | undefined;
+  hmuImageRight?: ImageFilter | null | undefined;
+  hmuImageRightAlt?: StringFilter | null | undefined;
+  hmuButtonLabel?: StringFilter | null | undefined;
+  hmuButtonHref?: StringFilter | null | undefined;
+  hmuExternal?: BooleanFilter | null | undefined;
+  hmuButtonTone?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeSupportBandFilter = {
+  hsbImage?: ImageFilter | null | undefined;
+  hsbImageAlt?: StringFilter | null | undefined;
+  hsbEyebrow?: StringFilter | null | undefined;
+  hsbHeading?: StringFilter | null | undefined;
+  hsbLedeHtml?: StringFilter | null | undefined;
+  hsbButtonLabel?: StringFilter | null | undefined;
+  hsbButtonHref?: StringFilter | null | undefined;
+  hsbButtonExternal?: BooleanFilter | null | undefined;
+  hsbButtonTone?: StringFilter | null | undefined;
+};
+
+export type PageSectionsHomeMoreGridHmgCardsFilter = {
+  hmgCardTitle?: StringFilter | null | undefined;
+  hmgCardDescription?: StringFilter | null | undefined;
+  hmgCardImage?: ImageFilter | null | undefined;
+  hmgCardImageAlt?: StringFilter | null | undefined;
+  hmgCardButtonLabel?: StringFilter | null | undefined;
+  hmgCardButtonHref?: StringFilter | null | undefined;
+  hmgCardExternal?: BooleanFilter | null | undefined;
+};
+
+export type PageSectionsHomeMoreGridFilter = {
+  hmgEyebrow?: StringFilter | null | undefined;
+  hmgHeading?: StringFilter | null | undefined;
+  hmgLedeHtml?: StringFilter | null | undefined;
+  hmgCards?: PageSectionsHomeMoreGridHmgCardsFilter | null | undefined;
+};
+
+export type PageSectionsHomeCtaBandHcbButtonsFilter = {
+  hcbBtnLabel?: StringFilter | null | undefined;
+  hcbBtnHref?: StringFilter | null | undefined;
+  hcbBtnTone?: StringFilter | null | undefined;
+  hcbBtnExternal?: BooleanFilter | null | undefined;
+};
+
+export type PageSectionsHomeCtaBandFilter = {
+  hcbImage?: ImageFilter | null | undefined;
+  hcbImageAlt?: StringFilter | null | undefined;
+  hcbEyebrow?: StringFilter | null | undefined;
+  hcbHeading?: StringFilter | null | undefined;
+  hcbBodyHtml?: StringFilter | null | undefined;
+  hcbButtons?: PageSectionsHomeCtaBandHcbButtonsFilter | null | undefined;
+};
+
+export type DatetimeFilter = {
+  after?: string | null | undefined;
+  before?: string | null | undefined;
+  eq?: string | null | undefined;
+  exists?: boolean | null | undefined;
+  in?: Array<string | null | undefined> | null | undefined;
+};
+
+export type PageSectionsEventsGalleryEvgTilesFilter = {
+  evtImage?: ImageFilter | null | undefined;
+  evtAlt?: StringFilter | null | undefined;
+  evtDate?: DatetimeFilter | null | undefined;
+  evtHref?: StringFilter | null | undefined;
+  evtExpiresAt?: DatetimeFilter | null | undefined;
+};
+
+export type PageSectionsEventsGalleryFilter = {
+  evgHeading?: StringFilter | null | undefined;
+  evgLedeHtml?: StringFilter | null | undefined;
+  evgTiles?: PageSectionsEventsGalleryEvgTilesFilter | null | undefined;
+};
+
+export type PageSectionsFilter = {
+  pageIntro?: PageSectionsPageIntroFilter | null | undefined;
+  proseBand?: PageSectionsProseBandFilter | null | undefined;
+  missionQuote?: PageSectionsMissionQuoteFilter | null | undefined;
+  objectivesList?: PageSectionsObjectivesListFilter | null | undefined;
+  contactSection?: PageSectionsContactSectionFilter | null | undefined;
+  twoColumnDonateHero?: PageSectionsTwoColumnDonateHeroFilter | null | undefined;
+  bulletBand?: PageSectionsBulletBandFilter | null | undefined;
+  splitImageText?: PageSectionsSplitImageTextFilter | null | undefined;
+  homeHeroFull?: PageSectionsHomeHeroFullFilter | null | undefined;
+  homeMarquee?: PageSectionsHomeMarqueeFilter | null | undefined;
+  whoScroll?: PageSectionsWhoScrollFilter | null | undefined;
+  homeProgramsIntro?: PageSectionsHomeProgramsIntroFilter | null | undefined;
+  homeMeetups?: PageSectionsHomeMeetupsFilter | null | undefined;
+  homeSupportBand?: PageSectionsHomeSupportBandFilter | null | undefined;
+  homeMoreGrid?: PageSectionsHomeMoreGridFilter | null | undefined;
+  homeCtaBand?: PageSectionsHomeCtaBandFilter | null | undefined;
+  eventsGallery?: PageSectionsEventsGalleryFilter | null | undefined;
+};
+
+export type PageFilter = {
+  slug?: StringFilter | null | undefined;
+  metaTitle?: StringFilter | null | undefined;
+  metaDescription?: StringFilter | null | undefined;
+  sections?: PageSectionsFilter | null | undefined;
+};
+
+export type EquipmentWishlistCategoriesFilter = {
+  eqCatId?: StringFilter | null | undefined;
+  eqCatTitle?: StringFilter | null | undefined;
+  eqCatLines?: StringFilter | null | undefined;
+};
+
+export type EquipmentWishlistFilter = {
+  categories?: EquipmentWishlistCategoriesFilter | null | undefined;
+};
+
+export type SiteChromeNavItemsFilter = {
+  href?: StringFilter | null | undefined;
+  label?: StringFilter | null | undefined;
+  ariaLabel?: StringFilter | null | undefined;
+  external?: BooleanFilter | null | undefined;
+};
+
+export type SiteChromeFilter = {
+  headerLogoImage?: StringFilter | null | undefined;
+  footerLogoImage?: StringFilter | null | undefined;
+  headerLogoAriaLabel?: StringFilter | null | undefined;
+  navItems?: SiteChromeNavItemsFilter | null | undefined;
+  islandHomeAriaLabel?: StringFilter | null | undefined;
+  islandMenuOpenText?: StringFilter | null | undefined;
+  islandMenuCloseText?: StringFilter | null | undefined;
+  footerTagline?: StringFilter | null | undefined;
+  footerConnectHeading?: StringFilter | null | undefined;
+  footerCommunityHeading?: StringFilter | null | undefined;
+  footerEmail?: StringFilter | null | undefined;
+  footerPhoneDisplay?: StringFilter | null | undefined;
+  footerPhoneTel?: StringFilter | null | undefined;
+  instagramUrl?: StringFilter | null | undefined;
+  instagramLabel?: StringFilter | null | undefined;
+  facebookUrl?: StringFilter | null | undefined;
+  facebookLabel?: StringFilter | null | undefined;
+  meetupUrl?: StringFilter | null | undefined;
+  meetupLabel?: StringFilter | null | undefined;
+  meetupAriaLabel?: StringFilter | null | undefined;
+  footerCopyright?: StringFilter | null | undefined;
+};
+
+export type ProgramPartsFragment = { __typename: 'Program', title: string, description: string, order: number | null, progHeroLayout: string | null, body: TinaMarkdownContent | null, progGalleryEnable: boolean | null, progGalleryHeading: string | null, progGalleryDekHtml: string | null, progGallerySurface: string | null, progGalleryMarqueeAlt: string | null, progHeroSlides: Array<{ __typename: 'ProgramProgHeroSlides', progHeroImage: string, progHeroAlt: string | null } | null> | null, progCtaRows: Array<{ __typename: 'ProgramProgCtaRows', progCtaLabel: string, progCtaHref: string, progCtaExternal: boolean | null, progCtaTone: string | null } | null> | null, progGalleryStrip: Array<{ __typename: 'ProgramProgGalleryStrip', progGalImage: string, progGalAlt: string | null } | null> | null };
+
+export type PagePartsFragment = { __typename: 'Page', slug: string, metaTitle: string | null, metaDescription: string | null, sections: Array<
+    | { __typename: 'PageSectionsPageIntro', introTitle: string, introLede: string | null, introImage: string | null, introImageAlt: string | null }
+    | { __typename: 'PageSectionsProseBand', pbVariant: string | null, pbTopImage: string | null, pbTopImageAlt: string | null, pbHeading: string | null, pbBodyHtml: string | null }
+    | { __typename: 'PageSectionsMissionQuote', mqQuoteText: string | null }
+    | { __typename: 'PageSectionsObjectivesList', objHeading: string | null, objFooterHtml: string | null, objLines: Array<{ __typename: 'PageSectionsObjectivesListObjLines', objLineTitle: string, objLineBody: string } | null> | null, objCtas: Array<{ __typename: 'PageSectionsObjectivesListObjCtas', objCtaLabel: string, objCtaHref: string, objCtaTone: string | null, objCtaExternal: boolean | null } | null> | null }
+    | { __typename: 'PageSectionsContactSection', ctHeading: string, ctSubheading: string | null, ctAddressHtml: string | null, ctNoteHtml: string | null, ctEmail: string, ctPhoneDisplay: string, ctPhoneTel: string }
+    | { __typename: 'PageSectionsTwoColumnDonateHero', dchTitle: string, dchLede: string, dchButtonLabel: string, dchButtonHref: string, dchButtonTone: string | null, dchExternal: boolean | null, dchImage: string, dchImageAlt: string }
+    | { __typename: 'PageSectionsBulletBand', bbVariant: string | null, bbHeading: string, bbLines: Array<string | null> | null }
+    | { __typename: 'PageSectionsSplitImageText', sitVariant: string | null, sitHeading: string, sitBody: string, sitButtonLabel: string | null, sitButtonHref: string | null, sitButtonTone: string | null, sitExternal: boolean | null, sitImage: string, sitImageAlt: string, sitImagePosition: string | null }
+    | { __typename: 'PageSectionsHomeHeroFull', hhfEyebrow: string, hhfTitle: string, hhfLede: string, hhfRotatorWords: Array<string | null> | null, hhfAsideBadge: string, hhfAsideTitle: string, hhfAsideDescription: string, hhfAsideMeetupsLabel: string, hhfAsideMeetupsHref: string, hhfAsideMeetupsExternal: boolean | null, hhfAsideMeetupsTone: string | null, hhfHiringImage: string, hhfHiringImageAlt: string, hhfShowCollage: boolean | null, hhfHeroButtons: Array<{ __typename: 'PageSectionsHomeHeroFullHhfHeroButtons', hhbLabel: string, hhbHref: string, hhbExternal: boolean | null, hhbTone: string | null } | null> | null, hhfAsideStackButtons: Array<{ __typename: 'PageSectionsHomeHeroFullHhfAsideStackButtons', habsLabel: string, habsHref: string, habsExternal: boolean | null, habsTone: string | null } | null> | null, hhfCollageCards: Array<{ __typename: 'PageSectionsHomeHeroFullHhfCollageCards', hccFrontImage: string | null, hccFrontAlt: string | null, hccFrontCaption: string | null, hccBackImage: string | null, hccBackAlt: string | null, hccBackCaption: string | null } | null> | null }
+    | { __typename: 'PageSectionsHomeMarquee', hmrText: string }
+    | { __typename: 'PageSectionsWhoScroll', wscShowWhoScroll: boolean | null, wscEyebrow: string, wscHeading: string, wscLedeHtml: string, wscImage: string, wscImageAlt: string, wscButtonLabel: string, wscButtonHref: string, wscButtonExternal: boolean | null, wscButtonTone: string | null }
+    | { __typename: 'PageSectionsHomeProgramsIntro', hpiEyebrow: string, hpiHeading: string, hpiLedeHtml: string, hpiCards: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCards', hpiCardImage: string, hpiCardImageAlt: string | null, hpiCardTitle: string, hpiCardBodyHtml: string, hpiCardTheme: string | null, hpiCardTiltBaseZ: string | null, hpiCardButtons: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCardsHpiCardButtons', hpcbLabel: string, hpcbHref: string, hpcbExternal: boolean | null, hpcbTone: string | null } | null> | null } | null> | null }
+    | { __typename: 'PageSectionsHomeMeetups', hmuEyebrow: string, hmuHeading: string, hmuLedeHtml: string, hmuImageLeft: string, hmuImageLeftAlt: string, hmuImageRight: string, hmuImageRightAlt: string, hmuButtonLabel: string, hmuButtonHref: string, hmuExternal: boolean | null, hmuButtonTone: string | null }
+    | { __typename: 'PageSectionsHomeSupportBand', hsbImage: string, hsbImageAlt: string, hsbEyebrow: string, hsbHeading: string, hsbLedeHtml: string, hsbButtonLabel: string, hsbButtonHref: string, hsbButtonExternal: boolean | null, hsbButtonTone: string | null }
+    | { __typename: 'PageSectionsHomeMoreGrid', hmgEyebrow: string, hmgHeading: string, hmgLedeHtml: string, hmgCards: Array<{ __typename: 'PageSectionsHomeMoreGridHmgCards', hmgCardTitle: string, hmgCardDescription: string, hmgCardImage: string, hmgCardImageAlt: string | null, hmgCardButtonLabel: string, hmgCardButtonHref: string, hmgCardExternal: boolean | null } | null> | null }
+    | { __typename: 'PageSectionsHomeCtaBand', hcbImage: string, hcbImageAlt: string, hcbEyebrow: string, hcbHeading: string, hcbBodyHtml: string, hcbButtons: Array<{ __typename: 'PageSectionsHomeCtaBandHcbButtons', hcbBtnLabel: string, hcbBtnHref: string, hcbBtnTone: string | null, hcbBtnExternal: boolean | null } | null> | null }
+    | { __typename: 'PageSectionsEventsGallery', evgHeading: string, evgLedeHtml: string | null, evgTiles: Array<{ __typename: 'PageSectionsEventsGalleryEvgTiles', evtImage: string, evtAlt: string | null, evtDate: string, evtHref: string | null, evtExpiresAt: string | null } | null> | null }
+   | null> | null };
+
+export type EquipmentWishlistPartsFragment = { __typename: 'EquipmentWishlist', categories: Array<{ __typename: 'EquipmentWishlistCategories', eqCatId: string, eqCatTitle: string, eqCatLines: Array<string | null> | null } | null> | null };
+
+export type SiteChromePartsFragment = { __typename: 'SiteChrome', headerLogoImage: string | null, footerLogoImage: string | null, headerLogoAriaLabel: string, islandHomeAriaLabel: string | null, islandMenuOpenText: string | null, islandMenuCloseText: string | null, footerTagline: string | null, footerConnectHeading: string | null, footerCommunityHeading: string | null, footerEmail: string | null, footerPhoneDisplay: string | null, footerPhoneTel: string | null, instagramUrl: string | null, instagramLabel: string | null, facebookUrl: string | null, facebookLabel: string | null, meetupUrl: string | null, meetupLabel: string | null, meetupAriaLabel: string | null, footerCopyright: string | null, navItems: Array<{ __typename: 'SiteChromeNavItems', href: string, label: string, ariaLabel: string | null, external: boolean | null } | null> | null };
 
 export type ProgramQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
+  relativePath: string;
 }>;
 
 
-export type ProgramQuery = { __typename?: 'Query', program: { __typename: 'Program', id: string, title: string, description: string, order?: number | null, progHeroLayout?: string | null, body?: any | null, progGalleryEnable?: boolean | null, progGalleryHeading?: string | null, progGalleryDekHtml?: string | null, progGallerySurface?: string | null, progGalleryMarqueeAlt?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, progHeroSlides?: Array<{ __typename: 'ProgramProgHeroSlides', progHeroImage: string, progHeroAlt?: string | null } | null> | null, progCtaRows?: Array<{ __typename: 'ProgramProgCtaRows', progCtaLabel: string, progCtaHref: string, progCtaExternal?: boolean | null, progCtaTone?: string | null } | null> | null, progGalleryStrip?: Array<{ __typename: 'ProgramProgGalleryStrip', progGalImage: string, progGalAlt?: string | null } | null> | null } };
+export type ProgramQuery = { program: { __typename: 'Program', id: string, title: string, description: string, order: number | null, progHeroLayout: string | null, body: TinaMarkdownContent | null, progGalleryEnable: boolean | null, progGalleryHeading: string | null, progGalleryDekHtml: string | null, progGallerySurface: string | null, progGalleryMarqueeAlt: string | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, progHeroSlides: Array<{ __typename: 'ProgramProgHeroSlides', progHeroImage: string, progHeroAlt: string | null } | null> | null, progCtaRows: Array<{ __typename: 'ProgramProgCtaRows', progCtaLabel: string, progCtaHref: string, progCtaExternal: boolean | null, progCtaTone: string | null } | null> | null, progGalleryStrip: Array<{ __typename: 'ProgramProgGalleryStrip', progGalImage: string, progGalAlt: string | null } | null> | null } };
 
 export type ProgramConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<ProgramFilter>;
+  before?: string | null | undefined;
+  after?: string | null | undefined;
+  first?: number | null | undefined;
+  last?: number | null | undefined;
+  sort?: string | null | undefined;
+  filter?: ProgramFilter | null | undefined;
 }>;
 
 
-export type ProgramConnectionQuery = { __typename?: 'Query', programConnection: { __typename?: 'ProgramConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'ProgramConnectionEdges', cursor: string, node?: { __typename: 'Program', id: string, title: string, description: string, order?: number | null, progHeroLayout?: string | null, body?: any | null, progGalleryEnable?: boolean | null, progGalleryHeading?: string | null, progGalleryDekHtml?: string | null, progGallerySurface?: string | null, progGalleryMarqueeAlt?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, progHeroSlides?: Array<{ __typename: 'ProgramProgHeroSlides', progHeroImage: string, progHeroAlt?: string | null } | null> | null, progCtaRows?: Array<{ __typename: 'ProgramProgCtaRows', progCtaLabel: string, progCtaHref: string, progCtaExternal?: boolean | null, progCtaTone?: string | null } | null> | null, progGalleryStrip?: Array<{ __typename: 'ProgramProgGalleryStrip', progGalImage: string, progGalAlt?: string | null } | null> | null } | null } | null> | null } };
+export type ProgramConnectionQuery = { programConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Program', id: string, title: string, description: string, order: number | null, progHeroLayout: string | null, body: TinaMarkdownContent | null, progGalleryEnable: boolean | null, progGalleryHeading: string | null, progGalleryDekHtml: string | null, progGallerySurface: string | null, progGalleryMarqueeAlt: string | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, progHeroSlides: Array<{ __typename: 'ProgramProgHeroSlides', progHeroImage: string, progHeroAlt: string | null } | null> | null, progCtaRows: Array<{ __typename: 'ProgramProgCtaRows', progCtaLabel: string, progCtaHref: string, progCtaExternal: boolean | null, progCtaTone: string | null } | null> | null, progGalleryStrip: Array<{ __typename: 'ProgramProgGalleryStrip', progGalImage: string, progGalAlt: string | null } | null> | null } | null } | null> | null } };
 
 export type PageQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
+  relativePath: string;
 }>;
 
 
-export type PageQuery = { __typename?: 'Query', page: { __typename: 'Page', id: string, slug: string, metaTitle?: string | null, metaDescription?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, sections?: Array<{ __typename: 'PageSectionsPageIntro', introTitle: string, introLede?: string | null, introImage?: string | null, introImageAlt?: string | null } | { __typename: 'PageSectionsProseBand', pbVariant?: string | null, pbTopImage?: string | null, pbTopImageAlt?: string | null, pbHeading?: string | null, pbBodyHtml?: string | null } | { __typename: 'PageSectionsMissionQuote', mqQuoteText?: string | null } | { __typename: 'PageSectionsObjectivesList', objHeading?: string | null, objFooterHtml?: string | null, objLines?: Array<{ __typename: 'PageSectionsObjectivesListObjLines', objLineTitle: string, objLineBody: string } | null> | null, objCtas?: Array<{ __typename: 'PageSectionsObjectivesListObjCtas', objCtaLabel: string, objCtaHref: string, objCtaTone?: string | null, objCtaExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsContactSection', ctHeading: string, ctSubheading?: string | null, ctAddressHtml?: string | null, ctNoteHtml?: string | null, ctEmail: string, ctPhoneDisplay: string, ctPhoneTel: string } | { __typename: 'PageSectionsTwoColumnDonateHero', dchTitle: string, dchLede: string, dchButtonLabel: string, dchButtonHref: string, dchButtonTone?: string | null, dchExternal?: boolean | null, dchImage: string, dchImageAlt: string } | { __typename: 'PageSectionsBulletBand', bbVariant?: string | null, bbHeading: string, bbLines?: Array<string | null> | null } | { __typename: 'PageSectionsSplitImageText', sitVariant?: string | null, sitHeading: string, sitBody: string, sitButtonLabel?: string | null, sitButtonHref?: string | null, sitButtonTone?: string | null, sitExternal?: boolean | null, sitImage: string, sitImageAlt: string, sitImagePosition?: string | null } | { __typename: 'PageSectionsHomeHeroFull', hhfEyebrow: string, hhfTitle: string, hhfLede: string, hhfRotatorWords?: Array<string | null> | null, hhfAsideBadge: string, hhfAsideTitle: string, hhfAsideDescription: string, hhfAsideMeetupsLabel: string, hhfAsideMeetupsHref: string, hhfAsideMeetupsExternal?: boolean | null, hhfAsideMeetupsTone?: string | null, hhfHiringImage: string, hhfHiringImageAlt: string, hhfShowCollage?: boolean | null, hhfHeroButtons?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfHeroButtons', hhbLabel: string, hhbHref: string, hhbExternal?: boolean | null, hhbTone?: string | null } | null> | null, hhfAsideStackButtons?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfAsideStackButtons', habsLabel: string, habsHref: string, habsExternal?: boolean | null, habsTone?: string | null } | null> | null, hhfCollageCards?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfCollageCards', hccFrontImage?: string | null, hccFrontAlt?: string | null, hccFrontCaption?: string | null, hccBackImage?: string | null, hccBackAlt?: string | null, hccBackCaption?: string | null } | null> | null } | { __typename: 'PageSectionsHomeMarquee', hmrText: string } | { __typename: 'PageSectionsWhoScroll', wscShowWhoScroll?: boolean | null, wscEyebrow: string, wscHeading: string, wscLedeHtml: string, wscImage: string, wscImageAlt: string, wscButtonLabel: string, wscButtonHref: string, wscButtonExternal?: boolean | null, wscButtonTone?: string | null } | { __typename: 'PageSectionsHomeProgramsIntro', hpiEyebrow: string, hpiHeading: string, hpiLedeHtml: string, hpiCards?: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCards', hpiCardImage: string, hpiCardImageAlt?: string | null, hpiCardTitle: string, hpiCardBodyHtml: string, hpiCardTheme?: string | null, hpiCardTiltBaseZ?: string | null, hpiCardButtons?: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCardsHpiCardButtons', hpcbLabel: string, hpcbHref: string, hpcbExternal?: boolean | null, hpcbTone?: string | null } | null> | null } | null> | null } | { __typename: 'PageSectionsHomeMeetups', hmuEyebrow: string, hmuHeading: string, hmuLedeHtml: string, hmuImageLeft: string, hmuImageLeftAlt: string, hmuImageRight: string, hmuImageRightAlt: string, hmuButtonLabel: string, hmuButtonHref: string, hmuExternal?: boolean | null, hmuButtonTone?: string | null } | { __typename: 'PageSectionsHomeSupportBand', hsbImage: string, hsbImageAlt: string, hsbEyebrow: string, hsbHeading: string, hsbLedeHtml: string, hsbButtonLabel: string, hsbButtonHref: string, hsbButtonExternal?: boolean | null, hsbButtonTone?: string | null } | { __typename: 'PageSectionsHomeMoreGrid', hmgEyebrow: string, hmgHeading: string, hmgLedeHtml: string, hmgCards?: Array<{ __typename: 'PageSectionsHomeMoreGridHmgCards', hmgCardTitle: string, hmgCardDescription: string, hmgCardImage: string, hmgCardImageAlt?: string | null, hmgCardButtonLabel: string, hmgCardButtonHref: string, hmgCardExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsHomeCtaBand', hcbImage: string, hcbImageAlt: string, hcbEyebrow: string, hcbHeading: string, hcbBodyHtml: string, hcbButtons?: Array<{ __typename: 'PageSectionsHomeCtaBandHcbButtons', hcbBtnLabel: string, hcbBtnHref: string, hcbBtnTone?: string | null, hcbBtnExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsEventsGallery', evgHeading: string, evgLedeHtml?: string | null, evgTiles?: Array<{ __typename: 'PageSectionsEventsGalleryEvgTiles', evtImage: string, evtAlt?: string | null, evtDate: string, evtHref?: string | null, evtExpiresAt?: string | null } | null> | null } | null> | null } };
+export type PageQuery = { page: { __typename: 'Page', id: string, slug: string, metaTitle: string | null, metaDescription: string | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, sections: Array<
+      | { __typename: 'PageSectionsPageIntro', introTitle: string, introLede: string | null, introImage: string | null, introImageAlt: string | null }
+      | { __typename: 'PageSectionsProseBand', pbVariant: string | null, pbTopImage: string | null, pbTopImageAlt: string | null, pbHeading: string | null, pbBodyHtml: string | null }
+      | { __typename: 'PageSectionsMissionQuote', mqQuoteText: string | null }
+      | { __typename: 'PageSectionsObjectivesList', objHeading: string | null, objFooterHtml: string | null, objLines: Array<{ __typename: 'PageSectionsObjectivesListObjLines', objLineTitle: string, objLineBody: string } | null> | null, objCtas: Array<{ __typename: 'PageSectionsObjectivesListObjCtas', objCtaLabel: string, objCtaHref: string, objCtaTone: string | null, objCtaExternal: boolean | null } | null> | null }
+      | { __typename: 'PageSectionsContactSection', ctHeading: string, ctSubheading: string | null, ctAddressHtml: string | null, ctNoteHtml: string | null, ctEmail: string, ctPhoneDisplay: string, ctPhoneTel: string }
+      | { __typename: 'PageSectionsTwoColumnDonateHero', dchTitle: string, dchLede: string, dchButtonLabel: string, dchButtonHref: string, dchButtonTone: string | null, dchExternal: boolean | null, dchImage: string, dchImageAlt: string }
+      | { __typename: 'PageSectionsBulletBand', bbVariant: string | null, bbHeading: string, bbLines: Array<string | null> | null }
+      | { __typename: 'PageSectionsSplitImageText', sitVariant: string | null, sitHeading: string, sitBody: string, sitButtonLabel: string | null, sitButtonHref: string | null, sitButtonTone: string | null, sitExternal: boolean | null, sitImage: string, sitImageAlt: string, sitImagePosition: string | null }
+      | { __typename: 'PageSectionsHomeHeroFull', hhfEyebrow: string, hhfTitle: string, hhfLede: string, hhfRotatorWords: Array<string | null> | null, hhfAsideBadge: string, hhfAsideTitle: string, hhfAsideDescription: string, hhfAsideMeetupsLabel: string, hhfAsideMeetupsHref: string, hhfAsideMeetupsExternal: boolean | null, hhfAsideMeetupsTone: string | null, hhfHiringImage: string, hhfHiringImageAlt: string, hhfShowCollage: boolean | null, hhfHeroButtons: Array<{ __typename: 'PageSectionsHomeHeroFullHhfHeroButtons', hhbLabel: string, hhbHref: string, hhbExternal: boolean | null, hhbTone: string | null } | null> | null, hhfAsideStackButtons: Array<{ __typename: 'PageSectionsHomeHeroFullHhfAsideStackButtons', habsLabel: string, habsHref: string, habsExternal: boolean | null, habsTone: string | null } | null> | null, hhfCollageCards: Array<{ __typename: 'PageSectionsHomeHeroFullHhfCollageCards', hccFrontImage: string | null, hccFrontAlt: string | null, hccFrontCaption: string | null, hccBackImage: string | null, hccBackAlt: string | null, hccBackCaption: string | null } | null> | null }
+      | { __typename: 'PageSectionsHomeMarquee', hmrText: string }
+      | { __typename: 'PageSectionsWhoScroll', wscShowWhoScroll: boolean | null, wscEyebrow: string, wscHeading: string, wscLedeHtml: string, wscImage: string, wscImageAlt: string, wscButtonLabel: string, wscButtonHref: string, wscButtonExternal: boolean | null, wscButtonTone: string | null }
+      | { __typename: 'PageSectionsHomeProgramsIntro', hpiEyebrow: string, hpiHeading: string, hpiLedeHtml: string, hpiCards: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCards', hpiCardImage: string, hpiCardImageAlt: string | null, hpiCardTitle: string, hpiCardBodyHtml: string, hpiCardTheme: string | null, hpiCardTiltBaseZ: string | null, hpiCardButtons: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCardsHpiCardButtons', hpcbLabel: string, hpcbHref: string, hpcbExternal: boolean | null, hpcbTone: string | null } | null> | null } | null> | null }
+      | { __typename: 'PageSectionsHomeMeetups', hmuEyebrow: string, hmuHeading: string, hmuLedeHtml: string, hmuImageLeft: string, hmuImageLeftAlt: string, hmuImageRight: string, hmuImageRightAlt: string, hmuButtonLabel: string, hmuButtonHref: string, hmuExternal: boolean | null, hmuButtonTone: string | null }
+      | { __typename: 'PageSectionsHomeSupportBand', hsbImage: string, hsbImageAlt: string, hsbEyebrow: string, hsbHeading: string, hsbLedeHtml: string, hsbButtonLabel: string, hsbButtonHref: string, hsbButtonExternal: boolean | null, hsbButtonTone: string | null }
+      | { __typename: 'PageSectionsHomeMoreGrid', hmgEyebrow: string, hmgHeading: string, hmgLedeHtml: string, hmgCards: Array<{ __typename: 'PageSectionsHomeMoreGridHmgCards', hmgCardTitle: string, hmgCardDescription: string, hmgCardImage: string, hmgCardImageAlt: string | null, hmgCardButtonLabel: string, hmgCardButtonHref: string, hmgCardExternal: boolean | null } | null> | null }
+      | { __typename: 'PageSectionsHomeCtaBand', hcbImage: string, hcbImageAlt: string, hcbEyebrow: string, hcbHeading: string, hcbBodyHtml: string, hcbButtons: Array<{ __typename: 'PageSectionsHomeCtaBandHcbButtons', hcbBtnLabel: string, hcbBtnHref: string, hcbBtnTone: string | null, hcbBtnExternal: boolean | null } | null> | null }
+      | { __typename: 'PageSectionsEventsGallery', evgHeading: string, evgLedeHtml: string | null, evgTiles: Array<{ __typename: 'PageSectionsEventsGalleryEvgTiles', evtImage: string, evtAlt: string | null, evtDate: string, evtHref: string | null, evtExpiresAt: string | null } | null> | null }
+     | null> | null } };
 
 export type PageConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<PageFilter>;
+  before?: string | null | undefined;
+  after?: string | null | undefined;
+  first?: number | null | undefined;
+  last?: number | null | undefined;
+  sort?: string | null | undefined;
+  filter?: PageFilter | null | undefined;
 }>;
 
 
-export type PageConnectionQuery = { __typename?: 'Query', pageConnection: { __typename?: 'PageConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'PageConnectionEdges', cursor: string, node?: { __typename: 'Page', id: string, slug: string, metaTitle?: string | null, metaDescription?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, sections?: Array<{ __typename: 'PageSectionsPageIntro', introTitle: string, introLede?: string | null, introImage?: string | null, introImageAlt?: string | null } | { __typename: 'PageSectionsProseBand', pbVariant?: string | null, pbTopImage?: string | null, pbTopImageAlt?: string | null, pbHeading?: string | null, pbBodyHtml?: string | null } | { __typename: 'PageSectionsMissionQuote', mqQuoteText?: string | null } | { __typename: 'PageSectionsObjectivesList', objHeading?: string | null, objFooterHtml?: string | null, objLines?: Array<{ __typename: 'PageSectionsObjectivesListObjLines', objLineTitle: string, objLineBody: string } | null> | null, objCtas?: Array<{ __typename: 'PageSectionsObjectivesListObjCtas', objCtaLabel: string, objCtaHref: string, objCtaTone?: string | null, objCtaExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsContactSection', ctHeading: string, ctSubheading?: string | null, ctAddressHtml?: string | null, ctNoteHtml?: string | null, ctEmail: string, ctPhoneDisplay: string, ctPhoneTel: string } | { __typename: 'PageSectionsTwoColumnDonateHero', dchTitle: string, dchLede: string, dchButtonLabel: string, dchButtonHref: string, dchButtonTone?: string | null, dchExternal?: boolean | null, dchImage: string, dchImageAlt: string } | { __typename: 'PageSectionsBulletBand', bbVariant?: string | null, bbHeading: string, bbLines?: Array<string | null> | null } | { __typename: 'PageSectionsSplitImageText', sitVariant?: string | null, sitHeading: string, sitBody: string, sitButtonLabel?: string | null, sitButtonHref?: string | null, sitButtonTone?: string | null, sitExternal?: boolean | null, sitImage: string, sitImageAlt: string, sitImagePosition?: string | null } | { __typename: 'PageSectionsHomeHeroFull', hhfEyebrow: string, hhfTitle: string, hhfLede: string, hhfRotatorWords?: Array<string | null> | null, hhfAsideBadge: string, hhfAsideTitle: string, hhfAsideDescription: string, hhfAsideMeetupsLabel: string, hhfAsideMeetupsHref: string, hhfAsideMeetupsExternal?: boolean | null, hhfAsideMeetupsTone?: string | null, hhfHiringImage: string, hhfHiringImageAlt: string, hhfShowCollage?: boolean | null, hhfHeroButtons?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfHeroButtons', hhbLabel: string, hhbHref: string, hhbExternal?: boolean | null, hhbTone?: string | null } | null> | null, hhfAsideStackButtons?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfAsideStackButtons', habsLabel: string, habsHref: string, habsExternal?: boolean | null, habsTone?: string | null } | null> | null, hhfCollageCards?: Array<{ __typename: 'PageSectionsHomeHeroFullHhfCollageCards', hccFrontImage?: string | null, hccFrontAlt?: string | null, hccFrontCaption?: string | null, hccBackImage?: string | null, hccBackAlt?: string | null, hccBackCaption?: string | null } | null> | null } | { __typename: 'PageSectionsHomeMarquee', hmrText: string } | { __typename: 'PageSectionsWhoScroll', wscShowWhoScroll?: boolean | null, wscEyebrow: string, wscHeading: string, wscLedeHtml: string, wscImage: string, wscImageAlt: string, wscButtonLabel: string, wscButtonHref: string, wscButtonExternal?: boolean | null, wscButtonTone?: string | null } | { __typename: 'PageSectionsHomeProgramsIntro', hpiEyebrow: string, hpiHeading: string, hpiLedeHtml: string, hpiCards?: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCards', hpiCardImage: string, hpiCardImageAlt?: string | null, hpiCardTitle: string, hpiCardBodyHtml: string, hpiCardTheme?: string | null, hpiCardTiltBaseZ?: string | null, hpiCardButtons?: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCardsHpiCardButtons', hpcbLabel: string, hpcbHref: string, hpcbExternal?: boolean | null, hpcbTone?: string | null } | null> | null } | null> | null } | { __typename: 'PageSectionsHomeMeetups', hmuEyebrow: string, hmuHeading: string, hmuLedeHtml: string, hmuImageLeft: string, hmuImageLeftAlt: string, hmuImageRight: string, hmuImageRightAlt: string, hmuButtonLabel: string, hmuButtonHref: string, hmuExternal?: boolean | null, hmuButtonTone?: string | null } | { __typename: 'PageSectionsHomeSupportBand', hsbImage: string, hsbImageAlt: string, hsbEyebrow: string, hsbHeading: string, hsbLedeHtml: string, hsbButtonLabel: string, hsbButtonHref: string, hsbButtonExternal?: boolean | null, hsbButtonTone?: string | null } | { __typename: 'PageSectionsHomeMoreGrid', hmgEyebrow: string, hmgHeading: string, hmgLedeHtml: string, hmgCards?: Array<{ __typename: 'PageSectionsHomeMoreGridHmgCards', hmgCardTitle: string, hmgCardDescription: string, hmgCardImage: string, hmgCardImageAlt?: string | null, hmgCardButtonLabel: string, hmgCardButtonHref: string, hmgCardExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsHomeCtaBand', hcbImage: string, hcbImageAlt: string, hcbEyebrow: string, hcbHeading: string, hcbBodyHtml: string, hcbButtons?: Array<{ __typename: 'PageSectionsHomeCtaBandHcbButtons', hcbBtnLabel: string, hcbBtnHref: string, hcbBtnTone?: string | null, hcbBtnExternal?: boolean | null } | null> | null } | { __typename: 'PageSectionsEventsGallery', evgHeading: string, evgLedeHtml?: string | null, evgTiles?: Array<{ __typename: 'PageSectionsEventsGalleryEvgTiles', evtImage: string, evtAlt?: string | null, evtDate: string, evtHref?: string | null, evtExpiresAt?: string | null } | null> | null } | null> | null } | null } | null> | null } };
+export type PageConnectionQuery = { pageConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'Page', id: string, slug: string, metaTitle: string | null, metaDescription: string | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, sections: Array<
+          | { __typename: 'PageSectionsPageIntro', introTitle: string, introLede: string | null, introImage: string | null, introImageAlt: string | null }
+          | { __typename: 'PageSectionsProseBand', pbVariant: string | null, pbTopImage: string | null, pbTopImageAlt: string | null, pbHeading: string | null, pbBodyHtml: string | null }
+          | { __typename: 'PageSectionsMissionQuote', mqQuoteText: string | null }
+          | { __typename: 'PageSectionsObjectivesList', objHeading: string | null, objFooterHtml: string | null, objLines: Array<{ __typename: 'PageSectionsObjectivesListObjLines', objLineTitle: string, objLineBody: string } | null> | null, objCtas: Array<{ __typename: 'PageSectionsObjectivesListObjCtas', objCtaLabel: string, objCtaHref: string, objCtaTone: string | null, objCtaExternal: boolean | null } | null> | null }
+          | { __typename: 'PageSectionsContactSection', ctHeading: string, ctSubheading: string | null, ctAddressHtml: string | null, ctNoteHtml: string | null, ctEmail: string, ctPhoneDisplay: string, ctPhoneTel: string }
+          | { __typename: 'PageSectionsTwoColumnDonateHero', dchTitle: string, dchLede: string, dchButtonLabel: string, dchButtonHref: string, dchButtonTone: string | null, dchExternal: boolean | null, dchImage: string, dchImageAlt: string }
+          | { __typename: 'PageSectionsBulletBand', bbVariant: string | null, bbHeading: string, bbLines: Array<string | null> | null }
+          | { __typename: 'PageSectionsSplitImageText', sitVariant: string | null, sitHeading: string, sitBody: string, sitButtonLabel: string | null, sitButtonHref: string | null, sitButtonTone: string | null, sitExternal: boolean | null, sitImage: string, sitImageAlt: string, sitImagePosition: string | null }
+          | { __typename: 'PageSectionsHomeHeroFull', hhfEyebrow: string, hhfTitle: string, hhfLede: string, hhfRotatorWords: Array<string | null> | null, hhfAsideBadge: string, hhfAsideTitle: string, hhfAsideDescription: string, hhfAsideMeetupsLabel: string, hhfAsideMeetupsHref: string, hhfAsideMeetupsExternal: boolean | null, hhfAsideMeetupsTone: string | null, hhfHiringImage: string, hhfHiringImageAlt: string, hhfShowCollage: boolean | null, hhfHeroButtons: Array<{ __typename: 'PageSectionsHomeHeroFullHhfHeroButtons', hhbLabel: string, hhbHref: string, hhbExternal: boolean | null, hhbTone: string | null } | null> | null, hhfAsideStackButtons: Array<{ __typename: 'PageSectionsHomeHeroFullHhfAsideStackButtons', habsLabel: string, habsHref: string, habsExternal: boolean | null, habsTone: string | null } | null> | null, hhfCollageCards: Array<{ __typename: 'PageSectionsHomeHeroFullHhfCollageCards', hccFrontImage: string | null, hccFrontAlt: string | null, hccFrontCaption: string | null, hccBackImage: string | null, hccBackAlt: string | null, hccBackCaption: string | null } | null> | null }
+          | { __typename: 'PageSectionsHomeMarquee', hmrText: string }
+          | { __typename: 'PageSectionsWhoScroll', wscShowWhoScroll: boolean | null, wscEyebrow: string, wscHeading: string, wscLedeHtml: string, wscImage: string, wscImageAlt: string, wscButtonLabel: string, wscButtonHref: string, wscButtonExternal: boolean | null, wscButtonTone: string | null }
+          | { __typename: 'PageSectionsHomeProgramsIntro', hpiEyebrow: string, hpiHeading: string, hpiLedeHtml: string, hpiCards: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCards', hpiCardImage: string, hpiCardImageAlt: string | null, hpiCardTitle: string, hpiCardBodyHtml: string, hpiCardTheme: string | null, hpiCardTiltBaseZ: string | null, hpiCardButtons: Array<{ __typename: 'PageSectionsHomeProgramsIntroHpiCardsHpiCardButtons', hpcbLabel: string, hpcbHref: string, hpcbExternal: boolean | null, hpcbTone: string | null } | null> | null } | null> | null }
+          | { __typename: 'PageSectionsHomeMeetups', hmuEyebrow: string, hmuHeading: string, hmuLedeHtml: string, hmuImageLeft: string, hmuImageLeftAlt: string, hmuImageRight: string, hmuImageRightAlt: string, hmuButtonLabel: string, hmuButtonHref: string, hmuExternal: boolean | null, hmuButtonTone: string | null }
+          | { __typename: 'PageSectionsHomeSupportBand', hsbImage: string, hsbImageAlt: string, hsbEyebrow: string, hsbHeading: string, hsbLedeHtml: string, hsbButtonLabel: string, hsbButtonHref: string, hsbButtonExternal: boolean | null, hsbButtonTone: string | null }
+          | { __typename: 'PageSectionsHomeMoreGrid', hmgEyebrow: string, hmgHeading: string, hmgLedeHtml: string, hmgCards: Array<{ __typename: 'PageSectionsHomeMoreGridHmgCards', hmgCardTitle: string, hmgCardDescription: string, hmgCardImage: string, hmgCardImageAlt: string | null, hmgCardButtonLabel: string, hmgCardButtonHref: string, hmgCardExternal: boolean | null } | null> | null }
+          | { __typename: 'PageSectionsHomeCtaBand', hcbImage: string, hcbImageAlt: string, hcbEyebrow: string, hcbHeading: string, hcbBodyHtml: string, hcbButtons: Array<{ __typename: 'PageSectionsHomeCtaBandHcbButtons', hcbBtnLabel: string, hcbBtnHref: string, hcbBtnTone: string | null, hcbBtnExternal: boolean | null } | null> | null }
+          | { __typename: 'PageSectionsEventsGallery', evgHeading: string, evgLedeHtml: string | null, evgTiles: Array<{ __typename: 'PageSectionsEventsGalleryEvgTiles', evtImage: string, evtAlt: string | null, evtDate: string, evtHref: string | null, evtExpiresAt: string | null } | null> | null }
+         | null> | null } | null } | null> | null } };
 
 export type EquipmentWishlistQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
+  relativePath: string;
 }>;
 
 
-export type EquipmentWishlistQuery = { __typename?: 'Query', equipmentWishlist: { __typename: 'EquipmentWishlist', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'EquipmentWishlistCategories', eqCatId: string, eqCatTitle: string, eqCatLines?: Array<string | null> | null } | null> | null } };
+export type EquipmentWishlistQuery = { equipmentWishlist: { __typename: 'EquipmentWishlist', id: string, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories: Array<{ __typename: 'EquipmentWishlistCategories', eqCatId: string, eqCatTitle: string, eqCatLines: Array<string | null> | null } | null> | null } };
 
 export type EquipmentWishlistConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<EquipmentWishlistFilter>;
+  before?: string | null | undefined;
+  after?: string | null | undefined;
+  first?: number | null | undefined;
+  last?: number | null | undefined;
+  sort?: string | null | undefined;
+  filter?: EquipmentWishlistFilter | null | undefined;
 }>;
 
 
-export type EquipmentWishlistConnectionQuery = { __typename?: 'Query', equipmentWishlistConnection: { __typename?: 'EquipmentWishlistConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'EquipmentWishlistConnectionEdges', cursor: string, node?: { __typename: 'EquipmentWishlist', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories?: Array<{ __typename: 'EquipmentWishlistCategories', eqCatId: string, eqCatTitle: string, eqCatLines?: Array<string | null> | null } | null> | null } | null } | null> | null } };
+export type EquipmentWishlistConnectionQuery = { equipmentWishlistConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'EquipmentWishlist', id: string, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, categories: Array<{ __typename: 'EquipmentWishlistCategories', eqCatId: string, eqCatTitle: string, eqCatLines: Array<string | null> | null } | null> | null } | null } | null> | null } };
 
 export type SiteChromeQueryVariables = Exact<{
-  relativePath: Scalars['String']['input'];
+  relativePath: string;
 }>;
 
 
-export type SiteChromeQuery = { __typename?: 'Query', siteChrome: { __typename: 'SiteChrome', id: string, headerLogoImage?: string | null, footerLogoImage?: string | null, headerLogoAriaLabel: string, islandHomeAriaLabel?: string | null, islandMenuOpenText?: string | null, islandMenuCloseText?: string | null, footerTagline?: string | null, footerConnectHeading?: string | null, footerCommunityHeading?: string | null, footerEmail?: string | null, footerPhoneDisplay?: string | null, footerPhoneTel?: string | null, instagramUrl?: string | null, instagramLabel?: string | null, facebookUrl?: string | null, facebookLabel?: string | null, meetupUrl?: string | null, meetupLabel?: string | null, meetupAriaLabel?: string | null, footerCopyright?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, navItems?: Array<{ __typename: 'SiteChromeNavItems', href: string, label: string, ariaLabel?: string | null, external?: boolean | null } | null> | null } };
+export type SiteChromeQuery = { siteChrome: { __typename: 'SiteChrome', id: string, headerLogoImage: string | null, footerLogoImage: string | null, headerLogoAriaLabel: string, islandHomeAriaLabel: string | null, islandMenuOpenText: string | null, islandMenuCloseText: string | null, footerTagline: string | null, footerConnectHeading: string | null, footerCommunityHeading: string | null, footerEmail: string | null, footerPhoneDisplay: string | null, footerPhoneTel: string | null, instagramUrl: string | null, instagramLabel: string | null, facebookUrl: string | null, facebookLabel: string | null, meetupUrl: string | null, meetupLabel: string | null, meetupAriaLabel: string | null, footerCopyright: string | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, navItems: Array<{ __typename: 'SiteChromeNavItems', href: string, label: string, ariaLabel: string | null, external: boolean | null } | null> | null } };
 
 export type SiteChromeConnectionQueryVariables = Exact<{
-  before?: InputMaybe<Scalars['String']['input']>;
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Float']['input']>;
-  last?: InputMaybe<Scalars['Float']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-  filter?: InputMaybe<SiteChromeFilter>;
+  before?: string | null | undefined;
+  after?: string | null | undefined;
+  first?: number | null | undefined;
+  last?: number | null | undefined;
+  sort?: string | null | undefined;
+  filter?: SiteChromeFilter | null | undefined;
 }>;
 
 
-export type SiteChromeConnectionQuery = { __typename?: 'Query', siteChromeConnection: { __typename?: 'SiteChromeConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SiteChromeConnectionEdges', cursor: string, node?: { __typename: 'SiteChrome', id: string, headerLogoImage?: string | null, footerLogoImage?: string | null, headerLogoAriaLabel: string, islandHomeAriaLabel?: string | null, islandMenuOpenText?: string | null, islandMenuCloseText?: string | null, footerTagline?: string | null, footerConnectHeading?: string | null, footerCommunityHeading?: string | null, footerEmail?: string | null, footerPhoneDisplay?: string | null, footerPhoneTel?: string | null, instagramUrl?: string | null, instagramLabel?: string | null, facebookUrl?: string | null, facebookLabel?: string | null, meetupUrl?: string | null, meetupLabel?: string | null, meetupAriaLabel?: string | null, footerCopyright?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, hasReferences?: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, navItems?: Array<{ __typename: 'SiteChromeNavItems', href: string, label: string, ariaLabel?: string | null, external?: boolean | null } | null> | null } | null } | null> | null } };
+export type SiteChromeConnectionQuery = { siteChromeConnection: { totalCount: number, pageInfo: { hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ cursor: string, node: { __typename: 'SiteChrome', id: string, headerLogoImage: string | null, footerLogoImage: string | null, headerLogoAriaLabel: string, islandHomeAriaLabel: string | null, islandMenuOpenText: string | null, islandMenuCloseText: string | null, footerTagline: string | null, footerConnectHeading: string | null, footerCommunityHeading: string | null, footerEmail: string | null, footerPhoneDisplay: string | null, footerPhoneTel: string | null, instagramUrl: string | null, instagramLabel: string | null, facebookUrl: string | null, facebookLabel: string | null, meetupUrl: string | null, meetupLabel: string | null, meetupAriaLabel: string | null, footerCopyright: string | null, _sys: { filename: string, basename: string, hasReferences: boolean | null, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, navItems: Array<{ __typename: 'SiteChromeNavItems', href: string, label: string, ariaLabel: string | null, external: boolean | null } | null> | null } | null } | null> | null } };
 
 export const ProgramPartsFragmentDoc = gql`
     fragment ProgramParts on Program {
@@ -2145,7 +2580,7 @@ export const ExperimentalGetTinaClient = () =>
   getSdk(
     generateRequester(
       createClient({
-        url: "http://localhost:4001/graphql",
+        url: "https://content.tinajs.io/4.1/content/9486e938-50e2-403c-a7bc-91d4d7196c40/github/main",
         queries,
       })
     )
@@ -2157,5 +2592,7 @@ export const queries = (
   const requester = generateRequester(client)
   return getSdk(requester)
 }
+
+export type { Exact };
 
   

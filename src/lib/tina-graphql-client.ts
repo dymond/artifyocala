@@ -6,6 +6,7 @@
 import { createClient } from "tinacms/dist/client";
 import { getTinaGitBranch } from "../../tina/branch";
 import { queries } from "../../tina/__generated__/types";
+import { tinaCloudContentUrl } from "./tina-content-api";
 
 type EnvLike = Record<string, string | undefined>;
 
@@ -31,7 +32,7 @@ if (!clientId) {
 // Dev: use local Tina GraphQL server (started by `tinacms dev`).
 // Prod/CI: use Tina Content API.
 const localUrl = env.TINA_LOCAL_GRAPHQL_URL?.trim() || "http://localhost:4001/graphql";
-const cloudUrl = `https://content.tinajs.io/2.2/content/${clientId}/github/${branch}`;
+const cloudUrl = tinaCloudContentUrl(clientId, branch);
 const url =
   env.NODE_ENV === "development" || env.DEV === "true" ? localUrl : cloudUrl;
 

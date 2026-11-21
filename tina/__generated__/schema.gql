@@ -5,6 +5,9 @@ scalar Reference
 """"""
 scalar JSON
 
+"""A rich-text document, renderable by TinaMarkdown"""
+scalar RichText
+
 type SystemInfo {
   filename: String!
   title: String
@@ -120,7 +123,7 @@ type Program implements Node & Document {
   progHeroLayout: String
   progHeroSlides: [ProgramProgHeroSlides]
   progCtaRows: [ProgramProgCtaRows]
-  body: JSON
+  body: RichText
   progGalleryEnable: Boolean
   progGalleryHeading: String
   progGalleryDekHtml: String
@@ -904,7 +907,7 @@ input ProgramMutation {
   progHeroLayout: String
   progHeroSlides: [ProgramProgHeroSlidesMutation]
   progCtaRows: [ProgramProgCtaRowsMutation]
-  body: JSON
+  body: RichText
   progGalleryEnable: Boolean
   progGalleryHeading: String
   progGalleryDekHtml: String
